@@ -1,0 +1,25 @@
+URL https://samyakinfotech.com/course/data-science-course-certification/
+R ["₹6.0","₹13.0"]
+RS ["rs,"]
+F []
+---
+URL https://samyakinfotech.com/course/python-ml-online-course/
+R ["₹5.0","₹11.0"]
+RS ["rs,"]
+F []
+---
+URL https://samyakinfotech.com/course/machine-learning-course/
+R ["₹5.0","₹11.0"]
+RS ["rs,","rs,"]
+F []
+---
+URL https://samyakinfotech.com/course/artificial-intelligence-training-course/
+R ["₹5.5","₹12.0"]
+RS ["rs,","rs,","rs,"]
+F []
+---
+URL https://samyakinfotech.com/course/r-language-programming/
+R ["₹4.0","₹9.0"]
+RS ["rs,","rs,","rs,"]
+F []
+---

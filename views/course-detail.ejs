@@ -1,0 +1,104 @@
+<%- include('partials/head') %>
+<%- include('partials/navbar') %>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="page-hero-content" data-animate="fade-up">
+      <div class="section-tag">Course Detail</div>
+      <h1 class="page-hero-title"><%= course.title %></h1>
+      <div class="course-hero-meta">
+        <span class="meta-badge"><%= course.category || 'General' %></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="course-img course-img-<%= (course.id % 9) + 1 %> course-img-lg <%= course.image ? 'has-course-image' : '' %>" data-animate="fade-up"<% if (course.image) { %> style="--course-image: url('<%= course.image %>');"<% } %>>
+      <div class="course-category-tag"><%= course.category || 'General' %></div>
+    </div>
+    <div class="course-detail-grid">
+      <div class="course-detail-main" data-animate="fade-right">
+        <div class="detail-card">
+          <h2>Full Course Description</h2>
+          <p class="detail-description"><%= course.description %></p>
+
+          <% if (course.contentSections && course.contentSections.length) { %>
+          <div class="course-sections-long">
+            <% course.contentSections.forEach(function(section) { %>
+            <section class="course-section-block">
+              <h3><%= section.heading %></h3>
+              <% if (section.paragraphs && section.paragraphs.length) { %>
+              <% section.paragraphs.forEach(function(p) { %>
+              <p class="detail-description"><%= p %></p>
+              <% }) %>
+              <% } %>
+              <% if (section.bullets && section.bullets.length) { %>
+              <ul class="learn-list">
+                <% section.bullets.forEach(function(point) { %>
+                <li><%= point %></li>
+                <% }) %>
+              </ul>
+              <% } %>
+            </section>
+            <% }) %>
+          </div>
+          <% } else if (course.detailParagraphs && course.detailParagraphs.length) { %>
+          <% course.detailParagraphs.forEach(function(p) { %>
+          <p class="detail-description"><%= p %></p>
+          <% }) %>
+          <% } %>
+        </div>
+      </div>
+      <div class="course-detail-sidebar" data-animate="fade-left">
+        <div class="sidebar-card sticky-card">
+          <div class="sidebar-price">
+            <span class="sidebar-price-label">Fee</span>
+            <span class="sidebar-price-value">--</span>
+          </div>
+          <button type="button" class="btn btn-primary btn-block" data-enroll-toggle>Enroll</button>
+          <div class="course-enroll-actions" data-enroll-actions hidden>
+            <a
+              href="https://wa.me/919624284999"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn-ghost btn-block"
+            >
+              Get More Information
+            </a>
+            <a
+              href="/checkout/<%= course.id %>"
+              class="btn btn-primary btn-block"
+              data-buy-now-btn
+              data-course-id="<%= course.id %>"
+            >Buy Now</a>
+          </div>
+          <a href="/courses" class="btn btn-primary btn-block">All Courses</a>
+          <a href="/courses" class="btn btn-ghost btn-block">Back to Courses</a>
+          <ul class="sidebar-info">
+            <li>
+              <span class="sidebar-label">Title</span>
+              <span class="sidebar-value"><%= course.title %></span>
+            </li>
+            <li>
+              <span class="sidebar-label">Category</span>
+              <span class="sidebar-value"><%= course.category || 'General' %></span>
+            </li>
+            <li>
+              <span class="sidebar-label">Type</span>
+              <span class="sidebar-value">Professional Course</span>
+            </li>
+          </ul>
+          <div class="sidebar-guarantee">
+            <span>ℹ️</span> This page displays the full original course description.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script type="module" src="/js/course-detail-page.js"></script>
+
+<%- include('partials/footer') %>

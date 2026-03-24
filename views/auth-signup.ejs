@@ -1,0 +1,53 @@
+<%- include('partials/head') %>
+<%- include('partials/navbar') %>
+
+<section class="auth-shell section" data-auth-mode="signup">
+  <div class="container auth-container">
+    <div class="auth-hero" data-animate="fade-left">
+      <div class="section-tag">Join Osian</div>
+      <h1 class="auth-title">Start your learning journey today</h1>
+      <p class="auth-sub">Create your Osian Academy account to access high-impact courses, guided learning paths, and career-focused projects.</p>
+      <ul class="auth-points">
+        <li>Premium learning dashboard and course tracking</li>
+        <li>Structured pathways from beginner to expert</li>
+        <li>Community support and practical assignments</li>
+      </ul>
+    </div>
+
+    <div class="auth-card" data-animate="fade-right">
+      <h2>Create Account</h2>
+      <p class="auth-card-sub">Sign up in seconds and start learning.</p>
+
+      <button type="button" id="google-signup-btn" class="auth-google-btn" aria-label="Sign up with Google">
+        <span class="google-icon">G</span>
+        <span>Sign up with Google</span>
+      </button>
+
+      <div class="auth-divider"><span>or continue with email</span></div>
+
+      <form class="auth-form" id="signup-form" action="#" method="post">
+        <div class="form-group">
+          <label for="signup-name">Full Name</label>
+          <input id="signup-name" name="name" type="text" placeholder="Enter your full name" required />
+        </div>
+        <div class="form-group">
+          <label for="signup-email">Email Address</label>
+          <input id="signup-email" name="email" type="email" placeholder="you@example.com" required />
+        </div>
+        <div class="form-group">
+          <label for="signup-password">Password</label>
+          <input id="signup-password" name="password" type="password" placeholder="Create a strong password" required />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+      </form>
+
+      <div id="auth-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
+
+      <p class="auth-switch">Already have an account? <a href="/auth/signin">Sign In</a></p>
+    </div>
+  </div>
+</section>
+
+<script type="module" src="/js/firebase-auth.js"></script>
+
+<%- include('partials/footer') %>

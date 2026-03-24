@@ -1,0 +1,59 @@
+<%- include('partials/head') %>
+<%- include('partials/navbar') %>
+
+<section class="auth-shell section" data-auth-page data-default-mode="<%= mode %>">
+  <div class="container auth-container">
+    <div class="auth-hero" data-animate="fade-left">
+      <div class="section-tag">Osian Access</div>
+      <h1 class="auth-title">One secure space for sign up and sign in</h1>
+      <p class="auth-sub">Create your account or log in to reach your personalized dashboard, analytics, and enrolled courses.</p>
+      <ul class="auth-points">
+        <li>Progress dashboard with course insights</li>
+        <li>Guided profile onboarding for new learners</li>
+      </ul>
+    </div>
+
+    <div class="auth-card" data-animate="fade-right">
+      <div class="auth-mode-toggle" role="tablist" aria-label="Authentication mode">
+        <button type="button" class="auth-mode-btn active" data-auth-mode-btn="signup" aria-selected="true">Sign Up</button>
+        <button type="button" class="auth-mode-btn" data-auth-mode-btn="signin" aria-selected="false">Sign In</button>
+      </div>
+
+      <h2 id="auth-title">Create Account</h2>
+      <p class="auth-card-sub" id="auth-subtitle">Start learning with your Osian account.</p>
+
+      <button type="button" id="google-auth-btn" class="auth-google-btn" aria-label="Continue with Google">
+        <span class="google-icon">G</span>
+        <span id="google-auth-label">Continue with Google</span>
+      </button>
+
+      <div class="auth-divider"><span>or continue with email</span></div>
+
+      <form class="auth-form" id="auth-form" action="#" method="post">
+        <div class="form-group" id="name-group">
+          <label for="auth-name">Full Name</label>
+          <input id="auth-name" name="name" type="text" placeholder="Enter your full name" />
+        </div>
+        <div class="form-group">
+          <label for="auth-email">Email Address</label>
+          <input id="auth-email" name="email" type="email" placeholder="you@example.com" required />
+        </div>
+        <div class="form-group">
+          <label for="auth-password">Password</label>
+          <input id="auth-password" name="password" type="password" placeholder="Enter your password" required />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="auth-submit-btn">Create Account</button>
+      </form>
+
+      <div id="auth-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
+
+      <p class="auth-switch" id="auth-switch-copy">
+        Already have an account?
+        <button type="button" class="auth-switch-link" data-auth-switch="signin">Sign In</button>
+      </p>
+    </div>
+  </div>
+</section>
+
+<script type="module" src="/js/auth-page.js"></script>
+<%- include('partials/footer') %>

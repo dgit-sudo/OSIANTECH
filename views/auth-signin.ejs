@@ -1,0 +1,49 @@
+<%- include('partials/head') %>
+<%- include('partials/navbar') %>
+
+<section class="auth-shell section" data-auth-mode="signin">
+  <div class="container auth-container">
+    <div class="auth-hero" data-animate="fade-left">
+      <div class="section-tag">Welcome Back</div>
+      <h1 class="auth-title">Sign in and continue building your skills</h1>
+      <p class="auth-sub">Access your enrolled courses, progress milestones, and project feedback in one place.</p>
+      <ul class="auth-points">
+        <li>Resume exactly where you paused</li>
+        <li>Track completion and certification progress</li>
+        <li>Explore new specialized programs</li>
+      </ul>
+    </div>
+
+    <div class="auth-card" data-animate="fade-right">
+      <h2>Sign In</h2>
+      <p class="auth-card-sub">Use your account credentials to continue.</p>
+
+      <button type="button" id="google-signin-btn" class="auth-google-btn" aria-label="Sign in with Google">
+        <span class="google-icon">G</span>
+        <span>Sign in with Google</span>
+      </button>
+
+      <div class="auth-divider"><span>or continue with email</span></div>
+
+      <form class="auth-form" id="signin-form" action="#" method="post">
+        <div class="form-group">
+          <label for="signin-email">Email Address</label>
+          <input id="signin-email" name="email" type="email" placeholder="you@example.com" required />
+        </div>
+        <div class="form-group">
+          <label for="signin-password">Password</label>
+          <input id="signin-password" name="password" type="password" placeholder="Enter your password" required />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+      </form>
+
+      <div id="auth-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
+
+      <p class="auth-switch">New to Osian Academy? <a href="/auth/signup">Create Account</a></p>
+    </div>
+  </div>
+</section>
+
+<script type="module" src="/js/firebase-auth.js"></script>
+
+<%- include('partials/footer') %>

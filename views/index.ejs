@@ -1,0 +1,257 @@
+<%- include('partials/head') %>
+<%- include('partials/navbar') %>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-background">
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-orb hero-orb-3"></div>
+    <div class="hero-grid"></div>
+  </div>
+  <div class="hero-content">
+    <h1 class="hero-title">
+      Shape Your Future.<br/>
+      <span class="gradient-text">Learn Without Limits.</span>
+    </h1>
+    <p class="hero-subtitle">
+      Osian Academy delivers industry-leading courses taught by world-class experts.
+      Build in-demand skills, earn recognised certifications, and unlock your full potential.
+    </p>
+    <div class="hero-actions">
+      <a href="/courses" class="btn btn-primary btn-lg">Browse Courses</a>
+        <a href="#why" class="btn btn-outline btn-lg">
+          Explore Academy
+      </a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-card card-float">
+      <div class="hc-icon tech-icon">⚡</div>
+      <div>
+        <div class="hc-title">Mentor-led learning paths</div>
+        <div class="hc-sub">Professional programmes for all levels</div>
+      </div>
+    </div>
+    <div class="hero-card card-float-2">
+      <div class="hc-icon design-icon">🎨</div>
+      <div>
+        <div class="hc-title">New curriculum pipeline</div>
+        <div class="hc-sub">Publishing soon</div>
+      </div>
+    </div>
+    <div class="hero-dashboard">
+      <div class="db-header">
+        <span class="db-dot dot-red"></span>
+        <span class="db-dot dot-yellow"></span>
+        <span class="db-dot dot-green"></span>
+        <span class="db-title">My Learning Dashboard</span>
+      </div>
+      <div class="db-progress">
+        <div class="db-course">
+          <span>Curriculum review</span>
+          <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+          <span>Complete</span>
+        </div>
+        <div class="db-course">
+          <span>Instructor onboarding</span>
+          <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+          <span>Complete</span>
+        </div>
+        <div class="db-course">
+          <span>Course publishing</span>
+          <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+          <span>In queue</span>
+        </div>
+      </div>
+      <div class="db-stats">
+        <div class="db-stat"><div class="db-val">Ready</div><div class="db-label">Platform</div></div>
+        <div class="db-stat"><div class="db-val">Live</div><div class="db-label">Admissions</div></div>
+        <div class="db-stat"><div class="db-val">Soon</div><div class="db-label">Courses</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURED COURSES ===== -->
+<section class="section courses-section" id="courses">
+  <div class="container">
+    <div class="section-header" data-animate="fade-up">
+      <div class="section-tag">Courses</div>
+      <h2 class="section-title">Course Catalog</h2>
+      <p class="section-sub">Explore our course catalog with detailed summaries and clean presentation.</p>
+    </div>
+    <% if (featuredCourses.length) { %>
+    <div class="catalog-carousel" data-catalog-carousel>
+      <button type="button" class="catalog-nav catalog-nav-prev" data-carousel-prev aria-label="Previous courses">‹</button>
+      <div class="catalog-viewport">
+        <div class="catalog-track" data-carousel-track>
+          <% featuredCourses.forEach(function(course) { %>
+          <div class="catalog-slide">
+            <a href="/courses/<%= course.id %>" class="course-card-link" data-animate="fade-up">
+              <article class="course-card course-card-rich">
+              <div class="course-img course-img-<%= (course.id % 9) + 1 %> <%= course.image ? 'has-course-image' : '' %>"<% if (course.image) { %> style="--course-image: url('<%= course.image %>');"<% } %>>
+                <div class="course-category-tag"><%= course.category || 'General' %></div>
+              </div>
+              <div class="course-body">
+                <h3 class="course-title"><%= course.title %></h3>
+                <p class="course-description"><%= course.description %></p>
+                <div class="course-meta">
+                  <span class="meta-item">Professional Program</span>
+                </div>
+                <span class="btn btn-card">Open Details →</span>
+              </div>
+              </article>
+            </a>
+          </div>
+          <% }); %>
+        </div>
+      </div>
+      <button type="button" class="catalog-nav catalog-nav-next" data-carousel-next aria-label="Next courses">›</button>
+    </div>
+    <% } else { %>
+    <div class="course-empty" data-animate="fade-up">
+      <h3>No courses available yet</h3>
+      <p>The course catalog is currently unavailable.</p>
+      <a href="/courses" class="btn btn-primary">Open Courses Page</a>
+    </div>
+    <% } %>
+    <div class="section-cta" data-animate="fade-up">
+      <a href="/courses" class="btn btn-primary btn-lg">Browse All Courses</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WHY OSIAN ===== -->
+<section class="section why-section" id="why">
+  <div class="container">
+    <div class="why-grid">
+      <div class="why-content" data-animate="fade-right">
+        <div class="section-tag">Why Osian Academy</div>
+        <h2 class="section-title">Education Designed for the Real World</h2>
+        <p class="why-text">We believe learning should be engaging, practical, and directly connected to career outcomes. Every course is designed with industry partners to ensure you graduate job-ready.</p>
+        <div class="why-features">
+          <div class="why-feature">
+            <div class="feature-icon">🎓</div>
+            <div>
+              <h4>Expert-Led Instruction</h4>
+              <p>Learn from practitioners with decades of real-world experience in top global companies.</p>
+            </div>
+          </div>
+          <div class="why-feature">
+            <div class="feature-icon">🏆</div>
+            <div>
+              <h4>Recognised Certifications</h4>
+              <p>Earn credentials respected by hiring managers at Fortune 500 companies worldwide.</p>
+            </div>
+          </div>
+          <div class="why-feature">
+            <div class="feature-icon">🌐</div>
+            <div>
+              <h4>Learn Anywhere, Anytime</h4>
+              <p>Fully flexible online learning that fits around your schedule — mobile, tablet, or desktop.</p>
+            </div>
+          </div>
+          <div class="why-feature">
+            <div class="feature-icon">🤝</div>
+            <div>
+              <h4>Lifetime Community Access</h4>
+              <p>Join a global network of learners, mentors, and alumni who support each other long after graduation.</p>
+            </div>
+          </div>
+        </div>
+        <a href="/courses" class="btn btn-primary">Explore Courses</a>
+      </div>
+      <div class="why-visual" data-animate="fade-left">
+        <div class="why-card-stack">
+          <div class="why-card wc-1">
+            <div class="wc-emoji">🚀</div>
+            <div class="wc-text">Career acceleration track</div>
+          </div>
+          <div class="why-card wc-2">
+            <div class="wc-emoji">💡</div>
+            <div class="wc-text">Project-based learning</div>
+          </div>
+          <div class="why-card wc-3">
+            <div class="wc-emoji">📊</div>
+            <div class="wc-text">Real-time progress analytics</div>
+          </div>
+          <div class="why-card wc-4">
+            <div class="wc-emoji">🎯</div>
+            <div class="wc-text">Personalised learning paths</div>
+          </div>
+          <div class="why-ring why-ring-outer"></div>
+          <div class="why-ring why-ring-inner"></div>
+          <div class="why-center-logo">
+            <img src="/images/osian-logo-transparent.svg" alt="Osian Academy" class="why-center-logo-img" onerror="this.style.display='none';this.nextElementSibling.style.display='inline';" />
+            <span class="why-center-logo-fallback">Osian</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CATEGORIES ===== -->
+<section class="section categories-section">
+  <div class="container">
+    <div class="section-header" data-animate="fade-up">
+      <div class="section-tag">Browse by Category</div>
+      <h2 class="section-title">Every Field. Every Level.</h2>
+    </div>
+    <div class="categories-grid">
+      <a href="/courses?category=Technology" class="cat-card cat-tech" data-animate="fade-up">
+        <div class="cat-icon">⚡</div>
+        <h3>Technology</h3>
+        <p>Web, Mobile, Cloud &amp; More</p>
+      </a>
+      <a href="/courses?category=Data" class="cat-card cat-data" data-animate="fade-up">
+        <div class="cat-icon">📊</div>
+        <h3>Data Science</h3>
+        <p>ML, AI &amp; Analytics</p>
+      </a>
+      <a href="/courses?category=Design" class="cat-card cat-design" data-animate="fade-up">
+        <div class="cat-icon">🎨</div>
+        <h3>Design</h3>
+        <p>UI/UX, Branding &amp; Motion</p>
+      </a>
+      <a href="/courses?category=Security" class="cat-card cat-security" data-animate="fade-up">
+        <div class="cat-icon">🔐</div>
+        <h3>Cybersecurity</h3>
+        <p>Ethical Hacking &amp; Defence</p>
+      </a>
+      <a href="/courses?category=Cloud" class="cat-card cat-cloud" data-animate="fade-up">
+        <div class="cat-icon">☁️</div>
+        <h3>Cloud &amp; DevOps</h3>
+        <p>AWS, Azure &amp; Kubernetes</p>
+      </a>
+      <a href="/courses?category=Business" class="cat-card cat-business" data-animate="fade-up">
+        <div class="cat-icon">📈</div>
+        <h3>Business</h3>
+        <p>Strategy, Marketing &amp; Finance</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA BANNER ===== -->
+<section class="cta-section" id="enroll">
+  <div class="cta-background">
+    <div class="cta-orb cta-orb-1"></div>
+    <div class="cta-orb cta-orb-2"></div>
+  </div>
+  <div class="container">
+    <div class="cta-content" data-animate="fade-up">
+      <div class="section-tag tag-light">Start Today</div>
+      <h2 class="cta-title">Your Next Chapter Starts Now</h2>
+      <p class="cta-sub">Admissions are open. Create your account to access the platform and receive updates when new courses are published.</p>
+      <div class="cta-actions">
+        <a href="/auth?mode=signup" class="btn btn-white btn-lg" data-auth-guest>Sign Up</a>
+        <a href="/auth?mode=signin" class="btn btn-outline-white btn-lg" data-auth-guest>Sign In</a>
+        <a href="/dashboard" class="btn btn-white btn-lg" data-auth-user hidden>Go To Dashboard</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,84 @@
+<%- include('partials/head') %>
+<%- include('partials/navbar') %>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="page-hero-content" data-animate="fade-up">
+      <div class="section-tag">All Programmes</div>
+      <h1 class="page-hero-title">Explore Our Courses</h1>
+      <p class="page-hero-sub">Discover a visually curated list of courses. Click any card to open full details.</p>
+      <% const shownCount = (typeof shownCourses !== 'undefined') ? shownCourses : (Array.isArray(courses) ? courses.length : 0); %>
+      <% const totalCount = (typeof totalCourses !== 'undefined') ? totalCourses : shownCount; %>
+      <p class="page-hero-sub">Showing <%= shownCount %> of <%= totalCount %> courses</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <% const safeSearchQuery = (typeof searchQuery !== 'undefined' && searchQuery) ? searchQuery : ''; %>
+    <form class="courses-search" action="/courses" method="GET" data-animate="fade-up" data-courses-search-form>
+      <label for="course-search" class="courses-search-label">Search courses</label>
+      <div class="courses-search-row">
+        <input
+          id="course-search"
+          class="courses-search-input"
+          type="search"
+          name="q"
+          value="<%= safeSearchQuery %>"
+          placeholder="Search by title, topic, or keyword"
+          data-courses-search-input
+        />
+        <button type="submit" class="btn btn-primary">Search</button>
+        <% if (safeSearchQuery) { %>
+        <a href="<%= activeCategory === 'All' ? '/courses' : '/courses?category=' + encodeURIComponent(activeCategory) %>" class="btn btn-ghost">Clear</a>
+        <% } %>
+      </div>
+    </form>
+
+    <!-- Filter Bar -->
+    <% if (categories.length) { %>
+    <div class="filter-bar" data-animate="fade-up">
+      <a href="<%= safeSearchQuery ? '/courses?q=' + encodeURIComponent(safeSearchQuery) : '/courses' %>" class="filter-btn <%= activeCategory === 'All' ? 'active' : '' %>">All</a>
+      <% categories.forEach(function(cat) { %>
+      <a href="/courses?category=<%= encodeURIComponent(cat) %><%= safeSearchQuery ? '&q=' + encodeURIComponent(safeSearchQuery) : '' %>" class="filter-btn <%= activeCategory === cat ? 'active' : '' %>"><%= cat %></a>
+      <% }); %>
+    </div>
+    <% } %>
+
+    <% if (courses.length) { %>
+    <div class="courses-grid courses-grid-full" data-courses-grid>
+      <% courses.forEach(function(course) { %>
+      <a href="/courses/<%= course.id %>" class="course-card-link" data-course-card data-course-title="<%= course.title %>">
+      <article class="course-card course-card-rich">
+        <div class="course-img course-img-<%= (course.id % 9) + 1 %> <%= course.image ? 'has-course-image' : '' %>"<% if (course.image) { %> style="--course-image: url('<%= course.image %>');"<% } %>>
+          <div class="course-category-tag"><%= course.category %></div>
+        </div>
+        <div class="course-body">
+          <h3 class="course-title"><%= course.title %></h3>
+          <p class="course-description"><%= course.description %></p>
+          <div class="course-meta">
+            <span class="meta-item">Professional Program</span>
+          </div>
+          <span class="btn btn-card">View Details →</span>
+        </div>
+      </article>
+      </a>
+      <% }); %>
+    </div>
+    <div class="course-empty" data-courses-empty style="display:none;">
+      <h3>No matching courses found</h3>
+      <p>Try a different keyword or clear the search.</p>
+      <a href="/courses" class="btn btn-primary">View All Courses</a>
+    </div>
+    <% } else { %>
+    <div class="course-empty" data-animate="fade-up">
+      <h3><%= safeSearchQuery ? 'No matching courses found' : 'No courses available yet' %></h3>
+      <p><%= safeSearchQuery ? 'Try a different keyword or clear the search to see all courses.' : 'Course data could not be loaded right now.' %></p>
+      <a href="/courses" class="btn btn-primary">View All Courses</a>
+    </div>
+    <% } %>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

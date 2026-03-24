@@ -1,0 +1,30 @@
+{
+  "name": "osiantech",
+  "version": "1.0.0",
+  "description": "OSIANTECHULTRAPROMAXDEPLOYMENT",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dgit-sudo/OSIANTECH.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/dgit-sudo/OSIANTECH/issues"
+  },
+  "homepage": "https://github.com/dgit-sudo/OSIANTECH#readme",
+  "dependencies": {
+    "cheerio": "^1.2.0",
+    "dotenv": "^17.3.1",
+    "ejs": "^5.0.1",
+    "express": "^5.2.1",
+    "pg": "^8.20.0"
+  }
+}

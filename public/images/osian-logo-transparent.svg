@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" role="img" aria-labelledby="title desc">
+  <title id="title">Osian Academy New Logo</title>
+  <desc id="desc">Modern geometric icon for Osian Academy with an abstract O mark and dynamic learning beam.</desc>
+  <defs>
+    <linearGradient id="gradA" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#25b9a9"/>
+      <stop offset="100%" stop-color="#2f57d8"/>
+    </linearGradient>
+    <linearGradient id="gradB" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ff8a3d"/>
+      <stop offset="100%" stop-color="#ffd166"/>
+    </linearGradient>
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#1c2c66" flood-opacity="0.22"/>
+    </filter>
+  </defs>
+
+  <g transform="translate(16 16)" filter="url(#softGlow)">
+    <rect x="0" y="0" width="188" height="188" rx="46" fill="url(#gradA)"/>
+    <path d="M94 34c31 0 58 14 74 37l-22 12c-11-16-30-26-52-26-35 0-63 28-63 63s28 63 63 63c22 0 41-10 52-26l22 12c-16 23-43 37-74 37-48 0-86-38-86-86s38-86 86-86z" fill="#ffffff" opacity="0.95"/>
+    <path d="M138 92l54-16-21 52-43 11z" fill="url(#gradB)"/>
+    <circle cx="146" cy="112" r="8" fill="#ffffff"/>
+  </g>
+</svg>

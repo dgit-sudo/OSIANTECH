@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-label="Certificate Course In Interior Designing">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3f2b96"/>
+      <stop offset="55%" stop-color="#a8c0ff"/>
+      <stop offset="100%" stop-color="#f093fb"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.28)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </radialGradient>
+  </defs>
+  <rect width="640" height="420" rx="34" fill="url(#bg)"/>
+  <circle cx="518" cy="104" r="86" fill="rgba(255,255,255,0.12)"/>
+  <circle cx="518" cy="104" r="60" fill="rgba(255,255,255,0.08)"/>
+  <rect x="44" y="44" width="170" height="38" rx="19" fill="rgba(255,255,255,0.16)"/>
+  <text x="62" y="69" font-size="20" font-weight="600" fill="#f8fafc">Design Tools</text>
+  <text x="500" y="117" text-anchor="middle" font-size="46" font-weight="800" fill="#ffffff">CAD</text>
+  <path d="M42 300 C150 250, 240 340, 330 285 S520 230, 598 286 L598 418 L42 418 Z" fill="rgba(255,255,255,0.14)"/>
+  <path d="M42 330 C140 285, 228 365, 330 320 S525 290, 598 332 L598 418 L42 418 Z" fill="rgba(10,18,31,0.16)"/>
+  <g opacity="0.14" stroke="#ffffff" stroke-width="1">
+    <path d="M44 114h260"/>
+    <path d="M44 132h220"/>
+    <path d="M44 150h180"/>
+  </g>
+  <text x="44" y="182" font-size="26" font-weight="700" fill="#ffffff">Certificate Course</text><text x="44" y="214" font-size="26" font-weight="700" fill="#ffffff">In Interior</text><text x="44" y="246" font-size="26" font-weight="700" fill="#ffffff">Designing</text>
+  <text x="44" y="378" font-size="18" font-weight="500" fill="#e5eefb">Osian Academy Course</text>
+</svg>
