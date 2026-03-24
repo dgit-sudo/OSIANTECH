@@ -1,29 +1,30 @@
 {
   "name": "osiantech",
   "version": "1.0.0",
-  "description": "OSIANTECH - Next.js Deployment",
-  "private": true,
+  "description": "OSIANTECHULTRAPROMAXDEPLOYMENT",
+  "main": "index.js",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dgit-sudo/OSIANTECH.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/dgit-sudo/OSIANTECH/issues"
+  },
+  "homepage": "https://github.com/dgit-sudo/OSIANTECH#readme",
   "dependencies": {
+    "cheerio": "^1.2.0",
     "dotenv": "^17.3.1",
-    "firebase": "^10.0.0",
-    "next": "^15.0.0",
-    "pg": "^8.20.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
-  },
-  "devDependencies": {
-    "@types/node": "^20.19.37",
-    "@types/pg": "^8.20.0",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
-    "eslint": "^8.50.0",
-    "eslint-config-next": "^15.0.0",
-    "typescript": "^5.3.0"
+    "ejs": "^5.0.1",
+    "express": "^5.2.1",
+    "pg": "^8.20.0"
   }
 }
