@@ -1,7 +1,7 @@
 [build]
   command = "npm run build"
   functions = "netlify/functions"
-  publish = ".next/standalone/public"
+    publish = ".next"
 
 [dev]
   command = "npm run dev"
@@ -11,3 +11,13 @@
   from = "/api/*"
   to = "/.netlify/functions/:splat"
   status = 200
+
+  [[redirects]]
+    from = "/*"
+    to = "/index.html"
+    status = 200
+
+  [[headers]]
+    for = "/_next/static/*"
+    [headers.values]
+      Cache-Control = "public, max-age=31536000, immutable"
