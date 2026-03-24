@@ -8,9 +8,6 @@
   command = "npm run dev"
   port = 3000
 
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
-
 [[headers]]
   for = "/_next/static/*"
   [headers.values]
