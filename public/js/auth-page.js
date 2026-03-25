@@ -1,6 +1,5 @@
 import {
   createUserWithEmailAndPassword,
-  fetchSignInMethodsForEmail,
   getAdditionalUserInfo,
   onAuthStateChanged,
   signOut,
@@ -41,6 +40,7 @@ if (!root) {
       'auth/weak-password': 'Password should be at least 6 characters.',
       'auth/popup-closed-by-user': 'Google sign-in was cancelled.',
       'auth/popup-blocked': 'Popup was blocked. Please allow popups and try again.',
+      'auth/account-exists-with-different-credential': 'An account already exists with this email using a different sign-in method (e.g. Password). Please use that method.',
     };
     return map[error?.code] || 'Authentication failed. Please try again.';
   };
@@ -92,23 +92,6 @@ if (!root) {
     const url = new URL(window.location.href);
     url.searchParams.set('mode', mode);
     window.history.replaceState({}, '', url);
-  };
-
-  const ensureEmailStateForMode = async () => {
-    const email = emailInput.value.trim();
-    if (!email) return { ok: false, reason: 'Please enter your email.' };
-
-    const methods = await fetchSignInMethodsForEmail(auth, email);
-    const exists = methods.length > 0;
-
-    if (mode === 'signup' && exists) {
-      return { ok: false, reason: 'Account already exists for this email. Please sign in instead.' };
-    }
-    if (mode === 'signin' && !exists) {
-      return { ok: false, reason: 'No account found for this email. Please create an account first.' };
-    }
-
-    return { ok: true };
   };
 
   const detectProvider = (user) => {
@@ -194,12 +177,6 @@ if (!root) {
     setFeedback('Checking account...', 'info');
 
     try {
-      const gate = await ensureEmailStateForMode();
-      if (!gate.ok) {
-        setFeedback(gate.reason, 'error');
-        return;
-      }
-
       if (mode === 'signup') {
         setFeedback('Creating account...', 'info');
         const cred = await createUserWithEmailAndPassword(auth, email, password);
