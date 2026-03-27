@@ -3,12 +3,30 @@ import { auth } from './firebase-client.js';
 
 const countryForm = document.getElementById('checkout-country-form');
 const countryInput = document.getElementById('checkout-country');
+const cityInput = document.getElementById('checkout-city');
+const detectLocationBtn = document.getElementById('checkout-detect-location-btn');
 const paymentPanel = document.getElementById('checkout-payment-panel');
 const payBtn = document.getElementById('checkout-pay-btn');
 const feedbackEl = document.getElementById('checkout-feedback');
+const currentFeeEl = document.getElementById('checkout-current-fee');
+const locationTypeEl = document.getElementById('checkout-location-type');
 
 let selectedCountry = '';
+let selectedCity = '';
 let currentUser = null;
+
+const METRO_CITIES = new Set([
+  'mumbai',
+  'delhi',
+  'new delhi',
+  'kolkata',
+  'chennai',
+  'bengaluru',
+  'bangalore',
+  'hyderabad',
+  'pune',
+  'ahmedabad',
+]);
 
 function getLocalPurchasesKey(uid) {
   return `osian_purchases_${uid}`;
@@ -113,10 +131,93 @@ function setFeedback(message = '', type = 'info') {
   feedbackEl.textContent = message;
 }
 
+function normalizeCity(city = '') {
+  return String(city)
+    .toLowerCase()
+    .replace(/[^a-z\s]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function isMetroCity(city = '') {
+  const normalized = normalizeCity(city);
+  return normalized ? METRO_CITIES.has(normalized) : false;
+}
+
+function updateLocationTypeBadge(city = '') {
+  if (!locationTypeEl) return;
+  locationTypeEl.textContent = isMetroCity(city) ? 'Metro' : 'Non-metro';
+}
+
+async function reverseGeocode(lat, lon) {
+  const response = await fetch(
+    `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${encodeURIComponent(String(lat))}&lon=${encodeURIComponent(String(lon))}`,
+    {
+      headers: {
+        Accept: 'application/json',
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error('Reverse geocoding failed');
+  }
+
+  const payload = await response.json();
+  const address = payload?.address || {};
+  const city = address.city || address.town || address.village || address.county || '';
+  const country = address.country || '';
+  return { city: String(city).trim(), country: String(country).trim() };
+}
+
+if (detectLocationBtn) {
+  detectLocationBtn.addEventListener('click', async () => {
+    if (!navigator.geolocation) {
+      setFeedback('Geolocation is not supported in this browser. Please enter city manually.', 'error');
+      return;
+    }
+
+    setFeedback('Detecting your location...', 'info');
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const { latitude, longitude } = position.coords;
+          const loc = await reverseGeocode(latitude, longitude);
+          if (cityInput && loc.city) cityInput.value = loc.city;
+          if (countryInput && loc.country) countryInput.value = loc.country;
+          updateLocationTypeBadge(loc.city);
+          setFeedback('Location detected. Please verify city and continue.', 'success');
+        } catch {
+          setFeedback('Could not map coordinates to city. Please enter city manually.', 'error');
+        }
+      },
+      () => {
+        setFeedback('Location access denied. Please enter city manually.', 'error');
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+      },
+    );
+  });
+}
+
+const cityFromQuery = new URLSearchParams(window.location.search).get('city');
+if (cityInput && cityFromQuery) {
+  cityInput.value = cityFromQuery;
+  updateLocationTypeBadge(cityFromQuery);
+}
+
 if (countryForm) {
   countryForm.addEventListener('submit', (event) => {
     event.preventDefault();
     selectedCountry = String(countryInput?.value || '').trim();
+    selectedCity = String(cityInput?.value || '').trim();
+
+    if (!selectedCity) {
+      setFeedback('City is required to apply metro/non-metro fee.', 'error');
+      return;
+    }
 
     if (!selectedCountry) {
       setFeedback('Country is required to decide live class timings.', 'error');
@@ -124,7 +225,8 @@ if (countryForm) {
     }
 
     if (paymentPanel) paymentPanel.hidden = false;
-    setFeedback('Country captured. You can now continue to payment.', 'success');
+    updateLocationTypeBadge(selectedCity);
+    setFeedback('Location captured. You can now continue to payment.', 'success');
   });
 }
 
@@ -136,8 +238,8 @@ if (payBtn) {
       return;
     }
 
-    if (!selectedCountry) {
-      setFeedback('Please submit country first.', 'error');
+    if (!selectedCountry || !selectedCity) {
+      setFeedback('Please submit city and country first.', 'error');
       return;
     }
 
@@ -169,7 +271,10 @@ if (payBtn) {
           'Content-Type': 'application/json',
           Accept: 'application/json',
         },
-        body: JSON.stringify({ country: selectedCountry }),
+        body: JSON.stringify({
+          country: selectedCountry,
+          city: selectedCity,
+        }),
       });
 
       if (!response.ok) {
@@ -177,6 +282,13 @@ if (payBtn) {
       }
 
       const payload = await response.json();
+
+      if (currentFeeEl && payload?.payableAmountDisplay) {
+        currentFeeEl.textContent = payload.payableAmountDisplay;
+      }
+      if (locationTypeEl && payload?.cityType) {
+        locationTypeEl.textContent = payload.cityType;
+      }
 
       const saved = await recordPurchase(currentUser, courseId, payload.courseTitle);
       if (!saved.ok) {
@@ -188,9 +300,18 @@ if (payBtn) {
         });
       }
 
-      setFeedback(`Enrollment confirmed for ${payload.courseTitle}. (${payload.country})`, 'success');
+      setFeedback(
+        `Enrollment confirmed for ${payload.courseTitle}. ${payload.payableAmountDisplay} (${payload.cityType} - ${payload.city}, ${payload.country}).`,
+        'success',
+      );
     } catch {
       setFeedback('Could not complete mock checkout. Please try again.', 'error');
     }
+  });
+}
+
+if (cityInput) {
+  cityInput.addEventListener('input', () => {
+    updateLocationTypeBadge(cityInput.value);
   });
 }

@@ -55,7 +55,14 @@
         <div class="sidebar-card sticky-card">
           <div class="sidebar-price">
             <span class="sidebar-price-label">Fee</span>
-            <span class="sidebar-price-value">--</span>
+            <span
+              class="sidebar-price-value"
+              id="course-fee-display"
+              data-non-metro-fee="<%= Number(course.nonMetroFee || 0) %>"
+              data-metro-fee="<%= Number(course.metroFee || 0) %>"
+            >
+              Non-metro: INR <%= Number(course.nonMetroFee || 0).toLocaleString('en-IN') %> | Metro: INR <%= Number(course.metroFee || 0).toLocaleString('en-IN') %>
+            </span>
           </div>
           <button type="button" class="btn btn-primary btn-block" data-enroll-toggle>Enroll</button>
           <div class="course-enroll-actions" data-enroll-actions hidden>

@@ -16,12 +16,17 @@
     <div class="checkout-layout">
       <div class="checkout-card">
         <h2>Step 1: Class Scheduling Information</h2>
-        <p class="checkout-note">Please share your country first. We need this to decide suitable live class timings for you.</p>
+        <p class="checkout-note">Share your country and city. City is used to apply metro/non-metro fee from your course table.</p>
         <form id="checkout-country-form" class="profile-setup-form" action="#" method="post">
+          <div class="form-group">
+            <label for="checkout-city">Your City</label>
+            <input id="checkout-city" name="city" type="text" placeholder="Enter your city" required />
+          </div>
           <div class="form-group">
             <label for="checkout-country">Your Country</label>
             <input id="checkout-country" name="country" type="text" placeholder="Enter your country" required />
           </div>
+          <button type="button" class="btn btn-ghost" id="checkout-detect-location-btn">Detect My Location</button>
           <button type="submit" class="btn btn-primary">Continue to Payment</button>
         </form>
 
@@ -52,6 +57,22 @@
           <li>
             <span class="sidebar-label">Payment</span>
             <span class="sidebar-value">Mock Checkout</span>
+          </li>
+          <li>
+            <span class="sidebar-label">Metro Fee</span>
+            <span class="sidebar-value"><%= checkoutPricing.metroFeeDisplay %></span>
+          </li>
+          <li>
+            <span class="sidebar-label">Non-metro Fee</span>
+            <span class="sidebar-value"><%= checkoutPricing.nonMetroFeeDisplay %></span>
+          </li>
+          <li>
+            <span class="sidebar-label">Current Fee</span>
+            <span class="sidebar-value" id="checkout-current-fee"><%= checkoutPricing.selectedFeeDisplay %></span>
+          </li>
+          <li>
+            <span class="sidebar-label">Location Type</span>
+            <span class="sidebar-value" id="checkout-location-type"><%= checkoutPricing.cityType %></span>
           </li>
         </ul>
         <a href="/courses/<%= course.id %>" class="btn btn-ghost btn-block">Back to Course</a>
