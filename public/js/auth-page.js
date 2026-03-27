@@ -29,6 +29,7 @@ if (!root) {
   const feedbackEl = document.getElementById('auth-feedback');
 
   let mode = root.getAttribute('data-default-mode') === 'signin' ? 'signin' : 'signup';
+  let suppressAutoRedirect = false;
 
   const normalizeError = (error) => {
     const map = {
@@ -138,6 +139,7 @@ if (!root) {
 
   onAuthStateChanged(auth, async (user) => {
     if (!user) return;
+    if (suppressAutoRedirect) return;
     try {
       await user.getIdToken();
       redirectToDashboard();
@@ -147,19 +149,23 @@ if (!root) {
   });
 
   googleBtn.addEventListener('click', async () => {
+    suppressAutoRedirect = mode === 'signin';
     setFeedback(mode === 'signup' ? 'Signing up with Google...' : 'Signing in with Google...', 'info');
     try {
       const cred = await signInWithPopup(auth, googleProvider);
       const additionalInfo = getAdditionalUserInfo(cred);
       if (additionalInfo?.isNewUser && mode === 'signin') {
-        await cred.user.delete();
+        await signOut(auth);
         setFeedback('No account found with this Google account. Please sign up first.', 'error');
+        suppressAutoRedirect = false;
         return;
       }
       await syncUserToSupabase(cred.user);
       setFeedback('Success! Redirecting to dashboard...', 'success');
+      suppressAutoRedirect = false;
       redirectToDashboard();
     } catch (error) {
+      suppressAutoRedirect = false;
       setFeedback(normalizeError(error), 'error');
     }
   });
