@@ -17,6 +17,27 @@ const gateCopyEl = document.getElementById('dashboard-gate-copy');
 const gatePillEl = document.getElementById('dashboard-required-pill');
 const saveProfileBtn = document.getElementById('profile-save-btn');
 const profileBaseUrl = '/api/profile';
+let unauthRedirectTimer = null;
+
+function clearUnauthRedirectTimer() {
+  if (!unauthRedirectTimer) return;
+  clearTimeout(unauthRedirectTimer);
+  unauthRedirectTimer = null;
+}
+
+function scheduleUnauthRedirect() {
+  clearUnauthRedirectTimer();
+
+  // Some browsers emit an initial null auth state before restoring persisted login.
+  unauthRedirectTimer = setTimeout(async () => {
+    const restoredUser = auth.currentUser;
+    if (restoredUser) {
+      await hydrateDashboardForUser(restoredUser);
+      return;
+    }
+    window.location.replace('/auth?mode=signin');
+  }, 4500);
+}
 
 function getLocalPurchases(user) {
   if (!user?.uid) return [];
@@ -266,19 +287,12 @@ async function hydrateDashboardForUser(user) {
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
+    clearUnauthRedirectTimer();
     await hydrateDashboardForUser(user);
     return;
   }
 
-  // Firebase persistence restoration can lag on some browsers; re-check once before redirecting.
-  setTimeout(async () => {
-    const restoredUser = auth.currentUser;
-    if (restoredUser) {
-      await hydrateDashboardForUser(restoredUser);
-      return;
-    }
-    window.location.href = '/auth?mode=signin';
-  }, 900);
+  scheduleUnauthRedirect();
 });
 
 if (profileForm) {
