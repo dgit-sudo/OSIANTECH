@@ -4,15 +4,24 @@ import { auth } from './firebase-client.js';
 const countryForm = document.getElementById('checkout-country-form');
 const countryInput = document.getElementById('checkout-country');
 const cityInput = document.getElementById('checkout-city');
+const postalCodeInput = document.getElementById('checkout-postal-code');
 const detectLocationBtn = document.getElementById('checkout-detect-location-btn');
 const paymentPanel = document.getElementById('checkout-payment-panel');
 const payBtn = document.getElementById('checkout-pay-btn');
 const feedbackEl = document.getElementById('checkout-feedback');
 const currentFeeEl = document.getElementById('checkout-current-fee');
+const baseFeeEl = document.getElementById('checkout-base-fee');
+const gstFeeEl = document.getElementById('checkout-gst-fee');
+const currencyEl = document.getElementById('checkout-currency');
 
 let selectedCountry = '';
 let selectedCity = '';
+let selectedPostalCode = '';
 let currentUser = null;
+let locationDenied = false;
+let checkoutQuote = null;
+
+const currencyStorageKey = 'osian-currency';
 
 function getLocalPurchasesKey(uid) {
   return `osian_purchases_${uid}`;
@@ -36,6 +45,10 @@ function saveLocalPurchase(uid, purchase) {
   if (exists) return;
   const next = [purchase, ...existing];
   window.localStorage.setItem(getLocalPurchasesKey(uid), JSON.stringify(next));
+}
+
+function getSelectedCurrency() {
+  return String(window.localStorage.getItem(currencyStorageKey) || 'INR').toUpperCase();
 }
 
 onAuthStateChanged(auth, (user) => {
@@ -73,39 +86,6 @@ async function hasAlreadyPurchased(user, courseId) {
   return Boolean(data.purchased);
 }
 
-async function recordPurchase(user, courseId, courseTitle) {
-  const idToken = await user.getIdToken();
-  const purchaseResponse = await fetch(
-    `/api/profile/${encodeURIComponent(user.uid)}/purchases`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: `Bearer ${idToken}`,
-      },
-      body: JSON.stringify({
-        courseId: Number.parseInt(String(courseId), 10),
-        courseTitle,
-      }),
-    },
-  );
-
-  if (purchaseResponse.ok) {
-    return { ok: true, error: '' };
-  }
-
-  let error = 'Could not save purchase record.';
-  try {
-    const payload = await purchaseResponse.json();
-    if (payload?.error) error = payload.error;
-  } catch {
-    // Ignore JSON parse issues and keep default message.
-  }
-
-  return { ok: false, error };
-}
-
 function setFeedback(message = '', type = 'info') {
   if (!feedbackEl) return;
   if (!message) {
@@ -115,6 +95,22 @@ function setFeedback(message = '', type = 'info') {
   }
   feedbackEl.className = `auth-feedback auth-feedback-${type}`;
   feedbackEl.textContent = message;
+}
+
+function loadRazorpayScript() {
+  return new Promise((resolve, reject) => {
+    if (window.Razorpay) {
+      resolve(true);
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.async = true;
+    script.onload = () => resolve(true);
+    script.onerror = () => reject(new Error('Failed to load Razorpay checkout SDK'));
+    document.head.appendChild(script);
+  });
 }
 
 async function reverseGeocode(lat, lon) {
@@ -153,12 +149,14 @@ if (detectLocationBtn) {
           const loc = await reverseGeocode(latitude, longitude);
           if (cityInput && loc.city) cityInput.value = loc.city;
           if (countryInput && loc.country) countryInput.value = loc.country;
+          locationDenied = false;
           setFeedback('Location detected. Please verify city and continue.', 'success');
         } catch {
           setFeedback('Could not map coordinates to city. Please enter city manually.', 'error');
         }
       },
-      () => {
+      (error) => {
+        locationDenied = error?.code === 1;
         setFeedback('Location access denied. Please enter city manually.', 'error');
       },
       {
@@ -174,11 +172,135 @@ if (cityInput && cityFromQuery) {
   cityInput.value = cityFromQuery;
 }
 
+async function requestQuote(courseId) {
+  const response = await fetch(`/courses/${encodeURIComponent(courseId)}/checkout/quote`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify({
+      country: selectedCountry,
+      city: selectedCity,
+      postalCode: selectedPostalCode,
+      selectedCurrency: getSelectedCurrency(),
+      locationDenied,
+    }),
+  });
+
+  if (!response.ok) {
+    const payload = await response.json().catch(() => ({}));
+    throw new Error(payload?.error || 'Could not fetch checkout quote.');
+  }
+
+  const payload = await response.json();
+  return payload.quote;
+}
+
+function renderQuote(quote) {
+  checkoutQuote = quote;
+  if (currencyEl) currencyEl.textContent = quote.currency;
+  if (baseFeeEl) baseFeeEl.textContent = quote.baseAmountDisplay;
+  if (gstFeeEl) gstFeeEl.textContent = `${quote.gstAmountDisplay} (${quote.gstPercent}%)`;
+  if (currentFeeEl) currentFeeEl.textContent = quote.totalAmountDisplay;
+}
+
+async function openRazorpay(courseId, idToken) {
+  const response = await fetch(`/courses/${encodeURIComponent(courseId)}/checkout/create-order`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: `Bearer ${idToken}`,
+    },
+    body: JSON.stringify({
+      country: selectedCountry,
+      city: selectedCity,
+      postalCode: selectedPostalCode,
+      selectedCurrency: getSelectedCurrency(),
+      locationDenied,
+    }),
+  });
+
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok || !payload?.ok) {
+    throw new Error(payload?.error || 'Could not create Razorpay order.');
+  }
+
+  if (payload.quote) renderQuote(payload.quote);
+
+  await loadRazorpayScript();
+
+  return new Promise((resolve, reject) => {
+    const instance = new window.Razorpay({
+      key: payload.keyId,
+      amount: payload.amount,
+      currency: payload.currency,
+      name: 'Osian Academy',
+      description: payload.courseTitle,
+      order_id: payload.orderId,
+      prefill: {
+        name: currentUser?.displayName || '',
+        email: currentUser?.email || '',
+      },
+      notes: {
+        country: selectedCountry,
+        city: selectedCity,
+        postalCode: selectedPostalCode,
+      },
+      handler: async (rzp) => {
+        try {
+          const verifyResponse = await fetch(`/courses/${encodeURIComponent(courseId)}/checkout/verify-payment`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+              Authorization: `Bearer ${idToken}`,
+            },
+            body: JSON.stringify({
+              razorpay_order_id: rzp.razorpay_order_id,
+              razorpay_payment_id: rzp.razorpay_payment_id,
+              razorpay_signature: rzp.razorpay_signature,
+            }),
+          });
+
+          const verifyPayload = await verifyResponse.json().catch(() => ({}));
+          if (!verifyResponse.ok || !verifyPayload?.ok) {
+            throw new Error(verifyPayload?.error || 'Payment verification failed.');
+          }
+
+          saveLocalPurchase(currentUser.uid, {
+            courseId: Number.parseInt(String(courseId), 10),
+            courseTitle: payload.courseTitle,
+            purchaseDate: new Date().toISOString(),
+            source: 'razorpay',
+            paymentId: rzp.razorpay_payment_id,
+          });
+
+          resolve({
+            courseTitle: payload.courseTitle,
+            totalAmountDisplay: payload.quote?.totalAmountDisplay || checkoutQuote?.totalAmountDisplay || '',
+          });
+        } catch (error) {
+          reject(error);
+        }
+      },
+      modal: {
+        ondismiss: () => reject(new Error('Payment cancelled by user.')),
+      },
+      theme: { color: '#2f6f8f' },
+    });
+
+    instance.open();
+  });
+}
+
 if (countryForm) {
-  countryForm.addEventListener('submit', (event) => {
+  countryForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     selectedCountry = String(countryInput?.value || '').trim();
     selectedCity = String(cityInput?.value || '').trim();
+    selectedPostalCode = String(postalCodeInput?.value || '').trim();
 
     if (!selectedCity) {
       setFeedback('City is required to help us schedule your classes.', 'error');
@@ -190,8 +312,25 @@ if (countryForm) {
       return;
     }
 
-    if (paymentPanel) paymentPanel.hidden = false;
-    setFeedback('Location captured. You can now continue to payment.', 'success');
+    if (!selectedPostalCode) {
+      setFeedback('Postal code is required for tax and billing rules.', 'error');
+      return;
+    }
+
+    const courseId = getCourseIdFromPath();
+    if (!courseId) {
+      setFeedback('Unable to determine course for checkout.', 'error');
+      return;
+    }
+
+    try {
+      const quote = await requestQuote(courseId);
+      renderQuote(quote);
+      if (paymentPanel) paymentPanel.hidden = false;
+      setFeedback('Pricing summary is ready. You can continue to Razorpay payment.', 'success');
+    } catch (error) {
+      setFeedback(error?.message || 'Could not prepare checkout quote.', 'error');
+    }
   });
 }
 
@@ -203,21 +342,16 @@ if (payBtn) {
       return;
     }
 
-    if (!selectedCountry || !selectedCity) {
-      setFeedback('Please submit city and country first.', 'error');
+    if (!selectedCountry || !selectedCity || !selectedPostalCode) {
+      setFeedback('Please submit city, country, and postal code first.', 'error');
       return;
     }
 
-    const code = window.prompt('Enter admin code to run mock checkout:');
-    if (code !== 'Aa@1Dhyanam') {
-      setFeedback('Invalid admin code. Payment blocked.', 'error');
-      return;
-    }
-
-    setFeedback('Processing mock checkout...', 'info');
+    setFeedback('Preparing Razorpay checkout...', 'info');
 
     try {
       const courseId = getCourseIdFromPath();
+      const idToken = await currentUser.getIdToken();
 
       if (!courseId) {
         setFeedback('Unable to determine course for checkout.', 'error');
@@ -230,44 +364,10 @@ if (payBtn) {
         return;
       }
 
-      const response = await fetch(`/courses/${encodeURIComponent(courseId)}/checkout/complete`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          country: selectedCountry,
-          city: selectedCity,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Checkout failed');
-      }
-
-      const payload = await response.json();
-
-      if (currentFeeEl && payload?.payableAmountDisplay) {
-        currentFeeEl.textContent = payload.payableAmountDisplay;
-      }
-
-      const saved = await recordPurchase(currentUser, courseId, payload.courseTitle);
-      if (!saved.ok) {
-        saveLocalPurchase(currentUser.uid, {
-          courseId: Number.parseInt(String(courseId), 10),
-          courseTitle: payload.courseTitle,
-          purchaseDate: new Date().toISOString(),
-          source: 'local-fallback',
-        });
-      }
-
-      setFeedback(
-        `Enrollment confirmed for ${payload.courseTitle}. ${payload.payableAmountDisplay} (${payload.city}, ${payload.country}).`,
-        'success',
-      );
-    } catch {
-      setFeedback('Could not complete mock checkout. Please try again.', 'error');
+      const result = await openRazorpay(courseId, idToken);
+      setFeedback(`Enrollment confirmed for ${result.courseTitle}. ${result.totalAmountDisplay}`, 'success');
+    } catch (error) {
+      setFeedback(error?.message || 'Could not complete Razorpay checkout. Please try again.', 'error');
     }
   });
 }

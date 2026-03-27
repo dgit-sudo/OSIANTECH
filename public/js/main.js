@@ -3,10 +3,53 @@
    ========================================================= */
 
 const themeStorageKey = 'osian-theme';
+const currencyStorageKey = 'osian-currency';
 const initialTheme = localStorage.getItem(themeStorageKey);
 if (initialTheme === 'light') {
   document.body.classList.add('theme-light');
 }
+
+function inferCurrencyFromLocale() {
+  const locale = String(navigator.language || '').toUpperCase();
+  const parts = locale.split('-');
+  const region = parts.length > 1 ? parts[1] : '';
+
+  const map = {
+    IN: 'INR',
+    US: 'USD',
+    GB: 'GBP',
+    AE: 'AED',
+    SG: 'SGD',
+    DE: 'EUR',
+    FR: 'EUR',
+    IT: 'EUR',
+    ES: 'EUR',
+    NL: 'EUR',
+    IE: 'EUR',
+  };
+
+  return map[region] || 'INR';
+}
+
+(() => {
+  const select = document.querySelector('[data-global-currency]');
+  if (!select) return;
+
+  const stored = String(localStorage.getItem(currencyStorageKey) || '').toUpperCase();
+  const defaultCurrency = stored || inferCurrencyFromLocale() || 'INR';
+
+  if ([...select.options].some((option) => option.value === defaultCurrency)) {
+    select.value = defaultCurrency;
+  } else {
+    select.value = 'INR';
+  }
+
+  localStorage.setItem(currencyStorageKey, select.value);
+
+  select.addEventListener('change', () => {
+    localStorage.setItem(currencyStorageKey, String(select.value || 'INR').toUpperCase());
+  });
+})();
 
 function toggleTheme() {
   const isLight = document.body.classList.toggle('theme-light');

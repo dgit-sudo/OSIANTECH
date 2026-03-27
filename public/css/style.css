@@ -2148,6 +2148,29 @@ ul { list-style: none; }
   transition: color var(--transition);
 }
 .footer-col ul a:hover { color: var(--accent-2); }
+.footer-select-label {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+.footer-select {
+  width: 100%;
+  max-width: 210px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-3);
+  color: var(--text-primary);
+  font-family: inherit;
+}
+.footer-note {
+  margin-top: 8px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  max-width: 240px;
+}
 .footer-bottom {
   border-top: 1px solid var(--border);
   padding: 20px 24px;

@@ -30,6 +30,19 @@
         <li><a href="/cookie-policy">Cookie Policy</a></li>
       </ul>
     </div>
+    <div class="footer-col">
+      <h4>Preferences</h4>
+      <label class="footer-select-label" for="global-currency-select">Checkout Currency</label>
+      <select id="global-currency-select" class="footer-select" data-global-currency>
+        <option value="INR">INR</option>
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="GBP">GBP</option>
+        <option value="AED">AED</option>
+        <option value="SGD">SGD</option>
+      </select>
+      <p class="footer-note">Default is auto-picked from location or locale. Fallback is INR.</p>
+    </div>
   </div>
   <div class="footer-bottom">
     <p>&copy; <%= new Date().getFullYear() %> Osian Academy. All rights reserved. Built for lifelong learners.</p>
