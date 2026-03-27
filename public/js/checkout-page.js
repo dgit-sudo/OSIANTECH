@@ -53,6 +53,10 @@ function getSelectedCurrency() {
   return String(window.localStorage.getItem(currencyStorageKey) || 'INR').toUpperCase();
 }
 
+function getEnteredCouponCode() {
+  return String(couponCodeInput?.value || selectedCouponCode || '').trim();
+}
+
 onAuthStateChanged(auth, (user) => {
   currentUser = user || null;
 });
@@ -208,7 +212,7 @@ function renderQuote(quote) {
   if (currentFeeEl) currentFeeEl.textContent = quote.totalAmountDisplay;
 }
 
-async function openRazorpay(courseId, idToken) {
+async function openRazorpay(courseId, idToken, couponCode = '') {
   const response = await fetch(`/courses/${encodeURIComponent(courseId)}/checkout/create-order`, {
     method: 'POST',
     headers: {
@@ -220,6 +224,7 @@ async function openRazorpay(courseId, idToken) {
       country: selectedCountry,
       city: selectedCity,
       postalCode: selectedPostalCode,
+      offerId: couponCode,
       selectedCurrency: getSelectedCurrency(),
       locationDenied,
     }),
@@ -304,7 +309,7 @@ if (countryForm) {
     selectedCountry = String(countryInput?.value || '').trim();
     selectedCity = String(cityInput?.value || '').trim();
     selectedPostalCode = String(postalCodeInput?.value || '').trim();
-    selectedCouponCode = String(couponCodeInput?.value || '').trim();
+    selectedCouponCode = getEnteredCouponCode();
 
     if (!selectedCity) {
       setFeedback('City is required to help us schedule your classes.', 'error');
@@ -357,9 +362,15 @@ if (payBtn) {
     try {
       const courseId = getCourseIdFromPath();
       const idToken = await currentUser.getIdToken();
+      const couponCode = getEnteredCouponCode();
 
       if (!courseId) {
         setFeedback('Unable to determine course for checkout.', 'error');
+        return;
+      }
+
+      if (couponCode && !/^offer_[a-zA-Z0-9]+$/.test(couponCode)) {
+        setFeedback('Invalid coupon code. Use Razorpay Offer ID format (example: offer_xxxxx).', 'error');
         return;
       }
 
@@ -369,7 +380,7 @@ if (payBtn) {
         return;
       }
 
-      const result = await openRazorpay(courseId, idToken);
+      const result = await openRazorpay(courseId, idToken, couponCode);
       setFeedback(`Enrollment confirmed for ${result.courseTitle}. ${result.totalAmountDisplay}`, 'success');
     } catch (error) {
       setFeedback(error?.message || 'Could not complete Razorpay checkout. Please try again.', 'error');
