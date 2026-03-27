@@ -228,12 +228,7 @@ function validateRequiredProfile(payload) {
   return Boolean(payload.name && payload.age && payload.nationality && payload.phoneNumber && payload.city && payload.education);
 }
 
-onAuthStateChanged(auth, async (user) => {
-  if (!user) {
-    window.location.href = '/auth?mode=signin';
-    return;
-  }
-
+async function hydrateDashboardForUser(user) {
   try {
     const profile = await loadProfile(user);
     const localPurchases = getLocalPurchases(user);
@@ -267,6 +262,23 @@ onAuthStateChanged(auth, async (user) => {
     renderPurchases([]);
     setFeedback(gateFeedbackEl, 'Could not load profile data. Please complete your details.', 'error');
   }
+}
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    await hydrateDashboardForUser(user);
+    return;
+  }
+
+  // Firebase persistence restoration can lag on some browsers; re-check once before redirecting.
+  setTimeout(async () => {
+    const restoredUser = auth.currentUser;
+    if (restoredUser) {
+      await hydrateDashboardForUser(restoredUser);
+      return;
+    }
+    window.location.href = '/auth?mode=signin';
+  }, 900);
 });
 
 if (profileForm) {
