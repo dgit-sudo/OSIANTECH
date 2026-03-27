@@ -244,7 +244,7 @@ async function openRazorpay(courseId, idToken, couponCode = '') {
   await loadRazorpayScript();
 
   return new Promise((resolve, reject) => {
-    const instance = new window.Razorpay({
+    const checkoutOptions = {
       key: payload.keyId,
       amount: payload.amount,
       currency: payload.currency,
@@ -301,7 +301,14 @@ async function openRazorpay(courseId, idToken, couponCode = '') {
         ondismiss: () => reject(new Error('Payment cancelled by user.')),
       },
       theme: { color: '#2f6f8f' },
-    });
+    };
+
+    if (payload.offerId) {
+      checkoutOptions.offer_id = payload.offerId;
+      setFeedback(`Coupon code sent to Razorpay: ${payload.offerId}`, 'info');
+    }
+
+    const instance = new window.Razorpay(checkoutOptions);
 
     instance.open();
   });
