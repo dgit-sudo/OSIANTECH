@@ -235,6 +235,10 @@ async function openRazorpay(courseId, idToken, couponCode = '') {
     throw new Error(payload?.error || 'Could not create Razorpay order.');
   }
 
+  if (couponCode && payload.offerId && payload.orderOfferId === payload.offerId) {
+    setFeedback(`Coupon attached to order: ${payload.offerId}`, 'success');
+  }
+
   if (payload.offerNote) {
     setFeedback(payload.offerNote, 'info');
   }
@@ -305,6 +309,7 @@ async function openRazorpay(courseId, idToken, couponCode = '') {
 
     if (payload.offerId) {
       checkoutOptions.offer_id = payload.offerId;
+      checkoutOptions.offers = [payload.offerId];
       setFeedback(`Coupon code sent to Razorpay: ${payload.offerId}`, 'info');
     }
 

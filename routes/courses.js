@@ -554,6 +554,13 @@ router.post('/:id/checkout/create-order', async (req, res) => {
     }
 
     const order = await razorpay.orders.create(orderPayload);
+    const orderOfferId = String(order?.offer_id || '').trim();
+
+    if (offerId && orderOfferId !== offerId) {
+      return res.status(400).json({
+        error: 'Razorpay did not attach this offer to the order. Verify mode (Test/Live), offer eligibility, and payment method conditions.',
+      });
+    }
 
     return res.json({
       ok: true,
@@ -565,6 +572,7 @@ router.post('/:id/checkout/create-order', async (req, res) => {
       courseTitle: course.title,
       offerApplied: Boolean(offerId),
       offerId: offerId || '',
+      orderOfferId,
       offerNote: offerDiagnostics.note || '',
       quote: {
         ...quote,
