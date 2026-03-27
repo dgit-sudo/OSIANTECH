@@ -2,6 +2,12 @@ const express = require('express');
 const router = express.Router();
 const allCourses = require('../data/coursesCatalog.json');
 
+function getGeneratedCourseImage(courseId) {
+  const id = Number.parseInt(String(courseId || ''), 10);
+  if (!Number.isFinite(id) || id <= 0) return '';
+  return `/course-images/osian-course-${id}.svg`;
+}
+
 function toInr(price = '') {
   if (!price || /not listed/i.test(price)) return 'INR -';
   const numeric = String(price).replace(/[^0-9.]/g, '');
@@ -16,6 +22,7 @@ router.get('/', (req, res) => {
     featuredCourses: allCourses.slice(0, 9).map((course) => ({
       ...course,
       displayPrice: toInr(course.price),
+      image: getGeneratedCourseImage(course.id),
     })),
   });
 });

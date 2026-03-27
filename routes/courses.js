@@ -3,6 +3,12 @@ const router = express.Router();
 
 const rawCourses = require('../data/coursesCatalog.json');
 
+function getGeneratedCourseImage(courseId) {
+  const id = Number.parseInt(String(courseId || ''), 10);
+  if (!Number.isFinite(id) || id <= 0) return '';
+  return `/course-images/osian-course-${id}.svg`;
+}
+
 function toInr(price = '') {
   if (!price || /not listed/i.test(price)) return 'INR -';
   const numeric = String(price).replace(/[^0-9.]/g, '');
@@ -37,6 +43,7 @@ const allCourses = rawCourses.map((course) => ({
   category: String(course.category || 'Unspecified').trim() || 'Unspecified',
   displayPrice: toInr(course.price),
   displayFee: getFeeFromCourse(course).selectedFee,
+  image: getGeneratedCourseImage(course.id),
 }));
 
 function normalizeForSearch(text = '') {
