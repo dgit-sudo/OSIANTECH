@@ -2,7 +2,7 @@
   {
     "id": 1,
     "title": "Oracle Admin I",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1 mth",
     "students": "",
@@ -42,7 +42,7 @@
   {
     "id": 2,
     "title": "Oracle Admin II",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1 mth",
     "students": "",
@@ -82,7 +82,7 @@
   {
     "id": 3,
     "title": "SQL",
-    "category": "Green",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "35-38 Days",
     "students": "",
@@ -122,7 +122,7 @@
   {
     "id": 4,
     "title": "Net MVC",
-    "category": "Yellow",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1 Month",
     "students": "",
@@ -162,7 +162,7 @@
   {
     "id": 5,
     "title": "11th / 12th CBSE Book IT",
-    "category": "Green",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "3-4 Months",
     "students": "",
@@ -201,8 +201,8 @@
   },
   {
     "id": 6,
-    "title": "2D & 3D Animation Adobe Certification Included",
-    "category": "Yellow",
+    "title": "2D & 3D Animation",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "3 Months",
     "students": "",
@@ -241,8 +241,8 @@
   },
   {
     "id": 7,
-    "title": "3Ds Max For Interior & Architecture Designing Course (3D Max)",
-    "category": "Green",
+    "title": "3ds Max for Interior & Architectural Design",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "1.5 months",
     "students": "",
@@ -281,8 +281,8 @@
   },
   {
     "id": 8,
-    "title": "3Ds Max with V-Ray Combo Indian Govt (Skill Development Ministry) Certificate -NSDC",
-    "category": "Green",
+    "title": "3Ds Max with V-Ray Combo",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "2.5 Months",
     "students": "",
@@ -321,8 +321,8 @@
   },
   {
     "id": 9,
-    "title": "A+ - Hardware Diploma Indian Govt (Skill Development Ministry) Certificate -NSDC",
-    "category": "Green",
+    "title": "A+ - Hardware Diploma",
+    "category": "Networking, Hardware & Engineering",
     "level": "Professional",
     "duration": "2 - 3 mths",
     "students": "",
@@ -362,7 +362,7 @@
   {
     "id": 10,
     "title": "Abacus Combo (L1 & L2)",
-    "category": "Kids",
+    "category": "Kids Programs",
     "level": "Professional",
     "duration": "2 Months",
     "students": "",
@@ -404,7 +404,7 @@
   {
     "id": 11,
     "title": "Abacus L1",
-    "category": "Kids",
+    "category": "Kids Programs",
     "level": "Professional",
     "duration": "1 Month",
     "students": "",
@@ -440,7 +440,7 @@
   {
     "id": 12,
     "title": "Abacus L2",
-    "category": "Kids",
+    "category": "Kids Programs",
     "level": "Professional",
     "duration": "1 Month",
     "students": "",
@@ -475,8 +475,8 @@
   },
   {
     "id": 13,
-    "title": "ACC ( Awareness in Computer Concepts )by NIELIT With Class Fees 3750",
-    "category": "Green",
+    "title": "ACC (Awareness in Computer Concepts) - NIELIT",
+    "category": "Accounting, Finance & Office Skills",
     "level": "Professional",
     "duration": "1 Month Result in After Exam 30 Days depending upon NIELET",
     "students": "",
@@ -515,8 +515,8 @@
   },
   {
     "id": 14,
-    "title": "Adobe After Effect - Visual Effects Adobe Certification Included",
-    "category": "Yellow",
+    "title": "Adobe After Effects - Visual Effects",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "2 Months",
     "students": "",
@@ -556,7 +556,7 @@
   {
     "id": 15,
     "title": "Adobe Flash",
-    "category": "Green",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -595,8 +595,8 @@
   },
   {
     "id": 16,
-    "title": "Adobe Illustrator Advanced Course",
-    "category": "Green",
+    "title": "Adobe Illustrator - Advanced",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "1.5 month",
     "students": "",
@@ -635,8 +635,8 @@
   },
   {
     "id": 17,
-    "title": "Adobe Indesign Advanced Course",
-    "category": "Green",
+    "title": "Adobe InDesign - Advanced",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "1 Month",
     "students": "",
@@ -675,8 +675,8 @@
   },
   {
     "id": 18,
-    "title": "Adobe Premier Pro - Video Editing Adobe Certification Included",
-    "category": "Yellow",
+    "title": "Adobe Premiere Pro - Video Editing",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "2 Months",
     "students": "",
@@ -715,8 +715,590 @@
   },
   {
     "id": 19,
+    "title": "Advanced Diploma In Civil Engineering",
+    "category": "Networking, Hardware & Engineering",
+    "level": "Professional",
+    "duration": "1 Year",
+    "students": "",
+    "rating": "",
+    "price": "\u20b9120000",
+    "nonMetroFee": 120000,
+    "metroFee": 120000,
+    "badge": "",
+    "description": "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate",
+    "detailParagraphs": [
+      "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+    ],
+    "keyPoints": [
+      "1 Introduction to Civil Design 2 AutoCAD 3 Revit 4 Staad Pro 5 Etabs 6 Micro Station 7 Navis Works 8 Sketch Up 9 Bim 360 10 AI & Canva 11 Soft Skills",
+      "Certification: 1. Samyak 2. NSDC 3. Autodesk"
+    ],
+    "headings": [
+      "Course Overview"
+    ],
+    "contentSections": [
+      {
+        "heading": "Course Overview",
+        "paragraphs": [
+          "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+        ],
+        "bullets": [
+          "1 Introduction to Civil Design 2 AutoCAD 3 Revit 4 Staad Pro 5 Etabs 6 Micro Station 7 Navis Works 8 Sketch Up 9 Bim 360 10 AI & Canva 11 Soft Skills",
+          "Certification: 1. Samyak 2. NSDC 3. Autodesk"
+        ]
+      }
+    ],
+    "sourceFile": "AD2.pdf",
+    "sourcePage": 1,
+    "sourceFeeText": {
+      "nonMetro": "120000",
+      "metro": "120000"
+    }
+  },
+  {
+    "id": 20,
+    "title": "Advanced Diploma in Computer Application",
+    "category": "Accounting, Finance & Office Skills",
+    "level": "Professional",
+    "duration": "1 Year",
+    "students": "",
+    "rating": "",
+    "price": "\u20b9100000",
+    "nonMetroFee": 100000,
+    "metroFee": 100000,
+    "badge": "",
+    "description": "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4. Govt Certificate",
+    "detailParagraphs": [
+      "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4. Govt Certificate"
+    ],
+    "keyPoints": [
+      "1.Responsive Blog Website 2. To Do List App 3.Portfolio Web Development Projects for Intermediate 4.Live project of domain and uploading content on GitHub and live panel 1. Coding (C/C++) OR (Python ) Any 1 Prog 2. Data Structure Algorithm 3. SQL 4. Web Designing (Frontend) 5. Web Development ( Backend) (Core PHP + Laravel) OR (Python + Django) OR Core Java Any 1 Development 6. Generative AI 7. Basic Cloud Computing 8. Soft Skills With PD 1.Web Developer 2.Information Security Analyst 3.Web Designer 4.Frontend Developer 5. Backend Developer 6.Software Engineer 7..Database Administrator\"\"",
+      "Certification: 1. Samyak 2. NSDC"
+    ],
+    "headings": [
+      "Course Overview"
+    ],
+    "contentSections": [
+      {
+        "heading": "Course Overview",
+        "paragraphs": [
+          "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4. Govt Certificate"
+        ],
+        "bullets": [
+          "1.Responsive Blog Website 2. To Do List App 3.Portfolio Web Development Projects for Intermediate 4.Live project of domain and uploading content on GitHub and live panel 1. Coding (C/C++) OR (Python ) Any 1 Prog 2. Data Structure Algorithm 3. SQL 4. Web Designing (Frontend) 5. Web Development ( Backend) (Core PHP + Laravel) OR (Python + Django) OR Core Java Any 1 Development 6. Generative AI 7. Basic Cloud Computing 8. Soft Skills With PD 1.Web Developer 2.Information Security Analyst 3.Web Designer 4.Frontend Developer 5. Backend Developer 6.Software Engineer 7..Database Administrator\"\"",
+          "Certification: 1. Samyak 2. NSDC"
+        ]
+      }
+    ],
+    "sourceFile": "AD1.pdf",
+    "sourcePage": 1,
+    "sourceFeeText": {
+      "nonMetro": "100000",
+      "metro": "100000"
+    }
+  },
+  {
+    "id": 21,
+    "title": "Advanced Diploma in Computer Hardware and Networking",
+    "category": "Networking, Hardware & Engineering",
+    "level": "Professional",
+    "duration": "v 1 Year",
+    "students": "",
+    "rating": "",
+    "price": "\u20b9120000",
+    "nonMetroFee": 120000,
+    "metroFee": 120000,
+    "badge": "",
+    "description": "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate",
+    "detailParagraphs": [
+      "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+    ],
+    "keyPoints": [
+      "1. Custom PC Building Ser 2. Temperature Monitoring S 3. Automated Hardware Tes 1.Hardware A+ Advanced 2.Hardware Engineering 3. Networking 4.Routing & Switching 5.CCNA 6.CCNP 7. Network Security 8. Trouble Shooting 9.Cloud Networking Soft Skills With PD 1. Network Administrator 2. Network Engineer 3. Systems Administrator 4. IT Support Technician 5. Network Security Analyst 6. Hardware Engineer",
+      "Certification: 1. Samyak 2. NSDC"
+    ],
+    "headings": [
+      "Course Overview"
+    ],
+    "contentSections": [
+      {
+        "heading": "Course Overview",
+        "paragraphs": [
+          "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+        ],
+        "bullets": [
+          "1. Custom PC Building Ser 2. Temperature Monitoring S 3. Automated Hardware Tes 1.Hardware A+ Advanced 2.Hardware Engineering 3. Networking 4.Routing & Switching 5.CCNA 6.CCNP 7. Network Security 8. Trouble Shooting 9.Cloud Networking Soft Skills With PD 1. Network Administrator 2. Network Engineer 3. Systems Administrator 4. IT Support Technician 5. Network Security Analyst 6. Hardware Engineer",
+          "Certification: 1. Samyak 2. NSDC"
+        ]
+      }
+    ],
+    "sourceFile": "AD1.pdf",
+    "sourcePage": 1,
+    "sourceFeeText": {
+      "nonMetro": "120000",
+      "metro": "120000"
+    }
+  },
+  {
+    "id": 22,
+    "title": "Advanced Diploma in Data Analytics",
+    "category": "Data, AI & Digital Marketing",
+    "level": "Professional",
+    "duration": "1 Year",
+    "students": "",
+    "rating": "",
+    "price": "\u20b9120000",
+    "nonMetroFee": 120000,
+    "metroFee": 120000,
+    "badge": "",
+    "description": "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate",
+    "detailParagraphs": [
+      "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+    ],
+    "keyPoints": [
+      "1. Targeted markeng 2. Heart disease predicon 3. Vaccine predicon 4. Climate change analysis 5. Product pricing 6. Taxi Fare predicon 1. Advanced Excel 2. Basic Prog 3. Database With SQL 4. Python For Data Visualization 5. Power BI 6. Tableau 7. R Prog 8. Google SHeets 9. Business Statitics 10. Chat GPT & Generative AI 11.SAS (Statistical Analysis System) 12.Soft Skills With PD 1. Data Analyst 2. Tableau Developer 3. Power Bi Developer 4. Business Intelligence Specialist 5. Business Analyst Professional 6. Private banks 7. IT Sector",
+      "Certification: 1. Samyak 2. NSDC 3. Microsoft"
+    ],
+    "headings": [
+      "Course Overview"
+    ],
+    "contentSections": [
+      {
+        "heading": "Course Overview",
+        "paragraphs": [
+          "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+        ],
+        "bullets": [
+          "1. Targeted markeng 2. Heart disease predicon 3. Vaccine predicon 4. Climate change analysis 5. Product pricing 6. Taxi Fare predicon 1. Advanced Excel 2. Basic Prog 3. Database With SQL 4. Python For Data Visualization 5. Power BI 6. Tableau 7. R Prog 8. Google SHeets 9. Business Statitics 10. Chat GPT & Generative AI 11.SAS (Statistical Analysis System) 12.Soft Skills With PD 1. Data Analyst 2. Tableau Developer 3. Power Bi Developer 4. Business Intelligence Specialist 5. Business Analyst Professional 6. Private banks 7. IT Sector",
+          "Certification: 1. Samyak 2. NSDC 3. Microsoft"
+        ]
+      }
+    ],
+    "sourceFile": "AD1.pdf",
+    "sourcePage": 1,
+    "sourceFeeText": {
+      "nonMetro": "120000",
+      "metro": "120000"
+    }
+  },
+  {
+    "id": 23,
+    "title": "Advanced Diploma In Ethical Hacking",
+    "category": "Accounting, Finance & Office Skills",
+    "level": "Professional",
+    "duration": "o 1 Year",
+    "students": "",
+    "rating": "",
+    "price": "\u20b9120000",
+    "nonMetroFee": 120000,
+    "metroFee": 120000,
+    "badge": "",
+    "description": "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate",
+    "detailParagraphs": [
+      "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+    ],
+    "keyPoints": [
+      "1. HTB: CTF Capture the B 2. Ruon Tools Using Bash S 3. Web Crawler using Bash 4. Recon Tools / Web Craw 5. Hack the box 6. Vulhub 7. BWAPP: By Web Applic 8. DVWA: Damn Vulnerable 1. Penetration Testing 2. Kali Linux 3 . Network Security 4. Web Application Security 5. Sniffing & Phishing 6. CMS Testing 7.Active Directory Attack 8. Malware Analysis 9. Incident Responce & Recovery 10. Bug Bounty Hunting 11. Soft Skills With PD 1.Penetration Tester 2. Security Analyst 3. Ethical Hacker 4. Vulnerability Assessor 5. Security Engineer 6. Documenting Security Breaches 7. Threat hunter",
+      "Certification: 1. Samyak 2. NSDC"
+    ],
+    "headings": [
+      "Course Overview"
+    ],
+    "contentSections": [
+      {
+        "heading": "Course Overview",
+        "paragraphs": [
+          "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+        ],
+        "bullets": [
+          "1. HTB: CTF Capture the B 2. Ruon Tools Using Bash S 3. Web Crawler using Bash 4. Recon Tools / Web Craw 5. Hack the box 6. Vulhub 7. BWAPP: By Web Applic 8. DVWA: Damn Vulnerable 1. Penetration Testing 2. Kali Linux 3 . Network Security 4. Web Application Security 5. Sniffing & Phishing 6. CMS Testing 7.Active Directory Attack 8. Malware Analysis 9. Incident Responce & Recovery 10. Bug Bounty Hunting 11. Soft Skills With PD 1.Penetration Tester 2. Security Analyst 3. Ethical Hacker 4. Vulnerability Assessor 5. Security Engineer 6. Documenting Security Breaches 7. Threat hunter",
+          "Certification: 1. Samyak 2. NSDC"
+        ]
+      }
+    ],
+    "sourceFile": "AD1.pdf",
+    "sourcePage": 1,
+    "sourceFeeText": {
+      "nonMetro": "120000",
+      "metro": "120000"
+    }
+  },
+  {
+    "id": 24,
+    "title": "Advanced Diploma In Fashion & Textile Design",
+    "category": "Design & Animation",
+    "level": "Professional",
+    "duration": "1 Year",
+    "students": "",
+    "rating": "",
+    "price": "\u20b9120000",
+    "nonMetroFee": 120000,
+    "metroFee": 120000,
+    "badge": "",
+    "description": "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate",
+    "detailParagraphs": [
+      "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+    ],
+    "keyPoints": [
+      "Certification: 1. Samyak 2. NSDC 3.Adobe"
+    ],
+    "headings": [
+      "Course Overview"
+    ],
+    "contentSections": [
+      {
+        "heading": "Course Overview",
+        "paragraphs": [
+          "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+        ],
+        "bullets": [
+          "Certification: 1. Samyak 2. NSDC 3.Adobe"
+        ]
+      }
+    ],
+    "sourceFile": "AD2.pdf",
+    "sourcePage": 1,
+    "sourceFeeText": {
+      "nonMetro": "120000",
+      "metro": "120000"
+    }
+  },
+  {
+    "id": 25,
+    "title": "Advanced Diploma In Game Development",
+    "category": "Accounting, Finance & Office Skills",
+    "level": "Professional",
+    "duration": "1 Year",
+    "students": "",
+    "rating": "",
+    "price": "\u20b9120000",
+    "nonMetroFee": 120000,
+    "metroFee": 120000,
+    "badge": "",
+    "description": "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate",
+    "detailParagraphs": [
+      "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+    ],
+    "keyPoints": [
+      "1 MS Office 2 Canva 3 Illustrator 3 Chat GPT 4 Unity Game Development 5 3D Blender ( Character Design ) 6 C# (Sharp) 7 Git Hub ( Live Server ) 8 Soft Skills With PD 1 Game Developer 2 Unity Developer",
+      "Certification: 1. Samyak 2. NSDC 3. Adobe"
+    ],
+    "headings": [
+      "Course Overview"
+    ],
+    "contentSections": [
+      {
+        "heading": "Course Overview",
+        "paragraphs": [
+          "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+        ],
+        "bullets": [
+          "1 MS Office 2 Canva 3 Illustrator 3 Chat GPT 4 Unity Game Development 5 3D Blender ( Character Design ) 6 C# (Sharp) 7 Git Hub ( Live Server ) 8 Soft Skills With PD 1 Game Developer 2 Unity Developer",
+          "Certification: 1. Samyak 2. NSDC 3. Adobe"
+        ]
+      }
+    ],
+    "sourceFile": "AD2.pdf",
+    "sourcePage": 1,
+    "sourceFeeText": {
+      "nonMetro": "120000",
+      "metro": "120000"
+    }
+  },
+  {
+    "id": 26,
+    "title": "Advanced Diploma In Human Resource Management",
+    "category": "Accounting, Finance & Office Skills",
+    "level": "Professional",
+    "duration": "1 year",
+    "students": "",
+    "rating": "",
+    "price": "\u20b9100000",
+    "nonMetroFee": 100000,
+    "metroFee": 100000,
+    "badge": "",
+    "description": "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate",
+    "detailParagraphs": [
+      "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+    ],
+    "keyPoints": [
+      "Certification: 1. Samyak 2. NSDC 3. Microsoft"
+    ],
+    "headings": [
+      "Course Overview"
+    ],
+    "contentSections": [
+      {
+        "heading": "Course Overview",
+        "paragraphs": [
+          "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+        ],
+        "bullets": [
+          "Certification: 1. Samyak 2. NSDC 3. Microsoft"
+        ]
+      }
+    ],
+    "sourceFile": "AD2.pdf",
+    "sourcePage": 1,
+    "sourceFeeText": {
+      "nonMetro": "100000",
+      "metro": "100000"
+    }
+  },
+  {
+    "id": 27,
+    "title": "Advanced Diploma In Interior Design",
+    "category": "Design & Animation",
+    "level": "Professional",
+    "duration": "1 Year",
+    "students": "",
+    "rating": "",
+    "price": "\u20b9120000",
+    "nonMetroFee": 120000,
+    "metroFee": 120000,
+    "badge": "",
+    "description": "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate",
+    "detailParagraphs": [
+      "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+    ],
+    "keyPoints": [
+      "1. Living space 2. Private baths 3. Office facilities 4. Doctor\u2019s surgeries room 5. Caf\u00e9 interiors 6. Bar interiors 7. Club interiors. 1. AutoCAD 2D & 3D 2. Google Sketch Up 3. 3ds Max With Advanced V Ray 4. Revit Architecture 5. Vastu 6. Space Planning & layout 7. Soft Skills With PD 1. Technical Designer 2. CAD Drafter 3. Project Designer 4. Interior Architect 5. Junior Designer 6. Interior Decorator",
+      "Certification: 1. Samyak 2. NSDC 3. Autodesk"
+    ],
+    "headings": [
+      "Course Overview"
+    ],
+    "contentSections": [
+      {
+        "heading": "Course Overview",
+        "paragraphs": [
+          "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+        ],
+        "bullets": [
+          "1. Living space 2. Private baths 3. Office facilities 4. Doctor\u2019s surgeries room 5. Caf\u00e9 interiors 6. Bar interiors 7. Club interiors. 1. AutoCAD 2D & 3D 2. Google Sketch Up 3. 3ds Max With Advanced V Ray 4. Revit Architecture 5. Vastu 6. Space Planning & layout 7. Soft Skills With PD 1. Technical Designer 2. CAD Drafter 3. Project Designer 4. Interior Architect 5. Junior Designer 6. Interior Decorator",
+          "Certification: 1. Samyak 2. NSDC 3. Autodesk"
+        ]
+      }
+    ],
+    "sourceFile": "AD2.pdf",
+    "sourcePage": 1,
+    "sourceFeeText": {
+      "nonMetro": "120000",
+      "metro": "120000"
+    }
+  },
+  {
+    "id": 28,
+    "title": "Advanced Diploma In Jewellery Design",
+    "category": "Design & Animation",
+    "level": "Professional",
+    "duration": "1 Year",
+    "students": "",
+    "rating": "",
+    "price": "\u20b9120000",
+    "nonMetroFee": 120000,
+    "metroFee": 120000,
+    "badge": "",
+    "description": "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate",
+    "detailParagraphs": [
+      "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+    ],
+    "keyPoints": [
+      "1. Hands-on projects simula 2. Developing a digital portfo 3. Presentation skills and p 1. Jewellery Design Tools 2. Photoshop For Rendering 3. Coreldraw 4. Rhino For 3D Modelling 5. Blender For 3D Modellimg 6. Advanced Matrix 7. CAD/CAM Integration 8. Soft Skills With PD 1. Jewellery Designer 2. Polisher 3. Gemmologist 4. Diamond Grader 5. Fashion Consultant 6. Casting Manager",
+      "Certification: 1. Samyak 2. NSDC 3. Adobe"
+    ],
+    "headings": [
+      "Course Overview"
+    ],
+    "contentSections": [
+      {
+        "heading": "Course Overview",
+        "paragraphs": [
+          "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+        ],
+        "bullets": [
+          "1. Hands-on projects simula 2. Developing a digital portfo 3. Presentation skills and p 1. Jewellery Design Tools 2. Photoshop For Rendering 3. Coreldraw 4. Rhino For 3D Modelling 5. Blender For 3D Modellimg 6. Advanced Matrix 7. CAD/CAM Integration 8. Soft Skills With PD 1. Jewellery Designer 2. Polisher 3. Gemmologist 4. Diamond Grader 5. Fashion Consultant 6. Casting Manager",
+          "Certification: 1. Samyak 2. NSDC 3. Adobe"
+        ]
+      }
+    ],
+    "sourceFile": "AD1.pdf",
+    "sourcePage": 1,
+    "sourceFeeText": {
+      "nonMetro": "120000",
+      "metro": "120000"
+    }
+  },
+  {
+    "id": 29,
+    "title": "Advanced Diploma In Mobile App",
+    "category": "Accounting, Finance & Office Skills",
+    "level": "Professional",
+    "duration": "1 Year",
+    "students": "",
+    "rating": "",
+    "price": "\u20b9110000",
+    "nonMetroFee": 110000,
+    "metroFee": 110000,
+    "badge": "",
+    "description": "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate",
+    "detailParagraphs": [
+      "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+    ],
+    "keyPoints": [
+      "1 To Do List App WIth Notifi 2 Finance App Developmen 3 Recipe & Meal Planner 4 Chat Applications With Fi 5 Recipe & Meal Tracker Ap 1 C/C++ 2 Core Java Or Kotlin 3 Android App Development 4 UI UX Design 5 Dart 6 Flutter 7 Sqlite ( Database ) 8 Canva 9 Chat GPT 10 Soft Skills With PD 1 App Developer 2 App UI Designer 3 App Tester 4 QA Tester 5 API Developer",
+      "Certification: 1. Samyak 2. NSDC"
+    ],
+    "headings": [
+      "Course Overview"
+    ],
+    "contentSections": [
+      {
+        "heading": "Course Overview",
+        "paragraphs": [
+          "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+        ],
+        "bullets": [
+          "1 To Do List App WIth Notifi 2 Finance App Developmen 3 Recipe & Meal Planner 4 Chat Applications With Fi 5 Recipe & Meal Tracker Ap 1 C/C++ 2 Core Java Or Kotlin 3 Android App Development 4 UI UX Design 5 Dart 6 Flutter 7 Sqlite ( Database ) 8 Canva 9 Chat GPT 10 Soft Skills With PD 1 App Developer 2 App UI Designer 3 App Tester 4 QA Tester 5 API Developer",
+          "Certification: 1. Samyak 2. NSDC"
+        ]
+      }
+    ],
+    "sourceFile": "AD2.pdf",
+    "sourcePage": 1,
+    "sourceFeeText": {
+      "nonMetro": "110000",
+      "metro": "110000"
+    }
+  },
+  {
+    "id": 30,
+    "title": "Advanced Diploma In Sales & Marketing Skills",
+    "category": "Data, AI & Digital Marketing",
+    "level": "Professional",
+    "duration": "1 Year",
+    "students": "",
+    "rating": "",
+    "price": "\u20b9100000",
+    "nonMetroFee": 100000,
+    "metroFee": 100000,
+    "badge": "",
+    "description": "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate",
+    "detailParagraphs": [
+      "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+    ],
+    "keyPoints": [
+      "Certification: 1. Samyak 2. NSDC 3. Microsoft"
+    ],
+    "headings": [
+      "Course Overview"
+    ],
+    "contentSections": [
+      {
+        "heading": "Course Overview",
+        "paragraphs": [
+          "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+        ],
+        "bullets": [
+          "Certification: 1. Samyak 2. NSDC 3. Microsoft"
+        ]
+      }
+    ],
+    "sourceFile": "AD2.pdf",
+    "sourcePage": 1,
+    "sourceFeeText": {
+      "nonMetro": "100000",
+      "metro": "100000"
+    }
+  },
+  {
+    "id": 31,
+    "title": "Advanced Diploma In Stock Marketing",
+    "category": "Data, AI & Digital Marketing",
+    "level": "Professional",
+    "duration": "1 Year",
+    "students": "",
+    "rating": "",
+    "price": "\u20b9100000",
+    "nonMetroFee": 100000,
+    "metroFee": 100000,
+    "badge": "",
+    "description": "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate",
+    "detailParagraphs": [
+      "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+    ],
+    "keyPoints": [
+      "1 MS Office 2 Trading 3 Stock Market 4 Soft Skills With PD",
+      "Certification: 1. Samyak 2. NSDC 3. Microsoft"
+    ],
+    "headings": [
+      "Course Overview"
+    ],
+    "contentSections": [
+      {
+        "heading": "Course Overview",
+        "paragraphs": [
+          "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+        ],
+        "bullets": [
+          "1 MS Office 2 Trading 3 Stock Market 4 Soft Skills With PD",
+          "Certification: 1. Samyak 2. NSDC 3. Microsoft"
+        ]
+      }
+    ],
+    "sourceFile": "AD2.pdf",
+    "sourcePage": 1,
+    "sourceFeeText": {
+      "nonMetro": "100000",
+      "metro": "100000"
+    }
+  },
+  {
+    "id": 32,
+    "title": "Advanced Diploma in Web Development and Design",
+    "category": "Design & Animation",
+    "level": "Professional",
+    "duration": "s 1 Year",
+    "students": "",
+    "rating": "",
+    "price": "\u20b9100000",
+    "nonMetroFee": 100000,
+    "metroFee": 100000,
+    "badge": "",
+    "description": "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate",
+    "detailParagraphs": [
+      "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+    ],
+    "keyPoints": [
+      "1. Design homepage like Fa 2. Animation Loading Bar u 3. Protfolio Type Website 4. Slide Down a Navigation 5. Task Tracker Project 6.Detect Network Speed us 1.Web Design (HTML,CSS,JS) 2.React JS Or Angular JS Framework (Any One ) 3. Advanced Figma 4. Web Development ( Any One ) Core Php +Laravel Or Python With Django Framework Or Java Or Node JS 5.MySql 6. Devops 7. Basic Of SEO 8.Photoshop & Coreldraw 9. Canva 10. Chat GPT & Use Of AI ( Black Box ) 11. Soft Skills With PD 1.Website Developer 2. Web Designer 3. Front End Developer 4. Database Administrator 5. Project Manager 6. Full Stack Developer 7. Software Developer 8. Javascript Developer",
+      "Certification: 1. Samyak 2. NSDC 3. Adobe"
+    ],
+    "headings": [
+      "Course Overview"
+    ],
+    "contentSections": [
+      {
+        "heading": "Course Overview",
+        "paragraphs": [
+          "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+        ],
+        "bullets": [
+          "1. Design homepage like Fa 2. Animation Loading Bar u 3. Protfolio Type Website 4. Slide Down a Navigation 5. Task Tracker Project 6.Detect Network Speed us 1.Web Design (HTML,CSS,JS) 2.React JS Or Angular JS Framework (Any One ) 3. Advanced Figma 4. Web Development ( Any One ) Core Php +Laravel Or Python With Django Framework Or Java Or Node JS 5.MySql 6. Devops 7. Basic Of SEO 8.Photoshop & Coreldraw 9. Canva 10. Chat GPT & Use Of AI ( Black Box ) 11. Soft Skills With PD 1.Website Developer 2. Web Designer 3. Front End Developer 4. Database Administrator 5. Project Manager 6. Full Stack Developer 7. Software Developer 8. Javascript Developer",
+          "Certification: 1. Samyak 2. NSDC 3. Adobe"
+        ]
+      }
+    ],
+    "sourceFile": "AD1.pdf",
+    "sourcePage": 1,
+    "sourceFeeText": {
+      "nonMetro": "100000",
+      "metro": "100000"
+    }
+  },
+  {
+    "id": 33,
     "title": "Advanced Excel",
-    "category": "Green",
+    "category": "Accounting, Finance & Office Skills",
     "level": "Professional",
     "duration": "1 Month",
     "students": "",
@@ -754,9 +1336,9 @@
     }
   },
   {
-    "id": 20,
+    "id": 34,
     "title": "Advanced Java (J2EE)",
-    "category": "Green",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 mths",
     "students": "",
@@ -794,9 +1376,51 @@
     }
   },
   {
-    "id": 21,
+    "id": 35,
+    "title": "Advanced Programme in Data Science",
+    "category": "Data, AI & Digital Marketing",
+    "level": "Professional",
+    "duration": "1 Year",
+    "students": "",
+    "rating": "",
+    "price": "\u20b9120000",
+    "nonMetroFee": 120000,
+    "metroFee": 120000,
+    "badge": "",
+    "description": "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate",
+    "detailParagraphs": [
+      "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+    ],
+    "keyPoints": [
+      "1. Sales Analysis 2. Employee Performance A 3. Classificaon Of Song 4. Interacve Sales Dashboa 5. Marketing Strategies 6. Model Building 7. Model Fine Tuning 1. Mathematics For Data Science 2. Prog Fundamentals 3. Database SQL 4. Machine learning 5. Algorithms 6.Deep Learning 7. Natural Language Processing 8. Generative AI 9. Artificial Intelligence 10. Big Data Introduction 11. Soft Skills With PD 1. Data Scienst 2. Data Analyst 3. Data Engineer 4. Machine Learning Engineer 5. Data Architect 6. Database Manager 7. Database Developer",
+      "Certification: 1. Samyak 2. NSDC"
+    ],
+    "headings": [
+      "Course Overview"
+    ],
+    "contentSections": [
+      {
+        "heading": "Course Overview",
+        "paragraphs": [
+          "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+        ],
+        "bullets": [
+          "1. Sales Analysis 2. Employee Performance A 3. Classificaon Of Song 4. Interacve Sales Dashboa 5. Marketing Strategies 6. Model Building 7. Model Fine Tuning 1. Mathematics For Data Science 2. Prog Fundamentals 3. Database SQL 4. Machine learning 5. Algorithms 6.Deep Learning 7. Natural Language Processing 8. Generative AI 9. Artificial Intelligence 10. Big Data Introduction 11. Soft Skills With PD 1. Data Scienst 2. Data Analyst 3. Data Engineer 4. Machine Learning Engineer 5. Data Architect 6. Database Manager 7. Database Developer",
+          "Certification: 1. Samyak 2. NSDC"
+        ]
+      }
+    ],
+    "sourceFile": "AD1.pdf",
+    "sourcePage": 1,
+    "sourceFeeText": {
+      "nonMetro": "120000",
+      "metro": "120000"
+    }
+  },
+  {
+    "id": 36,
     "title": "Advanced Python - Django Framework",
-    "category": "Green",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "2 Months",
     "students": "",
@@ -832,9 +1456,9 @@
     }
   },
   {
-    "id": 22,
-    "title": "Advanced Robotics for Seniors / Engineers",
-    "category": "Red",
+    "id": 37,
+    "title": "Advanced Robotics for Seniors and Engineers",
+    "category": "Networking, Hardware & Engineering",
     "level": "Professional",
     "duration": "1.5 months",
     "students": "",
@@ -872,9 +1496,9 @@
     }
   },
   {
-    "id": 23,
-    "title": "Affiliate Marketing Indian Govt (Skill Development Ministry) Certificate -NSDC Google Partner, offering Google Cetificate in Nominal COST !",
-    "category": "Yellow",
+    "id": 38,
+    "title": "Affiliate Marketing",
+    "category": "Data, AI & Digital Marketing",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -910,9 +1534,9 @@
     }
   },
   {
-    "id": 24,
-    "title": "AI - Artificial Intelligency",
-    "category": "Green",
+    "id": 39,
+    "title": "AI - Artificial Intelligence",
+    "category": "Data, AI & Digital Marketing",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -950,9 +1574,9 @@
     }
   },
   {
-    "id": 25,
-    "title": "All Above COMBO",
-    "category": "Kids",
+    "id": 40,
+    "title": "Kids All-Courses Combo",
+    "category": "Kids Programs",
     "level": "Professional",
     "duration": "2 Months",
     "students": "",
@@ -988,9 +1612,9 @@
     }
   },
   {
-    "id": 26,
+    "id": 41,
     "title": "Angular JS",
-    "category": "Green",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 mths",
     "students": "",
@@ -1028,9 +1652,9 @@
     }
   },
   {
-    "id": 27,
+    "id": 42,
     "title": "Ansys",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1 month",
     "students": "",
@@ -1068,9 +1692,9 @@
     }
   },
   {
-    "id": 28,
-    "title": "Apple Certified iPhone / iOS / Mobile With Objective C or SWIFT Students must carry his own Apple Device for Practicals etc. Apple Certification Included",
-    "category": "Red",
+    "id": 43,
+    "title": "Apple iOS Mobile App Development (Objective-C/Swift)",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 months",
     "students": "",
@@ -1108,9 +1732,9 @@
     }
   },
   {
-    "id": 29,
-    "title": "Aptitude & Reasoning CRT(Campus Recruitment Training) includes Spoken English & Interview Skills",
-    "category": "Green",
+    "id": 44,
+    "title": "Aptitude & Reasoning (Campus Recruitment Training)",
+    "category": "Accounting, Finance & Office Skills",
     "level": "Professional",
     "duration": "2 Months",
     "students": "",
@@ -1150,9 +1774,9 @@
     }
   },
   {
-    "id": 30,
+    "id": 45,
     "title": "Arduino (UNO & Mega)",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -1190,9 +1814,9 @@
     }
   },
   {
-    "id": 31,
+    "id": 46,
     "title": "ArtCAM",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 months",
     "students": "",
@@ -1230,9 +1854,9 @@
     }
   },
   {
-    "id": 32,
-    "title": "ASP .Net / VB .Net Advanced",
-    "category": "Green",
+    "id": 47,
+    "title": "ASP.Net / VB.Net Advanced",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "2 Months",
     "students": "",
@@ -1270,9 +1894,9 @@
     }
   },
   {
-    "id": 33,
-    "title": "Basic Computers",
-    "category": "Green",
+    "id": 48,
+    "title": "Basic Computer Course",
+    "category": "Accounting, Finance & Office Skills",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -1310,9 +1934,9 @@
     }
   },
   {
-    "id": 34,
+    "id": 49,
     "title": "Basic Excel",
-    "category": "Green",
+    "category": "Accounting, Finance & Office Skills",
     "level": "Professional",
     "duration": "1 Month",
     "students": "",
@@ -1350,9 +1974,9 @@
     }
   },
   {
-    "id": 35,
+    "id": 50,
     "title": "Big Data & Hadoop Development",
-    "category": "Red",
+    "category": "Data, AI & Digital Marketing",
     "level": "Professional",
     "duration": "2 mths",
     "students": "",
@@ -1390,9 +2014,9 @@
     }
   },
   {
-    "id": 36,
+    "id": 51,
     "title": "BigData & Hadoop Admin",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "2 mths",
     "students": "",
@@ -1430,9 +2054,9 @@
     }
   },
   {
-    "id": 37,
+    "id": 52,
     "title": "Blender 3D Animation",
-    "category": "Yellow",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "2 Months",
     "students": "",
@@ -1470,9 +2094,9 @@
     }
   },
   {
-    "id": 38,
-    "title": "BlockChain Certification Course",
-    "category": "Red",
+    "id": 53,
+    "title": "Blockchain Certification",
+    "category": "Data, AI & Digital Marketing",
     "level": "Professional",
     "duration": "2 Months",
     "students": "",
@@ -1508,9 +2132,9 @@
     }
   },
   {
-    "id": 39,
+    "id": 54,
     "title": "Business Analyst (BA)",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 mths",
     "students": "",
@@ -1548,9 +2172,9 @@
     }
   },
   {
-    "id": 40,
-    "title": "Busy ( Accounting Software )",
-    "category": "Red",
+    "id": 55,
+    "title": "Busy (Accounting Software)",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -1590,9 +2214,9 @@
     }
   },
   {
-    "id": 41,
+    "id": 56,
     "title": "C Programming",
-    "category": "Green",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 mths",
     "students": "",
@@ -1630,9 +2254,9 @@
     }
   },
   {
-    "id": 42,
-    "title": "C# Programming (C Sharp) .Net",
-    "category": "Yellow",
+    "id": 57,
+    "title": "C# Programming (C Sharp).Net",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 mths",
     "students": "",
@@ -1670,9 +2294,9 @@
     }
   },
   {
-    "id": 43,
+    "id": 58,
     "title": "C++ Programming",
-    "category": "Green",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1 mth",
     "students": "",
@@ -1710,9 +2334,9 @@
     }
   },
   {
-    "id": 44,
-    "title": "C/C++ Combo (One Time Payment)",
-    "category": "Green",
+    "id": 59,
+    "title": "C/C++ Combo",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "2.5 mth",
     "students": "",
@@ -1750,9 +2374,9 @@
     }
   },
   {
-    "id": 45,
+    "id": 60,
     "title": "CAD / CAM (Electrical/Civil/Mechanical/Interior/Architectu Advance AutoCAD, includes 3D",
-    "category": "Green",
+    "category": "Networking, Hardware & Engineering",
     "level": "Professional",
     "duration": "1.5 months",
     "students": "",
@@ -1790,9 +2414,9 @@
     }
   },
   {
-    "id": 46,
+    "id": 61,
     "title": "Cake PHP / Advanced PHP",
-    "category": "Yellow",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "60 Hours",
     "students": "",
@@ -1830,9 +2454,9 @@
     }
   },
   {
-    "id": 47,
-    "title": "Canva ( Designing Tool )",
-    "category": "Green",
+    "id": 62,
+    "title": "Canva (Designing Tool)",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "15 Days",
     "students": "",
@@ -1866,9 +2490,9 @@
     }
   },
   {
-    "id": 48,
-    "title": "CAP ( Certified Accounts Professional) Job Oriented Tally+Excel 1. Computer Fundamentals 2. Word & PPT Total 7 days 3. Advanced Tally (As Above) 4. Advanced Excel Spoken English ( Complementory ) GOVT OF INDIA Certificate ( NSDC ) Tally Solutions Verifyable Certificate (Tally ACE) Included Placement opportunities from Tally Company included",
-    "category": "Green",
+    "id": 63,
+    "title": "CAP (Certified Accounts Professional)",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "3-4 Months",
     "students": "",
@@ -1906,9 +2530,9 @@
     }
   },
   {
-    "id": 49,
-    "title": "Catia Automobile Designing Course",
-    "category": "Yellow",
+    "id": 64,
+    "title": "CATIA Automobile Designing",
+    "category": "Networking, Hardware & Engineering",
     "level": "Professional",
     "duration": "1.5 months",
     "students": "",
@@ -1946,9 +2570,9 @@
     }
   },
   {
-    "id": 50,
-    "title": "CCC ( Course On Computer Concepts )by NIELIT",
-    "category": "Green",
+    "id": 65,
+    "title": "CCC (Course on Computer Concepts) - NIELIT",
+    "category": "Accounting, Finance & Office Skills",
     "level": "Professional",
     "duration": "2 Months",
     "students": "",
@@ -1990,9 +2614,9 @@
     }
   },
   {
-    "id": 51,
-    "title": "CCC Plus ( Course On Computer Concepts Plus )By NIELIT",
-    "category": "Green",
+    "id": 66,
+    "title": "CCC Plus (Course on Computer Concepts Plus) - NIELIT",
+    "category": "Accounting, Finance & Office Skills",
     "level": "Professional",
     "duration": "126 Hrs",
     "students": "",
@@ -2034,9 +2658,9 @@
     }
   },
   {
-    "id": 52,
-    "title": "CCNA (Global Certification) (200-120) Advanced (World Class Lab in house) Cisco Certified network Administrator Cisco Routers 1841, 2811,2611xm) iOS15 Switches (2950) L3 Switch 3550 Indian Govt (Skill Development Ministry) Certificate -NSDC",
-    "category": "Green",
+    "id": 67,
+    "title": "CCNA (200-120) - Cisco Certified Network Associate",
+    "category": "Networking, Hardware & Engineering",
     "level": "Professional",
     "duration": "2 Months",
     "students": "",
@@ -2074,9 +2698,9 @@
     }
   },
   {
-    "id": 53,
-    "title": "CCNP Lab is ready and accessible to all locations / centers",
-    "category": "Red",
+    "id": 68,
+    "title": "CCNP (Cisco Certified Network Professional)",
+    "category": "Networking, Hardware & Engineering",
     "level": "Professional",
     "duration": "2.5 months",
     "students": "",
@@ -2114,9 +2738,9 @@
     }
   },
   {
-    "id": 54,
-    "title": "Chip Level Hardware / Laptop Repairing Indian Govt (Skill Development Ministry) Certificate -NSDC",
-    "category": "Yellow",
+    "id": 69,
+    "title": "Chip Level Hardware / Laptop Repairing",
+    "category": "Networking, Hardware & Engineering",
     "level": "Professional",
     "duration": "2 mths",
     "students": "",
@@ -2154,9 +2778,9 @@
     }
   },
   {
-    "id": 55,
-    "title": "CIA ( Diploma in Certified Insdustrial Accountant ) GOVT OF INDIA Certificate ( NSDC ) Tally Solutions Verifyable Certificate (Tally ACE) Included Placement opportunities from Tally Company included",
-    "category": "Green",
+    "id": 70,
+    "title": "CIA (Certified Industrial Accountant Diploma)",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "6 Months",
     "students": "",
@@ -2198,9 +2822,9 @@
     }
   },
   {
-    "id": 56,
+    "id": 71,
     "title": "Civil 3D",
-    "category": "Yellow",
+    "category": "Networking, Hardware & Engineering",
     "level": "Professional",
     "duration": "1.5 months",
     "students": "",
@@ -2238,9 +2862,9 @@
     }
   },
   {
-    "id": 57,
+    "id": 72,
     "title": "Cloud Admin - SalesForce-Admin",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 months",
     "students": "",
@@ -2278,9 +2902,9 @@
     }
   },
   {
-    "id": 58,
+    "id": 73,
     "title": "Cloud Computing",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -2318,9 +2942,9 @@
     }
   },
   {
-    "id": 59,
+    "id": 74,
     "title": "Cloud Development - SalesForce - Development",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 months",
     "students": "",
@@ -2358,9 +2982,9 @@
     }
   },
   {
-    "id": 60,
+    "id": 75,
     "title": "CNC Programming Only Simulation Not On Machine Or Hardware",
-    "category": "Yellow",
+    "category": "Networking, Hardware & Engineering",
     "level": "Professional",
     "duration": "1.5 months",
     "students": "",
@@ -2398,9 +3022,9 @@
     }
   },
   {
-    "id": 61,
+    "id": 76,
     "title": "Combo of Basic + Advanced Excel",
-    "category": "Green",
+    "category": "Data, AI & Digital Marketing",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -2442,9 +3066,9 @@
     }
   },
   {
-    "id": 62,
+    "id": 77,
     "title": "ComboofBasic+AdvancedExcel",
-    "category": "Green",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "15Months",
     "students": "",
@@ -2482,9 +3106,9 @@
     }
   },
   {
-    "id": 63,
+    "id": 78,
     "title": "Complete Android with Java Combo",
-    "category": "Green",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "3-4 Mths",
     "students": "",
@@ -2522,9 +3146,9 @@
     }
   },
   {
-    "id": 64,
-    "title": "Complete ANdroid With Kotlin Combo",
-    "category": "Yellow",
+    "id": 79,
+    "title": "Complete Android with Kotlin Combo",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "3.5 Months",
     "students": "",
@@ -2562,9 +3186,9 @@
     }
   },
   {
-    "id": 65,
+    "id": 80,
     "title": "Comprehensive Java (Core + Advanced Java)",
-    "category": "Green",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "3 Months",
     "students": "",
@@ -2602,9 +3226,9 @@
     }
   },
   {
-    "id": 66,
-    "title": "Computer Anudeshak Exam / Vacancy Full Syllabus & Practice",
-    "category": "Red",
+    "id": 81,
+    "title": "Computer Anudeshak Exam Preparation",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "3 Months",
     "students": "",
@@ -2642,9 +3266,9 @@
     }
   },
   {
-    "id": 67,
-    "title": "Computer Proficiency Test ( CPT ) Microsoft OFFICE Certificate (Microsoft Office Specialist, MOS) Included",
-    "category": "Green",
+    "id": 82,
+    "title": "Computer Proficiency Test (CPT)",
+    "category": "Accounting, Finance & Office Skills",
     "level": "Professional",
     "duration": "24 Hrs",
     "students": "",
@@ -2682,9 +3306,9 @@
     }
   },
   {
-    "id": 68,
+    "id": 83,
     "title": "Computer Teacher Training Diploma",
-    "category": "Green",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1 Yr",
     "students": "",
@@ -2722,9 +3346,9 @@
     }
   },
   {
-    "id": 69,
-    "title": "Computerized Jewellery Designing Certificate Course( 3D Rhino 3d )",
-    "category": "Yellow",
+    "id": 84,
+    "title": "Computerized Jewellery Designing (Rhino 3D)",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "4-6 months",
     "students": "",
@@ -2762,9 +3386,9 @@
     }
   },
   {
-    "id": 70,
+    "id": 85,
     "title": "Core Java (J2SE)",
-    "category": "Green",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 mths",
     "students": "",
@@ -2802,9 +3426,9 @@
     }
   },
   {
-    "id": 71,
-    "title": "Core PHP & MySQL - Web Development Indian Govt (Skill Development Ministry) Certificate -NSDC",
-    "category": "Green",
+    "id": 86,
+    "title": "Core PHP & MySQL - Web Development",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "2 mths",
     "students": "",
@@ -2842,9 +3466,9 @@
     }
   },
   {
-    "id": 72,
-    "title": "CorelDraw Advanced Course",
-    "category": "Green",
+    "id": 87,
+    "title": "CorelDRAW - Advanced",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "1 month",
     "students": "",
@@ -2882,9 +3506,9 @@
     }
   },
   {
-    "id": 73,
-    "title": "Corona Course",
-    "category": "Red",
+    "id": 88,
+    "title": "Corona Renderer Course",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "2.5 Months",
     "students": "",
@@ -2922,9 +3546,9 @@
     }
   },
   {
-    "id": 74,
+    "id": 89,
     "title": "Creo Pro-E",
-    "category": "Yellow",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 months",
     "students": "",
@@ -2962,9 +3586,9 @@
     }
   },
   {
-    "id": 75,
+    "id": 90,
     "title": "CSS 5.01",
-    "category": "Green",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "20 Days",
     "students": "",
@@ -3002,9 +3626,9 @@
     }
   },
   {
-    "id": 76,
+    "id": 91,
     "title": "D5 Render Course",
-    "category": "Red",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "3 Months",
     "students": "",
@@ -3042,9 +3666,9 @@
     }
   },
   {
-    "id": 77,
+    "id": 92,
     "title": "Dart",
-    "category": "Yellow",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1 Month",
     "students": "",
@@ -3078,9 +3702,9 @@
     }
   },
   {
-    "id": 78,
+    "id": 93,
     "title": "Data/Computer Operator",
-    "category": "Green",
+    "category": "Data, AI & Digital Marketing",
     "level": "Professional",
     "duration": "3-4 Months",
     "students": "",
@@ -3122,9 +3746,9 @@
     }
   },
   {
-    "id": 79,
-    "title": "DCS Diploma in Computer Science Software Development Diploma Course ( Programming & S/W Development )",
-    "category": "Green",
+    "id": 94,
+    "title": "DCS - Diploma in Computer Science (Software Development)",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "6-8 Months",
     "students": "",
@@ -3166,9 +3790,51 @@
     }
   },
   {
-    "id": 80,
-    "title": "Devops ( Development Operations )",
-    "category": "Yellow",
+    "id": 95,
+    "title": "Development and Design",
+    "category": "Design & Animation",
+    "level": "Professional",
+    "duration": "1 Year",
+    "students": "",
+    "rating": "",
+    "price": "\u20b9100000",
+    "nonMetroFee": 100000,
+    "metroFee": 100000,
+    "badge": "",
+    "description": "3. 20 Days Basic Computer Classes 4.Govt Certificate",
+    "detailParagraphs": [
+      "3. 20 Days Basic Computer Classes 4.Govt Certificate"
+    ],
+    "keyPoints": [
+      "4. Slide Down a Navigation 5. Task Tracker Project 6.Detect Network Speed us 5.MySql 6. Devops 7. Basic Of SEO 8.Photoshop & Coreldraw 9. Canva 10. Chat GPT & Use Of AI ( Black Box ) 11. Soft Skills With PD 5. Project Manager 6. Full Stack Developer 7. Software Developer 8. Javascript Developer",
+      "Certification: 2. NSDC 3. Adobe"
+    ],
+    "headings": [
+      "Course Overview"
+    ],
+    "contentSections": [
+      {
+        "heading": "Course Overview",
+        "paragraphs": [
+          "3. 20 Days Basic Computer Classes 4.Govt Certificate"
+        ],
+        "bullets": [
+          "4. Slide Down a Navigation 5. Task Tracker Project 6.Detect Network Speed us 5.MySql 6. Devops 7. Basic Of SEO 8.Photoshop & Coreldraw 9. Canva 10. Chat GPT & Use Of AI ( Black Box ) 11. Soft Skills With PD 5. Project Manager 6. Full Stack Developer 7. Software Developer 8. Javascript Developer",
+          "Certification: 2. NSDC 3. Adobe"
+        ]
+      }
+    ],
+    "sourceFile": "AD2.pdf",
+    "sourcePage": 1,
+    "sourceFeeText": {
+      "nonMetro": "100000",
+      "metro": "100000"
+    }
+  },
+  {
+    "id": 96,
+    "title": "Devops (Development Operations)",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "2 Months",
     "students": "",
@@ -3204,9 +3870,9 @@
     }
   },
   {
-    "id": 81,
-    "title": "Devops With AWS Diploma ( Development Operations )",
-    "category": "Yellow",
+    "id": 97,
+    "title": "Devops With AWS Diploma (Development Operations)",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "4 Months",
     "students": "",
@@ -3242,9 +3908,9 @@
     }
   },
   {
-    "id": 82,
-    "title": "Diploma Course in Animation, Multimedia & Designig Adobe Certification Included",
-    "category": "Yellow",
+    "id": 98,
+    "title": "Diploma in Animation, Multimedia & Designing",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "6 Months",
     "students": "",
@@ -3282,9 +3948,9 @@
     }
   },
   {
-    "id": 83,
-    "title": "Diploma Course in Interior Designing & Architecture",
-    "category": "Green",
+    "id": 99,
+    "title": "Diploma in Interior Designing & Architecture",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "3-4 Months",
     "students": "",
@@ -3322,9 +3988,9 @@
     }
   },
   {
-    "id": 84,
-    "title": "Diploma Course in Interior Designing & Architecture International AutoDesk Certificate included Kit including books & stationary will be provided by Samyak",
-    "category": "Green",
+    "id": 100,
+    "title": "Diploma in Interior Designing & Architecture (with Autodesk Certificate)",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "6 Months",
     "students": "",
@@ -3362,9 +4028,93 @@
     }
   },
   {
-    "id": 85,
-    "title": "Diploma in Banking & Finance Tally Solutions Verifyable Certificate (Tally ACE) Included Microsoft OFFICE Certificate (Microsoft Office Specialist, MOS) Included",
-    "category": "Green",
+    "id": 101,
+    "title": "Diploma in 3D Animation and Multimedia",
+    "category": "Design & Animation",
+    "level": "Professional",
+    "duration": "n n 1 Year",
+    "students": "",
+    "rating": "",
+    "price": "\u20b9120000",
+    "nonMetroFee": 120000,
+    "metroFee": 120000,
+    "badge": "",
+    "description": "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate",
+    "detailParagraphs": [
+      "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+    ],
+    "keyPoints": [
+      "1. 2D character speaking a 2. Man turning into superhe 3. Girl scared of darkness 4. Wild nature 2D animation 5. Creating engaging enviro 6. Muscle flexing 7. Character walk through 8. Fighting 3D animation 1.2D Character Creator 4 Design 2. Photoshop 3. iLLustrator 4. After Effects 5.Blender 6. Maya 7. Zbrush 8. Lightening & Rendering 9. Special Effects 10. Soft Skills With PD 1. 3D animator 2. 3D modeler 3. Texturing artist 4. Rendering artist 5. Graphic designer 6. Compositor Storyboard 7. Video artist 8. Rigging artist Illustrator",
+      "Certification: 1. Samyak 2. NSDC 3. Adobe"
+    ],
+    "headings": [
+      "Course Overview"
+    ],
+    "contentSections": [
+      {
+        "heading": "Course Overview",
+        "paragraphs": [
+          "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+        ],
+        "bullets": [
+          "1. 2D character speaking a 2. Man turning into superhe 3. Girl scared of darkness 4. Wild nature 2D animation 5. Creating engaging enviro 6. Muscle flexing 7. Character walk through 8. Fighting 3D animation 1.2D Character Creator 4 Design 2. Photoshop 3. iLLustrator 4. After Effects 5.Blender 6. Maya 7. Zbrush 8. Lightening & Rendering 9. Special Effects 10. Soft Skills With PD 1. 3D animator 2. 3D modeler 3. Texturing artist 4. Rendering artist 5. Graphic designer 6. Compositor Storyboard 7. Video artist 8. Rigging artist Illustrator",
+          "Certification: 1. Samyak 2. NSDC 3. Adobe"
+        ]
+      }
+    ],
+    "sourceFile": "AD1.pdf",
+    "sourcePage": 1,
+    "sourceFeeText": {
+      "nonMetro": "120000",
+      "metro": "120000"
+    }
+  },
+  {
+    "id": 102,
+    "title": "Diploma In Advanced Finance Accounting With SAP-FICO",
+    "category": "Accounting, Finance & Office Skills",
+    "level": "Professional",
+    "duration": "1 Year",
+    "students": "",
+    "rating": "",
+    "price": "\u20b9100000",
+    "nonMetroFee": 100000,
+    "metroFee": 100000,
+    "badge": "",
+    "description": "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate",
+    "detailParagraphs": [
+      "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+    ],
+    "keyPoints": [
+      "1. Dummy ITR filing 2. GSTR1 3. GSTR3b 4. GSTR 9a 5. GSTr9b 6. Gstr 2A,b reconciliation 1. MS Office ( Word , PPT & Internet ) 2. Advanced Excel 3. Advanced Accounting 4. Credit ,Debit & Company Creation 5. Erp 9 & Latest Version Tally prime 6. Direct Tax & TDS 7. GST 8. Advanced Payroll 9. SAP FICO S4 Hana 10. Finance & Income Tax 11. Banking & Auditing 12. Soft Skills With PD 13. AI 1. Accountant 2. Auditor 3. Financial Analyst 4. Chartered Accountant 5. Private Banks",
+      "Certification: 1. Samyak 2. NSDC 3. SAP 4. Microsoft"
+    ],
+    "headings": [
+      "Course Overview"
+    ],
+    "contentSections": [
+      {
+        "heading": "Course Overview",
+        "paragraphs": [
+          "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+        ],
+        "bullets": [
+          "1. Dummy ITR filing 2. GSTR1 3. GSTR3b 4. GSTR 9a 5. GSTr9b 6. Gstr 2A,b reconciliation 1. MS Office ( Word , PPT & Internet ) 2. Advanced Excel 3. Advanced Accounting 4. Credit ,Debit & Company Creation 5. Erp 9 & Latest Version Tally prime 6. Direct Tax & TDS 7. GST 8. Advanced Payroll 9. SAP FICO S4 Hana 10. Finance & Income Tax 11. Banking & Auditing 12. Soft Skills With PD 13. AI 1. Accountant 2. Auditor 3. Financial Analyst 4. Chartered Accountant 5. Private Banks",
+          "Certification: 1. Samyak 2. NSDC 3. SAP 4. Microsoft"
+        ]
+      }
+    ],
+    "sourceFile": "AD1.pdf",
+    "sourcePage": 1,
+    "sourceFeeText": {
+      "nonMetro": "100000 Last 90000/",
+      "metro": "100000 Last 90000/"
+    }
+  },
+  {
+    "id": 103,
+    "title": "Diploma in Banking & Finance",
+    "category": "Accounting, Finance & Office Skills",
     "level": "Professional",
     "duration": "4-6 Months",
     "students": "",
@@ -3402,9 +4152,9 @@
     }
   },
   {
-    "id": 86,
-    "title": "Diploma in Computer Application (DCA) Indian Govt (Skill Development Ministry) Certificate -NSDC",
-    "category": "Green",
+    "id": 104,
+    "title": "Diploma in Computer Application (DCA)",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "6 Months",
     "students": "",
@@ -3442,9 +4192,9 @@
     }
   },
   {
-    "id": 87,
-    "title": "Diploma in Data Analytics or Analysis ( Be Microsoft OFFICE Certificate (Microsoft O Indian Govt (Skill Development Ministry)",
-    "category": "Green",
+    "id": 105,
+    "title": "Diploma in Data Analytics or Analysis (Be Microsoft OFFICE Certificate (Microsoft O",
+    "category": "Data, AI & Digital Marketing",
     "level": "Professional",
     "duration": "4 Months",
     "students": "",
@@ -3486,9 +4236,9 @@
     }
   },
   {
-    "id": 88,
-    "title": "Diploma in Data Analytics or Analysis( Adv Microsoft OFFICE Certificate (Microsoft O Indian Govt (Skill Development Ministry)",
-    "category": "Green",
+    "id": 106,
+    "title": "Diploma in Data Analytics or Analysis(Adv Microsoft OFFICE Certificate (Microsoft O",
+    "category": "Data, AI & Digital Marketing",
     "level": "Professional",
     "duration": "6-8 Months",
     "students": "",
@@ -3530,9 +4280,9 @@
     }
   },
   {
-    "id": 89,
-    "title": "Diploma in MIS and Data Analysis Microsoft OFFICE Certificate (Microsoft Office Specialist, MOS) Included Indian Govt (Skill Development Ministry) Certificate -NSDC",
-    "category": "Green",
+    "id": 107,
+    "title": "Diploma in MIS and Data Analysis",
+    "category": "Data, AI & Digital Marketing",
     "level": "Professional",
     "duration": "4-6 Months",
     "students": "",
@@ -3574,9 +4324,9 @@
     }
   },
   {
-    "id": 90,
+    "id": 108,
     "title": "DMIT - Brain Key(Dermatoglyphics)",
-    "category": "Kids",
+    "category": "Kids Programs",
     "level": "Professional",
     "duration": "1 Week",
     "students": "",
@@ -3612,9 +4362,9 @@
     }
   },
   {
-    "id": 91,
-    "title": "DOAP - Diploma In Office Automation & Publishing DITOM (Diploma in IT & Office Management) Indian Govt (Skill Development Ministry) Certificate -NSDC",
-    "category": "Green",
+    "id": 109,
+    "title": "DOAP - Diploma In Office Automation & Publishing DITOM (Diploma in IT & Office Management)",
+    "category": "Accounting, Finance & Office Skills",
     "level": "Professional",
     "duration": "6 months",
     "students": "",
@@ -3652,9 +4402,9 @@
     }
   },
   {
-    "id": 92,
+    "id": 110,
     "title": "Dreamweaver",
-    "category": "Green",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1 Month",
     "students": "",
@@ -3688,9 +4438,9 @@
     }
   },
   {
-    "id": 93,
-    "title": "DSA using C (Data Structure & Algorithm )",
-    "category": "Green",
+    "id": 111,
+    "title": "DSA using C (Data Structure & Algorithm)",
+    "category": "Data, AI & Digital Marketing",
     "level": "Professional",
     "duration": "1.5 mths",
     "students": "",
@@ -3728,9 +4478,9 @@
     }
   },
   {
-    "id": 94,
-    "title": "DTP - Desk Top Publishing ( For Publishing & Printing Work) ( Graphic Design Short Address )",
-    "category": "Green",
+    "id": 112,
+    "title": "DTP - Desk Top Publishing (For Publishing & Printing Work) (Graphic Design Short Address)",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "2 -3 Months",
     "students": "",
@@ -3768,9 +4518,9 @@
     }
   },
   {
-    "id": 95,
-    "title": "e-Commerce / ecommerce E-commerce Certification Course Google Partner, offering Google Cetificate With Nominal COST !",
-    "category": "Green",
+    "id": 113,
+    "title": "E-Commerce Certification",
+    "category": "Data, AI & Digital Marketing",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -3808,9 +4558,9 @@
     }
   },
   {
-    "id": 96,
-    "title": "ECC ( Expert Computer Course ) By NIELIT",
-    "category": "Green",
+    "id": 114,
+    "title": "ECC (Expert Computer Course) - NIELIT",
+    "category": "Accounting, Finance & Office Skills",
     "level": "Professional",
     "duration": "200 Hrs",
     "students": "",
@@ -3848,9 +4598,9 @@
     }
   },
   {
-    "id": 97,
-    "title": "Efficiency Test Without Typing fees 3500/",
-    "category": "Green",
+    "id": 115,
+    "title": "Typing Efficiency Test (Without Typing Module)",
+    "category": "Accounting, Finance & Office Skills",
     "level": "Professional",
     "duration": "2 Months",
     "students": "",
@@ -3888,9 +4638,9 @@
     }
   },
   {
-    "id": 98,
-    "title": "Electrical CAD ( AutoCAD )",
-    "category": "Yellow",
+    "id": 116,
+    "title": "Electrical CAD (AutoCAD)",
+    "category": "Networking, Hardware & Engineering",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -3928,9 +4678,9 @@
     }
   },
   {
-    "id": 99,
+    "id": 117,
     "title": "Embedded Systems",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 months",
     "students": "",
@@ -3968,9 +4718,9 @@
     }
   },
   {
-    "id": 100,
+    "id": 118,
     "title": "English Combo with H/W",
-    "category": "Kids",
+    "category": "Kids Programs",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -4006,9 +4756,9 @@
     }
   },
   {
-    "id": 101,
+    "id": 119,
     "title": "English for Kids",
-    "category": "Kids",
+    "category": "Kids Programs",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -4044,9 +4794,9 @@
     }
   },
   {
-    "id": 102,
+    "id": 120,
     "title": "English Speaking / Spoken English",
-    "category": "Green",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "2 - 2.5 mths",
     "students": "",
@@ -4086,9 +4836,9 @@
     }
   },
   {
-    "id": 103,
+    "id": 121,
     "title": "English Typing",
-    "category": "Green",
+    "category": "Accounting, Finance & Office Skills",
     "level": "Professional",
     "duration": "1Month",
     "students": "",
@@ -4124,9 +4874,9 @@
     }
   },
   {
-    "id": 104,
+    "id": 122,
     "title": "Enscape Course",
-    "category": "Red",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "2 Months",
     "students": "",
@@ -4164,9 +4914,9 @@
     }
   },
   {
-    "id": 105,
+    "id": 123,
     "title": "Etabs",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -4204,9 +4954,9 @@
     }
   },
   {
-    "id": 106,
-    "title": "Ethical Hacking ( Cyber Security) - CEH Syllabus Indian Govt (Skill Development Ministry) Certificate -NSDC",
-    "category": "Green",
+    "id": 124,
+    "title": "Ethical Hacking (Cyber Security) - CEH Syllabus",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "2 Months",
     "students": "",
@@ -4244,9 +4994,9 @@
     }
   },
   {
-    "id": 107,
-    "title": "Excel VBA (Macros) Microsoft OFFICE Certificate (Microsoft Office Specialist, MOS) Included with extra fees 1500",
-    "category": "Red",
+    "id": 125,
+    "title": "Excel VBA (Macros)",
+    "category": "Accounting, Finance & Office Skills",
     "level": "Professional",
     "duration": "1 Month",
     "students": "",
@@ -4284,9 +5034,9 @@
     }
   },
   {
-    "id": 108,
+    "id": 126,
     "title": "Fashion Designing",
-    "category": "Green",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "3-4 Months",
     "students": "",
@@ -4324,9 +5074,9 @@
     }
   },
   {
-    "id": 109,
+    "id": 127,
     "title": "FIGMA Advanced - Online Designing Tool for UI-UX",
-    "category": "Green",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -4364,9 +5114,9 @@
     }
   },
   {
-    "id": 110,
-    "title": "Filmora ( Video Editing )",
-    "category": "Yellow",
+    "id": 128,
+    "title": "Filmora (Video Editing)",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1 Months",
     "students": "",
@@ -4404,9 +5154,9 @@
     }
   },
   {
-    "id": 111,
+    "id": 129,
     "title": "Flutter",
-    "category": "Yellow",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -4442,9 +5192,9 @@
     }
   },
   {
-    "id": 112,
-    "title": "French Language ( Advance Level) A2",
-    "category": "Red",
+    "id": 130,
+    "title": "French Language (Advance Level) A2",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "2- 3 Months",
     "students": "",
@@ -4478,9 +5228,9 @@
     }
   },
   {
-    "id": 113,
-    "title": "French Language ( Beginner Level) A1",
-    "category": "Red",
+    "id": 131,
+    "title": "French Language (Beginner Level) A1",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "2- 3 Months",
     "students": "",
@@ -4516,9 +5266,9 @@
     }
   },
   {
-    "id": 114,
-    "title": "From Tally Authorized Center (Bengluru) : Tally + GST Certification Course (Advanced Tally Prime6.0 Version latest & Erp 9 ) Financial Accounting / Financial Tally with GST Tally Portal Login included having soft copy contents. Tally Solutions Verifyable Certificate (Tally Level 2 Highest ) Included Placement opportunities from Tally Company included",
-    "category": "Green",
+    "id": 132,
+    "title": "Tally + GST Certification (Advanced Tally Prime)",
+    "category": "Accounting, Finance & Office Skills",
     "level": "Professional",
     "duration": "2.5 Months",
     "students": "",
@@ -4560,9 +5310,9 @@
     }
   },
   {
-    "id": 115,
-    "title": "Full Stack ( .Net ) Indian Govt (Skill Development Ministry) Certificate -NSDC",
-    "category": "Green",
+    "id": 133,
+    "title": "Full Stack (.Net)",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "5-6 Months",
     "students": "",
@@ -4600,9 +5350,9 @@
     }
   },
   {
-    "id": 116,
-    "title": "Full Stack ( Java ) Indian Govt (Skill Development Ministry) Certificate -NSDC",
-    "category": "Green",
+    "id": 134,
+    "title": "Full Stack (Java)",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "3-4 Months",
     "students": "",
@@ -4640,9 +5390,9 @@
     }
   },
   {
-    "id": 117,
-    "title": "Full Stack ( Php & Web Design ) Indian Govt (Skill Development Ministry) Certificate -NSDC",
-    "category": "Green",
+    "id": 135,
+    "title": "Full Stack (Php & Web Design)",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "3.5 Months",
     "students": "",
@@ -4680,9 +5430,9 @@
     }
   },
   {
-    "id": 118,
-    "title": "Full Stack ( Python & Web Design ) Indian Govt (Skill Development Ministry) Certificate -NSDC",
-    "category": "Green",
+    "id": 136,
+    "title": "Full Stack (Python & Web Design)",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "3 Months",
     "students": "",
@@ -4720,9 +5470,9 @@
     }
   },
   {
-    "id": 119,
-    "title": "Full Stack ( Web Design & Python WIth Django Framework ) Indian Govt (Skill Development Ministry) Certificate -NSDC",
-    "category": "Green",
+    "id": 137,
+    "title": "Full Stack (Web Design & Python WIth Django Framework)",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "4-5 Months",
     "students": "",
@@ -4760,9 +5510,9 @@
     }
   },
   {
-    "id": 120,
-    "title": "Full Stack ( Web Design & React JS with Mongo DB ) Indian Govt (Skill Development Ministry) Certificate -NSDC",
-    "category": "Green",
+    "id": 138,
+    "title": "Full Stack (Web Design & React JS with Mongo DB)",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "4-5 Months",
     "students": "",
@@ -4800,9 +5550,9 @@
     }
   },
   {
-    "id": 121,
+    "id": 139,
     "title": "Fusion 360",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "2 Months",
     "students": "",
@@ -4840,9 +5590,9 @@
     }
   },
   {
-    "id": 122,
-    "title": "German Language ( Advance Level ) A2",
-    "category": "Red",
+    "id": 140,
+    "title": "German Language (Advance Level) A2",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "2-2.5 Months",
     "students": "",
@@ -4876,9 +5626,9 @@
     }
   },
   {
-    "id": 123,
-    "title": "German Language ( Beginner Level ) A1",
-    "category": "Red",
+    "id": 141,
+    "title": "German Language (Beginner Level) A1",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "2-2.5 Months",
     "students": "",
@@ -4914,9 +5664,9 @@
     }
   },
   {
-    "id": 124,
-    "title": "Google Certified Digital Marketing (SEO / SMO) / Internet Marketing / Online Marketing WITH AI (Artifical Intelligence) Indian Govt (Skill Development Ministry) Certificate -NSDC Google Partner, offering Google Cetificate With Nominal COST ! RCADM (RKCL) Only For Rajasthan Certificate for Rs 1000/- extra",
-    "category": "Green",
+    "id": 142,
+    "title": "Google Certified Digital Marketing with AI",
+    "category": "Data, AI & Digital Marketing",
     "level": "Professional",
     "duration": "3.5 to 4 Months",
     "students": "",
@@ -4954,9 +5704,9 @@
     }
   },
   {
-    "id": 125,
-    "title": "Google Certified Digital Marketing (SEO / SMO) with Wordpress / Internet Marketing / Online Marketing WITH AI (Artifical Intelligence) Indian Govt (Skill Development Ministry) Certificate -NSDC Google Partner, offering Google Cetificate with Nominal COST ! RCADM (RKCL) Only For Rajasthan Certificate for Rs 1000/- extra",
-    "category": "Green",
+    "id": 143,
+    "title": "Google Certified Digital Marketing with WordPress & AI",
+    "category": "Data, AI & Digital Marketing",
     "level": "Professional",
     "duration": "4-5 Months",
     "students": "",
@@ -4992,9 +5742,9 @@
     }
   },
   {
-    "id": 126,
+    "id": 144,
     "title": "Google Sketchup",
-    "category": "Yellow",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "1 month",
     "students": "",
@@ -5032,9 +5782,9 @@
     }
   },
   {
-    "id": 127,
+    "id": 145,
     "title": "Google Sketchup VRAY / VeeRay",
-    "category": "Yellow",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "1 month",
     "students": "",
@@ -5070,9 +5820,9 @@
     }
   },
   {
-    "id": 128,
-    "title": "Graphic Designing Diploma Without AI Adobe Certificate for Photoshop Not Included Indian Govt (Skill Development Ministry) Certificate -NSDC",
-    "category": "Green",
+    "id": 146,
+    "title": "Graphic Designing Diploma",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "4-6 months",
     "students": "",
@@ -5110,9 +5860,9 @@
     }
   },
   {
-    "id": 129,
+    "id": 147,
     "title": "Greeting Card Designing With Canva",
-    "category": "Kids",
+    "category": "Kids Programs",
     "level": "Professional",
     "duration": "3 Weeks",
     "students": "",
@@ -5150,9 +5900,9 @@
     }
   },
   {
-    "id": 130,
-    "title": "GST ( A certificate course varifyable from Practical Course",
-    "category": "Green",
+    "id": 148,
+    "title": "GST Practical Certification Course",
+    "category": "Accounting, Finance & Office Skills",
     "level": "Professional",
     "duration": "1 month",
     "students": "",
@@ -5190,9 +5940,9 @@
     }
   },
   {
-    "id": 131,
-    "title": "Handwritting",
-    "category": "Kids",
+    "id": 149,
+    "title": "Handwriting",
+    "category": "Kids Programs",
     "level": "Professional",
     "duration": "1 Month",
     "students": "",
@@ -5228,9 +5978,9 @@
     }
   },
   {
-    "id": 132,
-    "title": "Hardware & Networking Diploma CHNE ( Certified Hardware and Networking Engineer) Indian Govt (Skill Development Ministry) Certificate -NSDC CCC Govt Certificate included",
-    "category": "Green",
+    "id": 150,
+    "title": "Hardware & Networking Diploma CHNE (Certified Hardware and Networking Engineer)",
+    "category": "Networking, Hardware & Engineering",
     "level": "Professional",
     "duration": "6 Months",
     "students": "",
@@ -5268,9 +6018,9 @@
     }
   },
   {
-    "id": 133,
+    "id": 151,
     "title": "Hindi Typing",
-    "category": "Green",
+    "category": "Accounting, Finance & Office Skills",
     "level": "Professional",
     "duration": "1 Month",
     "students": "",
@@ -5306,9 +6056,9 @@
     }
   },
   {
-    "id": 134,
+    "id": 152,
     "title": "HTML5",
-    "category": "Green",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "20 Days",
     "students": "",
@@ -5346,9 +6096,9 @@
     }
   },
   {
-    "id": 135,
+    "id": 153,
     "title": "HVAC",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "2.5 Months",
     "students": "",
@@ -5386,9 +6136,9 @@
     }
   },
   {
-    "id": 136,
-    "title": "IELTS ( International English Language Testing System)",
-    "category": "Yellow",
+    "id": 154,
+    "title": "IELTS (International English Language Testing System)",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "70 Hrs",
     "students": "",
@@ -5428,9 +6178,9 @@
     }
   },
   {
-    "id": 137,
-    "title": "Indian Govt (Skill Development Ministry) Certificate -NSDC",
-    "category": "Green",
+    "id": 155,
+    "title": "Unnamed Course",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "3 Months",
     "students": "",
@@ -5468,9 +6218,9 @@
     }
   },
   {
-    "id": 138,
+    "id": 156,
     "title": "Interview Skills",
-    "category": "Green",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "3 Weeks",
     "students": "",
@@ -5512,9 +6262,9 @@
     }
   },
   {
-    "id": 139,
+    "id": 157,
     "title": "IONIC App Develoment / Hybrid App Development",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 mths",
     "students": "",
@@ -5552,9 +6302,9 @@
     }
   },
   {
-    "id": 140,
+    "id": 158,
     "title": "IoT - Internet Of Things with Python",
-    "category": "Yellow",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -5592,9 +6342,9 @@
     }
   },
   {
-    "id": 141,
+    "id": 159,
     "title": "Japanese Maths (Multiply)",
-    "category": "Kids",
+    "category": "Kids Programs",
     "level": "Professional",
     "duration": "1 Month",
     "students": "",
@@ -5630,9 +6380,9 @@
     }
   },
   {
-    "id": 142,
+    "id": 160,
     "title": "Java Script",
-    "category": "Green",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1 Month",
     "students": "",
@@ -5670,9 +6420,9 @@
     }
   },
   {
-    "id": 143,
+    "id": 161,
     "title": "jMeter - Performance Testing",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "Details on course page",
     "students": "",
@@ -5710,9 +6460,9 @@
     }
   },
   {
-    "id": 144,
-    "title": "Job Oriented ISTQB Software Testing Certificate Course ISTQB Certificate Cost 10000- 15000 (Extra Amount)",
-    "category": "Yellow",
+    "id": 162,
+    "title": "ISTQB Software Testing (Job Oriented)",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "2-3 Months",
     "students": "",
@@ -5750,9 +6500,9 @@
     }
   },
   {
-    "id": 145,
+    "id": 163,
     "title": "Kotlin",
-    "category": "Yellow",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1 Month",
     "students": "",
@@ -5790,9 +6540,9 @@
     }
   },
   {
-    "id": 146,
+    "id": 164,
     "title": "Laravel (PHP Based MVC Framework)",
-    "category": "Yellow",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1 Month",
     "students": "",
@@ -5830,9 +6580,9 @@
     }
   },
   {
-    "id": 147,
+    "id": 165,
     "title": "Linux / RHCE / Red Hat Certification Training",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 months",
     "students": "",
@@ -5870,9 +6620,9 @@
     }
   },
   {
-    "id": 148,
+    "id": 166,
     "title": "Lumion",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -5908,9 +6658,9 @@
     }
   },
   {
-    "id": 149,
+    "id": 167,
     "title": "Machine Learning (ML)",
-    "category": "Green",
+    "category": "Data, AI & Digital Marketing",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -5948,9 +6698,9 @@
     }
   },
   {
-    "id": 150,
-    "title": "Machine Learning Diploma Course AI (Artificial Intelligency) with Machine Learning & Python Basics (Data Science Diploma) Indian Govt (Skill Development Ministry) Certificate -NSDC",
-    "category": "Green",
+    "id": 168,
+    "title": "Machine Learning & AI Diploma (with Python Basics)",
+    "category": "Data, AI & Digital Marketing",
     "level": "Professional",
     "duration": "3-4 Months",
     "students": "",
@@ -5988,9 +6738,9 @@
     }
   },
   {
-    "id": 151,
+    "id": 169,
     "title": "Magento Framework for eCommerece",
-    "category": "Yellow",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -6028,9 +6778,9 @@
     }
   },
   {
-    "id": 152,
-    "title": "Manual(Software ) Testing Course",
-    "category": "Yellow",
+    "id": 170,
+    "title": "Manual Software Testing",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -6068,9 +6818,51 @@
     }
   },
   {
-    "id": 153,
+    "id": 171,
+    "title": "Master Program In Digital Marketing",
+    "category": "Data, AI & Digital Marketing",
+    "level": "Professional",
+    "duration": "1 Year",
+    "students": "",
+    "rating": "",
+    "price": "\u20b9120000",
+    "nonMetroFee": 120000,
+    "metroFee": 120000,
+    "badge": "",
+    "description": "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate",
+    "detailParagraphs": [
+      "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+    ],
+    "keyPoints": [
+      "1. In House Internship 1. Website Structure & Domain Registeration 2. Hosting. 3. Website Development With WordPress 4. SEO ( On Pg +Off Pg ) 5. Technical +GMB ( Local ) SEO 6. Social Media Marketing 7. Search Engine Marketing 8. e Commerce & Affiliate Marketing 9. Content Marketing 10. PPC Ads & Google Adwords 11. Google Analytics 12 Canva With AI 13. Soft Skills With PD 1. Digital Marketing Manager 2. Social Media Manager 3. SEO Specialist Manager 4. Content Marketing Manager 5..Email Marketing Manager 6. Digital Analytics Manager 7. Digital Build Manager 8. Inbound Marketing Specialist 9. E commerce Marketing Manger 10. PPC Specialist / Manager",
+      "Certification: 1. Samyak 2. NSDC 3. Google 4.FB And others..."
+    ],
+    "headings": [
+      "Course Overview"
+    ],
+    "contentSections": [
+      {
+        "heading": "Course Overview",
+        "paragraphs": [
+          "1. 3 Job interview Guarenteed 2. Soft Skills Training 3. 20 Days Basic Computer Classes 4.Govt Certificate"
+        ],
+        "bullets": [
+          "1. In House Internship 1. Website Structure & Domain Registeration 2. Hosting. 3. Website Development With WordPress 4. SEO ( On Pg +Off Pg ) 5. Technical +GMB ( Local ) SEO 6. Social Media Marketing 7. Search Engine Marketing 8. e Commerce & Affiliate Marketing 9. Content Marketing 10. PPC Ads & Google Adwords 11. Google Analytics 12 Canva With AI 13. Soft Skills With PD 1. Digital Marketing Manager 2. Social Media Manager 3. SEO Specialist Manager 4. Content Marketing Manager 5..Email Marketing Manager 6. Digital Analytics Manager 7. Digital Build Manager 8. Inbound Marketing Specialist 9. E commerce Marketing Manger 10. PPC Specialist / Manager",
+          "Certification: 1. Samyak 2. NSDC 3. Google 4.FB And others..."
+        ]
+      }
+    ],
+    "sourceFile": "AD1.pdf",
+    "sourcePage": 1,
+    "sourceFeeText": {
+      "nonMetro": "120000",
+      "metro": "120000"
+    }
+  },
+  {
+    "id": 172,
     "title": "MATLAB Simulink",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1 month",
     "students": "",
@@ -6108,9 +6900,9 @@
     }
   },
   {
-    "id": 154,
+    "id": 173,
     "title": "Matrix 3D CAD Jewellery Design",
-    "category": "Red",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "2 months",
     "students": "",
@@ -6148,9 +6940,9 @@
     }
   },
   {
-    "id": 155,
-    "title": "Maya for 3D Anmitaion Adobe Certification Included",
-    "category": "Yellow",
+    "id": 174,
+    "title": "Maya for 3D Animation",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "2 Months",
     "students": "",
@@ -6188,9 +6980,9 @@
     }
   },
   {
-    "id": 156,
-    "title": "MCSA ( Microsoft Certified Solutions Associate ) - Windows Server - 2012",
-    "category": "Red",
+    "id": 175,
+    "title": "MCSA - Windows Server 2012",
+    "category": "Networking, Hardware & Engineering",
     "level": "Professional",
     "duration": "3.5 Months",
     "students": "",
@@ -6232,9 +7024,9 @@
     }
   },
   {
-    "id": 157,
+    "id": 176,
     "title": "MEAN/MERN Stack Development",
-    "category": "Green",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "6+ Months",
     "students": "",
@@ -6272,9 +7064,9 @@
     }
   },
   {
-    "id": 158,
-    "title": "MEP ( Mechanical Electrical Plumbing )",
-    "category": "Red",
+    "id": 177,
+    "title": "MEP (Mechanical Electrical Plumbing)",
+    "category": "Networking, Hardware & Engineering",
     "level": "Professional",
     "duration": "2 Months",
     "students": "",
@@ -6312,9 +7104,9 @@
     }
   },
   {
-    "id": 159,
-    "title": "MICROSOFT CERTIFIED MS Office Microsoft OFFICE Certificate (Microsoft Office Specialist, MOS) Included",
-    "category": "Green",
+    "id": 178,
+    "title": "Microsoft Certified MS Office",
+    "category": "Accounting, Finance & Office Skills",
     "level": "Professional",
     "duration": "2 Months",
     "students": "",
@@ -6356,9 +7148,9 @@
     }
   },
   {
-    "id": 160,
-    "title": "Mobile Repairing Course",
-    "category": "Red",
+    "id": 179,
+    "title": "Mobile Repairing",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "3 Months",
     "students": "",
@@ -6396,9 +7188,9 @@
     }
   },
   {
-    "id": 161,
+    "id": 180,
     "title": "Mongo DB",
-    "category": "Green",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 mths",
     "students": "",
@@ -6434,9 +7226,9 @@
     }
   },
   {
-    "id": 162,
+    "id": 181,
     "title": "MS Access",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1 month",
     "students": "",
@@ -6478,9 +7270,9 @@
     }
   },
   {
-    "id": 163,
+    "id": 182,
     "title": "MS Project",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1 month",
     "students": "",
@@ -6518,9 +7310,9 @@
     }
   },
   {
-    "id": 164,
-    "title": "MS-CIT - A Course by Maharashtra Govt",
-    "category": "Green",
+    "id": 183,
+    "title": "MS-CIT (Maharashtra Govt)",
+    "category": "Accounting, Finance & Office Skills",
     "level": "Professional",
     "duration": "50 Hours",
     "students": "",
@@ -6562,9 +7354,9 @@
     }
   },
   {
-    "id": 165,
+    "id": 184,
     "title": "MX Road",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "2.5 Months",
     "students": "",
@@ -6602,9 +7394,9 @@
     }
   },
   {
-    "id": 166,
+    "id": 185,
     "title": "MxRoad",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "15months",
     "students": "",
@@ -6642,9 +7434,9 @@
     }
   },
   {
-    "id": 167,
-    "title": "N+ - Networking Basics Indian Govt (Skill Development Ministry) Certificate -NSDC",
-    "category": "Green",
+    "id": 186,
+    "title": "N+ - Networking Basics",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1 month",
     "students": "",
@@ -6682,9 +7474,9 @@
     }
   },
   {
-    "id": 168,
-    "title": "NIELIT (National Institute of Electronics & Information Technology) / DOEACC A Level (Exams Conduct in Jan & July) A Level With Class 65000/",
-    "category": "Green",
+    "id": 187,
+    "title": "NIELIT/DOEACC A Level",
+    "category": "Accounting, Finance & Office Skills",
     "level": "Professional",
     "duration": "1.5 Years",
     "students": "",
@@ -6722,9 +7514,9 @@
     }
   },
   {
-    "id": 169,
-    "title": "NIELIT (National Institute of Electronics & Information Technology) / DOEACC O Level (Exams Conduct in Jan & July) Without classes With Practicals & Lab (Don't Give this option in general to anyone) - Fees Rs 37,500/-",
-    "category": "Green",
+    "id": 188,
+    "title": "NIELIT/DOEACC O Level",
+    "category": "Accounting, Finance & Office Skills",
     "level": "Professional",
     "duration": "1 Yr",
     "students": "",
@@ -6766,9 +7558,9 @@
     }
   },
   {
-    "id": 170,
-    "title": "NIOS (10th or 12th) - Open School Only Admissions, No Classes Studens should be able to read/write and need to have some subject knowledge",
-    "category": "Yellow",
+    "id": 189,
+    "title": "NIOS (10th/12th) Open School Admissions Guidance",
+    "category": "Accounting, Finance & Office Skills",
     "level": "Professional",
     "duration": "1 Year",
     "students": "",
@@ -6810,9 +7602,9 @@
     }
   },
   {
-    "id": 171,
+    "id": 190,
     "title": "Node JS",
-    "category": "Green",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 mths",
     "students": "",
@@ -6850,9 +7642,9 @@
     }
   },
   {
-    "id": 172,
+    "id": 191,
     "title": "OCJP (Oracle Certification) Preparation Java Certification Exam Preparation",
-    "category": "Green",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 mths",
     "students": "",
@@ -6890,9 +7682,9 @@
     }
   },
   {
-    "id": 173,
+    "id": 192,
     "title": "OET",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "70 Hrs",
     "students": "",
@@ -6932,9 +7724,9 @@
     }
   },
   {
-    "id": 174,
+    "id": 193,
     "title": "OpenStack / AWS Cloud / Azure Amazon Web Services Cloud",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 months",
     "students": "",
@@ -6972,9 +7764,9 @@
     }
   },
   {
-    "id": 175,
+    "id": 194,
     "title": "Oracle DBA - OCP Level",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "3 mths",
     "students": "",
@@ -7012,9 +7804,9 @@
     }
   },
   {
-    "id": 176,
+    "id": 195,
     "title": "Oracle DBA -OCA Level",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "2 mths",
     "students": "",
@@ -7052,9 +7844,9 @@
     }
   },
   {
-    "id": 177,
+    "id": 196,
     "title": "PCB Designing",
-    "category": "Yellow",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 months",
     "students": "",
@@ -7092,9 +7884,9 @@
     }
   },
   {
-    "id": 178,
-    "title": "Personality Development (PD)",
-    "category": "Green",
+    "id": 197,
+    "title": "Personality Development",
+    "category": "Accounting, Finance & Office Skills",
     "level": "Professional",
     "duration": "3 Weeks",
     "students": "",
@@ -7136,9 +7928,9 @@
     }
   },
   {
-    "id": 179,
+    "id": 198,
     "title": "PGDCA (Distance mode is discountinued from Govt, ONLY Regular is possible)",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1 Yr",
     "students": "",
@@ -7180,9 +7972,9 @@
     }
   },
   {
-    "id": 180,
-    "title": "PhotoShop Advanced Course",
-    "category": "Green",
+    "id": 199,
+    "title": "Adobe Photoshop - Advanced",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "1 month",
     "students": "",
@@ -7220,9 +8012,9 @@
     }
   },
   {
-    "id": 181,
-    "title": "PLC SCADA Certificate Course - 45 Days Only Simulation Not On Machine Or Hardware",
-    "category": "Yellow",
+    "id": 200,
+    "title": "PLC SCADA Certification",
+    "category": "Networking, Hardware & Engineering",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -7260,9 +8052,9 @@
     }
   },
   {
-    "id": 182,
-    "title": "PLC/SCADA ( Job Oriented) Diploma Course Industrial Automation Engineer Only Simulation Not On Machine Or Hardware",
-    "category": "Yellow",
+    "id": 201,
+    "title": "PLC/SCADA Diploma (Industrial Automation)",
+    "category": "Networking, Hardware & Engineering",
     "level": "Professional",
     "duration": "4 -6 Months",
     "students": "",
@@ -7300,9 +8092,9 @@
     }
   },
   {
-    "id": 183,
-    "title": "PLC/SCADA Beginner Course- 30 Days Only Simulation Not Machine Or Hardware",
-    "category": "Yellow",
+    "id": 202,
+    "title": "PLC/SCADA Beginner",
+    "category": "Networking, Hardware & Engineering",
     "level": "Professional",
     "duration": "1 month",
     "students": "",
@@ -7340,9 +8132,9 @@
     }
   },
   {
-    "id": 184,
-    "title": "Power BI Microsoft OFFICE Certificate (Microsoft Office Specialist,) Included",
-    "category": "Green",
+    "id": 203,
+    "title": "Power BI",
+    "category": "Data, AI & Digital Marketing",
     "level": "Professional",
     "duration": "a1.5 Months",
     "students": "",
@@ -7384,9 +8176,9 @@
     }
   },
   {
-    "id": 185,
+    "id": 204,
     "title": "Primavera (Project Management Tool)",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 months",
     "students": "",
@@ -7424,9 +8216,9 @@
     }
   },
   {
-    "id": 186,
-    "title": "Programming (HTML or Scratch )",
-    "category": "Kids",
+    "id": 205,
+    "title": "Programming (HTML or Scratch)",
+    "category": "Kids Programs",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -7462,9 +8254,9 @@
     }
   },
   {
-    "id": 187,
-    "title": "Project Oriented Android Course Practical based, Live Project in the end",
-    "category": "Green",
+    "id": 206,
+    "title": "Project-Oriented Android Development",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "2 mths",
     "students": "",
@@ -7502,9 +8294,9 @@
     }
   },
   {
-    "id": 188,
+    "id": 207,
     "title": "PTE",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "70 Hrs",
     "students": "",
@@ -7544,9 +8336,9 @@
     }
   },
   {
-    "id": 189,
-    "title": "Python Indian Govt (Skill Development Ministry) Certificate -NSDC",
-    "category": "Green",
+    "id": 208,
+    "title": "Python",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 mths",
     "students": "",
@@ -7584,9 +8376,9 @@
     }
   },
   {
-    "id": 190,
-    "title": "QTP in Depth - Professional Advanced Course",
-    "category": "Red",
+    "id": 209,
+    "title": "QTP Professional Advanced",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "4-5 weekends",
     "students": "",
@@ -7624,9 +8416,9 @@
     }
   },
   {
-    "id": 191,
+    "id": 210,
     "title": "Quickbook",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -7660,9 +8452,9 @@
     }
   },
   {
-    "id": 192,
+    "id": 211,
     "title": "R Programming Language",
-    "category": "Yellow",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -7700,9 +8492,9 @@
     }
   },
   {
-    "id": 193,
+    "id": 212,
     "title": "Rasberry Pi With Python Basics",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -7740,9 +8532,9 @@
     }
   },
   {
-    "id": 194,
+    "id": 213,
     "title": "React Native App Develoment",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 mths",
     "students": "",
@@ -7780,9 +8572,9 @@
     }
   },
   {
-    "id": 195,
+    "id": 214,
     "title": "Revit Architecture",
-    "category": "Yellow",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 months",
     "students": "",
@@ -7820,9 +8612,9 @@
     }
   },
   {
-    "id": 196,
-    "title": "Rhino 3D / Computerized Jewellery Designig Course",
-    "category": "Yellow",
+    "id": 215,
+    "title": "Rhino 3D Computerized Jewellery Designing",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "2.5 Months",
     "students": "",
@@ -7860,9 +8652,9 @@
     }
   },
   {
-    "id": 197,
+    "id": 216,
     "title": "Robotics & Embedded Systems",
-    "category": "Red",
+    "category": "Networking, Hardware & Engineering",
     "level": "Professional",
     "duration": "3 Months",
     "students": "",
@@ -7900,9 +8692,9 @@
     }
   },
   {
-    "id": 198,
+    "id": 217,
     "title": "Robotics For Kids",
-    "category": "Kids",
+    "category": "Kids Programs",
     "level": "Professional",
     "duration": "1 Month",
     "students": "",
@@ -7942,9 +8734,9 @@
     }
   },
   {
-    "id": 199,
-    "title": "Robotics For Kids ( For Age : 5 + Years ) ** Kits are available for practical, but will not be given for home* Microsoft Certificate (Microsoft Technology Associate, MTA (Temporarily Not Available)) Included",
-    "category": "Yellow",
+    "id": 218,
+    "title": "Robotics for Kids",
+    "category": "Networking, Hardware & Engineering",
     "level": "Professional",
     "duration": "25 Hours",
     "students": "",
@@ -7982,9 +8774,9 @@
     }
   },
   {
-    "id": 200,
-    "title": "RS-CFA ( A Course by Rajasthan Govt & VMOU Accounting Course )",
-    "category": "Green",
+    "id": 219,
+    "title": "RS-CFA (Rajasthan Govt & VMOU Accounting)",
+    "category": "Accounting, Finance & Office Skills",
     "level": "Professional",
     "duration": "2 Months",
     "students": "",
@@ -8024,9 +8816,9 @@
     }
   },
   {
-    "id": 201,
-    "title": "RS-CIT - A Course by Rajasthan Govt & VMOU A RS-CIT Book and a question bank included",
-    "category": "Green",
+    "id": 220,
+    "title": "RS-CIT (Rajasthan Govt & VMOU)",
+    "category": "Accounting, Finance & Office Skills",
     "level": "Professional",
     "duration": "50 Hours",
     "students": "",
@@ -8068,9 +8860,9 @@
     }
   },
   {
-    "id": 202,
-    "title": "RS-CIT Re-exam",
-    "category": "Green",
+    "id": 221,
+    "title": "RS-CIT Re-Exam",
+    "category": "Accounting, Finance & Office Skills",
     "level": "Professional",
     "duration": "Details on course page",
     "students": "",
@@ -8100,9 +8892,9 @@
     }
   },
   {
-    "id": 203,
-    "title": "RSMSSB IA - Informatics Assistant - Suchna Sahayak ( Computer Paper -1 ) 2021 Vacancy Typing Charges Extra - for Phase 2, if Phase-1 is Pass",
-    "category": "Red",
+    "id": 222,
+    "title": "RSMSSB Informatics Assistant (Computer Paper 1)",
+    "category": "Accounting, Finance & Office Skills",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -8140,9 +8932,9 @@
     }
   },
   {
-    "id": 204,
-    "title": "SAP (Systems Applications and Products in data processing) - FICO (Financial & Controling) - SAP Authorized Training Centre - SAP Login, Server Access - 2 months",
-    "category": "Green",
+    "id": 223,
+    "title": "SAP FICO",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "2 Months",
     "students": "",
@@ -8184,9 +8976,9 @@
     }
   },
   {
-    "id": 205,
+    "id": 224,
     "title": "SAP - HCM",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "45-50 Hrs",
     "students": "",
@@ -8222,9 +9014,9 @@
     }
   },
   {
-    "id": 206,
-    "title": "SAP - MM - SAP Authorized Training Centre - SAP Login, Server Access - 2 months - Certificate from SAP",
-    "category": "Yellow",
+    "id": 225,
+    "title": "SAP MM",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -8260,9 +9052,9 @@
     }
   },
   {
-    "id": 207,
-    "title": "SAP - PP ( Production Planning )",
-    "category": "Red",
+    "id": 226,
+    "title": "SAP - PP (Production Planning)",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "45-50 Hrs",
     "students": "",
@@ -8298,9 +9090,9 @@
     }
   },
   {
-    "id": 208,
-    "title": "SAP - SD ( Sales & Distribution )",
-    "category": "Red",
+    "id": 227,
+    "title": "SAP - SD (Sales & Distribution)",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "45-50 Hrs",
     "students": "",
@@ -8336,9 +9128,9 @@
     }
   },
   {
-    "id": 209,
+    "id": 228,
     "title": "SAP-PP(ProductionPlanning)",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "45-50Hrs",
     "students": "",
@@ -8374,9 +9166,9 @@
     }
   },
   {
-    "id": 210,
-    "title": "Selenium in Depth - Professional Advanced Course Includes Java",
-    "category": "Red",
+    "id": 229,
+    "title": "Selenium Professional Advanced (with Java)",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "4-6 weekends",
     "students": "",
@@ -8414,9 +9206,9 @@
     }
   },
   {
-    "id": 211,
+    "id": 230,
     "title": "SharePoint",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1 month",
     "students": "",
@@ -8454,9 +9246,9 @@
     }
   },
   {
-    "id": 212,
-    "title": "Shopify E Commerce Platform ( Web Development )",
-    "category": "Yellow",
+    "id": 231,
+    "title": "Shopify E Commerce Platform (Web Development)",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 Month",
     "students": "",
@@ -8494,9 +9286,9 @@
     }
   },
   {
-    "id": 213,
-    "title": "Solar + PVSyst + SketchUP + AutoCAD ( Diploma Course )",
-    "category": "Yellow",
+    "id": 232,
+    "title": "Solar + PVSyst + SketchUp + AutoCAD Diploma",
+    "category": "Networking, Hardware & Engineering",
     "level": "Professional",
     "duration": "4 Months",
     "students": "",
@@ -8534,9 +9326,9 @@
     }
   },
   {
-    "id": 214,
+    "id": 233,
     "title": "Solar Energy",
-    "category": "Yellow",
+    "category": "Networking, Hardware & Engineering",
     "level": "Professional",
     "duration": "1.5 Months",
     "students": "",
@@ -8574,9 +9366,9 @@
     }
   },
   {
-    "id": 215,
+    "id": 234,
     "title": "Solidworks",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "2 Months",
     "students": "",
@@ -8614,9 +9406,9 @@
     }
   },
   {
-    "id": 216,
-    "title": "Staad Pro v8i Structural Designing Course",
-    "category": "Yellow",
+    "id": 235,
+    "title": "STAAD Pro Structural Designing",
+    "category": "Networking, Hardware & Engineering",
     "level": "Professional",
     "duration": "1.5 months",
     "students": "",
@@ -8654,9 +9446,9 @@
     }
   },
   {
-    "id": 217,
-    "title": "Stock Market ( Trading Advanced )",
-    "category": "Yellow",
+    "id": 236,
+    "title": "Stock Market (Trading Advanced)",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "3.5 to 4 Months",
     "students": "",
@@ -8694,9 +9486,9 @@
     }
   },
   {
-    "id": 218,
-    "title": "Tableau Data Visualization Course",
-    "category": "Yellow",
+    "id": 237,
+    "title": "Tableau Data Visualization",
+    "category": "Data, AI & Digital Marketing",
     "level": "Professional",
     "duration": "2 Months",
     "students": "",
@@ -8732,9 +9524,9 @@
     }
   },
   {
-    "id": 219,
+    "id": 238,
     "title": "TOEFL",
-    "category": "Yellow",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "55 Hrs",
     "students": "",
@@ -8772,9 +9564,9 @@
     }
   },
   {
-    "id": 220,
-    "title": "UI-UX Designing Indian Govt (Skill Development Ministry) Certificate -NSDC",
-    "category": "Green",
+    "id": 239,
+    "title": "UI-UX Designing",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "4-5 Months",
     "students": "",
@@ -8812,9 +9604,9 @@
     }
   },
   {
-    "id": 221,
+    "id": 240,
     "title": "Unigraphic NX",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 months",
     "students": "",
@@ -8852,9 +9644,9 @@
     }
   },
   {
-    "id": 222,
-    "title": "Unity - Game Development Course --With C Sharp 35000/ Rs",
-    "category": "Red",
+    "id": 241,
+    "title": "Unity Game Development with C#",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "2 Months",
     "students": "",
@@ -8890,9 +9682,9 @@
     }
   },
   {
-    "id": 223,
+    "id": 242,
     "title": "V-Ray (VeeRay)",
-    "category": "Green",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "1 months",
     "students": "",
@@ -8930,9 +9722,9 @@
     }
   },
   {
-    "id": 224,
+    "id": 243,
     "title": "Vedic Maths",
-    "category": "Kids",
+    "category": "Kids Programs",
     "level": "Professional",
     "duration": "1 Month",
     "students": "",
@@ -8972,9 +9764,9 @@
     }
   },
   {
-    "id": 225,
+    "id": 244,
     "title": "VLSI VHDL",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1.5 months",
     "students": "",
@@ -9012,9 +9804,9 @@
     }
   },
   {
-    "id": 226,
-    "title": "Web Designing Course with Project & Logo Design 10 Days Photoshop & CorelDraw Indian Govt (Skill Development Ministry) Certificate -NSDC",
-    "category": "Green",
+    "id": 245,
+    "title": "Web Designing with Project & Logo Design",
+    "category": "Design & Animation",
     "level": "Professional",
     "duration": "3 mths",
     "students": "",
@@ -9052,9 +9844,9 @@
     }
   },
   {
-    "id": 227,
-    "title": "Web Designing Diploma Course Advanced Web Designing, PHP/Java/Python (Any One)Development , C Programming, Interview Skills & Digital Marketing Diploma Indian Govt (Skill Development Ministry) Certificate -NSDC Google Certificate Included",
-    "category": "Green",
+    "id": 246,
+    "title": "Web Designing Diploma (Advanced Web + Development + Marketing)",
+    "category": "Data, AI & Digital Marketing",
     "level": "Professional",
     "duration": "6-7 Months",
     "students": "",
@@ -9092,9 +9884,9 @@
     }
   },
   {
-    "id": 228,
+    "id": 247,
     "title": "WordPress- CMS Framework",
-    "category": "Green",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "1 Month",
     "students": "",
@@ -9132,9 +9924,9 @@
     }
   },
   {
-    "id": 229,
+    "id": 248,
     "title": "Zbrush 3D",
-    "category": "Red",
+    "category": "Programming & Software",
     "level": "Professional",
     "duration": "2 Months",
     "students": "",
