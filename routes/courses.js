@@ -240,6 +240,12 @@ function ensureRazorpayConfigured(res) {
   return false;
 }
 
+function sanitizeOfferId(value = '') {
+  const offerId = String(value || '').trim();
+  if (!offerId) return '';
+  return /^offer_[a-zA-Z0-9]+$/.test(offerId) ? offerId : null;
+}
+
 function quoteForCheckout(course, body = {}) {
   const country = String(body.country || '').trim();
   const postalCode = String(body.postalCode || '').trim();
@@ -378,9 +384,14 @@ router.post('/:id/checkout/create-order', async (req, res) => {
   const country = String(req.body?.country || '').trim();
   const city = String(req.body?.city || '').trim();
   const postalCode = String(req.body?.postalCode || '').trim();
+  const offerId = sanitizeOfferId(req.body?.offerId || '');
 
   if (!country || !city || !postalCode) {
     return res.status(400).json({ error: 'Country, city, and postal code are required.' });
+  }
+
+  if (offerId === null) {
+    return res.status(400).json({ error: 'Invalid Offer ID format. Expected format: offer_xxxxx.' });
   }
 
   const idToken = getBearerToken(req);
@@ -400,7 +411,7 @@ router.post('/:id/checkout/create-order', async (req, res) => {
   const orderAmount = toSmallestUnit(quote.totalAmount, quote.currency);
 
   try {
-    const order = await razorpay.orders.create({
+    const orderPayload = {
       amount: orderAmount,
       currency: quote.currency,
       receipt: `course_${course.id}_${Date.now()}`,
@@ -412,8 +423,15 @@ router.post('/:id/checkout/create-order', async (req, res) => {
         postalCode,
         feeBasis: quote.feeBasis,
         gstPercent: String(quote.gstPercent),
+        offerId: offerId || '',
       },
-    });
+    };
+
+    if (offerId) {
+      orderPayload.offer_id = offerId;
+    }
+
+    const order = await razorpay.orders.create(orderPayload);
 
     return res.json({
       ok: true,
@@ -423,6 +441,8 @@ router.post('/:id/checkout/create-order', async (req, res) => {
       currency: order.currency,
       courseId: course.id,
       courseTitle: course.title,
+      offerApplied: Boolean(offerId),
+      offerId: offerId || '',
       quote: {
         ...quote,
         baseAmountDisplay: formatAmount(quote.baseAmount, quote.currency),
@@ -430,8 +450,11 @@ router.post('/:id/checkout/create-order', async (req, res) => {
         totalAmountDisplay: formatAmount(quote.totalAmount, quote.currency),
       },
     });
-  } catch {
-    return res.status(500).json({ error: 'Failed to create Razorpay order.' });
+  } catch (error) {
+    const razorpayMessage = error?.error?.description || error?.description || '';
+    return res.status(500).json({
+      error: razorpayMessage || 'Failed to create Razorpay order.',
+    });
   }
 });
 

@@ -5,6 +5,7 @@ const countryForm = document.getElementById('checkout-country-form');
 const countryInput = document.getElementById('checkout-country');
 const cityInput = document.getElementById('checkout-city');
 const postalCodeInput = document.getElementById('checkout-postal-code');
+const offerIdInput = document.getElementById('checkout-offer-id');
 const detectLocationBtn = document.getElementById('checkout-detect-location-btn');
 const paymentPanel = document.getElementById('checkout-payment-panel');
 const payBtn = document.getElementById('checkout-pay-btn');
@@ -17,6 +18,7 @@ const currencyEl = document.getElementById('checkout-currency');
 let selectedCountry = '';
 let selectedCity = '';
 let selectedPostalCode = '';
+let selectedOfferId = '';
 let currentUser = null;
 let locationDenied = false;
 let checkoutQuote = null;
@@ -183,6 +185,7 @@ async function requestQuote(courseId) {
       country: selectedCountry,
       city: selectedCity,
       postalCode: selectedPostalCode,
+      offerId: selectedOfferId,
       selectedCurrency: getSelectedCurrency(),
       locationDenied,
     }),
@@ -301,6 +304,7 @@ if (countryForm) {
     selectedCountry = String(countryInput?.value || '').trim();
     selectedCity = String(cityInput?.value || '').trim();
     selectedPostalCode = String(postalCodeInput?.value || '').trim();
+    selectedOfferId = String(offerIdInput?.value || '').trim();
 
     if (!selectedCity) {
       setFeedback('City is required to help us schedule your classes.', 'error');
@@ -327,7 +331,8 @@ if (countryForm) {
       const quote = await requestQuote(courseId);
       renderQuote(quote);
       if (paymentPanel) paymentPanel.hidden = false;
-      setFeedback('Pricing summary is ready. You can continue to Razorpay payment.', 'success');
+      const offerNote = selectedOfferId ? ' Offer will be validated during Razorpay payment.' : '';
+      setFeedback(`Pricing summary is ready. You can continue to Razorpay payment.${offerNote}`, 'success');
     } catch (error) {
       setFeedback(error?.message || 'Could not prepare checkout quote.', 'error');
     }
