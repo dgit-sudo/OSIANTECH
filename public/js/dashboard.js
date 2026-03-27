@@ -258,8 +258,9 @@ onAuthStateChanged(auth, async (user) => {
     }
   } catch (error) {
     if (error.status === 401) {
-      await signOut(auth);
-      window.location.href = '/auth?mode=signin';
+      showGate();
+      renderPurchases([]);
+      setFeedback(gateFeedbackEl, 'Session could not be verified by server. Please refresh and try again.', 'error');
       return;
     }
     showGate();
@@ -321,8 +322,7 @@ if (settingsForm) {
       setFeedback(settingsFeedbackEl, 'Profile updated successfully.', 'success');
     } catch (error) {
       if (error.status === 401) {
-        await signOut(auth);
-        window.location.href = '/auth?mode=signin';
+        setFeedback(settingsFeedbackEl, 'Session verification failed. Please refresh and try again.', 'error');
         return;
       }
       setFeedback(settingsFeedbackEl, 'Could not save profile. Please try again.', 'error');

@@ -128,21 +128,21 @@ if (!root) {
     if (!user) return;
 
     try {
-      await user.getIdToken(true);
+      await user.getIdToken();
       redirectToDashboard();
     } catch {
-      await signOut(auth);
-      setFeedback('Your previous account session is no longer valid. Please sign in again.', 'info');
+      // Do not force logout on transient token refresh issues.
+      setFeedback('Session check failed. Please continue signing in.', 'info');
     }
   };
 
   onAuthStateChanged(auth, async (user) => {
     if (!user) return;
     try {
-      await user.getIdToken(true);
+      await user.getIdToken();
       redirectToDashboard();
     } catch {
-      await signOut(auth);
+      setFeedback('Could not validate session. Please try signing in again.', 'error');
     }
   });
 
