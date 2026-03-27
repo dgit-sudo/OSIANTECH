@@ -1,0 +1,13 @@
+cd /var/www/OSIANTECH
+git stash push -m "vm-temp-package-lock" package-lock.json
+git pull origin main
+npm install --omit=dev
+pm2 restart osiantech
+pm2 status
+
+# Optional: if you want to discard the stashed lockfile change
+git stash list
+git stash drop stash@{0}
+
+# Optional: if you want to re-apply the stashed change instead
+git stash pop
