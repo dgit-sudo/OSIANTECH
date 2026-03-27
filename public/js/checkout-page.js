@@ -235,6 +235,10 @@ async function openRazorpay(courseId, idToken, couponCode = '') {
     throw new Error(payload?.error || 'Could not create Razorpay order.');
   }
 
+  if (payload.offerNote) {
+    setFeedback(payload.offerNote, 'info');
+  }
+
   if (payload.quote) renderQuote(payload.quote);
 
   await loadRazorpayScript();

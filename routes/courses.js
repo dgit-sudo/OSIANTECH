@@ -246,6 +246,123 @@ function sanitizeOfferId(value = '') {
   return /^offer_[a-zA-Z0-9]+$/.test(offerId) ? offerId : null;
 }
 
+function asNumber(value) {
+  const n = Number(value);
+  return Number.isFinite(n) ? n : null;
+}
+
+function firstDefined(...values) {
+  for (const value of values) {
+    if (value !== undefined && value !== null && value !== '') return value;
+  }
+  return null;
+}
+
+function toEpochSeconds(value) {
+  const raw = asNumber(value);
+  if (!raw) return null;
+  if (raw > 1000000000000) return Math.floor(raw / 1000);
+  return Math.floor(raw);
+}
+
+async function diagnoseOffer(offerId, orderAmountSmallestUnit, currency) {
+  if (!offerId) {
+    return { eligible: true, reason: '', note: '' };
+  }
+
+  if (!razorpay?.offers || typeof razorpay.offers.fetch !== 'function') {
+    return {
+      eligible: true,
+      reason: '',
+      note: 'Offer will be validated by Razorpay during payment.',
+    };
+  }
+
+  try {
+    const offer = await razorpay.offers.fetch(offerId);
+    const reasons = [];
+
+    const status = String(firstDefined(offer?.status, offer?.state) || '').toLowerCase();
+    if (status && status !== 'active') {
+      reasons.push(`Offer is ${status}.`);
+    }
+
+    const now = Math.floor(Date.now() / 1000);
+    const startsAt = toEpochSeconds(firstDefined(offer?.start_at, offer?.starts_at, offer?.valid_from));
+    const endsAt = toEpochSeconds(firstDefined(offer?.end_at, offer?.expire_by, offer?.valid_until));
+
+    if (startsAt && now < startsAt) {
+      reasons.push('Offer validity has not started yet.');
+    }
+
+    if (endsAt && now > endsAt) {
+      reasons.push('Offer has expired.');
+    }
+
+    const minAmount = asNumber(firstDefined(
+      offer?.minimum_amount,
+      offer?.min_amount,
+      offer?.restrictions?.minimum_amount,
+      offer?.restrictions?.min_amount,
+      offer?.payment?.minimum_amount,
+    ));
+    if (minAmount && orderAmountSmallestUnit < minAmount) {
+      reasons.push('Order amount is below the offer minimum amount.');
+    }
+
+    const offerCurrency = String(firstDefined(
+      offer?.currency,
+      offer?.currency_code,
+      offer?.restrictions?.currency,
+      offer?.payment?.currency,
+    ) || '').toUpperCase();
+    if (offerCurrency && offerCurrency !== currency) {
+      reasons.push(`Offer supports ${offerCurrency}, but checkout is ${currency}.`);
+    }
+
+    const maxCount = asNumber(firstDefined(offer?.max_count, offer?.max_redemptions));
+    const usedCount = asNumber(firstDefined(offer?.count, offer?.redemption_count));
+    if (maxCount !== null && usedCount !== null && usedCount >= maxCount) {
+      reasons.push('Offer redemption limit reached.');
+    }
+
+    const methodRestriction = firstDefined(
+      offer?.method,
+      offer?.payment_method,
+      offer?.restrictions?.method,
+      offer?.restrictions?.payment_method,
+    );
+
+    if (reasons.length) {
+      return {
+        eligible: false,
+        reason: reasons.join(' '),
+        note: '',
+      };
+    }
+
+    const methodNote = methodRestriction
+      ? `Offer is active, but final eligibility depends on payment method: ${String(methodRestriction)}.`
+      : 'Offer is active. Final eligibility is confirmed by Razorpay at payment step.';
+
+    return {
+      eligible: true,
+      reason: '',
+      note: methodNote,
+    };
+  } catch (error) {
+    const description = String(error?.error?.description || error?.description || '').trim();
+    if (description) {
+      return { eligible: false, reason: description, note: '' };
+    }
+    return {
+      eligible: false,
+      reason: 'Offer code not found or not available for this account mode.',
+      note: '',
+    };
+  }
+}
+
 function quoteForCheckout(course, body = {}) {
   const country = String(body.country || '').trim();
   const postalCode = String(body.postalCode || '').trim();
@@ -409,6 +526,11 @@ router.post('/:id/checkout/create-order', async (req, res) => {
 
   const quote = quoteForCheckout(course, req.body || {});
   const orderAmount = toSmallestUnit(quote.totalAmount, quote.currency);
+  const offerDiagnostics = await diagnoseOffer(offerId, orderAmount, quote.currency);
+
+  if (!offerDiagnostics.eligible) {
+    return res.status(400).json({ error: offerDiagnostics.reason || 'Offer is not applicable.' });
+  }
 
   try {
     const orderPayload = {
@@ -443,6 +565,7 @@ router.post('/:id/checkout/create-order', async (req, res) => {
       courseTitle: course.title,
       offerApplied: Boolean(offerId),
       offerId: offerId || '',
+      offerNote: offerDiagnostics.note || '',
       quote: {
         ...quote,
         baseAmountDisplay: formatAmount(quote.baseAmount, quote.currency),
