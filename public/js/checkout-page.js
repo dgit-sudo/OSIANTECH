@@ -9,24 +9,10 @@ const paymentPanel = document.getElementById('checkout-payment-panel');
 const payBtn = document.getElementById('checkout-pay-btn');
 const feedbackEl = document.getElementById('checkout-feedback');
 const currentFeeEl = document.getElementById('checkout-current-fee');
-const locationTypeEl = document.getElementById('checkout-location-type');
 
 let selectedCountry = '';
 let selectedCity = '';
 let currentUser = null;
-
-const METRO_CITIES = new Set([
-  'mumbai',
-  'delhi',
-  'new delhi',
-  'kolkata',
-  'chennai',
-  'bengaluru',
-  'bangalore',
-  'hyderabad',
-  'pune',
-  'ahmedabad',
-]);
 
 function getLocalPurchasesKey(uid) {
   return `osian_purchases_${uid}`;
@@ -131,24 +117,6 @@ function setFeedback(message = '', type = 'info') {
   feedbackEl.textContent = message;
 }
 
-function normalizeCity(city = '') {
-  return String(city)
-    .toLowerCase()
-    .replace(/[^a-z\s]/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-function isMetroCity(city = '') {
-  const normalized = normalizeCity(city);
-  return normalized ? METRO_CITIES.has(normalized) : false;
-}
-
-function updateLocationTypeBadge(city = '') {
-  if (!locationTypeEl) return;
-  locationTypeEl.textContent = isMetroCity(city) ? 'Metro' : 'Non-metro';
-}
-
 async function reverseGeocode(lat, lon) {
   const response = await fetch(
     `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${encodeURIComponent(String(lat))}&lon=${encodeURIComponent(String(lon))}`,
@@ -185,7 +153,6 @@ if (detectLocationBtn) {
           const loc = await reverseGeocode(latitude, longitude);
           if (cityInput && loc.city) cityInput.value = loc.city;
           if (countryInput && loc.country) countryInput.value = loc.country;
-          updateLocationTypeBadge(loc.city);
           setFeedback('Location detected. Please verify city and continue.', 'success');
         } catch {
           setFeedback('Could not map coordinates to city. Please enter city manually.', 'error');
@@ -205,7 +172,6 @@ if (detectLocationBtn) {
 const cityFromQuery = new URLSearchParams(window.location.search).get('city');
 if (cityInput && cityFromQuery) {
   cityInput.value = cityFromQuery;
-  updateLocationTypeBadge(cityFromQuery);
 }
 
 if (countryForm) {
@@ -215,7 +181,7 @@ if (countryForm) {
     selectedCity = String(cityInput?.value || '').trim();
 
     if (!selectedCity) {
-      setFeedback('City is required to apply metro/non-metro fee.', 'error');
+      setFeedback('City is required to help us schedule your classes.', 'error');
       return;
     }
 
@@ -225,7 +191,6 @@ if (countryForm) {
     }
 
     if (paymentPanel) paymentPanel.hidden = false;
-    updateLocationTypeBadge(selectedCity);
     setFeedback('Location captured. You can now continue to payment.', 'success');
   });
 }
@@ -286,9 +251,6 @@ if (payBtn) {
       if (currentFeeEl && payload?.payableAmountDisplay) {
         currentFeeEl.textContent = payload.payableAmountDisplay;
       }
-      if (locationTypeEl && payload?.cityType) {
-        locationTypeEl.textContent = payload.cityType;
-      }
 
       const saved = await recordPurchase(currentUser, courseId, payload.courseTitle);
       if (!saved.ok) {
@@ -301,7 +263,7 @@ if (payBtn) {
       }
 
       setFeedback(
-        `Enrollment confirmed for ${payload.courseTitle}. ${payload.payableAmountDisplay} (${payload.cityType} - ${payload.city}, ${payload.country}).`,
+        `Enrollment confirmed for ${payload.courseTitle}. ${payload.payableAmountDisplay} (${payload.city}, ${payload.country}).`,
         'success',
       );
     } catch {
@@ -310,8 +272,3 @@ if (payBtn) {
   });
 }
 
-if (cityInput) {
-  cityInput.addEventListener('input', () => {
-    updateLocationTypeBadge(cityInput.value);
-  });
-}

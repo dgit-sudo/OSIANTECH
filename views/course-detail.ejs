@@ -24,6 +24,49 @@
           <h2>Full Course Description</h2>
           <p class="detail-description"><%= course.description %></p>
 
+          <% const allPoints = Array.isArray(course.keyPoints) ? course.keyPoints.filter(Boolean) : []; %>
+          <% const prereqPoints = allPoints.filter(function(point) { return /^pre[\s-]*requisite\s*:/i.test(point); }); %>
+          <% const certPoints = allPoints.filter(function(point) { return /^certification\s*:/i.test(point); }); %>
+          <% const learnPoints = allPoints.filter(function(point) { return !/^pre[\s-]*requisite\s*:/i.test(point) && !/^certification\s*:/i.test(point); }); %>
+
+          <% if (prereqPoints.length || certPoints.length || learnPoints.length) { %>
+          <div class="detail-highlights">
+            <% if (learnPoints.length) { %>
+            <section class="highlight-block">
+              <h3>Key Learning Points</h3>
+              <ul class="learn-list">
+                <% learnPoints.forEach(function(point) { %>
+                <li><%= point %></li>
+                <% }) %>
+              </ul>
+            </section>
+            <% } %>
+
+            <% if (prereqPoints.length) { %>
+            <section class="highlight-block prereq-block">
+              <h3>Prerequisites</h3>
+              <ul class="learn-list">
+                <% prereqPoints.forEach(function(point) { %>
+                <li><%= point.replace(/^pre[\s-]*requisite\s*:\s*/i, '') %></li>
+                <% }) %>
+              </ul>
+            </section>
+            <% } %>
+
+            <% if (certPoints.length) { %>
+            <section class="highlight-block">
+              <h3>Certification</h3>
+              <ul class="learn-list">
+                <% certPoints.forEach(function(point) { %>
+                <% const certText = point.replace(/^certification\s*:\s*/i, '').replace(/\bsamyak\b/gi, 'Osian'); %>
+                <li><%= certText %></li>
+                <% }) %>
+              </ul>
+            </section>
+            <% } %>
+          </div>
+          <% } %>
+
           <% if (course.contentSections && course.contentSections.length) { %>
           <div class="course-sections-long">
             <% course.contentSections.forEach(function(section) { %>
@@ -58,10 +101,9 @@
             <span
               class="sidebar-price-value"
               id="course-fee-display"
-              data-non-metro-fee="<%= Number(course.nonMetroFee || 0) %>"
-              data-metro-fee="<%= Number(course.metroFee || 0) %>"
+              data-fee="<%= Number(course.displayFee || course.nonMetroFee || course.metroFee || 0) %>"
             >
-              Non-metro: INR <%= Number(course.nonMetroFee || 0).toLocaleString('en-IN') %> | Metro: INR <%= Number(course.metroFee || 0).toLocaleString('en-IN') %>
+              INR <%= Number(course.displayFee || course.nonMetroFee || course.metroFee || 0).toLocaleString('en-IN') %>
             </span>
           </div>
           <button type="button" class="btn btn-primary btn-block" data-enroll-toggle>Enroll</button>
@@ -98,7 +140,7 @@
             </li>
           </ul>
           <div class="sidebar-guarantee">
-            <span>ℹ️</span> This page displays the full original course description.
+            <span>ℹ️</span> This page shows curated course details, prerequisites, and certification info.
           </div>
         </div>
       </div>

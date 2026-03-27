@@ -755,6 +755,7 @@ ul { list-style: none; }
 .course-card-link {
   display: block;
   color: inherit;
+  height: 100%;
 }
 
 .course-card-rich {
@@ -767,6 +768,12 @@ ul { list-style: none; }
 
 .course-card-rich .course-title {
   font-size: 1.05rem;
+  min-height: 2.9em;
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .course-card-rich .btn-card {
@@ -781,20 +788,22 @@ ul { list-style: none; }
   background-repeat: no-repeat;
 }
 .course-img-lg { height: 300px; border-radius: var(--radius); margin-bottom: 28px; }
-.course-img-1 { background: linear-gradient(135deg, #2d1f6e 0%, #4a2f8f 50%, #1e3a5f 100%); }
-.course-img-2 { background: linear-gradient(135deg, #1f3a2d 0%, #2f6e4a 50%, #1a3d5a 100%); }
-.course-img-3 { background: linear-gradient(135deg, #6e1f3a 0%, #8f2f4a 50%, #5a1a3d 100%); }
-.course-img-4 { background: linear-gradient(135deg, #1a2a3e 0%, #2d4a6e 50%, #1e2d4a 100%); }
-.course-img-5 { background: linear-gradient(135deg, #2a1f1a 0%, #6e3d2f 50%, #3a2a1f 100%); }
-.course-img-6 { background: linear-gradient(135deg, #1f2a1f 0%, #3a6e3a 50%, #2d4a2d 100%); }
-.course-img-7 { background: linear-gradient(135deg, #1f1f3a 0%, #3a3d7e 50%, #1a1e4a 100%); }
-.course-img-8 { background: linear-gradient(135deg, #1a1f1a 0%, #2d4a3d 50%, #3a5e3a 100%); }
-.course-img-9 { background: linear-gradient(135deg, #3a2a1f 0%, #7e5a3d 50%, #5a3d2a 100%); }
+.course-img-1 { background-image: linear-gradient(135deg, #12254a 0%, #1f3f73 45%, #3e78bf 100%), url('/images/course-bg-1.svg'); }
+.course-img-2 { background-image: linear-gradient(135deg, #103a31 0%, #156e64 45%, #2eb39b 100%), url('/images/course-bg-2.svg'); }
+.course-img-3 { background-image: linear-gradient(135deg, #4a1b2f 0%, #7c2f4b 45%, #cc5e7f 100%), url('/images/course-bg-3.svg'); }
+.course-img-4 { background-image: linear-gradient(135deg, #432716 0%, #86563b 45%, #d99d68 100%), url('/images/course-bg-4.svg'); }
+.course-img-5 { background-image: linear-gradient(135deg, #2a2050 0%, #4a3791 45%, #7a6ac7 100%), url('/images/course-bg-5.svg'); }
+.course-img-6 { background-image: linear-gradient(135deg, #1d3244 0%, #2c5d82 45%, #4d94cf 100%), url('/images/course-bg-6.svg'); }
+.course-img-7 { background-image: linear-gradient(135deg, #3a2e14 0%, #7c652d 45%, #cda44d 100%), url('/images/course-bg-7.svg'); }
+.course-img-8 { background-image: linear-gradient(135deg, #2f2239 0%, #5f3a73 45%, #a86cc2 100%), url('/images/course-bg-8.svg'); }
+.course-img-9 { background-image: linear-gradient(135deg, #17353c 0%, #256678 45%, #52a1b8 100%), url('/images/course-bg-9.svg'); }
 .course-img::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background:
+    radial-gradient(110% 80% at 10% 10%, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 60%),
+    linear-gradient(160deg, rgba(5,8,15,0.15) 0%, rgba(5,8,15,0.5) 100%);
 }
 .course-img.has-course-image {
   background-image:
@@ -1249,6 +1258,26 @@ ul { list-style: none; }
   line-height: 1.8;
   font-size: 1rem;
 }
+.detail-highlights {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin: 24px 0 10px;
+}
+.highlight-block {
+  background: color-mix(in srgb, var(--bg-3) 86%, transparent);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+}
+.highlight-block h3 {
+  margin: 0 0 10px;
+  font-size: 1rem;
+}
+.prereq-block {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  background: color-mix(in srgb, var(--accent-muted) 45%, var(--bg-3));
+}
 .course-sections-long {
   display: flex;
   flex-direction: column;
@@ -1269,7 +1298,7 @@ ul { list-style: none; }
 }
 .learn-list li {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
   font-size: 0.9rem;
   color: var(--text-secondary);

@@ -16,7 +16,7 @@
     <div class="checkout-layout">
       <div class="checkout-card">
         <h2>Step 1: Class Scheduling Information</h2>
-        <p class="checkout-note">Share your country and city. City is used to apply metro/non-metro fee from your course table.</p>
+        <p class="checkout-note">Share your country and city so we can align class schedules and coordinator support.</p>
         <form id="checkout-country-form" class="profile-setup-form" action="#" method="post">
           <div class="form-group">
             <label for="checkout-city">Your City</label>
@@ -59,20 +59,8 @@
             <span class="sidebar-value">Mock Checkout</span>
           </li>
           <li>
-            <span class="sidebar-label">Metro Fee</span>
-            <span class="sidebar-value"><%= checkoutPricing.metroFeeDisplay %></span>
-          </li>
-          <li>
-            <span class="sidebar-label">Non-metro Fee</span>
-            <span class="sidebar-value"><%= checkoutPricing.nonMetroFeeDisplay %></span>
-          </li>
-          <li>
-            <span class="sidebar-label">Current Fee</span>
+            <span class="sidebar-label">Course Fee</span>
             <span class="sidebar-value" id="checkout-current-fee"><%= checkoutPricing.selectedFeeDisplay %></span>
-          </li>
-          <li>
-            <span class="sidebar-label">Location Type</span>
-            <span class="sidebar-value" id="checkout-location-type"><%= checkoutPricing.cityType %></span>
           </li>
         </ul>
         <a href="/courses/<%= course.id %>" class="btn btn-ghost btn-block">Back to Course</a>

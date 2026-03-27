@@ -3,19 +3,6 @@ const router = express.Router();
 
 const rawCourses = require('../data/coursesCatalog.json');
 
-const METRO_CITIES = new Set([
-  'mumbai',
-  'delhi',
-  'new delhi',
-  'kolkata',
-  'chennai',
-  'bengaluru',
-  'bangalore',
-  'hyderabad',
-  'pune',
-  'ahmedabad',
-]);
-
 function toInr(price = '') {
   if (!price || /not listed/i.test(price)) return 'INR -';
   const numeric = String(price).replace(/[^0-9.]/g, '');
@@ -29,32 +16,19 @@ function formatInrAmount(amount) {
   return `INR ${num.toLocaleString('en-IN')}`;
 }
 
-function normalizeCity(city = '') {
-  return String(city).toLowerCase().replace(/[^a-z\s]/g, ' ').replace(/\s+/g, ' ').trim();
-}
-
-function isMetroCity(city = '') {
-  const normalized = normalizeCity(city);
-  if (!normalized) return false;
-  return METRO_CITIES.has(normalized);
-}
-
-function getFeeFromCourse(course, city = '') {
-  const metroFee = Number.parseInt(String(course.metroFee || ''), 10);
+function getFeeFromCourse(course) {
   const nonMetroFee = Number.parseInt(String(course.nonMetroFee || ''), 10);
-
+  const metroFee = Number.parseInt(String(course.metroFee || ''), 10);
   const fallbackFee = Number.parseInt(String(course.price || '').replace(/[^0-9]/g, ''), 10);
-  const safeMetro = Number.isFinite(metroFee) && metroFee > 0 ? metroFee : fallbackFee;
-  const safeNonMetro = Number.isFinite(nonMetroFee) && nonMetroFee > 0 ? nonMetroFee : fallbackFee;
 
-  const metro = isMetroCity(city);
-  const selectedFee = metro ? safeMetro : safeNonMetro;
+  const displayFee = Number.isFinite(nonMetroFee) && nonMetroFee > 0
+    ? nonMetroFee
+    : Number.isFinite(metroFee) && metroFee > 0
+      ? metroFee
+      : fallbackFee;
 
   return {
-    metro,
-    selectedFee,
-    metroFee: safeMetro,
-    nonMetroFee: safeNonMetro,
+    selectedFee: displayFee,
   };
 }
 
@@ -62,8 +36,7 @@ const allCourses = rawCourses.map((course) => ({
   ...course,
   category: String(course.category || 'Unspecified').trim() || 'Unspecified',
   displayPrice: toInr(course.price),
-  nonMetroDisplayFee: formatInrAmount(course.nonMetroFee),
-  metroDisplayFee: formatInrAmount(course.metroFee),
+  displayFee: getFeeFromCourse(course).selectedFee,
 }));
 
 function normalizeForSearch(text = '') {
@@ -109,7 +82,7 @@ router.get('/:id/checkout', (req, res) => {
   if (!course) return res.status(404).render('404', { title: '404 – Course Not Found', page: '' });
 
   const city = String(req.query.city || '').trim();
-  const pricing = getFeeFromCourse(course, city);
+  const pricing = getFeeFromCourse(course);
 
   res.render('checkout', {
     title: `Checkout – ${course.title}`,
@@ -117,11 +90,8 @@ router.get('/:id/checkout', (req, res) => {
     course,
     checkoutPricing: {
       city,
-      cityType: pricing.metro ? 'Metro' : 'Non-metro',
       selectedFee: pricing.selectedFee,
       selectedFeeDisplay: formatInrAmount(pricing.selectedFee),
-      metroFeeDisplay: formatInrAmount(pricing.metroFee),
-      nonMetroFeeDisplay: formatInrAmount(pricing.nonMetroFee),
     },
   });
 });
@@ -137,10 +107,10 @@ router.post('/:id/checkout/complete', (req, res) => {
   }
 
   if (!city) {
-    return res.status(400).json({ error: 'City is required to determine metro/non-metro fee.' });
+    return res.status(400).json({ error: 'City is required to schedule your class timing.' });
   }
 
-  const pricing = getFeeFromCourse(course, city);
+  const pricing = getFeeFromCourse(course);
 
   return res.json({
     ok: true,
@@ -149,12 +119,8 @@ router.post('/:id/checkout/complete', (req, res) => {
     courseTitle: course.title,
     country,
     city,
-    cityType: pricing.metro ? 'Metro' : 'Non-metro',
-    feeType: pricing.metro ? 'metro' : 'non-metro',
     payableAmount: pricing.selectedFee,
     payableAmountDisplay: formatInrAmount(pricing.selectedFee),
-    metroFeeDisplay: formatInrAmount(pricing.metroFee),
-    nonMetroFeeDisplay: formatInrAmount(pricing.nonMetroFee),
   });
 });
 
