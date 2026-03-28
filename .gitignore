@@ -5,3 +5,4 @@ node_modules/
 VM_DEPLOY_PREFILLED.sh
 .env*
 !.env.example.template
+
