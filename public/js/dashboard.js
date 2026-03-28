@@ -34,6 +34,7 @@ const activationCloseBtn = document.getElementById('dashboard-activation-close')
 const activationBackdropBtn = document.getElementById('dashboard-activation-close-backdrop');
 const activationTitleEl = document.getElementById('dashboard-activation-title');
 const activationInstructorEl = document.getElementById('dashboard-activation-instructor');
+const activationTimezoneEl = document.getElementById('dashboard-activation-timezone');
 const activationTimeslotEl = document.getElementById('dashboard-activation-timeslot');
 const activationSaveBtn = document.getElementById('dashboard-activation-save');
 const activationNoGoodBtn = document.getElementById('dashboard-activation-no-good-btn');
@@ -49,7 +50,81 @@ let activationContext = {
   courseTitle: '',
   instructors: [],
   previousActivation: null,
+  learnerTimezone: '',
 };
+
+function getBrowserTimeZone() {
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  return tz || 'Asia/Kolkata';
+}
+
+function listTimeZones() {
+  if (typeof Intl.supportedValuesOf === 'function') {
+    try {
+      const zones = Intl.supportedValuesOf('timeZone');
+      if (Array.isArray(zones) && zones.length) return zones;
+    } catch {
+      // fall through to fallback list
+    }
+  }
+
+  return [
+    'Asia/Kolkata',
+    'Asia/Dubai',
+    'Europe/London',
+    'Europe/Berlin',
+    'America/New_York',
+    'America/Chicago',
+    'America/Los_Angeles',
+    'Australia/Sydney',
+    'Asia/Singapore',
+  ];
+}
+
+function formatSlotLabelForTimezone(slot, timeZone) {
+  const start = new Date(slot.startAtUtc);
+  const end = new Date(slot.endAtUtc);
+  if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
+    return slot.label || 'Invalid slot';
+  }
+
+  const dayFmt = new Intl.DateTimeFormat('en-IN', {
+    timeZone,
+    weekday: 'short',
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  });
+  const timeFmt = new Intl.DateTimeFormat('en-IN', {
+    timeZone,
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  });
+
+  return `${dayFmt.format(start)} ${timeFmt.format(start)} - ${timeFmt.format(end)}`;
+}
+
+function populateActivationTimezone(selectedTimeZone, locked = false) {
+  if (!activationTimezoneEl) return;
+  const zones = listTimeZones();
+  const picked = selectedTimeZone || getBrowserTimeZone();
+
+  activationTimezoneEl.innerHTML = '';
+  const seen = new Set();
+  [picked, ...zones].forEach((zone) => {
+    const value = String(zone || '').trim();
+    if (!value || seen.has(value)) return;
+    seen.add(value);
+    const option = document.createElement('option');
+    option.value = value;
+    option.textContent = value;
+    activationTimezoneEl.appendChild(option);
+  });
+
+  activationTimezoneEl.value = picked;
+  activationTimezoneEl.disabled = locked;
+}
 
 function clearUnauthRedirectTimer() {
   if (!unauthRedirectTimer) return;
@@ -598,6 +673,7 @@ function getActivationToken() {
 function setTimeslotOptions(instructors, instructorId, selectedTimeslotId = '') {
   if (!activationTimeslotEl) return;
   activationTimeslotEl.innerHTML = '';
+  const selectedTz = String(activationTimezoneEl?.value || getBrowserTimeZone());
 
   const instructor = instructors.find((item) => item.instructorId === instructorId) || null;
   const slots = Array.isArray(instructor?.timeSlots) ? instructor.timeSlots : [];
@@ -619,7 +695,7 @@ function setTimeslotOptions(instructors, instructorId, selectedTimeslotId = '') 
   slots.forEach((slot) => {
     const option = document.createElement('option');
     option.value = slot.slotId;
-    option.textContent = slot.label;
+    option.textContent = formatSlotLabelForTimezone(slot, selectedTz);
     activationTimeslotEl.appendChild(option);
   });
 
@@ -641,8 +717,9 @@ async function openActivationModal(purchase) {
   setActivationFeedback('Loading instructor availability...', 'info');
 
   const token = await getActivationToken();
+  const browserTimeZone = getBrowserTimeZone();
   const response = await fetch(
-    `${profileBaseUrl}/${encodeURIComponent(user.uid)}/purchases/${encodeURIComponent(String(activationContext.courseId))}/activation-options`,
+    `${profileBaseUrl}/${encodeURIComponent(user.uid)}/purchases/${encodeURIComponent(String(activationContext.courseId))}/activation-options?timeZone=${encodeURIComponent(browserTimeZone)}`,
     {
       headers: {
         Accept: 'application/json',
@@ -686,6 +763,9 @@ async function openActivationModal(purchase) {
 
   const currentActivation = payload.activation || null;
   activationContext.previousActivation = currentActivation;
+  const lockedTimeZone = Boolean(currentActivation?.learnerTimezone);
+  activationContext.learnerTimezone = currentActivation?.learnerTimezone || payload.learnerTimeZone || browserTimeZone;
+  populateActivationTimezone(activationContext.learnerTimezone, lockedTimeZone);
   if (currentActivation?.instructorId && instructors.some((i) => i.instructorId === currentActivation.instructorId)) {
     activationInstructorEl.value = currentActivation.instructorId;
   } else if (instructors[0]) {
@@ -719,6 +799,7 @@ async function saveActivationSelection() {
   const instructorId = String(activationInstructorEl?.value || '').trim();
   const noGoodTimeslot = false;
   const timeslotId = String(activationTimeslotEl?.value || '').trim();
+  const learnerTimezone = String(activationTimezoneEl?.value || getBrowserTimeZone()).trim();
 
   if (!instructorId) {
     throw new Error('Please select an instructor.');
@@ -742,6 +823,7 @@ async function saveActivationSelection() {
       body: JSON.stringify({
         instructorId,
         timeslotId,
+        learnerTimezone,
         noGoodTimeslot,
       }),
     },
@@ -763,6 +845,7 @@ async function handleNoGoodTimeslots() {
   if (!activationContext.courseId) throw new Error('Missing course context.');
 
   const instructorId = String(activationInstructorEl?.value || '').trim();
+  const learnerTimezone = String(activationTimezoneEl?.value || getBrowserTimeZone()).trim();
   if (!instructorId) {
     throw new Error('Please select an instructor before requesting support.');
   }
@@ -780,6 +863,7 @@ async function handleNoGoodTimeslots() {
       body: JSON.stringify({
         instructorId,
         timeslotId: '',
+        learnerTimezone,
         noGoodTimeslot: true,
       }),
     },
@@ -994,6 +1078,13 @@ if (activationInstructorEl) {
   activationInstructorEl.addEventListener('change', () => {
     const instructorId = String(activationInstructorEl.value || '');
     setTimeslotOptions(activationContext.instructors, instructorId, '');
+  });
+}
+
+if (activationTimezoneEl) {
+  activationTimezoneEl.addEventListener('change', () => {
+    const instructorId = String(activationInstructorEl?.value || '');
+    setTimeslotOptions(activationContext.instructors, instructorId, String(activationTimeslotEl?.value || ''));
   });
 }
 

@@ -152,9 +152,11 @@ async function ensureInstructorTables() {
     create table if not exists ${instructorSlotsTable} (
       id serial primary key,
       instructor_uid varchar(128) not null,
+      slot_date date null,
       weekday smallint not null,
       start_time varchar(5) not null,
       end_time varchar(5) not null,
+      timezone varchar(80) not null default 'Asia/Kolkata',
       is_active boolean not null default true,
       created_at timestamp not null default current_timestamp,
       updated_at timestamp not null default current_timestamp,
@@ -162,6 +164,10 @@ async function ensureInstructorTables() {
       constraint valid_weekday check (weekday between 0 and 6)
     )
   `);
+
+  await pool.query(`alter table ${instructorSlotsTable} add column if not exists slot_date date null`);
+  await pool.query(`alter table ${instructorSlotsTable} add column if not exists timezone varchar(80) not null default 'Asia/Kolkata'`);
+  await pool.query(`create index if not exists idx_${instructorSlotsTable}_slot_date on ${instructorSlotsTable}(slot_date)`);
 
   await pool.query(`
     create table if not exists ${activationTable} (
@@ -172,6 +178,10 @@ async function ensureInstructorTables() {
       instructor_name text null,
       timeslot_id varchar(128) null,
       timeslot_label text null,
+      learner_timezone varchar(80) null,
+      selected_slot_date date null,
+      selected_class_start_at timestamp null,
+      selected_class_end_at timestamp null,
       no_good_timeslot boolean not null default false,
       status varchar(40) not null default 'requested',
       requested_at timestamp not null default current_timestamp,
@@ -180,6 +190,11 @@ async function ensureInstructorTables() {
       unique(uid, course_id)
     )
   `);
+
+  await pool.query(`alter table ${activationTable} add column if not exists learner_timezone varchar(80) null`);
+  await pool.query(`alter table ${activationTable} add column if not exists selected_slot_date date null`);
+  await pool.query(`alter table ${activationTable} add column if not exists selected_class_start_at timestamp null`);
+  await pool.query(`alter table ${activationTable} add column if not exists selected_class_end_at timestamp null`);
 
   instructorTablesReady = true;
 }
@@ -316,10 +331,10 @@ router.get('/api/me', requireInstructorAuth, async (req, res) => {
 
     const slotsResult = await pool.query(
       `
-        select id, weekday, start_time, end_time, is_active
+        select id, slot_date, weekday, start_time, end_time, timezone, is_active
         from ${instructorSlotsTable}
         where instructor_uid = $1 and is_active = true
-        order by weekday asc, start_time asc
+        order by slot_date asc nulls last, weekday asc, start_time asc
       `,
       [req.instructor.instructorUid],
     );
@@ -329,10 +344,12 @@ router.get('/api/me', requireInstructorAuth, async (req, res) => {
       instructor: req.instructor,
       availability: slotsResult.rows.map((row) => ({
         id: Number(row.id),
+        slotDate: row.slot_date || null,
         weekday: Number(row.weekday),
         weekdayLabel: formatWeekday(Number(row.weekday)),
         startTime: row.start_time,
         endTime: row.end_time,
+        timezone: row.timezone || 'Asia/Kolkata',
       })),
     });
   } catch {
@@ -354,6 +371,10 @@ router.get('/api/classes/upcoming', requireInstructorAuth, async (req, res) => {
           a.instructor_name,
           a.timeslot_id,
           a.timeslot_label,
+          a.learner_timezone,
+          a.selected_slot_date,
+          a.selected_class_start_at,
+          a.selected_class_end_at,
           a.no_good_timeslot,
           a.status,
           a.requested_at,
@@ -374,16 +395,9 @@ router.get('/api/classes/upcoming', requireInstructorAuth, async (req, res) => {
 
     const classes = rows.rows.map((row) => {
       let nextClassAt = null;
-      const slotLabel = String(row.timeslot_label || '');
-      const parsed = /^(Sun|Mon|Tue|Wed|Thu|Fri|Sat)\s+(\d{2}:\d{2})\s*-\s*(\d{2}:\d{2})\s*IST$/.exec(slotLabel);
-      if (parsed) {
-        const dayMap = {
-          Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6,
-        };
-        const weekday = dayMap[parsed[1]];
-        if (Number.isInteger(weekday)) {
-          nextClassAt = computeNextOccurrence(weekday, parsed[2]).toISOString();
-        }
+      const selectedStart = row.selected_class_start_at ? new Date(row.selected_class_start_at) : null;
+      if (selectedStart && !Number.isNaN(selectedStart.getTime()) && selectedStart > new Date()) {
+        nextClassAt = selectedStart.toISOString();
       }
 
       return {
@@ -396,7 +410,11 @@ router.get('/api/classes/upcoming', requireInstructorAuth, async (req, res) => {
         userPhoneNumber: row.phone_number || '',
         status: row.status || 'requested',
         noGoodTimeslot: Boolean(row.no_good_timeslot),
-        timeslotLabel: slotLabel,
+        timeslotLabel: String(row.timeslot_label || ''),
+        learnerTimezone: row.learner_timezone || '',
+        selectedSlotDate: row.selected_slot_date || null,
+        selectedClassStartAt: row.selected_class_start_at || null,
+        selectedClassEndAt: row.selected_class_end_at || null,
         requestedAt: row.requested_at,
         nextClassAt,
       };

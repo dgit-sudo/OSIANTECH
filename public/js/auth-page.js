@@ -42,8 +42,9 @@ if (!root) {
       'auth/popup-closed-by-user': 'Google sign-in was cancelled.',
       'auth/popup-blocked': 'Popup was blocked. Please allow popups and try again.',
       'auth/account-exists-with-different-credential': 'An account already exists with this email using a different sign-in method (e.g. Password). Please use that method.',
+      'app/admin-restricted': 'Admin account cannot use learner sign in or sign up.',
     };
-    return map[error?.code] || 'Authentication failed. Please try again.';
+    return map[error?.code] || error?.message || 'Authentication failed. Please try again.';
   };
 
   const setFeedback = (message = '', type = 'info') => {
@@ -105,7 +106,7 @@ if (!root) {
   const syncUserToSupabase = async (user) => {
     if (!user?.uid || !user?.email) return;
 
-    await fetch('/api/profile/sync-user', {
+    const response = await fetch('/api/profile/sync-user', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -118,6 +119,20 @@ if (!root) {
         provider: detectProvider(user),
       }),
     });
+
+    if (!response.ok) {
+      let message = 'Authentication failed. Please try again.';
+      try {
+        const payload = await response.json();
+        if (payload?.error) message = payload.error;
+      } catch {
+        // Keep fallback message when response has no JSON body.
+      }
+
+      const error = new Error(message);
+      error.code = response.status === 403 ? 'app/admin-restricted' : 'app/sync-failed';
+      throw error;
+    }
   };
 
   const redirectToDashboard = () => {
@@ -165,6 +180,11 @@ if (!root) {
       suppressAutoRedirect = false;
       redirectToDashboard();
     } catch (error) {
+      try {
+        if (auth.currentUser) await signOut(auth);
+      } catch {
+        // Ignore sign-out failures here to avoid hiding original auth errors.
+      }
       suppressAutoRedirect = false;
       setFeedback(normalizeError(error), 'error');
     }
@@ -202,6 +222,11 @@ if (!root) {
         redirectToDashboard();
       }
     } catch (error) {
+      try {
+        if (auth.currentUser) await signOut(auth);
+      } catch {
+        // Ignore sign-out failures here to avoid hiding original auth errors.
+      }
       setFeedback(normalizeError(error), 'error');
     }
   });

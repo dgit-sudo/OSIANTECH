@@ -94,9 +94,11 @@ async function ensureInstructorTables() {
     create table if not exists ${instructorSlotsTable} (
       id serial primary key,
       instructor_uid varchar(128) not null,
+      slot_date date null,
       weekday smallint not null,
       start_time varchar(5) not null,
       end_time varchar(5) not null,
+      timezone varchar(80) not null default 'Asia/Kolkata',
       is_active boolean not null default true,
       created_at timestamp not null default current_timestamp,
       updated_at timestamp not null default current_timestamp,
@@ -105,9 +107,18 @@ async function ensureInstructorTables() {
     )
   `);
 
+  await pool.query(`alter table ${instructorSlotsTable} add column if not exists slot_date date null`);
+  await pool.query(`alter table ${instructorSlotsTable} add column if not exists timezone varchar(80) not null default 'Asia/Kolkata'`);
+
   await pool.query(`create index if not exists idx_${instructorTable}_email on ${instructorTable}(email)`);
   await pool.query(`create index if not exists idx_${instructorSlotsTable}_uid on ${instructorSlotsTable}(instructor_uid)`);
   await pool.query(`create index if not exists idx_${instructorSlotsTable}_weekday on ${instructorSlotsTable}(weekday)`);
+  await pool.query(`create index if not exists idx_${instructorSlotsTable}_slot_date on ${instructorSlotsTable}(slot_date)`);
+  await pool.query(`
+    create unique index if not exists uq_${instructorSlotsTable}_date_time
+    on ${instructorSlotsTable}(instructor_uid, slot_date, start_time, end_time)
+    where slot_date is not null
+  `);
 
   instructorTablesReady = true;
 }
@@ -149,6 +160,98 @@ async function verifyFirebaseToken(idToken) {
       valid: null, uid: null, email: null, providerIds: [],
     };
   }
+}
+
+async function lookupExistingFirebaseUids(uids = []) {
+  const normalized = [...new Set((uids || []).map((uid) => String(uid || '').trim()).filter(isValidUid))];
+  if (!firebaseApiKey || !normalized.length) {
+    return new Set(normalized);
+  }
+
+  const existing = new Set();
+  const chunkSize = 100;
+
+  for (let i = 0; i < normalized.length; i += chunkSize) {
+    const chunk = normalized.slice(i, i + chunkSize);
+    try {
+      const response = await fetch(
+        `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${firebaseApiKey}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ localId: chunk }),
+        },
+      );
+      const data = await response.json();
+      if (Array.isArray(data?.users)) {
+        data.users.forEach((user) => {
+          const uid = String(user?.localId || '').trim();
+          if (isValidUid(uid)) existing.add(uid);
+        });
+      }
+    } catch {
+      return new Set(normalized);
+    }
+  }
+
+  return existing;
+}
+
+async function getUidScopedTables(client) {
+  const result = await client.query(
+    `
+      select distinct table_name
+      from information_schema.columns
+      where table_schema = 'public' and column_name = 'uid'
+    `,
+  );
+
+  return result.rows
+    .map((row) => String(row.table_name || '').trim())
+    .filter((table) => /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(table));
+}
+
+async function deleteUserRemnants(uid) {
+  if (!pool || !isValidUid(uid)) return;
+  const client = await pool.connect();
+  try {
+    await client.query('begin');
+    const discoveredTables = await getUidScopedTables(client);
+    const priorityTables = [purchasesTable, profileTable, usersTable];
+    const allUidTables = [...new Set([...priorityTables, ...discoveredTables])];
+    for (const table of allUidTables) {
+      await client.query(`delete from ${table} where uid = $1`, [uid]);
+    }
+    await client.query('commit');
+  } catch {
+    await client.query('rollback');
+  } finally {
+    client.release();
+  }
+}
+
+function dedupeUsersByIdentity(users = []) {
+  const byKey = new Map();
+  users.forEach((user) => {
+    const emailKey = normalizeEmail(user?.email || '');
+    const key = emailKey || String(user?.uid || '').trim();
+    if (!key) return;
+    const prev = byKey.get(key);
+    const prevTime = Date.parse(prev?.updatedAt || prev?.createdAt || 0) || 0;
+    const nextTime = Date.parse(user?.updatedAt || user?.createdAt || 0) || 0;
+    if (!prev || nextTime >= prevTime) {
+      byKey.set(key, user);
+    }
+  });
+  return [...byKey.values()];
+}
+
+function weekdayFromDate(slotDate) {
+  const parsed = /^\d{4}-\d{2}-\d{2}$/.test(String(slotDate || ''))
+    ? new Date(`${slotDate}T00:00:00+05:30`)
+    : null;
+  if (!parsed || Number.isNaN(parsed.getTime())) return null;
+  return parsed.getUTCDay();
 }
 
 async function requireAdminAuth(req, res, next) {
@@ -239,7 +342,7 @@ router.get('/api/users', requireAdminAuth, async (_req, res) => {
     `;
 
     const result = await pool.query(query);
-    const users = result.rows.map((row) => {
+    const initialUsers = result.rows.map((row) => {
       const purchaseCount = Number(row.purchase_count || 0);
       return {
         uid: row.uid,
@@ -248,8 +351,18 @@ router.get('/api/users', requireAdminAuth, async (_req, res) => {
         completedProfile: Boolean(row.user_completed || row.profile_completed),
         purchaseCount,
         hasPurchases: purchaseCount > 0,
+        createdAt: row.created_at || null,
+        updatedAt: row.updated_at || null,
       };
     });
+
+    const existingFirebaseUids = await lookupExistingFirebaseUids(initialUsers.map((u) => u.uid));
+    const staleUsers = initialUsers.filter((u) => !existingFirebaseUids.has(u.uid));
+    if (staleUsers.length) {
+      await Promise.all(staleUsers.map((u) => deleteUserRemnants(u.uid)));
+    }
+
+    const users = dedupeUsersByIdentity(initialUsers.filter((u) => existingFirebaseUids.has(u.uid)));
 
     return res.json({
       usersWithPurchases: users.filter((u) => u.hasPurchases),
@@ -626,10 +739,10 @@ router.get('/api/instructors/:instructorUid/slots', requireAdminAuth, async (req
     await ensureInstructorTables();
     const rows = await pool.query(
       `
-        select id, weekday, start_time, end_time, is_active
+        select id, slot_date, weekday, start_time, end_time, timezone, is_active
         from ${instructorSlotsTable}
         where instructor_uid = $1
-        order by weekday asc, start_time asc
+        order by slot_date asc nulls last, weekday asc, start_time asc
       `,
       [instructorUid],
     );
@@ -637,9 +750,11 @@ router.get('/api/instructors/:instructorUid/slots', requireAdminAuth, async (req
     return res.json({
       slots: rows.rows.map((row) => ({
         id: Number(row.id),
+        slotDate: row.slot_date || null,
         weekday: Number(row.weekday),
         startTime: row.start_time,
         endTime: row.end_time,
+        timezone: row.timezone || 'Asia/Kolkata',
         isActive: Boolean(row.is_active),
       })),
     });
@@ -652,20 +767,27 @@ router.post('/api/instructors/:instructorUid/slots', requireAdminAuth, async (re
   if (!ensureDatabaseConfigured(res)) return;
 
   const instructorUid = String(req.params.instructorUid || '').trim();
-  const weekday = Number.parseInt(String(req.body?.weekday || ''), 10);
+  const slotDate = String(req.body?.slotDate || '').trim();
   const startTime = String(req.body?.startTime || '').trim();
   const endTime = String(req.body?.endTime || '').trim();
+  const timezone = 'Asia/Kolkata';
+  const weekday = weekdayFromDate(slotDate);
 
   if (!/^inst_[a-zA-Z0-9]+$/.test(instructorUid)) {
     return res.status(400).json({ error: 'Invalid instructor id.' });
   }
 
-  if (!Number.isInteger(weekday) || weekday < 0 || weekday > 6) {
-    return res.status(400).json({ error: 'Weekday must be between 0 and 6.' });
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(slotDate) || weekday === null) {
+    return res.status(400).json({ error: 'Please choose a valid slot date.' });
   }
 
   if (!/^\d{2}:\d{2}$/.test(startTime) || !/^\d{2}:\d{2}$/.test(endTime) || startTime >= endTime) {
     return res.status(400).json({ error: 'Invalid start/end time.' });
+  }
+
+  const validHourRange = /^\d{2}:00$/.test(startTime) && /^\d{2}:00$/.test(endTime);
+  if (!validHourRange) {
+    return res.status(400).json({ error: 'Use full-hour values like 13:00 to 15:00.' });
   }
 
   try {
@@ -678,15 +800,35 @@ router.post('/api/instructors/:instructorUid/slots', requireAdminAuth, async (re
       return res.status(404).json({ error: 'Instructor not found.' });
     }
 
-    await pool.query(
+    const existing = await pool.query(
       `
-        insert into ${instructorSlotsTable} (instructor_uid, weekday, start_time, end_time, is_active, updated_at)
-        values ($1, $2, $3, $4, true, current_timestamp)
-        on conflict (instructor_uid, weekday, start_time, end_time)
-        do update set is_active = true, updated_at = current_timestamp
+        select id
+        from ${instructorSlotsTable}
+        where instructor_uid = $1 and slot_date = $2 and start_time = $3 and end_time = $4
+        limit 1
       `,
-      [instructorUid, weekday, startTime, endTime],
+      [instructorUid, slotDate, startTime, endTime],
     );
+
+    if (existing.rows[0]) {
+      await pool.query(
+        `
+          update ${instructorSlotsTable}
+          set is_active = true, weekday = $1, timezone = $2, updated_at = current_timestamp
+          where id = $3
+        `,
+        [weekday, timezone, Number(existing.rows[0].id)],
+      );
+    } else {
+      await pool.query(
+        `
+          insert into ${instructorSlotsTable}
+            (instructor_uid, slot_date, weekday, start_time, end_time, timezone, is_active, updated_at)
+          values ($1, $2, $3, $4, $5, $6, true, current_timestamp)
+        `,
+        [instructorUid, slotDate, weekday, startTime, endTime, timezone],
+      );
+    }
 
     return res.json({ ok: true });
   } catch {

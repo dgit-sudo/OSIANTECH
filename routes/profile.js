@@ -10,6 +10,7 @@ const profileTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_PROFIL
 const usersTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_USERS_TABLE || '')
   ? process.env.SUPABASE_USERS_TABLE
   : 'app_users';
+const adminEmail = String(process.env.ADMIN_EMAIL || 'dhyanamshah38@gmail.com').trim().toLowerCase();
 const purchasesTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_PURCHASES_TABLE || '')
   ? process.env.SUPABASE_PURCHASES_TABLE
   : 'user_purchases';
@@ -37,6 +38,10 @@ let instructorTablesReady = false;
 
 function isValidUid(uid = '') {
   return typeof uid === 'string' && /^[a-zA-Z0-9_-]{6,128}$/.test(uid);
+}
+
+function isAdminEmail(email = '') {
+  return String(email).trim().toLowerCase() === adminEmail;
 }
 
 function ensureDatabaseConfigured(res) {
@@ -82,6 +87,10 @@ async function ensureActivationsTable() {
       instructor_name text null,
       timeslot_id varchar(128) null,
       timeslot_label text null,
+      learner_timezone varchar(80) null,
+      selected_slot_date date null,
+      selected_class_start_at timestamp null,
+      selected_class_end_at timestamp null,
       no_good_timeslot boolean not null default false,
       status varchar(40) not null default 'requested',
       requested_at timestamp not null default current_timestamp,
@@ -91,8 +100,14 @@ async function ensureActivationsTable() {
     )
   `);
 
+  await pool.query(`alter table ${activationTable} add column if not exists learner_timezone varchar(80) null`);
+  await pool.query(`alter table ${activationTable} add column if not exists selected_slot_date date null`);
+  await pool.query(`alter table ${activationTable} add column if not exists selected_class_start_at timestamp null`);
+  await pool.query(`alter table ${activationTable} add column if not exists selected_class_end_at timestamp null`);
+
   await pool.query(`create index if not exists idx_${activationTable}_uid on ${activationTable}(uid)`);
   await pool.query(`create index if not exists idx_${activationTable}_course_id on ${activationTable}(course_id)`);
+  await pool.query(`create index if not exists idx_${activationTable}_instructor_start on ${activationTable}(instructor_id, selected_class_start_at)`);
 
   activationsTableReady = true;
 }
@@ -118,9 +133,11 @@ async function ensureInstructorTables() {
     create table if not exists ${instructorSlotsTable} (
       id serial primary key,
       instructor_uid varchar(128) not null,
+      slot_date date null,
       weekday smallint not null,
       start_time varchar(5) not null,
       end_time varchar(5) not null,
+      timezone varchar(80) not null default 'Asia/Kolkata',
       is_active boolean not null default true,
       created_at timestamp not null default current_timestamp,
       updated_at timestamp not null default current_timestamp,
@@ -129,15 +146,107 @@ async function ensureInstructorTables() {
     )
   `);
 
+  await pool.query(`alter table ${instructorSlotsTable} add column if not exists slot_date date null`);
+  await pool.query(`alter table ${instructorSlotsTable} add column if not exists timezone varchar(80) not null default 'Asia/Kolkata'`);
+  await pool.query(`create index if not exists idx_${instructorSlotsTable}_slot_date on ${instructorSlotsTable}(slot_date)`);
+  await pool.query(`
+    create unique index if not exists uq_${instructorSlotsTable}_date_time
+    on ${instructorSlotsTable}(instructor_uid, slot_date, start_time, end_time)
+    where slot_date is not null
+  `);
+
   instructorTablesReady = true;
 }
 
-function formatWeekday(index) {
-  const labels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  return labels[index] || 'Day';
+function isValidTimeZone(value = '') {
+  try {
+    Intl.DateTimeFormat('en-US', { timeZone: String(value || '') });
+    return true;
+  } catch {
+    return false;
+  }
 }
 
-async function getInstructorAvailability() {
+function normalizeTimeZone(value = '') {
+  const tz = String(value || '').trim();
+  return isValidTimeZone(tz) ? tz : 'Asia/Kolkata';
+}
+
+function parseIstDateTime(slotDate, hhmm) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(slotDate || ''))) return null;
+  if (!/^\d{2}:\d{2}$/.test(String(hhmm || ''))) return null;
+  const [year, month, day] = String(slotDate).split('-').map((v) => Number.parseInt(v, 10));
+  const [hour, minute] = String(hhmm).split(':').map((v) => Number.parseInt(v, 10));
+  if (!Number.isInteger(year) || !Number.isInteger(month) || !Number.isInteger(day)) return null;
+  if (!Number.isInteger(hour) || !Number.isInteger(minute)) return null;
+  const utcMs = Date.UTC(year, month - 1, day, hour, minute, 0, 0) - (330 * 60 * 1000);
+  const date = new Date(utcMs);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function formatUtcRangeInTimeZone(startUtcIso, endUtcIso, timeZone) {
+  const start = new Date(startUtcIso);
+  const end = new Date(endUtcIso);
+  if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return '';
+  const dayFmt = new Intl.DateTimeFormat('en-IN', {
+    timeZone,
+    weekday: 'short',
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  });
+  const timeFmt = new Intl.DateTimeFormat('en-IN', {
+    timeZone,
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  });
+  return `${dayFmt.format(start)} ${timeFmt.format(start)} - ${timeFmt.format(end)}`;
+}
+
+function todayIstDateString() {
+  const now = new Date();
+  const istMs = now.getTime() + (330 * 60 * 1000);
+  const ist = new Date(istMs);
+  const y = ist.getUTCFullYear();
+  const m = String(ist.getUTCMonth() + 1).padStart(2, '0');
+  const d = String(ist.getUTCDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+async function getBookedSlotStarts(instructorId, exclude = {}) {
+  await ensureActivationsTable();
+  const rows = await pool.query(
+    `
+      select timeslot_id
+      from ${activationTable}
+      where instructor_id = $1
+        and no_good_timeslot = false
+        and status = 'activated'
+        and timeslot_id is not null
+        and not (uid = $2 and course_id = $3)
+    `,
+    [instructorId, String(exclude.uid || ''), Number(exclude.courseId || 0)],
+  );
+
+  return new Set(
+    rows.rows
+      .map((row) => {
+        const token = String(row.timeslot_id || '');
+        const split = token.split('|');
+        if (split.length !== 2) return '';
+        const iso = new Date(split[1]);
+        return Number.isNaN(iso.getTime()) ? '' : iso.toISOString();
+      })
+      .filter(Boolean),
+  );
+}
+
+async function getInstructorAvailability(options = {}) {
+  const learnerTimeZone = normalizeTimeZone(options.learnerTimeZone || 'Asia/Kolkata');
+  const excludeUid = String(options.excludeUid || '').trim();
+  const excludeCourseId = Number.parseInt(String(options.excludeCourseId || '0'), 10) || 0;
+
   await ensureInstructorTables();
 
   const rows = await pool.query(
@@ -146,19 +255,24 @@ async function getInstructorAvailability() {
         i.instructor_uid,
         i.display_name,
         s.id as slot_id,
-        s.weekday,
+        s.slot_date,
         s.start_time,
-        s.end_time
+        s.end_time,
+        s.timezone
       from ${instructorTable} i
       left join ${instructorSlotsTable} s
-        on s.instructor_uid = i.instructor_uid and s.is_active = true
+        on s.instructor_uid = i.instructor_uid and s.is_active = true and s.slot_date is not null
       where i.is_active = true
-      order by i.display_name asc, s.weekday asc, s.start_time asc
+        and (s.slot_date is null or s.slot_date >= $1)
+      order by i.display_name asc, s.slot_date asc, s.start_time asc
     `,
+    [todayIstDateString()],
   );
 
   const byInstructor = new Map();
-  rows.rows.forEach((row) => {
+  const bookedByInstructor = new Map();
+
+  for (const row of rows.rows) {
     const instructorId = row.instructor_uid;
     if (!byInstructor.has(instructorId)) {
       byInstructor.set(instructorId, {
@@ -168,16 +282,40 @@ async function getInstructorAvailability() {
       });
     }
 
-    if (row.slot_id) {
-      byInstructor.get(instructorId).timeSlots.push({
-        slotId: String(row.slot_id),
-        weekday: Number(row.weekday),
-        startTime: row.start_time,
-        endTime: row.end_time,
-        label: `${formatWeekday(Number(row.weekday))} ${row.start_time} - ${row.end_time} IST`,
-      });
+    if (!bookedByInstructor.has(instructorId)) {
+      bookedByInstructor.set(
+        instructorId,
+        await getBookedSlotStarts(instructorId, { uid: excludeUid, courseId: excludeCourseId }),
+      );
     }
-  });
+
+    if (!row.slot_id || !row.slot_date) continue;
+
+    const rangeStart = parseIstDateTime(row.slot_date, row.start_time);
+    const rangeEnd = parseIstDateTime(row.slot_date, row.end_time);
+    if (!rangeStart || !rangeEnd || rangeStart >= rangeEnd) continue;
+
+    let cursorMs = rangeStart.getTime();
+    const endMs = rangeEnd.getTime();
+    while (cursorMs + 3600000 <= endMs) {
+      const nextMs = cursorMs + 3600000;
+      const startIso = new Date(cursorMs).toISOString();
+      const endIso = new Date(nextMs).toISOString();
+      const bookedSet = bookedByInstructor.get(instructorId);
+      if (!bookedSet || !bookedSet.has(startIso)) {
+        byInstructor.get(instructorId).timeSlots.push({
+          slotId: `${row.slot_id}|${startIso}`,
+          baseSlotId: String(row.slot_id),
+          slotDate: row.slot_date,
+          startAtUtc: startIso,
+          endAtUtc: endIso,
+          sourceTimeZone: row.timezone || 'Asia/Kolkata',
+          label: formatUtcRangeInTimeZone(startIso, endIso, learnerTimeZone),
+        });
+      }
+      cursorMs = nextMs;
+    }
+  }
 
   return [...byInstructor.values()];
 }
@@ -201,25 +339,45 @@ async function getInstructorById(instructorId = '') {
 }
 
 async function getInstructorSlot(instructorId, slotId) {
-  await ensureInstructorTables();
-  const slotNum = Number.parseInt(String(slotId || ''), 10);
-  if (!Number.isFinite(slotNum) || slotNum <= 0) return null;
+  const raw = String(slotId || '').trim();
+  const split = raw.split('|');
+  if (split.length !== 2) return null;
 
+  const baseSlotId = Number.parseInt(split[0], 10);
+  const startIso = String(split[1] || '').trim();
+  if (!Number.isFinite(baseSlotId) || baseSlotId <= 0) return null;
+  const selectedStart = new Date(startIso);
+  if (Number.isNaN(selectedStart.getTime())) return null;
+  const selectedEnd = new Date(selectedStart.getTime() + 3600000);
+
+  await ensureInstructorTables();
   const result = await pool.query(
     `
-      select id, weekday, start_time, end_time
+      select id, slot_date, start_time, end_time, timezone
       from ${instructorSlotsTable}
-      where instructor_uid = $1 and id = $2 and is_active = true
+      where instructor_uid = $1 and id = $2 and is_active = true and slot_date is not null
       limit 1
     `,
-    [instructorId, slotNum],
+    [instructorId, baseSlotId],
   );
 
   if (!result.rows[0]) return null;
   const row = result.rows[0];
+  const rangeStart = parseIstDateTime(row.slot_date, row.start_time);
+  const rangeEnd = parseIstDateTime(row.slot_date, row.end_time);
+  if (!rangeStart || !rangeEnd) return null;
+
+  const inRange = selectedStart.getTime() >= rangeStart.getTime()
+    && selectedEnd.getTime() <= rangeEnd.getTime();
+  if (!inRange) return null;
+
   return {
-    slotId: String(row.id),
-    label: `${formatWeekday(Number(row.weekday))} ${row.start_time} - ${row.end_time} IST`,
+    slotId: `${baseSlotId}|${selectedStart.toISOString()}`,
+    baseSlotId: String(baseSlotId),
+    slotDate: row.slot_date,
+    startAtUtc: selectedStart.toISOString(),
+    endAtUtc: selectedEnd.toISOString(),
+    sourceTimeZone: row.timezone || 'Asia/Kolkata',
   };
 }
 
@@ -329,6 +487,10 @@ router.post('/sync-user', async (req, res) => {
 
   if (!email) {
     return res.status(400).json({ error: 'Email is required for sync.' });
+  }
+
+  if (isAdminEmail(email)) {
+    return res.status(403).json({ error: 'Admin account cannot use learner sign in or sign up.' });
   }
 
   try {
@@ -527,6 +689,10 @@ router.get('/:uid/purchases', async (req, res) => {
              a.instructor_name,
              a.timeslot_id,
              a.timeslot_label,
+             a.learner_timezone,
+             a.selected_slot_date,
+             a.selected_class_start_at,
+             a.selected_class_end_at,
              a.no_good_timeslot,
              a.status,
              a.requested_at
@@ -548,6 +714,10 @@ router.get('/:uid/purchases', async (req, res) => {
             instructorName: row.instructor_name || '',
             timeslotId: row.timeslot_id || '',
             timeslotLabel: row.timeslot_label || '',
+            learnerTimezone: row.learner_timezone || '',
+            selectedSlotDate: row.selected_slot_date || null,
+            selectedClassStartAt: row.selected_class_start_at || null,
+            selectedClassEndAt: row.selected_class_end_at || null,
             noGoodTimeslot: Boolean(row.no_good_timeslot),
             status: row.status || 'requested',
             requestedAt: row.requested_at,
@@ -586,6 +756,8 @@ router.get('/:uid/purchases/:courseId/activation-options', async (req, res) => {
     return res.status(401).json({ error: 'Unauthorized.' });
   }
 
+  const requestedTimeZone = normalizeTimeZone(req.query?.timeZone || req.query?.timezone || 'Asia/Kolkata');
+
   try {
     await ensurePurchasesTable();
     await ensureActivationsTable();
@@ -601,7 +773,18 @@ router.get('/:uid/purchases/:courseId/activation-options', async (req, res) => {
 
     const existing = await pool.query(
       `
-        select instructor_id, instructor_name, timeslot_id, timeslot_label, no_good_timeslot, status, requested_at
+        select
+          instructor_id,
+          instructor_name,
+          timeslot_id,
+          timeslot_label,
+          learner_timezone,
+          selected_slot_date,
+          selected_class_start_at,
+          selected_class_end_at,
+          no_good_timeslot,
+          status,
+          requested_at
         from ${activationTable}
         where uid = $1 and course_id = $2
         limit 1
@@ -615,15 +798,24 @@ router.get('/:uid/purchases/:courseId/activation-options', async (req, res) => {
           instructorName: existing.rows[0].instructor_name || '',
           timeslotId: existing.rows[0].timeslot_id || '',
           timeslotLabel: existing.rows[0].timeslot_label || '',
+          learnerTimezone: existing.rows[0].learner_timezone || '',
+          selectedSlotDate: existing.rows[0].selected_slot_date || null,
+          selectedClassStartAt: existing.rows[0].selected_class_start_at || null,
+          selectedClassEndAt: existing.rows[0].selected_class_end_at || null,
           noGoodTimeslot: Boolean(existing.rows[0].no_good_timeslot),
           status: existing.rows[0].status || 'requested',
           requestedAt: existing.rows[0].requested_at,
         }
       : null;
 
-    const instructors = await getInstructorAvailability();
+    const learnerTimeZone = normalizeTimeZone(activation?.learnerTimezone || requestedTimeZone);
+    const instructors = await getInstructorAvailability({
+      learnerTimeZone,
+      excludeUid: uid,
+      excludeCourseId: courseIdNum,
+    });
 
-    return res.json({ instructors, activation });
+    return res.json({ instructors, activation, learnerTimeZone });
   } catch {
     return res.status(500).json({ error: 'Failed to load activation options.' });
   }
@@ -659,6 +851,7 @@ router.post('/:uid/purchases/:courseId/activate', async (req, res) => {
   const instructorId = String(req.body?.instructorId || '').trim();
   const timeslotId = String(req.body?.timeslotId || '').trim();
   const noGoodTimeslot = Boolean(req.body?.noGoodTimeslot);
+  const learnerTimeZone = normalizeTimeZone(req.body?.learnerTimezone || 'Asia/Kolkata');
 
   try {
     await ensurePurchasesTable();
@@ -684,24 +877,76 @@ router.post('/:uid/purchases/:courseId/activate', async (req, res) => {
       if (!selectedSlot) {
         return res.status(400).json({ error: 'Please select a valid timeslot for the chosen instructor.' });
       }
+
+      const slotConflict = await pool.query(
+        `
+          select id
+          from ${activationTable}
+          where instructor_id = $1
+            and timeslot_id = $2
+            and no_good_timeslot = false
+            and status = 'activated'
+            and not (uid = $3 and course_id = $4)
+          limit 1
+        `,
+        [instructor.instructorId, selectedSlot.slotId, uid, courseIdNum],
+      );
+
+      if (slotConflict.rows[0]) {
+        return res.status(409).json({ error: 'This one-hour slot has just been booked. Please choose another slot.' });
+      }
     }
+
+    const selectedLabel = selectedSlot
+      ? formatUtcRangeInTimeZone(selectedSlot.startAtUtc, selectedSlot.endAtUtc, learnerTimeZone)
+      : null;
 
     const result = await pool.query(
       `
         insert into ${activationTable}
-          (uid, course_id, instructor_id, instructor_name, timeslot_id, timeslot_label, no_good_timeslot, status, requested_at, updated_at)
+          (
+            uid,
+            course_id,
+            instructor_id,
+            instructor_name,
+            timeslot_id,
+            timeslot_label,
+            learner_timezone,
+            selected_slot_date,
+            selected_class_start_at,
+            selected_class_end_at,
+            no_good_timeslot,
+            status,
+            requested_at,
+            updated_at
+          )
         values
-          ($1, $2, $3, $4, $5, $6, $7, $8, current_timestamp, current_timestamp)
+          ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, current_timestamp, current_timestamp)
         on conflict (uid, course_id) do update set
           instructor_id = excluded.instructor_id,
           instructor_name = excluded.instructor_name,
           timeslot_id = excluded.timeslot_id,
           timeslot_label = excluded.timeslot_label,
+          learner_timezone = excluded.learner_timezone,
+          selected_slot_date = excluded.selected_slot_date,
+          selected_class_start_at = excluded.selected_class_start_at,
+          selected_class_end_at = excluded.selected_class_end_at,
           no_good_timeslot = excluded.no_good_timeslot,
           status = excluded.status,
           requested_at = excluded.requested_at,
           updated_at = excluded.updated_at
-        returning instructor_id, instructor_name, timeslot_id, timeslot_label, no_good_timeslot, status, requested_at
+        returning
+          instructor_id,
+          instructor_name,
+          timeslot_id,
+          timeslot_label,
+          learner_timezone,
+          selected_slot_date,
+          selected_class_start_at,
+          selected_class_end_at,
+          no_good_timeslot,
+          status,
+          requested_at
       `,
       [
         uid,
@@ -709,7 +954,11 @@ router.post('/:uid/purchases/:courseId/activate', async (req, res) => {
         instructor.instructorId,
         instructor.instructorName,
         selectedSlot?.slotId || null,
-        selectedSlot?.label || null,
+        selectedLabel,
+        learnerTimeZone,
+        selectedSlot?.slotDate || null,
+        selectedSlot?.startAtUtc || null,
+        selectedSlot?.endAtUtc || null,
         noGoodTimeslot,
         noGoodTimeslot ? 'awaiting-manual-slot' : 'activated',
       ],
@@ -723,6 +972,10 @@ router.post('/:uid/purchases/:courseId/activate', async (req, res) => {
         instructorName: row.instructor_name || '',
         timeslotId: row.timeslot_id || '',
         timeslotLabel: row.timeslot_label || '',
+        learnerTimezone: row.learner_timezone || '',
+        selectedSlotDate: row.selected_slot_date || null,
+        selectedClassStartAt: row.selected_class_start_at || null,
+        selectedClassEndAt: row.selected_class_end_at || null,
         noGoodTimeslot: Boolean(row.no_good_timeslot),
         status: row.status || 'requested',
         requestedAt: row.requested_at,

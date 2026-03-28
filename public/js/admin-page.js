@@ -47,7 +47,7 @@ if (!root) {
 
   const slotForm = document.getElementById('admin-instructor-slot-form');
   const slotInstructorEl = document.getElementById('admin-slot-instructor');
-  const slotWeekdayEl = document.getElementById('admin-slot-weekday');
+  const slotDateEl = document.getElementById('admin-slot-date');
   const slotStartEl = document.getElementById('admin-slot-start');
   const slotEndEl = document.getElementById('admin-slot-end');
   const slotFeedbackEl = document.getElementById('admin-slot-feedback');
@@ -123,9 +123,16 @@ if (!root) {
     }
   }
 
-  function weekdayLabel(index) {
-    const map = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    return map[index] || 'Day';
+  function formatSlotDate(dateValue) {
+    if (!dateValue) return 'Unknown date';
+    const date = new Date(`${dateValue}T00:00:00+05:30`);
+    if (Number.isNaN(date.getTime())) return dateValue;
+    return date.toLocaleDateString('en-IN', {
+      weekday: 'short',
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    });
   }
 
   function showAuthorizedState() {
@@ -339,7 +346,8 @@ if (!root) {
     slots.forEach((slot) => {
       const row = document.createElement('div');
       row.className = 'admin-user-item';
-      row.textContent = `${weekdayLabel(slot.weekday)} ${slot.startTime}-${slot.endTime} IST`;
+      const dateLabel = formatSlotDate(slot.slotDate);
+      row.textContent = `${dateLabel} ${slot.startTime}-${slot.endTime} IST`;
 
       const remove = document.createElement('button');
       remove.type = 'button';
@@ -435,7 +443,7 @@ if (!root) {
     if (!currentToken || !slotInstructorEl) return;
 
     const instructorUid = String(slotInstructorEl.value || '').trim();
-    const weekday = Number.parseInt(String(slotWeekdayEl?.value || ''), 10);
+    const slotDate = String(slotDateEl?.value || '').trim();
     const startTime = String(slotStartEl?.value || '').trim();
     const endTime = String(slotEndEl?.value || '').trim();
 
@@ -446,7 +454,7 @@ if (!root) {
         Accept: 'application/json',
         Authorization: `Bearer ${currentToken}`,
       },
-      body: JSON.stringify({ weekday, startTime, endTime }),
+      body: JSON.stringify({ slotDate, startTime, endTime }),
     });
     const payload = await response.json().catch(() => ({}));
     if (!response.ok || !payload?.ok) {
@@ -746,7 +754,18 @@ if (!root) {
 
   if (signinBtn) {
     signinBtn.addEventListener('click', async () => {
-      setFeedback(feedbackEl, 'Signing in with Google...', 'info');
+      if (auth.currentUser) {
+        try {
+          await signOut(auth);
+          setFeedback(feedbackEl, 'Logged out existing user session. Continue with admin sign-in.', 'info');
+        } catch {
+          setFeedback(feedbackEl, 'Could not clear existing session. Please try again.', 'error');
+          return;
+        }
+      }
+
+      googleProvider.setCustomParameters({ prompt: 'select_account' });
+      setFeedback(feedbackEl, 'Signing in with Google as admin...', 'info');
       try {
         await signInWithPopup(auth, googleProvider);
       } catch (error) {

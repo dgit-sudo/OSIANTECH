@@ -69,7 +69,12 @@ if (!root) {
     }
 
     availabilityEl.innerHTML = slots
-      .map((slot) => `<div>${slot.weekdayLabel}: ${slot.startTime} - ${slot.endTime} IST</div>`)
+      .map((slot) => {
+        if (slot.slotDate) {
+          return `<div>${slot.slotDate}: ${slot.startTime} - ${slot.endTime} IST</div>`;
+        }
+        return `<div>${slot.weekdayLabel}: ${slot.startTime} - ${slot.endTime} IST</div>`;
+      })
       .join('');
   }
 
