@@ -3,3 +3,5 @@
 node_modules/
 .next/
 VM_DEPLOY_PREFILLED.sh
+.env*
+!.env.example.template
