@@ -182,7 +182,13 @@ async function lookupExistingFirebaseUids(uids = []) {
           body: JSON.stringify({ localId: chunk }),
         },
       );
+      if (!response.ok) {
+        return new Set(normalized);
+      }
       const data = await response.json();
+      if (data?.error) {
+        return new Set(normalized);
+      }
       if (Array.isArray(data?.users)) {
         data.users.forEach((user) => {
           const uid = String(user?.localId || '').trim();
