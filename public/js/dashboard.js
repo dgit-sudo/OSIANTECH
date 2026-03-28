@@ -16,8 +16,40 @@ const nameEl = document.getElementById('dashboard-user-name');
 const gateCopyEl = document.getElementById('dashboard-gate-copy');
 const gatePillEl = document.getElementById('dashboard-required-pill');
 const saveProfileBtn = document.getElementById('profile-save-btn');
+const supportFabBtn = document.getElementById('dashboard-support-button');
+const supportPanelEl = document.getElementById('dashboard-support-panel');
+const supportCloseBtn = document.getElementById('dashboard-support-close');
+const supportNewChatBtn = document.getElementById('dashboard-support-new-chat');
+const supportChatListEl = document.getElementById('dashboard-support-chat-list');
+const supportMessagesEl = document.getElementById('dashboard-support-messages');
+const supportMessageInput = document.getElementById('dashboard-support-message-input');
+const supportImageInput = document.getElementById('dashboard-support-image-input');
+const supportSendBtn = document.getElementById('dashboard-support-send');
+const supportFeedbackEl = document.getElementById('dashboard-support-feedback');
+const supportFeedbackForm = document.getElementById('dashboard-support-feedback-form');
+const supportFeedbackRatingInput = document.getElementById('dashboard-support-feedback-rating');
+const supportFeedbackCommentInput = document.getElementById('dashboard-support-feedback-comment');
+const activationModalEl = document.getElementById('dashboard-activation-modal');
+const activationCloseBtn = document.getElementById('dashboard-activation-close');
+const activationBackdropBtn = document.getElementById('dashboard-activation-close-backdrop');
+const activationTitleEl = document.getElementById('dashboard-activation-title');
+const activationInstructorEl = document.getElementById('dashboard-activation-instructor');
+const activationTimeslotEl = document.getElementById('dashboard-activation-timeslot');
+const activationSaveBtn = document.getElementById('dashboard-activation-save');
+const activationNoGoodBtn = document.getElementById('dashboard-activation-no-good-btn');
+const activationFeedbackEl = document.getElementById('dashboard-activation-feedback');
 const profileBaseUrl = '/api/profile';
 let unauthRedirectTimer = null;
+let supportChats = [];
+let supportActiveChatId = 0;
+let supportPollTimer = null;
+let purchasesCache = [];
+let activationContext = {
+  courseId: 0,
+  courseTitle: '',
+  instructors: [],
+  previousActivation: null,
+};
 
 function clearUnauthRedirectTimer() {
   if (!unauthRedirectTimer) return;
@@ -89,6 +121,8 @@ function setActiveTab(tabName) {
 function showGate() {
   if (gate) gate.hidden = false;
   if (content) content.hidden = true;
+  if (supportFabBtn) supportFabBtn.hidden = true;
+  if (supportPanelEl) supportPanelEl.hidden = true;
   if (gatePillEl) gatePillEl.textContent = 'Required';
   if (gatePillEl) gatePillEl.classList.remove('dashboard-required-complete');
   if (gateCopyEl) gateCopyEl.textContent = 'Complete your profile to unlock your full dashboard experience.';
@@ -98,7 +132,321 @@ function showGate() {
 function showDashboard(activeTab = 'overview') {
   if (gate) gate.hidden = true;
   if (content) content.hidden = false;
+  if (supportFabBtn) supportFabBtn.hidden = false;
   setActiveTab(activeTab);
+}
+
+function clearSupportPollTimer() {
+  if (!supportPollTimer) return;
+  clearInterval(supportPollTimer);
+  supportPollTimer = null;
+}
+
+function setSupportFeedback(message = '', type = 'info') {
+  setFeedback(supportFeedbackEl, message, type);
+}
+
+async function getSupportToken() {
+  const user = auth.currentUser;
+  if (!user) throw new Error('Please sign in first.');
+  return user.getIdToken();
+}
+
+function formatSupportTime(value) {
+  const date = value ? new Date(value) : null;
+  if (!date || Number.isNaN(date.getTime())) return '';
+  return date.toLocaleString();
+}
+
+function readImageAsDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result || ''));
+    reader.onerror = () => reject(new Error('Could not read image file.'));
+    reader.readAsDataURL(file);
+  });
+}
+
+function getActiveChat() {
+  return supportChats.find((chat) => Number(chat.id) === Number(supportActiveChatId)) || null;
+}
+
+function renderSupportChatList() {
+  if (!supportChatListEl) return;
+  supportChatListEl.innerHTML = '';
+
+  if (!supportChats.length) {
+    supportChatListEl.textContent = 'No support requests yet.';
+    return;
+  }
+
+  const frag = document.createDocumentFragment();
+  supportChats.forEach((chat) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'support-chat-item';
+    if (Number(chat.id) === Number(supportActiveChatId)) button.classList.add('active');
+    button.textContent = `#${chat.id} ${chat.status === 'open' ? 'Open' : 'Ended'} - ${chat.lastMessage || 'No messages yet'}`;
+    button.addEventListener('click', () => {
+      supportActiveChatId = Number(chat.id);
+      loadSupportMessages().catch((error) => {
+        setSupportFeedback(error?.message || 'Could not load support messages.', 'error');
+      });
+    });
+    frag.appendChild(button);
+  });
+  supportChatListEl.appendChild(frag);
+}
+
+function renderSupportMessages(messages = []) {
+  if (!supportMessagesEl) return;
+  supportMessagesEl.innerHTML = '';
+
+  if (!messages.length) {
+    supportMessagesEl.textContent = 'No messages in this chat yet.';
+    return;
+  }
+
+  const frag = document.createDocumentFragment();
+  messages.forEach((message) => {
+    const wrap = document.createElement('div');
+    wrap.className = `support-msg support-msg-${message.senderRole === 'admin' ? 'admin' : 'user'}`;
+
+    const text = document.createElement('div');
+    text.className = 'support-msg-text';
+    text.textContent = message.message || '';
+
+    const time = document.createElement('div');
+    time.className = 'support-msg-time';
+    time.textContent = formatSupportTime(message.createdAt);
+
+    wrap.appendChild(text);
+    if (message.image?.dataUrl) {
+      const img = document.createElement('img');
+      img.src = message.image.dataUrl;
+      img.alt = message.image.fileName || 'uploaded image';
+      img.className = 'support-msg-image';
+      wrap.appendChild(img);
+    }
+    wrap.appendChild(time);
+    frag.appendChild(wrap);
+  });
+  supportMessagesEl.appendChild(frag);
+  supportMessagesEl.scrollTop = supportMessagesEl.scrollHeight;
+}
+
+function updateFeedbackFormVisibility() {
+  const active = getActiveChat();
+  const shouldShow = Boolean(
+    active
+    && active.status === 'ended'
+    && active.feedbackRequestedAt
+    && !active.feedbackSubmittedAt,
+  );
+  if (supportFeedbackForm) supportFeedbackForm.hidden = !shouldShow;
+}
+
+async function loadSupportChats() {
+  const token = await getSupportToken();
+  const response = await fetch('/api/support/chats/my', {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok || !payload?.ok) {
+    throw new Error(payload?.error || 'Could not load support chats.');
+  }
+
+  supportChats = Array.isArray(payload.chats) ? payload.chats : [];
+  if (!supportActiveChatId && supportChats[0]) {
+    supportActiveChatId = Number(supportChats[0].id);
+  }
+  if (supportActiveChatId && !supportChats.some((chat) => Number(chat.id) === Number(supportActiveChatId))) {
+    supportActiveChatId = supportChats[0] ? Number(supportChats[0].id) : 0;
+  }
+
+  renderSupportChatList();
+  updateFeedbackFormVisibility();
+}
+
+async function loadSupportMessages() {
+  if (!supportActiveChatId) {
+    renderSupportMessages([]);
+    return;
+  }
+
+  const token = await getSupportToken();
+  const response = await fetch(`/api/support/chats/${encodeURIComponent(supportActiveChatId)}/messages`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok || !payload?.ok) {
+    throw new Error(payload?.error || 'Could not load messages.');
+  }
+
+  renderSupportChatList();
+  renderSupportMessages(Array.isArray(payload.messages) ? payload.messages : []);
+  updateFeedbackFormVisibility();
+}
+
+async function startSupportChat() {
+  const token = await getSupportToken();
+  const response = await fetch('/api/support/chats/start', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok || !payload?.ok) {
+    throw new Error(payload?.error || 'Could not start support chat.');
+  }
+
+  supportChats = Array.isArray(payload.chats) ? payload.chats : [];
+  supportActiveChatId = Number(payload.chatId || 0);
+  renderSupportChatList();
+  renderSupportMessages(Array.isArray(payload.messages) ? payload.messages : []);
+  updateFeedbackFormVisibility();
+}
+
+async function sendSupportMessage() {
+  if (!supportActiveChatId) {
+    setSupportFeedback('Start a support request first.', 'error');
+    return;
+  }
+
+  const message = String(supportMessageInput?.value || '').trim();
+  const file = supportImageInput?.files?.[0] || null;
+  let image = null;
+
+  if (!message && !file) {
+    setSupportFeedback('Enter a message or attach an image.', 'error');
+    return;
+  }
+
+  if (file) {
+    const dataUrl = await readImageAsDataUrl(file);
+    image = {
+      dataUrl,
+      mimeType: file.type || 'image/png',
+      fileName: file.name || 'upload-image',
+    };
+  }
+
+  const token = await getSupportToken();
+  const response = await fetch(`/api/support/chats/${encodeURIComponent(supportActiveChatId)}/messages`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ message, image }),
+  });
+
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok || !payload?.ok) {
+    throw new Error(payload?.error || 'Could not send support message.');
+  }
+
+  if (supportMessageInput) supportMessageInput.value = '';
+  if (supportImageInput) supportImageInput.value = '';
+
+  await loadSupportChats();
+  await loadSupportMessages();
+}
+
+async function sendSupportMessageText(messageText) {
+  if (!messageText) return;
+
+  if (!supportActiveChatId) {
+    await startSupportChat();
+  }
+
+  const token = await getSupportToken();
+  const response = await fetch(`/api/support/chats/${encodeURIComponent(supportActiveChatId)}/messages`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ message: messageText }),
+  });
+
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok || !payload?.ok) {
+    throw new Error(payload?.error || 'Could not auto-send support message.');
+  }
+
+  await loadSupportChats();
+  await loadSupportMessages();
+}
+
+async function submitSupportFeedback(event) {
+  event.preventDefault();
+  if (!supportActiveChatId) return;
+
+  const rating = Number.parseInt(String(supportFeedbackRatingInput?.value || ''), 10);
+  const comment = String(supportFeedbackCommentInput?.value || '').trim();
+  if (!Number.isFinite(rating) || rating < 1 || rating > 5) {
+    setSupportFeedback('Rating must be between 1 and 5.', 'error');
+    return;
+  }
+
+  const token = await getSupportToken();
+  const response = await fetch(`/api/support/chats/${encodeURIComponent(supportActiveChatId)}/feedback`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ rating, comment }),
+  });
+
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok || !payload?.ok) {
+    throw new Error(payload?.error || 'Could not submit feedback.');
+  }
+
+  if (supportFeedbackRatingInput) supportFeedbackRatingInput.value = '';
+  if (supportFeedbackCommentInput) supportFeedbackCommentInput.value = '';
+  await loadSupportChats();
+  updateFeedbackFormVisibility();
+  setSupportFeedback('Thanks! Your feedback was saved.', 'success');
+}
+
+async function openSupportPanel() {
+  if (!supportPanelEl) return;
+  supportPanelEl.hidden = false;
+  await loadSupportChats();
+  if (supportActiveChatId) {
+    await loadSupportMessages();
+  }
+
+  clearSupportPollTimer();
+  supportPollTimer = setInterval(async () => {
+    if (supportPanelEl.hidden) return;
+    try {
+      await loadSupportChats();
+      if (supportActiveChatId) await loadSupportMessages();
+    } catch {
+      // Keep silent during polling.
+    }
+  }, 7000);
+}
+
+function closeSupportPanel() {
+  if (supportPanelEl) supportPanelEl.hidden = true;
+  clearSupportPollTimer();
 }
 
 async function loadProfile(user) {
@@ -176,6 +524,7 @@ async function loadPurchases(user) {
 function renderPurchases(purchases) {
   if (!purchasedCoursesEl || !purchasedEmptyEl) return;
   purchasedCoursesEl.innerHTML = '';
+  purchasesCache = Array.isArray(purchases) ? purchases : [];
 
   if (!Array.isArray(purchases) || purchases.length === 0) {
     purchasedEmptyEl.hidden = false;
@@ -186,9 +535,8 @@ function renderPurchases(purchases) {
   const fragment = document.createDocumentFragment();
 
   purchases.forEach((purchase) => {
-    const item = document.createElement('a');
+    const item = document.createElement('div');
     item.className = 'dashboard-course-item';
-    item.href = `/courses/${encodeURIComponent(purchase.courseId)}`;
 
     const titleWrap = document.createElement('div');
     const title = document.createElement('span');
@@ -206,17 +554,253 @@ function renderPurchases(purchases) {
 
     const status = document.createElement('span');
     status.className = 'dashboard-course-arrow';
-    status.textContent = 'Enrolled';
+    status.textContent = purchase?.activation?.status
+      ? purchase.activation.status.replace(/-/g, ' ')
+      : 'Enrolled';
 
-    const open = document.createElement('span');
-    open.className = 'dashboard-course-arrow';
+    const actions = document.createElement('div');
+    actions.className = 'dashboard-course-actions';
+
+    const open = document.createElement('a');
+    open.className = 'dashboard-course-action-btn';
+    open.href = `/courses/${encodeURIComponent(purchase.courseId)}`;
     open.textContent = 'Open';
 
-    item.append(titleWrap, status, open);
+    const activate = document.createElement('button');
+    activate.type = 'button';
+    activate.className = 'dashboard-course-action-btn';
+    activate.textContent = purchase?.activation ? 'Update Activation' : 'Activate';
+    activate.addEventListener('click', () => {
+      openActivationModal(purchase).catch((error) => {
+        setFeedback(activationFeedbackEl, error?.message || 'Could not open activation popup.', 'error');
+      });
+    });
+
+    actions.append(open, activate);
+
+    item.append(titleWrap, status, actions);
     fragment.appendChild(item);
   });
 
   purchasedCoursesEl.appendChild(fragment);
+}
+
+function setActivationFeedback(message = '', type = 'info') {
+  setFeedback(activationFeedbackEl, message, type);
+}
+
+function getActivationToken() {
+  const user = auth.currentUser;
+  if (!user) throw new Error('Please sign in again.');
+  return user.getIdToken();
+}
+
+function setTimeslotOptions(instructors, instructorId, selectedTimeslotId = '') {
+  if (!activationTimeslotEl) return;
+  activationTimeslotEl.innerHTML = '';
+
+  const instructor = instructors.find((item) => item.instructorId === instructorId) || null;
+  const slots = Array.isArray(instructor?.timeSlots) ? instructor.timeSlots : [];
+
+  if (!slots.length) {
+    const emptyOption = document.createElement('option');
+    emptyOption.value = '';
+    emptyOption.textContent = 'No timeslots currently available';
+    activationTimeslotEl.appendChild(emptyOption);
+    activationTimeslotEl.value = '';
+    return;
+  }
+
+  const placeholder = document.createElement('option');
+  placeholder.value = '';
+  placeholder.textContent = 'Select a timeslot';
+  activationTimeslotEl.appendChild(placeholder);
+
+  slots.forEach((slot) => {
+    const option = document.createElement('option');
+    option.value = slot.slotId;
+    option.textContent = slot.label;
+    activationTimeslotEl.appendChild(option);
+  });
+
+  activationTimeslotEl.value = selectedTimeslotId && slots.some((slot) => slot.slotId === selectedTimeslotId)
+    ? selectedTimeslotId
+    : '';
+}
+
+async function openActivationModal(purchase) {
+  if (!activationModalEl || !activationInstructorEl) return;
+
+  const user = auth.currentUser;
+  if (!user) throw new Error('Please sign in first.');
+
+  activationContext.courseId = Number(purchase.courseId || 0);
+  activationContext.courseTitle = purchase.courseTitle || `Course #${purchase.courseId}`;
+
+  if (activationTitleEl) activationTitleEl.textContent = `Activate: ${activationContext.courseTitle}`;
+  setActivationFeedback('Loading instructor availability...', 'info');
+
+  const token = await getActivationToken();
+  const response = await fetch(
+    `${profileBaseUrl}/${encodeURIComponent(user.uid)}/purchases/${encodeURIComponent(String(activationContext.courseId))}/activation-options`,
+    {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(payload?.error || 'Could not load activation options.');
+  }
+
+  const instructors = Array.isArray(payload.instructors) ? payload.instructors : [];
+  activationContext.instructors = instructors;
+
+  activationInstructorEl.innerHTML = '';
+  instructors.forEach((instructor) => {
+    const option = document.createElement('option');
+    option.value = instructor.instructorId;
+    option.textContent = instructor.instructorName;
+    activationInstructorEl.appendChild(option);
+  });
+
+  if (!instructors.length) {
+    if (activationTimeslotEl) {
+      activationTimeslotEl.innerHTML = '';
+      const noSlot = document.createElement('option');
+      noSlot.value = '';
+      noSlot.textContent = 'No instructor availability set by admin yet';
+      activationTimeslotEl.appendChild(noSlot);
+      activationTimeslotEl.disabled = true;
+    }
+    if (activationSaveBtn) activationSaveBtn.disabled = true;
+    activationModalEl.hidden = false;
+    setActivationFeedback('No instructor slots are available right now. Please try later.', 'error');
+    return;
+  }
+
+  if (activationSaveBtn) activationSaveBtn.disabled = false;
+
+  const currentActivation = payload.activation || null;
+  activationContext.previousActivation = currentActivation;
+  if (currentActivation?.instructorId && instructors.some((i) => i.instructorId === currentActivation.instructorId)) {
+    activationInstructorEl.value = currentActivation.instructorId;
+  } else if (instructors[0]) {
+    activationInstructorEl.value = instructors[0].instructorId;
+  }
+
+  const selectedInstructorId = String(activationInstructorEl.value || '');
+  setTimeslotOptions(instructors, selectedInstructorId, currentActivation?.timeslotId || '');
+
+  if (activationTimeslotEl) activationTimeslotEl.disabled = false;
+
+  activationModalEl.hidden = false;
+  setActivationFeedback(
+    currentActivation
+      ? 'Existing activation loaded. You can update instructor/timeslot.'
+      : 'Choose instructor and timeslot, or select No good timeslots.',
+    'info',
+  );
+}
+
+function closeActivationModal() {
+  if (activationModalEl) activationModalEl.hidden = true;
+  setActivationFeedback('');
+}
+
+async function saveActivationSelection() {
+  const user = auth.currentUser;
+  if (!user) throw new Error('Please sign in first.');
+  if (!activationContext.courseId) throw new Error('Missing course context.');
+
+  const instructorId = String(activationInstructorEl?.value || '').trim();
+  const noGoodTimeslot = false;
+  const timeslotId = String(activationTimeslotEl?.value || '').trim();
+
+  if (!instructorId) {
+    throw new Error('Please select an instructor.');
+  }
+
+  if (!noGoodTimeslot && !timeslotId) {
+    throw new Error('Please select a suitable timeslot or choose No good timeslots.');
+  }
+
+  setActivationFeedback('Saving activation request...', 'info');
+  const token = await getActivationToken();
+  const response = await fetch(
+    `${profileBaseUrl}/${encodeURIComponent(user.uid)}/purchases/${encodeURIComponent(String(activationContext.courseId))}/activate`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        instructorId,
+        timeslotId,
+        noGoodTimeslot,
+      }),
+    },
+  );
+
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok || !payload?.ok) {
+    throw new Error(payload?.error || 'Could not save activation.');
+  }
+
+  setActivationFeedback('Activation saved successfully.', 'success');
+  await hydrateDashboardForUser(user);
+  closeActivationModal();
+}
+
+async function handleNoGoodTimeslots() {
+  const user = auth.currentUser;
+  if (!user) throw new Error('Please sign in first.');
+  if (!activationContext.courseId) throw new Error('Missing course context.');
+
+  const instructorId = String(activationInstructorEl?.value || '').trim();
+  if (!instructorId) {
+    throw new Error('Please select an instructor before requesting support.');
+  }
+
+  const token = await getActivationToken();
+  const response = await fetch(
+    `${profileBaseUrl}/${encodeURIComponent(user.uid)}/purchases/${encodeURIComponent(String(activationContext.courseId))}/activate`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        instructorId,
+        timeslotId: '',
+        noGoodTimeslot: true,
+      }),
+    },
+  );
+
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok || !payload?.ok) {
+    throw new Error(payload?.error || 'Could not save no-timeslot request.');
+  }
+
+  const prior = activationContext.previousActivation;
+  const activatedBefore = Boolean(prior && prior.status && prior.status !== 'awaiting-manual-slot');
+  const firstClass = !Boolean(prior);
+  const statusText = `activatedBefore=${activatedBefore ? 'yes' : 'no'}, firstClass=${firstClass ? 'yes' : 'no'}`;
+  const autoMessage = `No good timeslots for ${activationContext.courseTitle}. It has ${statusText}.`;
+
+  await openSupportPanel();
+  await sendSupportMessageText(autoMessage);
+  await hydrateDashboardForUser(user);
+  closeActivationModal();
+  setSupportFeedback('No-timeslot support request sent to admin.', 'success');
 }
 
 function applyProfileToForm(formEl, profile) {
@@ -364,7 +948,75 @@ tabButtons.forEach((button) => {
 
 if (signoutBtn) {
   signoutBtn.addEventListener('click', async () => {
+    closeSupportPanel();
     await signOut(auth);
     window.location.href = '/auth?mode=signin';
   });
+}
+
+if (supportFabBtn) {
+  supportFabBtn.addEventListener('click', () => {
+    openSupportPanel().catch((error) => {
+      setSupportFeedback(error?.message || 'Could not open support chat.', 'error');
+    });
+  });
+}
+
+if (supportCloseBtn) {
+  supportCloseBtn.addEventListener('click', () => closeSupportPanel());
+}
+
+if (supportNewChatBtn) {
+  supportNewChatBtn.addEventListener('click', () => {
+    startSupportChat()
+      .then(() => setSupportFeedback('Support request opened.', 'success'))
+      .catch((error) => setSupportFeedback(error?.message || 'Could not start support request.', 'error'));
+  });
+}
+
+if (supportSendBtn) {
+  supportSendBtn.addEventListener('click', () => {
+    sendSupportMessage()
+      .then(() => setSupportFeedback('Message sent.', 'success'))
+      .catch((error) => setSupportFeedback(error?.message || 'Could not send message.', 'error'));
+  });
+}
+
+if (supportFeedbackForm) {
+  supportFeedbackForm.addEventListener('submit', (event) => {
+    submitSupportFeedback(event).catch((error) => {
+      setSupportFeedback(error?.message || 'Could not submit feedback.', 'error');
+    });
+  });
+}
+
+if (activationInstructorEl) {
+  activationInstructorEl.addEventListener('change', () => {
+    const instructorId = String(activationInstructorEl.value || '');
+    setTimeslotOptions(activationContext.instructors, instructorId, '');
+  });
+}
+
+if (activationSaveBtn) {
+  activationSaveBtn.addEventListener('click', () => {
+    saveActivationSelection().catch((error) => {
+      setActivationFeedback(error?.message || 'Could not save activation.', 'error');
+    });
+  });
+}
+
+if (activationNoGoodBtn) {
+  activationNoGoodBtn.addEventListener('click', () => {
+    handleNoGoodTimeslots().catch((error) => {
+      setActivationFeedback(error?.message || 'Could not send no-timeslot request.', 'error');
+    });
+  });
+}
+
+if (activationCloseBtn) {
+  activationCloseBtn.addEventListener('click', () => closeActivationModal());
+}
+
+if (activationBackdropBtn) {
+  activationBackdropBtn.addEventListener('click', () => closeActivationModal());
 }

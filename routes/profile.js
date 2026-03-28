@@ -13,6 +13,15 @@ const usersTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_USERS_TA
 const purchasesTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_PURCHASES_TABLE || '')
   ? process.env.SUPABASE_PURCHASES_TABLE
   : 'user_purchases';
+const activationTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_ACTIVATIONS_TABLE || '')
+  ? process.env.SUPABASE_ACTIVATIONS_TABLE
+  : 'course_activations';
+const instructorTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_INSTRUCTORS_TABLE || '')
+  ? process.env.SUPABASE_INSTRUCTORS_TABLE
+  : 'instructor_accounts';
+const instructorSlotsTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_INSTRUCTOR_SLOTS_TABLE || '')
+  ? process.env.SUPABASE_INSTRUCTOR_SLOTS_TABLE
+  : 'instructor_availability_slots';
 
 const dbReady = Boolean(connectionString);
 const pool = dbReady
@@ -23,6 +32,8 @@ const pool = dbReady
   : null;
 
 let purchasesTableReady = false;
+let activationsTableReady = false;
+let instructorTablesReady = false;
 
 function isValidUid(uid = '') {
   return typeof uid === 'string' && /^[a-zA-Z0-9_-]{6,128}$/.test(uid);
@@ -57,6 +68,159 @@ async function ensurePurchasesTable() {
   await pool.query(`create index if not exists idx_${purchasesTable}_purchase_date on ${purchasesTable}(purchase_date desc)`);
 
   purchasesTableReady = true;
+}
+
+async function ensureActivationsTable() {
+  if (!pool || activationsTableReady) return;
+
+  await pool.query(`
+    create table if not exists ${activationTable} (
+      id serial primary key,
+      uid varchar(128) not null,
+      course_id integer not null,
+      instructor_id varchar(128) null,
+      instructor_name text null,
+      timeslot_id varchar(128) null,
+      timeslot_label text null,
+      no_good_timeslot boolean not null default false,
+      status varchar(40) not null default 'requested',
+      requested_at timestamp not null default current_timestamp,
+      created_at timestamp not null default current_timestamp,
+      updated_at timestamp not null default current_timestamp,
+      unique(uid, course_id)
+    )
+  `);
+
+  await pool.query(`create index if not exists idx_${activationTable}_uid on ${activationTable}(uid)`);
+  await pool.query(`create index if not exists idx_${activationTable}_course_id on ${activationTable}(course_id)`);
+
+  activationsTableReady = true;
+}
+
+async function ensureInstructorTables() {
+  if (!pool || instructorTablesReady) return;
+
+  await pool.query(`
+    create table if not exists ${instructorTable} (
+      id serial primary key,
+      instructor_uid varchar(128) not null unique,
+      email text not null unique,
+      display_name text not null,
+      password_hash text not null,
+      is_active boolean not null default true,
+      created_by_uid varchar(128) null,
+      created_at timestamp not null default current_timestamp,
+      updated_at timestamp not null default current_timestamp
+    )
+  `);
+
+  await pool.query(`
+    create table if not exists ${instructorSlotsTable} (
+      id serial primary key,
+      instructor_uid varchar(128) not null,
+      weekday smallint not null,
+      start_time varchar(5) not null,
+      end_time varchar(5) not null,
+      is_active boolean not null default true,
+      created_at timestamp not null default current_timestamp,
+      updated_at timestamp not null default current_timestamp,
+      unique(instructor_uid, weekday, start_time, end_time),
+      constraint valid_weekday check (weekday between 0 and 6)
+    )
+  `);
+
+  instructorTablesReady = true;
+}
+
+function formatWeekday(index) {
+  const labels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  return labels[index] || 'Day';
+}
+
+async function getInstructorAvailability() {
+  await ensureInstructorTables();
+
+  const rows = await pool.query(
+    `
+      select
+        i.instructor_uid,
+        i.display_name,
+        s.id as slot_id,
+        s.weekday,
+        s.start_time,
+        s.end_time
+      from ${instructorTable} i
+      left join ${instructorSlotsTable} s
+        on s.instructor_uid = i.instructor_uid and s.is_active = true
+      where i.is_active = true
+      order by i.display_name asc, s.weekday asc, s.start_time asc
+    `,
+  );
+
+  const byInstructor = new Map();
+  rows.rows.forEach((row) => {
+    const instructorId = row.instructor_uid;
+    if (!byInstructor.has(instructorId)) {
+      byInstructor.set(instructorId, {
+        instructorId,
+        instructorName: row.display_name,
+        timeSlots: [],
+      });
+    }
+
+    if (row.slot_id) {
+      byInstructor.get(instructorId).timeSlots.push({
+        slotId: String(row.slot_id),
+        weekday: Number(row.weekday),
+        startTime: row.start_time,
+        endTime: row.end_time,
+        label: `${formatWeekday(Number(row.weekday))} ${row.start_time} - ${row.end_time} IST`,
+      });
+    }
+  });
+
+  return [...byInstructor.values()];
+}
+
+async function getInstructorById(instructorId = '') {
+  await ensureInstructorTables();
+  const result = await pool.query(
+    `
+      select instructor_uid, display_name
+      from ${instructorTable}
+      where instructor_uid = $1 and is_active = true
+      limit 1
+    `,
+    [instructorId],
+  );
+  if (!result.rows[0]) return null;
+  return {
+    instructorId: result.rows[0].instructor_uid,
+    instructorName: result.rows[0].display_name,
+  };
+}
+
+async function getInstructorSlot(instructorId, slotId) {
+  await ensureInstructorTables();
+  const slotNum = Number.parseInt(String(slotId || ''), 10);
+  if (!Number.isFinite(slotNum) || slotNum <= 0) return null;
+
+  const result = await pool.query(
+    `
+      select id, weekday, start_time, end_time
+      from ${instructorSlotsTable}
+      where instructor_uid = $1 and id = $2 and is_active = true
+      limit 1
+    `,
+    [instructorId, slotNum],
+  );
+
+  if (!result.rows[0]) return null;
+  const row = result.rows[0];
+  return {
+    slotId: String(row.id),
+    label: `${formatWeekday(Number(row.weekday))} ${row.start_time} - ${row.end_time} IST`,
+  };
 }
 
 function mapUserRow(row) {
@@ -354,20 +518,218 @@ router.get('/:uid/purchases', async (req, res) => {
 
   try {
     await ensurePurchasesTable();
+    await ensureActivationsTable();
     const query = `
-      select course_id, course_title, purchase_date
+      select p.course_id,
+             p.course_title,
+             p.purchase_date,
+             a.instructor_id,
+             a.instructor_name,
+             a.timeslot_id,
+             a.timeslot_label,
+             a.no_good_timeslot,
+             a.status,
+             a.requested_at
       from ${purchasesTable}
-      where uid = $1
-      order by purchase_date desc
+      p
+      left join ${activationTable} a
+        on a.uid = p.uid and a.course_id = p.course_id
+      where p.uid = $1
+      order by p.purchase_date desc
     `;
     const result = await pool.query(query, [uid]);
     return res.json({ purchases: result.rows.map(row => ({
       courseId: row.course_id,
       courseTitle: row.course_title,
       purchaseDate: row.purchase_date,
+      activation: row.requested_at
+        ? {
+            instructorId: row.instructor_id || '',
+            instructorName: row.instructor_name || '',
+            timeslotId: row.timeslot_id || '',
+            timeslotLabel: row.timeslot_label || '',
+            noGoodTimeslot: Boolean(row.no_good_timeslot),
+            status: row.status || 'requested',
+            requestedAt: row.requested_at,
+          }
+        : null,
     })) });
   } catch (_error) {
     return res.status(500).json({ error: 'Failed to load purchases.' });
+  }
+});
+
+router.get('/:uid/purchases/:courseId/activation-options', async (req, res) => {
+  if (!ensureDatabaseConfigured(res)) return;
+
+  const { uid, courseId } = req.params;
+  if (!isValidUid(uid)) {
+    return res.status(400).json({ error: 'Invalid uid.' });
+  }
+
+  const courseIdNum = Number.parseInt(String(courseId || ''), 10);
+  if (!Number.isFinite(courseIdNum) || courseIdNum <= 0) {
+    return res.status(400).json({ error: 'Invalid courseId.' });
+  }
+
+  const authHeader = req.headers.authorization || '';
+  if (!authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Unauthorized.' });
+  }
+
+  const verification = await verifyFirebaseToken(authHeader.slice(7));
+  if (verification.valid === false && verification.userDeleted) {
+    await deleteUserFromSupabase(uid);
+    return res.status(401).json({ error: 'Account has been deleted.' });
+  }
+  if (verification.valid === false || (verification.valid === true && verification.uid !== uid)) {
+    return res.status(401).json({ error: 'Unauthorized.' });
+  }
+
+  try {
+    await ensurePurchasesTable();
+    await ensureActivationsTable();
+    await ensureInstructorTables();
+
+    const purchase = await pool.query(
+      `select course_id from ${purchasesTable} where uid = $1 and course_id = $2 limit 1`,
+      [uid, courseIdNum],
+    );
+    if (!purchase.rows[0]) {
+      return res.status(404).json({ error: 'Course purchase not found.' });
+    }
+
+    const existing = await pool.query(
+      `
+        select instructor_id, instructor_name, timeslot_id, timeslot_label, no_good_timeslot, status, requested_at
+        from ${activationTable}
+        where uid = $1 and course_id = $2
+        limit 1
+      `,
+      [uid, courseIdNum],
+    );
+
+    const activation = existing.rows[0]
+      ? {
+          instructorId: existing.rows[0].instructor_id || '',
+          instructorName: existing.rows[0].instructor_name || '',
+          timeslotId: existing.rows[0].timeslot_id || '',
+          timeslotLabel: existing.rows[0].timeslot_label || '',
+          noGoodTimeslot: Boolean(existing.rows[0].no_good_timeslot),
+          status: existing.rows[0].status || 'requested',
+          requestedAt: existing.rows[0].requested_at,
+        }
+      : null;
+
+    const instructors = await getInstructorAvailability();
+
+    return res.json({ instructors, activation });
+  } catch {
+    return res.status(500).json({ error: 'Failed to load activation options.' });
+  }
+});
+
+router.post('/:uid/purchases/:courseId/activate', async (req, res) => {
+  if (!ensureDatabaseConfigured(res)) return;
+
+  const { uid, courseId } = req.params;
+  if (!isValidUid(uid)) {
+    return res.status(400).json({ error: 'Invalid uid.' });
+  }
+
+  const courseIdNum = Number.parseInt(String(courseId || ''), 10);
+  if (!Number.isFinite(courseIdNum) || courseIdNum <= 0) {
+    return res.status(400).json({ error: 'Invalid courseId.' });
+  }
+
+  const authHeader = req.headers.authorization || '';
+  if (!authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Unauthorized.' });
+  }
+
+  const verification = await verifyFirebaseToken(authHeader.slice(7));
+  if (verification.valid === false && verification.userDeleted) {
+    await deleteUserFromSupabase(uid);
+    return res.status(401).json({ error: 'Account has been deleted.' });
+  }
+  if (verification.valid === false || (verification.valid === true && verification.uid !== uid)) {
+    return res.status(401).json({ error: 'Unauthorized.' });
+  }
+
+  const instructorId = String(req.body?.instructorId || '').trim();
+  const timeslotId = String(req.body?.timeslotId || '').trim();
+  const noGoodTimeslot = Boolean(req.body?.noGoodTimeslot);
+
+  try {
+    await ensurePurchasesTable();
+    await ensureActivationsTable();
+    await ensureInstructorTables();
+
+    const purchase = await pool.query(
+      `select course_id from ${purchasesTable} where uid = $1 and course_id = $2 limit 1`,
+      [uid, courseIdNum],
+    );
+    if (!purchase.rows[0]) {
+      return res.status(404).json({ error: 'Course purchase not found.' });
+    }
+
+    const instructor = await getInstructorById(instructorId);
+    if (!instructor) {
+      return res.status(400).json({ error: 'Please select a valid instructor.' });
+    }
+
+    let selectedSlot = null;
+    if (!noGoodTimeslot) {
+      selectedSlot = await getInstructorSlot(instructor.instructorId, timeslotId);
+      if (!selectedSlot) {
+        return res.status(400).json({ error: 'Please select a valid timeslot for the chosen instructor.' });
+      }
+    }
+
+    const result = await pool.query(
+      `
+        insert into ${activationTable}
+          (uid, course_id, instructor_id, instructor_name, timeslot_id, timeslot_label, no_good_timeslot, status, requested_at, updated_at)
+        values
+          ($1, $2, $3, $4, $5, $6, $7, $8, current_timestamp, current_timestamp)
+        on conflict (uid, course_id) do update set
+          instructor_id = excluded.instructor_id,
+          instructor_name = excluded.instructor_name,
+          timeslot_id = excluded.timeslot_id,
+          timeslot_label = excluded.timeslot_label,
+          no_good_timeslot = excluded.no_good_timeslot,
+          status = excluded.status,
+          requested_at = excluded.requested_at,
+          updated_at = excluded.updated_at
+        returning instructor_id, instructor_name, timeslot_id, timeslot_label, no_good_timeslot, status, requested_at
+      `,
+      [
+        uid,
+        courseIdNum,
+        instructor.instructorId,
+        instructor.instructorName,
+        selectedSlot?.slotId || null,
+        selectedSlot?.label || null,
+        noGoodTimeslot,
+        noGoodTimeslot ? 'awaiting-manual-slot' : 'activated',
+      ],
+    );
+
+    const row = result.rows[0];
+    return res.json({
+      ok: true,
+      activation: {
+        instructorId: row.instructor_id || '',
+        instructorName: row.instructor_name || '',
+        timeslotId: row.timeslot_id || '',
+        timeslotLabel: row.timeslot_label || '',
+        noGoodTimeslot: Boolean(row.no_good_timeslot),
+        status: row.status || 'requested',
+        requestedAt: row.requested_at,
+      },
+    });
+  } catch {
+    return res.status(500).json({ error: 'Could not save course activation.' });
   }
 });
 

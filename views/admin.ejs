@@ -1,0 +1,200 @@
+<%- include('partials/head') %>
+<%- include('partials/navbar') %>
+
+<section class="section admin-shell" data-admin-page data-admin-email="<%= adminEmail %>">
+  <div class="container">
+    <div class="dashboard-header" data-animate="fade-left">
+      <div class="dashboard-intro">
+        <div class="section-tag">Admin</div>
+        <h1 class="dashboard-title">Admin Dashboard</h1>
+        <p class="dashboard-sub">Restricted to <strong><%= adminEmail %></strong> via Google sign-in only.</p>
+      </div>
+      <div class="dashboard-header-actions">
+        <button type="button" class="btn btn-primary" id="admin-google-signin-btn">Sign In With Google</button>
+        <button type="button" class="btn btn-ghost" id="admin-signout-btn" hidden>Sign Out</button>
+      </div>
+    </div>
+
+    <div id="admin-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
+
+    <div id="admin-content" hidden>
+      <div class="dashboard-tabs" role="tablist" aria-label="Admin user tabs">
+        <button type="button" class="dashboard-tab-btn active" data-admin-tab-btn="purchased" aria-selected="true">Purchased</button>
+        <button type="button" class="dashboard-tab-btn" data-admin-tab-btn="not-purchased" aria-selected="false">Not Purchased</button>
+        <button type="button" class="dashboard-tab-btn" data-admin-tab-btn="instructors" aria-selected="false">Instructors</button>
+        <button type="button" class="dashboard-tab-btn" data-admin-tab-btn="support" aria-selected="false">Support Chats</button>
+      </div>
+
+      <section class="dashboard-panel active" data-admin-tab-panel="purchased">
+        <div class="dashboard-gate-card">
+          <h2>Users Who Bought At Least One Course</h2>
+          <div id="admin-users-purchased" class="admin-user-list"></div>
+          <p id="admin-users-purchased-empty" class="dashboard-course-cat" hidden>No activated users with purchases.</p>
+        </div>
+      </section>
+
+      <section class="dashboard-panel" data-admin-tab-panel="not-purchased">
+        <div class="dashboard-gate-card">
+          <h2>Activated Users With No Purchases</h2>
+          <div id="admin-users-not-purchased" class="admin-user-list"></div>
+          <p id="admin-users-not-purchased-empty" class="dashboard-course-cat" hidden>No activated users without purchases.</p>
+        </div>
+      </section>
+
+      <section class="dashboard-panel" data-admin-tab-panel="instructors">
+        <div class="dashboard-gate-card">
+          <h2>Instructor Accounts</h2>
+          <form id="admin-instructor-create-form" class="profile-setup-form" action="#" method="post">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="admin-instructor-name">Display Name</label>
+                <input id="admin-instructor-name" type="text" required />
+              </div>
+              <div class="form-group">
+                <label for="admin-instructor-email">Instructor Email</label>
+                <input id="admin-instructor-email" type="email" required />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="admin-instructor-password">Initial Password</label>
+                <input id="admin-instructor-password" type="password" minlength="8" required />
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Create Instructor</button>
+          </form>
+          <div id="admin-instructor-create-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
+
+          <div class="dashboard-gate-card" style="margin-top:12px;">
+            <h3>Instructor List</h3>
+            <div id="admin-instructor-list" class="admin-user-list"></div>
+            <p id="admin-instructor-empty" class="dashboard-course-cat" hidden>No instructors yet.</p>
+          </div>
+
+          <div class="dashboard-gate-card" style="margin-top:12px;">
+            <h3>Reset Instructor Email / Password</h3>
+            <form id="admin-instructor-reset-form" class="profile-setup-form" action="#" method="post">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="admin-instructor-select">Instructor</label>
+                  <select id="admin-instructor-select" required></select>
+                </div>
+                <div class="form-group">
+                  <label for="admin-instructor-new-email">New Email (optional)</label>
+                  <input id="admin-instructor-new-email" type="email" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="admin-instructor-new-password">New Password (optional)</label>
+                  <input id="admin-instructor-new-password" type="password" minlength="8" />
+                </div>
+                <div class="form-group">
+                  <label for="admin-instructor-new-name">New Display Name (optional)</label>
+                  <input id="admin-instructor-new-name" type="text" />
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">Apply Reset</button>
+            </form>
+            <div id="admin-instructor-reset-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
+          </div>
+
+          <div class="dashboard-gate-card" style="margin-top:12px;">
+            <h3>Instructor Availability (Day-wise)</h3>
+            <form id="admin-instructor-slot-form" class="profile-setup-form" action="#" method="post">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="admin-slot-instructor">Instructor</label>
+                  <select id="admin-slot-instructor" required></select>
+                </div>
+                <div class="form-group">
+                  <label for="admin-slot-weekday">Day</label>
+                  <select id="admin-slot-weekday" required>
+                    <option value="1">Monday</option>
+                    <option value="2">Tuesday</option>
+                    <option value="3">Wednesday</option>
+                    <option value="4">Thursday</option>
+                    <option value="5">Friday</option>
+                    <option value="6">Saturday</option>
+                    <option value="0">Sunday</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="admin-slot-start">Start Time</label>
+                  <input id="admin-slot-start" type="time" required />
+                </div>
+                <div class="form-group">
+                  <label for="admin-slot-end">End Time</label>
+                  <input id="admin-slot-end" type="time" required />
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">Add Availability Slot</button>
+            </form>
+            <div id="admin-slot-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
+            <div id="admin-slot-list" class="admin-user-list" style="margin-top:8px;"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="dashboard-panel" data-admin-tab-panel="support">
+        <div class="dashboard-gate-card">
+          <h2>Support Conversations</h2>
+          <div class="admin-support-grid">
+            <div>
+              <h3 class="dashboard-course-title">Chat Requests</h3>
+              <div id="admin-support-chat-list" class="admin-user-list"></div>
+              <p id="admin-support-chat-empty" class="dashboard-course-cat" hidden>No support chats yet.</p>
+            </div>
+            <div>
+              <h3 class="dashboard-course-title">Conversation</h3>
+              <div id="admin-support-chat-meta" class="admin-profile-preview">Select a chat to view details.</div>
+              <div id="admin-support-chat-messages" class="support-messages">No conversation selected.</div>
+              <div class="support-compose">
+                <textarea id="admin-support-message-input" rows="3" placeholder="Reply to user"></textarea>
+                <input id="admin-support-image-input" type="file" accept="image/png,image/jpeg,image/jpg,image/gif,image/webp" />
+                <div class="support-panel-actions">
+                  <button type="button" id="admin-support-send" class="btn btn-primary">Send Reply</button>
+                  <button type="button" id="admin-support-end" class="btn btn-ghost">End Chat + Request Feedback</button>
+                </div>
+              </div>
+              <div id="admin-support-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="dashboard-panel active">
+        <div class="dashboard-gate-card">
+          <h2>User Profile Preview</h2>
+          <div id="admin-profile-preview" class="admin-profile-preview">Click a user to view profile details.</div>
+        </div>
+      </section>
+
+      <section class="dashboard-panel active">
+        <div class="dashboard-gate-card">
+          <h2>Transfer Courses Between Activated Accounts</h2>
+          <p class="checkout-note">Transfers only purchased courses from source to target. Target must have zero courses. Source account is deleted from app database after transfer.</p>
+          <form id="admin-transfer-form" class="profile-setup-form" action="#" method="post">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="admin-transfer-source">Source Account (Has Courses)</label>
+                <select id="admin-transfer-source" required></select>
+              </div>
+              <div class="form-group">
+                <label for="admin-transfer-target">Target Account (No Courses)</label>
+                <select id="admin-transfer-target" required></select>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Transfer Courses</button>
+          </form>
+          <div id="admin-transfer-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+
+<script type="module" src="/js/admin-page.js"></script>
+<%- include('partials/footer') %>

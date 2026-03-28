@@ -2006,6 +2006,64 @@ ul { list-style: none; }
   color: var(--teal);
   font-weight: 700;
 }
+
+.dashboard-course-actions {
+  display: inline-flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.dashboard-course-action-btn {
+  border: 1px solid var(--border);
+  background: var(--bg-card-2);
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  padding: 7px 10px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.dashboard-course-action-btn:hover {
+  border-color: var(--border-hover);
+}
+
+.activation-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 42;
+}
+
+.activation-backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.54);
+}
+
+.activation-card {
+  position: relative;
+  width: min(560px, calc(100vw - 24px));
+  margin: 8vh auto 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-lg);
+  padding: 16px;
+  display: grid;
+  gap: 10px;
+}
+
+.activation-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-secondary);
+}
 .dashboard-gate {
   margin-bottom: 24px;
 }
@@ -2226,6 +2284,189 @@ body:not(.page-home) [data-animate] {
 }
 
 /* =========================================================
+   ADMIN PAGE
+   ========================================================= */
+.admin-user-list {
+  display: grid;
+  gap: 10px;
+}
+
+.admin-user-item {
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--border);
+  background: var(--bg-card-2);
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.admin-user-item:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-card);
+}
+
+.admin-profile-preview {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card-2);
+  padding: 14px;
+  display: grid;
+  gap: 8px;
+  color: var(--text-secondary);
+  word-break: break-word;
+}
+
+.support-fab {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 40;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 18px;
+  background: linear-gradient(135deg, var(--accent) 0%, #6d57c4 100%);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow-accent);
+}
+
+.support-panel {
+  position: fixed;
+  right: 22px;
+  bottom: 82px;
+  width: min(420px, calc(100vw - 24px));
+  max-height: 78vh;
+  overflow: auto;
+  z-index: 41;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-lg);
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+.support-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.support-panel-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.support-chat-list {
+  display: grid;
+  gap: 8px;
+}
+
+.support-chat-item {
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--border);
+  background: var(--bg-card-2);
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.support-chat-item.active,
+.support-chat-item:hover {
+  border-color: var(--border-hover);
+}
+
+.support-messages {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card-2);
+  min-height: 180px;
+  max-height: 280px;
+  overflow: auto;
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+  color: var(--text-secondary);
+}
+
+.support-msg {
+  max-width: 92%;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  padding: 8px 10px;
+  background: var(--bg-card);
+}
+
+.support-msg-user {
+  justify-self: end;
+  background: var(--accent-muted);
+}
+
+.support-msg-admin {
+  justify-self: start;
+  background: var(--teal-muted);
+}
+
+.support-msg-text {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.support-msg-time {
+  margin-top: 6px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.support-msg-image {
+  margin-top: 8px;
+  max-width: 180px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.support-compose {
+  display: grid;
+  gap: 8px;
+}
+
+.support-compose textarea,
+.support-feedback-form textarea,
+.support-feedback-form input,
+.support-compose input,
+.support-compose select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card-2);
+  color: var(--text-primary);
+  padding: 10px 12px;
+}
+
+.support-feedback-form {
+  display: grid;
+  gap: 8px;
+}
+
+.admin-support-grid {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 14px;
+}
+
+/* =========================================================
    RESPONSIVE
    ========================================================= */
 @media (max-width: 1024px) {
@@ -2238,6 +2479,7 @@ body:not(.page-home) [data-animate] {
   .why-grid                        { gap: 40px; }
   .footer-container                { grid-template-columns: 1fr 1fr; }
   .checkout-layout                 { grid-template-columns: 1fr; }
+  .admin-support-grid              { grid-template-columns: 1fr; }
 }
 @media (max-width: 768px) {
   .hero {
@@ -2296,10 +2538,18 @@ body:not(.page-home) [data-animate] {
   .dashboard-course-grid { grid-template-columns: 1fr; }
   .dashboard-courses-head { flex-direction: column; align-items: flex-start; }
   .dashboard-course-item { grid-template-columns: 1fr; }
+  .dashboard-course-actions { justify-content: flex-start; }
   .profile-setup-form .form-row { grid-template-columns: 1fr; }
   .form-row { grid-template-columns: 1fr; }
   .footer-container { grid-template-columns: 1fr 1fr; gap: 32px; }
   .mission-stats { flex-wrap: wrap; }
+  .support-fab { right: 14px; bottom: 14px; }
+  .support-panel {
+    right: 12px;
+    bottom: 68px;
+    width: calc(100vw - 24px);
+    max-height: 74vh;
+  }
 }
 @media (max-width: 480px) {
   .categories-grid, .values-grid, .team-grid { grid-template-columns: 1fr; }

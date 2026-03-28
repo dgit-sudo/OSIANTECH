@@ -143,6 +143,67 @@
       </section>
     </div>
 
+    <button type="button" id="dashboard-support-button" class="support-fab" hidden aria-label="Open support chat">
+      Support
+    </button>
+
+    <div id="dashboard-support-panel" class="support-panel" hidden>
+      <div class="support-panel-head">
+        <h3>Support Chat</h3>
+        <button type="button" id="dashboard-support-close" class="btn btn-ghost">Close</button>
+      </div>
+
+      <div class="support-panel-actions">
+        <button type="button" id="dashboard-support-new-chat" class="btn btn-primary">New Request</button>
+      </div>
+
+      <div id="dashboard-support-chat-list" class="support-chat-list"></div>
+      <div id="dashboard-support-messages" class="support-messages">Start or open a chat request to message admin.</div>
+
+      <div class="support-compose">
+        <textarea id="dashboard-support-message-input" rows="3" placeholder="Type your message"></textarea>
+        <input id="dashboard-support-image-input" type="file" accept="image/png,image/jpeg,image/jpg,image/gif,image/webp" />
+        <button type="button" id="dashboard-support-send" class="btn btn-primary">Send</button>
+      </div>
+
+      <form id="dashboard-support-feedback-form" class="support-feedback-form" hidden>
+        <label for="dashboard-support-feedback-rating">Rate this support chat (1-5)</label>
+        <input id="dashboard-support-feedback-rating" type="number" min="1" max="5" required />
+        <label for="dashboard-support-feedback-comment">Feedback (optional)</label>
+        <textarea id="dashboard-support-feedback-comment" rows="2" placeholder="Write your feedback"></textarea>
+        <button type="submit" class="btn btn-primary">Submit Feedback</button>
+      </form>
+
+      <div id="dashboard-support-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
+    </div>
+
+    <div id="dashboard-activation-modal" class="activation-modal" hidden>
+      <div class="activation-backdrop" id="dashboard-activation-close-backdrop"></div>
+      <div class="activation-card">
+        <div class="support-panel-head">
+          <h3 id="dashboard-activation-title">Activate Course</h3>
+          <button type="button" id="dashboard-activation-close" class="btn btn-ghost">Close</button>
+        </div>
+
+        <div class="form-group">
+          <label for="dashboard-activation-instructor">Choose Instructor</label>
+          <select id="dashboard-activation-instructor"></select>
+        </div>
+
+        <div class="form-group">
+          <label for="dashboard-activation-timeslot">Choose Timeslot</label>
+          <select id="dashboard-activation-timeslot"></select>
+        </div>
+
+        <div class="support-panel-actions">
+          <button type="button" id="dashboard-activation-save" class="btn btn-primary">Save Activation</button>
+          <button type="button" id="dashboard-activation-no-good-btn" class="btn btn-ghost">No good timeslots</button>
+        </div>
+
+        <div id="dashboard-activation-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+
   </div>
 </section>
 

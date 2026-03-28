@@ -1,0 +1,55 @@
+<%- include('partials/head') %>
+<%- include('partials/navbar') %>
+
+<section class="section" data-instructor-page>
+  <div class="container">
+    <div class="dashboard-header">
+      <div class="dashboard-intro">
+        <div class="section-tag">Instructor</div>
+        <h1 class="dashboard-title">Instructor Dashboard</h1>
+        <p class="dashboard-sub">Sign in with your instructor email and password provided by admin.</p>
+      </div>
+    </div>
+
+    <div class="dashboard-gate-card" id="instructor-auth-card">
+      <h2>Instructor Sign In</h2>
+      <form id="instructor-signin-form" class="profile-setup-form" action="#" method="post">
+        <div class="form-group">
+          <label for="instructor-email">Email</label>
+          <input id="instructor-email" type="email" required placeholder="instructor@example.com" />
+        </div>
+        <div class="form-group">
+          <label for="instructor-password">Password</label>
+          <input id="instructor-password" type="password" required placeholder="Enter password" />
+        </div>
+        <button type="submit" class="btn btn-primary">Sign In</button>
+      </form>
+      <div id="instructor-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
+    </div>
+
+    <div id="instructor-dashboard" hidden>
+      <div class="dashboard-gate-card">
+        <div class="dashboard-gate-head">
+          <div>
+            <h2 id="instructor-name">Instructor</h2>
+            <p id="instructor-email-copy"></p>
+          </div>
+          <button type="button" class="btn btn-ghost" id="instructor-signout-btn">Sign Out</button>
+        </div>
+      </div>
+
+      <div class="dashboard-gate-card">
+        <h2>My Weekly Availability</h2>
+        <div id="instructor-availability" class="admin-profile-preview">No slots configured by admin.</div>
+      </div>
+
+      <div class="dashboard-gate-card">
+        <h2>Upcoming Classes Notifications</h2>
+        <div id="instructor-classes" class="support-messages">No class activations yet.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script type="module" src="/js/instructor-page.js"></script>
+<%- include('partials/footer') %>

@@ -19,12 +19,18 @@ const coursesRouter = require('./routes/courses');
 const authRouter = require('./routes/auth');
 const dashboardRouter = require('./routes/dashboard');
 const profileRouter = require('./routes/profile');
+const adminRouter = require('./routes/admin');
+const supportRouter = require('./routes/support');
+const instructorRouter = require('./routes/instructor');
 
 app.use('/', indexRouter);
 app.use('/courses', coursesRouter);
 app.use('/auth', authRouter);
 app.use('/dashboard', dashboardRouter);
 app.use('/api/profile', profileRouter);
+app.use('/admin', adminRouter);
+app.use('/api/support', supportRouter);
+app.use('/instructor', instructorRouter);
 
 // Compatibility redirects for legacy auth links.
 app.get('/enroll', (_req, res) => res.redirect('/auth?mode=signup'));
