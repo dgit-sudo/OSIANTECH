@@ -2542,6 +2542,149 @@ body:not(.page-home) [data-animate] {
 }
 
 /* =========================================================
+   LIVE SESSION ROOM
+   ========================================================= */
+.session-shell {
+  padding-top: 120px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 8% 10%, rgba(95,184,184,0.14), transparent 34%),
+    radial-gradient(circle at 84% 14%, rgba(139,117,215,0.14), transparent 35%),
+    var(--bg);
+}
+
+.session-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.session-sidebar {
+  display: grid;
+  gap: 12px;
+  position: sticky;
+  top: 90px;
+}
+
+.session-meta-card,
+.session-controls-card,
+.session-chat-card,
+.session-whiteboard-card,
+.session-video-card {
+  background: linear-gradient(150deg, rgba(30,30,40,0.95), rgba(18,18,26,0.96));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+.session-meta-card,
+.session-controls-card,
+.session-chat-card,
+.session-whiteboard-card {
+  padding: 14px;
+}
+
+.session-title {
+  font-family: 'Merriweather', serif;
+  font-size: 1.5rem;
+  margin: 8px 0;
+}
+
+.session-sub {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.session-controls-card {
+  display: grid;
+  gap: 8px;
+}
+
+.session-main {
+  display: grid;
+  gap: 14px;
+}
+
+.session-video-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.session-video-card {
+  overflow: hidden;
+}
+
+.session-video-card header {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+.session-video-card video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #06070f;
+  display: block;
+}
+
+.session-tools-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.session-chat-card h2,
+.session-whiteboard-card h2 {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.session-chat-list {
+  max-height: 260px;
+  overflow: auto;
+  display: grid;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.session-chat-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.session-chat-form input {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card-2);
+  color: var(--text-primary);
+  padding: 10px 12px;
+}
+
+.session-chat-form input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-muted);
+}
+
+.session-whiteboard-card canvas {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: #0c0f18;
+  touch-action: none;
+}
+
+.session-whiteboard-actions {
+  margin-top: 8px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* =========================================================
    RESPONSIVE
    ========================================================= */
 @media (max-width: 1024px) {
@@ -2555,6 +2698,8 @@ body:not(.page-home) [data-animate] {
   .footer-container                { grid-template-columns: 1fr 1fr; }
   .checkout-layout                 { grid-template-columns: 1fr; }
   .admin-support-grid              { grid-template-columns: 1fr; }
+  .session-layout                  { grid-template-columns: 1fr; }
+  .session-sidebar                 { position: static; }
 }
 @media (max-width: 768px) {
   .hero {
@@ -2627,6 +2772,8 @@ body:not(.page-home) [data-animate] {
     width: calc(100vw - 24px);
     max-height: 74vh;
   }
+  .session-video-grid { grid-template-columns: 1fr; }
+  .session-chat-form { grid-template-columns: 1fr; }
 }
 @media (max-width: 480px) {
   .categories-grid, .values-grid, .team-grid { grid-template-columns: 1fr; }

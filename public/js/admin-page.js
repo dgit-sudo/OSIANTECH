@@ -62,12 +62,15 @@ if (!root) {
   const supportSendBtn = document.getElementById('admin-support-send');
   const supportEndBtn = document.getElementById('admin-support-end');
   const supportFeedbackEl = document.getElementById('admin-support-feedback');
+  const liveMeetingsEl = document.getElementById('admin-live-meetings');
+  const liveMeetingsEmptyEl = document.getElementById('admin-live-meetings-empty');
 
   let currentUser = null;
   let currentToken = '';
   let usersWithPurchases = [];
   let usersWithoutPurchases = [];
   let supportChats = [];
+  let liveMeetings = [];
   let activeSupportChatId = 0;
   let supportPollTimer = null;
   let instructors = [];
@@ -99,9 +102,15 @@ if (!root) {
       loadSupportChats().catch((error) => {
         setFeedback(supportFeedbackEl, error?.message || 'Could not load support chats.', 'error');
       });
+      loadLiveMeetings().catch(() => {
+        // Silent live meeting load errors.
+      });
       if (!supportPollTimer) {
         supportPollTimer = setInterval(() => {
           loadSupportChats().catch(() => {
+            // Silent polling errors.
+          });
+          loadLiveMeetings().catch(() => {
             // Silent polling errors.
           });
           if (activeSupportChatId) {
@@ -698,6 +707,86 @@ if (!root) {
     await loadSupportChats();
     await loadSupportChatDetail(activeSupportChatId);
     setFeedback(supportFeedbackEl, 'Chat ended and feedback request saved.', 'success');
+  }
+
+  function renderLiveMeetings() {
+    if (!liveMeetingsEl) return;
+    liveMeetingsEl.innerHTML = '';
+
+    if (!Array.isArray(liveMeetings) || liveMeetings.length === 0) {
+      if (liveMeetingsEmptyEl) liveMeetingsEmptyEl.hidden = false;
+      return;
+    }
+
+    if (liveMeetingsEmptyEl) liveMeetingsEmptyEl.hidden = true;
+
+    liveMeetings.forEach((meeting) => {
+      const row = document.createElement('div');
+      row.className = 'admin-user-item';
+
+      const startsAt = meeting?.startsAt ? new Date(meeting.startsAt) : null;
+      const timing = startsAt && !Number.isNaN(startsAt.getTime())
+        ? startsAt.toLocaleString()
+        : '-';
+      const support = meeting?.supportRequested
+        ? 'Support Requested'
+        : 'No Support Flag';
+      row.textContent = `Class ${meeting?.classNo || 1} • Course #${meeting?.courseId || '-'} • ${meeting?.learnerEmail || meeting?.learnerUid || '-'} • ${timing} • ${support}`;
+
+      const joinBtn = document.createElement('button');
+      joinBtn.type = 'button';
+      joinBtn.className = 'dashboard-course-action-btn';
+      joinBtn.textContent = 'Join Meeting';
+      joinBtn.addEventListener('click', () => {
+        joinBtn.disabled = true;
+        joinLiveMeetingAsAdmin(meeting.meetingId)
+          .catch((error) => {
+            setFeedback(supportFeedbackEl, error?.message || 'Could not join meeting.', 'error');
+            joinBtn.disabled = false;
+          });
+      });
+
+      row.appendChild(joinBtn);
+      liveMeetingsEl.appendChild(row);
+    });
+  }
+
+  async function loadLiveMeetings() {
+    if (!currentToken) return;
+    const response = await fetch('/api/session/admin/ongoing', {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${currentToken}`,
+      },
+    });
+
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok || !payload?.ok) {
+      throw new Error(payload?.error || 'Could not load live meetings.');
+    }
+
+    liveMeetings = Array.isArray(payload.meetings) ? payload.meetings : [];
+    renderLiveMeetings();
+  }
+
+  async function joinLiveMeetingAsAdmin(meetingId) {
+    if (!currentToken || !meetingId) throw new Error('Missing meeting context.');
+    const response = await fetch('/api/session/admin/join-link', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: `Bearer ${currentToken}`,
+      },
+      body: JSON.stringify({ meetingId }),
+    });
+
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok || !payload?.ok || !payload?.joinUrl) {
+      throw new Error(payload?.error || 'Could not open meeting.');
+    }
+
+    window.open(payload.joinUrl, '_blank', 'noopener');
   }
 
   async function handleTransfer(event) {

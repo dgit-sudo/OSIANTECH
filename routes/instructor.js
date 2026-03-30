@@ -179,6 +179,7 @@ async function ensureInstructorTables() {
       timeslot_id varchar(128) null,
       timeslot_label text null,
       learner_timezone varchar(80) null,
+      class_no integer not null default 1,
       selected_slot_date date null,
       selected_class_start_at timestamp null,
       selected_class_end_at timestamp null,
@@ -192,6 +193,7 @@ async function ensureInstructorTables() {
   `);
 
   await pool.query(`alter table ${activationTable} add column if not exists learner_timezone varchar(80) null`);
+  await pool.query(`alter table ${activationTable} add column if not exists class_no integer not null default 1`);
   await pool.query(`alter table ${activationTable} add column if not exists selected_slot_date date null`);
   await pool.query(`alter table ${activationTable} add column if not exists selected_class_start_at timestamp null`);
   await pool.query(`alter table ${activationTable} add column if not exists selected_class_end_at timestamp null`);
@@ -372,6 +374,7 @@ router.get('/api/classes/upcoming', requireInstructorAuth, async (req, res) => {
           a.timeslot_id,
           a.timeslot_label,
           a.learner_timezone,
+          a.class_no,
           a.selected_slot_date,
           a.selected_class_start_at,
           a.selected_class_end_at,
@@ -412,6 +415,7 @@ router.get('/api/classes/upcoming', requireInstructorAuth, async (req, res) => {
         noGoodTimeslot: Boolean(row.no_good_timeslot),
         timeslotLabel: String(row.timeslot_label || ''),
         learnerTimezone: row.learner_timezone || '',
+        classNo: Number(row.class_no || 1),
         selectedSlotDate: row.selected_slot_date || null,
         selectedClassStartAt: row.selected_class_start_at || null,
         selectedClassEndAt: row.selected_class_end_at || null,

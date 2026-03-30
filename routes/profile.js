@@ -88,6 +88,7 @@ async function ensureActivationsTable() {
       timeslot_id varchar(128) null,
       timeslot_label text null,
       learner_timezone varchar(80) null,
+      class_no integer not null default 1,
       selected_slot_date date null,
       selected_class_start_at timestamp null,
       selected_class_end_at timestamp null,
@@ -101,6 +102,7 @@ async function ensureActivationsTable() {
   `);
 
   await pool.query(`alter table ${activationTable} add column if not exists learner_timezone varchar(80) null`);
+  await pool.query(`alter table ${activationTable} add column if not exists class_no integer not null default 1`);
   await pool.query(`alter table ${activationTable} add column if not exists selected_slot_date date null`);
   await pool.query(`alter table ${activationTable} add column if not exists selected_class_start_at timestamp null`);
   await pool.query(`alter table ${activationTable} add column if not exists selected_class_end_at timestamp null`);
@@ -690,6 +692,7 @@ router.get('/:uid/purchases', async (req, res) => {
              a.timeslot_id,
              a.timeslot_label,
              a.learner_timezone,
+             a.class_no,
              a.selected_slot_date,
              a.selected_class_start_at,
              a.selected_class_end_at,
@@ -715,6 +718,7 @@ router.get('/:uid/purchases', async (req, res) => {
             timeslotId: row.timeslot_id || '',
             timeslotLabel: row.timeslot_label || '',
             learnerTimezone: row.learner_timezone || '',
+            classNo: Number(row.class_no || 1),
             selectedSlotDate: row.selected_slot_date || null,
             selectedClassStartAt: row.selected_class_start_at || null,
             selectedClassEndAt: row.selected_class_end_at || null,
@@ -779,6 +783,7 @@ router.get('/:uid/purchases/:courseId/activation-options', async (req, res) => {
           timeslot_id,
           timeslot_label,
           learner_timezone,
+          class_no,
           selected_slot_date,
           selected_class_start_at,
           selected_class_end_at,
@@ -799,6 +804,7 @@ router.get('/:uid/purchases/:courseId/activation-options', async (req, res) => {
           timeslotId: existing.rows[0].timeslot_id || '',
           timeslotLabel: existing.rows[0].timeslot_label || '',
           learnerTimezone: existing.rows[0].learner_timezone || '',
+          classNo: Number(existing.rows[0].class_no || 1),
           selectedSlotDate: existing.rows[0].selected_slot_date || null,
           selectedClassStartAt: existing.rows[0].selected_class_start_at || null,
           selectedClassEndAt: existing.rows[0].selected_class_end_at || null,
@@ -871,6 +877,20 @@ router.post('/:uid/purchases/:courseId/activate', async (req, res) => {
       return res.status(400).json({ error: 'Please select a valid instructor.' });
     }
 
+    const existingActivation = await pool.query(
+      `
+        select class_no, selected_class_start_at
+        from ${activationTable}
+        where uid = $1 and course_id = $2
+        limit 1
+      `,
+      [uid, courseIdNum],
+    );
+    const previousClassNo = Number(existingActivation.rows[0]?.class_no || 1);
+    const previousClassStart = existingActivation.rows[0]?.selected_class_start_at
+      ? new Date(existingActivation.rows[0].selected_class_start_at).toISOString()
+      : '';
+
     let selectedSlot = null;
     if (!noGoodTimeslot) {
       selectedSlot = await getInstructorSlot(instructor.instructorId, timeslotId);
@@ -900,6 +920,11 @@ router.post('/:uid/purchases/:courseId/activate', async (req, res) => {
     const selectedLabel = selectedSlot
       ? formatUtcRangeInTimeZone(selectedSlot.startAtUtc, selectedSlot.endAtUtc, learnerTimeZone)
       : null;
+    const classNo = noGoodTimeslot
+      ? previousClassNo
+      : (selectedSlot && previousClassStart && selectedSlot.startAtUtc !== previousClassStart
+        ? previousClassNo + 1
+        : Math.max(previousClassNo, 1));
 
     const result = await pool.query(
       `
@@ -912,6 +937,7 @@ router.post('/:uid/purchases/:courseId/activate', async (req, res) => {
             timeslot_id,
             timeslot_label,
             learner_timezone,
+            class_no,
             selected_slot_date,
             selected_class_start_at,
             selected_class_end_at,
@@ -921,13 +947,14 @@ router.post('/:uid/purchases/:courseId/activate', async (req, res) => {
             updated_at
           )
         values
-          ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, current_timestamp, current_timestamp)
+          ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, current_timestamp, current_timestamp)
         on conflict (uid, course_id) do update set
           instructor_id = excluded.instructor_id,
           instructor_name = excluded.instructor_name,
           timeslot_id = excluded.timeslot_id,
           timeslot_label = excluded.timeslot_label,
           learner_timezone = excluded.learner_timezone,
+          class_no = excluded.class_no,
           selected_slot_date = excluded.selected_slot_date,
           selected_class_start_at = excluded.selected_class_start_at,
           selected_class_end_at = excluded.selected_class_end_at,
@@ -941,6 +968,7 @@ router.post('/:uid/purchases/:courseId/activate', async (req, res) => {
           timeslot_id,
           timeslot_label,
           learner_timezone,
+          class_no,
           selected_slot_date,
           selected_class_start_at,
           selected_class_end_at,
@@ -956,6 +984,7 @@ router.post('/:uid/purchases/:courseId/activate', async (req, res) => {
         selectedSlot?.slotId || null,
         selectedLabel,
         learnerTimeZone,
+        classNo,
         selectedSlot?.slotDate || null,
         selectedSlot?.startAtUtc || null,
         selectedSlot?.endAtUtc || null,
@@ -973,6 +1002,7 @@ router.post('/:uid/purchases/:courseId/activate', async (req, res) => {
         timeslotId: row.timeslot_id || '',
         timeslotLabel: row.timeslot_label || '',
         learnerTimezone: row.learner_timezone || '',
+        classNo: Number(row.class_no || 1),
         selectedSlotDate: row.selected_slot_date || null,
         selectedClassStartAt: row.selected_class_start_at || null,
         selectedClassEndAt: row.selected_class_end_at || null,

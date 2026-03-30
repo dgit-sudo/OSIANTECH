@@ -89,14 +89,52 @@ if (!root) {
 
     const frag = document.createDocumentFragment();
     classes.forEach((item) => {
+      const classNo = Number(item?.classNo || 1);
+      const classStart = item?.selectedClassStartAt ? new Date(item.selectedClassStartAt) : null;
+      const classEnd = item?.selectedClassEndAt
+        ? new Date(item.selectedClassEndAt)
+        : (classStart && !Number.isNaN(classStart.getTime())
+          ? new Date(classStart.getTime() + (60 * 60 * 1000))
+          : null);
+      const hasClassTime = classStart && !Number.isNaN(classStart.getTime());
+      const nowMs = Date.now();
+      const joinWindowStart = hasClassTime ? classStart.getTime() - (30 * 60 * 1000) : Number.NaN;
+      const joinWindowEnd = classEnd && !Number.isNaN(classEnd.getTime()) ? classEnd.getTime() : Number.NaN;
+      const showJoinNow = hasClassTime
+        && nowMs >= joinWindowStart
+        && nowMs <= joinWindowEnd
+        && item?.status === 'activated'
+        && !item?.noGoodTimeslot;
+
       const wrap = document.createElement('div');
       wrap.className = 'support-msg support-msg-admin';
       wrap.innerHTML = `
         <div class="support-msg-text"><strong>${item.courseTitle || 'Course'}</strong> - ${item.userName || item.userEmail || item.uid}</div>
+        <div class="support-msg-text">Class No: ${classNo}</div>
         <div class="support-msg-text">Slot: ${item.timeslotLabel || 'User requested manual slot'}</div>
         <div class="support-msg-text">Status: ${item.status || '-'}</div>
         <div class="support-msg-time">Requested: ${formatWhen(item.requestedAt)} | Next class: ${formatWhen(item.nextClassAt)}</div>
       `;
+
+      if (showJoinNow) {
+        const joinBtn = document.createElement('button');
+        joinBtn.type = 'button';
+        joinBtn.className = 'dashboard-course-action-btn';
+        joinBtn.title = 'Join live class room';
+        joinBtn.textContent = `Join Now (Class ${classNo})`;
+        joinBtn.addEventListener('click', () => {
+          joinBtn.disabled = true;
+          getInstructorJoinLink(item)
+            .then((url) => {
+              window.location.href = url;
+            })
+            .catch((error) => {
+              setFeedback(error?.message || 'Could not open class room.', 'error');
+              joinBtn.disabled = false;
+            });
+        });
+        wrap.appendChild(joinBtn);
+      }
       frag.appendChild(wrap);
     });
 
@@ -137,6 +175,31 @@ if (!root) {
       throw new Error(payload?.error || 'Could not load class notifications.');
     }
     return payload;
+  }
+
+  async function getInstructorJoinLink(item) {
+    const token = getToken();
+    if (!token) throw new Error('Session expired. Please sign in again.');
+
+    const response = await fetch('/api/session/instructor/join-link', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        courseId: item?.courseId,
+        learnerUid: item?.uid,
+      }),
+    });
+
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok || !payload?.ok || !payload?.joinUrl) {
+      throw new Error(payload?.error || 'Join link is not available yet.');
+    }
+
+    return payload.joinUrl;
   }
 
   async function refreshDashboard() {

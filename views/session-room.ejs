@@ -1,0 +1,56 @@
+<%- include('partials/head') %>
+
+<section class="section session-shell" data-session-page data-meeting-id="<%= meetingId %>" data-course-slug="<%= courseSlug %>">
+  <div class="container session-layout">
+    <aside class="session-sidebar">
+      <div class="session-meta-card">
+        <div class="section-tag">Live Class</div>
+        <h1 class="session-title">Session Room</h1>
+        <p class="session-sub" id="session-meta">Connecting...</p>
+        <div id="session-role" class="dashboard-chip">Role</div>
+      </div>
+
+      <div class="session-controls-card">
+        <button type="button" class="btn btn-primary btn-block" id="session-toggle-mic">Mute Mic</button>
+        <button type="button" class="btn btn-primary btn-block" id="session-toggle-cam">Turn Off Camera</button>
+        <button type="button" class="btn btn-ghost btn-block" id="session-share-screen">Share Screen</button>
+        <button type="button" class="btn btn-ghost btn-block" id="session-support">Raise Technical Support</button>
+        <button type="button" class="btn btn-outline btn-block" id="session-end-class" hidden>End Class</button>
+      </div>
+
+      <div id="session-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
+    </aside>
+
+    <main class="session-main">
+      <section class="session-video-grid" id="session-video-grid">
+        <article class="session-video-card">
+          <header><span>You</span></header>
+          <video id="session-local-video" autoplay playsinline muted></video>
+        </article>
+      </section>
+
+      <section class="session-tools-grid">
+        <article class="session-chat-card">
+          <h2>Live Chat</h2>
+          <div id="session-chat-list" class="session-chat-list"></div>
+          <form id="session-chat-form" class="session-chat-form" action="#" method="post">
+            <input id="session-chat-input" type="text" placeholder="Type a message" maxlength="500" required />
+            <button type="submit" class="btn btn-primary">Send</button>
+          </form>
+        </article>
+
+        <article class="session-whiteboard-card" id="session-whiteboard-wrap" hidden>
+          <h2>Whiteboard (Instructor)</h2>
+          <canvas id="session-whiteboard" width="960" height="420"></canvas>
+          <div class="session-whiteboard-actions">
+            <button type="button" class="btn btn-ghost" id="session-whiteboard-clear">Clear Board</button>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+</section>
+
+<script src="/socket.io/socket.io.js"></script>
+<script type="module" src="/js/session-room.js"></script>
+<%- include('partials/footer') %>

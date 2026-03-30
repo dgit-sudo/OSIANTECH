@@ -596,6 +596,29 @@ async function loadPurchases(user) {
   return Array.isArray(data.purchases) ? data.purchases : [];
 }
 
+async function getLearnerJoinLink(courseId) {
+  const user = auth.currentUser;
+  if (!user) throw new Error('Please sign in first.');
+  const idToken = await user.getIdToken();
+
+  const response = await fetch('/api/session/learner/join-link', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: `Bearer ${idToken}`,
+    },
+    body: JSON.stringify({ courseId }),
+  });
+
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok || !payload?.ok || !payload?.joinUrl) {
+    throw new Error(payload?.error || 'Join link is not available yet.');
+  }
+
+  return payload.joinUrl;
+}
+
 function renderPurchases(purchases) {
   if (!purchasedCoursesEl || !purchasedEmptyEl) return;
   purchasedCoursesEl.innerHTML = '';
@@ -625,7 +648,29 @@ function renderPurchases(purchases) {
       ? `Purchased on ${date.toLocaleDateString()}`
       : 'Purchased';
 
+    const activation = purchase?.activation || null;
+    const activationStart = activation?.selectedClassStartAt ? new Date(activation.selectedClassStartAt) : null;
+    const activationEnd = activation?.selectedClassEndAt
+      ? new Date(activation.selectedClassEndAt)
+      : (activationStart && !Number.isNaN(activationStart.getTime())
+        ? new Date(activationStart.getTime() + 60 * 60 * 1000)
+        : null);
+    const hasValidClassTime = activationStart && !Number.isNaN(activationStart.getTime());
+    const classNo = Number(activation?.classNo || 1);
+
+    const classInfo = document.createElement('span');
+    classInfo.className = 'dashboard-course-cat';
+    if (hasValidClassTime) {
+      const prettyWhen = activationStart.toLocaleString();
+      classInfo.textContent = `Class ${classNo} • ${prettyWhen}`;
+    } else if (activation?.status === 'activated') {
+      classInfo.textContent = `Class ${classNo} • Time will be shared soon`;
+    } else {
+      classInfo.textContent = '';
+    }
+
     titleWrap.append(title, sub);
+    if (classInfo.textContent) titleWrap.appendChild(classInfo);
 
     const status = document.createElement('span');
     status.className = 'dashboard-course-arrow';
@@ -652,6 +697,37 @@ function renderPurchases(purchases) {
     });
 
     actions.append(open, activate);
+
+    const nowMs = Date.now();
+    const joinWindowStart = hasValidClassTime ? activationStart.getTime() - (30 * 60 * 1000) : Number.NaN;
+    const joinWindowEnd = activationEnd && !Number.isNaN(activationEnd.getTime())
+      ? activationEnd.getTime()
+      : Number.NaN;
+    const showJoinNow = hasValidClassTime
+      && nowMs >= joinWindowStart
+      && nowMs <= joinWindowEnd
+      && activation?.status === 'activated'
+      && !activation?.noGoodTimeslot;
+
+    if (showJoinNow) {
+      const joinNow = document.createElement('button');
+      joinNow.type = 'button';
+      joinNow.className = 'dashboard-course-action-btn';
+      joinNow.title = 'Join live class room';
+      joinNow.textContent = `Join Now (Class ${classNo})`;
+      joinNow.addEventListener('click', () => {
+        joinNow.disabled = true;
+        getLearnerJoinLink(purchase.courseId)
+          .then((url) => {
+            window.location.href = url;
+          })
+          .catch((error) => {
+            setFeedback(gateFeedbackEl, error?.message || 'Could not open class room.', 'error');
+            joinNow.disabled = false;
+          });
+      });
+      actions.appendChild(joinNow);
+    }
 
     item.append(titleWrap, status, actions);
     fragment.appendChild(item);
@@ -962,6 +1038,12 @@ onAuthStateChanged(auth, async (user) => {
 
   scheduleUnauthRedirect();
 });
+
+setInterval(() => {
+  if (!auth.currentUser) return;
+  if (!Array.isArray(purchasesCache) || purchasesCache.length === 0) return;
+  renderPurchases(purchasesCache);
+}, 30000);
 
 if (profileForm) {
   profileForm.addEventListener('submit', async (event) => {
