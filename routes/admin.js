@@ -16,6 +16,15 @@ const usersTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_USERS_TA
 const purchasesTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_PURCHASES_TABLE || '')
   ? process.env.SUPABASE_PURCHASES_TABLE
   : 'user_purchases';
+const activationTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_ACTIVATIONS_TABLE || '')
+  ? process.env.SUPABASE_ACTIVATIONS_TABLE
+  : 'course_activations';
+const classScheduleTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_CLASS_SCHEDULE_TABLE || '')
+  ? process.env.SUPABASE_CLASS_SCHEDULE_TABLE
+  : 'course_class_schedules';
+const liveSessionsTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_LIVE_SESSIONS_TABLE || '')
+  ? process.env.SUPABASE_LIVE_SESSIONS_TABLE
+  : 'live_sessions';
 const instructorTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_INSTRUCTORS_TABLE || '')
   ? process.env.SUPABASE_INSTRUCTORS_TABLE
   : 'instructor_accounts';
@@ -260,6 +269,7 @@ function weekdayFromDate(slotDate) {
   return parsed.getUTCDay();
 }
 
+
 async function requireAdminAuth(req, res, next) {
   const authHeader = req.headers.authorization || '';
   if (!authHeader.startsWith('Bearer ')) {
@@ -457,6 +467,13 @@ router.post('/api/transfer-courses', requireAdminAuth, async (req, res) => {
   }
 
   const client = await pool.connect();
+  let transferSummary = {
+    transferredCourses: 0,
+    transferredActivationRows: 0,
+    transferredScheduleRows: 0,
+    transferredLiveSessionRows: 0,
+  };
+
   try {
     await client.query('begin');
 
@@ -481,6 +498,17 @@ router.post('/api/transfer-courses', requireAdminAuth, async (req, res) => {
     const byUid = new Map(accountCheck.rows.map((row) => [row.uid, row]));
     const source = byUid.get(sourceUid);
     const target = byUid.get(targetUid);
+
+    const sourceEmailResult = await client.query(
+      `select email from ${usersTable} where uid = $1 limit 1`,
+      [sourceUid],
+    );
+    const targetEmailResult = await client.query(
+      `select email from ${usersTable} where uid = $1 limit 1`,
+      [targetUid],
+    );
+    const sourceEmail = normalizeEmail(sourceEmailResult.rows[0]?.email || '');
+    const targetEmail = normalizeEmail(targetEmailResult.rows[0]?.email || '');
 
     const sourceActivated = Boolean(source?.user_completed || source?.profile_completed);
     const targetActivated = Boolean(target?.user_completed || target?.profile_completed);
@@ -523,16 +551,78 @@ router.post('/api/transfer-courses', requireAdminAuth, async (req, res) => {
       [targetUid, sourceUid],
     );
 
+    transferSummary.transferredCourses = transferResult.rowCount || 0;
+
+    const activationTransferResult = await client.query(
+      `
+        update ${activationTable}
+        set uid = $1, updated_at = current_timestamp
+        where uid = $2
+      `,
+      [targetUid, sourceUid],
+    );
+    transferSummary.transferredActivationRows = activationTransferResult.rowCount || 0;
+
+    await client.query(
+      `
+        delete from ${classScheduleTable}
+        where uid = $1
+          and exists (
+            select 1
+            from ${classScheduleTable} t
+            where t.uid = $2
+              and t.course_id = ${classScheduleTable}.course_id
+              and t.class_no = ${classScheduleTable}.class_no
+          )
+      `,
+      [targetUid, sourceUid],
+    );
+
+    const scheduleTransferResult = await client.query(
+      `
+        update ${classScheduleTable}
+        set uid = $1, updated_at = current_timestamp
+        where uid = $2
+      `,
+      [targetUid, sourceUid],
+    );
+    transferSummary.transferredScheduleRows = scheduleTransferResult.rowCount || 0;
+
+    const liveSessionTransferResult = await client.query(
+      `
+        update ${liveSessionsTable}
+        set
+          learner_uid = $1,
+          learner_email = $2
+        where learner_uid = $3 and ended_at is null
+      `,
+      [targetUid, targetEmail || null, sourceUid],
+    );
+    transferSummary.transferredLiveSessionRows = liveSessionTransferResult.rowCount || 0;
+
     await client.query(`delete from ${purchasesTable} where uid = $1`, [sourceUid]);
     await client.query(`delete from ${profileTable} where uid = $1`, [sourceUid]);
     await client.query(`delete from ${usersTable} where uid = $1`, [sourceUid]);
 
+    const scopedTables = await getUidScopedTables(client);
+    const preservedTables = new Set([purchasesTable, profileTable, usersTable, activationTable, classScheduleTable]);
+    for (const table of scopedTables) {
+      if (preservedTables.has(table)) continue;
+      await client.query(`delete from ${table} where uid = $1`, [sourceUid]);
+    }
+
     await client.query('commit');
+
     return res.json({
       ok: true,
-      transferredCourses: transferResult.rowCount || 0,
+      transferredCourses: transferSummary.transferredCourses,
+      transferredActivationRows: transferSummary.transferredActivationRows,
+      transferredScheduleRows: transferSummary.transferredScheduleRows,
+      transferredLiveSessionRows: transferSummary.transferredLiveSessionRows,
       sourceUid,
       targetUid,
+      sourceEmail,
+      targetEmail,
     });
   } catch {
     await client.query('rollback');

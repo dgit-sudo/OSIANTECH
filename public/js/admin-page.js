@@ -829,7 +829,7 @@ if (!root) {
 
     setFeedback(
       transferFeedbackEl,
-      `Transfer complete. ${payload.transferredCourses} courses moved. Source account removed from app records.`,
+      `Transfer complete. ${payload.transferredCourses} courses moved, ${payload.transferredActivationRows || 0} activations migrated, ${payload.transferredScheduleRows || 0} class schedules migrated, ${payload.transferredLiveSessionRows || 0} live sessions reassigned. Delete source Firebase account manually if needed.`,
       'success',
     );
 
