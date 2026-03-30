@@ -657,6 +657,13 @@ function renderPurchases(purchases) {
         : null);
     const hasValidClassTime = activationStart && !Number.isNaN(activationStart.getTime());
     const classNo = Number(activation?.classNo || 1);
+    const nowMs = Date.now();
+    const classEnded = Boolean(
+      activation?.status === 'activated'
+      && activationEnd
+      && !Number.isNaN(activationEnd.getTime())
+      && nowMs > activationEnd.getTime(),
+    );
 
     const classInfo = document.createElement('span');
     classInfo.className = 'dashboard-course-cat';
@@ -689,7 +696,13 @@ function renderPurchases(purchases) {
     const activate = document.createElement('button');
     activate.type = 'button';
     activate.className = 'dashboard-course-action-btn';
-    activate.textContent = purchase?.activation ? 'Update Activation' : 'Activate';
+    if (!purchase?.activation) {
+      activate.textContent = 'Activate';
+    } else if (classEnded) {
+      activate.textContent = `Schedule Class ${classNo + 1}`;
+    } else {
+      activate.textContent = 'Update Activation';
+    }
     activate.addEventListener('click', () => {
       openActivationModal(purchase).catch((error) => {
         setFeedback(activationFeedbackEl, error?.message || 'Could not open activation popup.', 'error');
@@ -698,7 +711,6 @@ function renderPurchases(purchases) {
 
     actions.append(open, activate);
 
-    const nowMs = Date.now();
     const joinWindowStart = hasValidClassTime ? activationStart.getTime() - (30 * 60 * 1000) : Number.NaN;
     const joinWindowEnd = activationEnd && !Number.isNaN(activationEnd.getTime())
       ? activationEnd.getTime()

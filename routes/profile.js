@@ -14,6 +14,9 @@ const adminEmail = String(process.env.ADMIN_EMAIL || 'dhyanamshah38@gmail.com').
 const purchasesTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_PURCHASES_TABLE || '')
   ? process.env.SUPABASE_PURCHASES_TABLE
   : 'user_purchases';
+const classScheduleTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_CLASS_SCHEDULE_TABLE || '')
+  ? process.env.SUPABASE_CLASS_SCHEDULE_TABLE
+  : 'course_class_schedules';
 const activationTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_ACTIVATIONS_TABLE || '')
   ? process.env.SUPABASE_ACTIVATIONS_TABLE
   : 'course_activations';
@@ -35,6 +38,7 @@ const pool = dbReady
 let purchasesTableReady = false;
 let activationsTableReady = false;
 let instructorTablesReady = false;
+let classScheduleTableReady = false;
 
 function isValidUid(uid = '') {
   return typeof uid === 'string' && /^[a-zA-Z0-9_-]{6,128}$/.test(uid);
@@ -112,6 +116,31 @@ async function ensureActivationsTable() {
   await pool.query(`create index if not exists idx_${activationTable}_instructor_start on ${activationTable}(instructor_id, selected_class_start_at)`);
 
   activationsTableReady = true;
+}
+
+async function ensureClassScheduleTable() {
+  if (!pool || classScheduleTableReady) return;
+
+  await pool.query(`
+    create table if not exists ${classScheduleTable} (
+      id serial primary key,
+      uid varchar(128) not null,
+      course_id integer not null,
+      class_no integer not null,
+      slot_date date not null,
+      start_at timestamp not null,
+      end_at timestamp not null,
+      created_at timestamp not null default current_timestamp,
+      updated_at timestamp not null default current_timestamp,
+      unique(uid, course_id, class_no),
+      unique(uid, course_id, slot_date)
+    )
+  `);
+
+  await pool.query(`create index if not exists idx_${classScheduleTable}_uid_course on ${classScheduleTable}(uid, course_id)`);
+  await pool.query(`create index if not exists idx_${classScheduleTable}_slot_date on ${classScheduleTable}(slot_date)`);
+
+  classScheduleTableReady = true;
 }
 
 async function ensureInstructorTables() {
@@ -765,6 +794,7 @@ router.get('/:uid/purchases/:courseId/activation-options', async (req, res) => {
   try {
     await ensurePurchasesTable();
     await ensureActivationsTable();
+    await ensureClassScheduleTable();
     await ensureInstructorTables();
 
     const purchase = await pool.query(
@@ -879,7 +909,7 @@ router.post('/:uid/purchases/:courseId/activate', async (req, res) => {
 
     const existingActivation = await pool.query(
       `
-        select class_no, selected_class_start_at
+        select class_no, selected_slot_date, selected_class_start_at, selected_class_end_at
         from ${activationTable}
         where uid = $1 and course_id = $2
         limit 1
@@ -887,9 +917,13 @@ router.post('/:uid/purchases/:courseId/activate', async (req, res) => {
       [uid, courseIdNum],
     );
     const previousClassNo = Number(existingActivation.rows[0]?.class_no || 1);
+    const previousSlotDate = String(existingActivation.rows[0]?.selected_slot_date || '').trim();
     const previousClassStart = existingActivation.rows[0]?.selected_class_start_at
       ? new Date(existingActivation.rows[0].selected_class_start_at).toISOString()
       : '';
+    const previousClassEndMs = existingActivation.rows[0]?.selected_class_end_at
+      ? new Date(existingActivation.rows[0].selected_class_end_at).getTime()
+      : Number.NaN;
 
     let selectedSlot = null;
     if (!noGoodTimeslot) {
@@ -920,11 +954,35 @@ router.post('/:uid/purchases/:courseId/activate', async (req, res) => {
     const selectedLabel = selectedSlot
       ? formatUtcRangeInTimeZone(selectedSlot.startAtUtc, selectedSlot.endAtUtc, learnerTimeZone)
       : null;
-    const classNo = noGoodTimeslot
-      ? previousClassNo
-      : (selectedSlot && previousClassStart && selectedSlot.startAtUtc !== previousClassStart
-        ? previousClassNo + 1
-        : Math.max(previousClassNo, 1));
+    let classNo = Math.max(previousClassNo, 1);
+    if (!noGoodTimeslot && selectedSlot && previousClassStart && selectedSlot.startAtUtc !== previousClassStart) {
+      const ended = Number.isFinite(previousClassEndMs) && Date.now() > previousClassEndMs;
+      classNo = ended ? previousClassNo + 1 : previousClassNo;
+    }
+
+    if (!noGoodTimeslot && selectedSlot) {
+      const sameDateDifferentClass = await pool.query(
+        `
+          select id
+          from ${classScheduleTable}
+          where uid = $1 and course_id = $2 and slot_date = $3 and class_no <> $4
+          limit 1
+        `,
+        [uid, courseIdNum, selectedSlot.slotDate, classNo],
+      );
+
+      if (sameDateDifferentClass.rows[0]) {
+        return res.status(409).json({
+          error: 'Two classes of the same course cannot be scheduled on the same date.',
+        });
+      }
+
+      if (classNo > previousClassNo && previousSlotDate && selectedSlot.slotDate === previousSlotDate) {
+        return res.status(409).json({
+          error: 'Class 2 (or higher) cannot be on the same date as the previous class.',
+        });
+      }
+    }
 
     const result = await pool.query(
       `
@@ -994,6 +1052,24 @@ router.post('/:uid/purchases/:courseId/activate', async (req, res) => {
     );
 
     const row = result.rows[0];
+
+    if (!noGoodTimeslot && selectedSlot) {
+      await pool.query(
+        `
+          insert into ${classScheduleTable}
+            (uid, course_id, class_no, slot_date, start_at, end_at, updated_at)
+          values
+            ($1, $2, $3, $4, $5, $6, current_timestamp)
+          on conflict (uid, course_id, class_no) do update set
+            slot_date = excluded.slot_date,
+            start_at = excluded.start_at,
+            end_at = excluded.end_at,
+            updated_at = excluded.updated_at
+        `,
+        [uid, courseIdNum, classNo, selectedSlot.slotDate, selectedSlot.startAtUtc, selectedSlot.endAtUtc],
+      );
+    }
+
     return res.json({
       ok: true,
       activation: {
