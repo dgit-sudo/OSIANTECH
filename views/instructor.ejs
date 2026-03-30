@@ -1,34 +1,50 @@
 <%- include('partials/head') %>
 <%- include('partials/navbar') %>
 
-<section class="section" data-instructor-page>
+<section class="section auth-shell instructor-shell" data-instructor-page>
   <div class="container">
-    <div class="dashboard-header">
-      <div class="dashboard-intro">
-        <div class="section-tag">Instructor</div>
-        <h1 class="dashboard-title">Instructor Dashboard</h1>
-        <p class="dashboard-sub">Sign in with your instructor email and password provided by admin.</p>
+    <div class="auth-container instructor-auth-layout">
+      <article class="auth-hero instructor-hero" data-animate="fade-left">
+        <div class="section-tag">Instructor Access</div>
+        <h1 class="auth-title">Manage your classes in one focused workspace</h1>
+        <p class="auth-sub">Sign in with the credentials created by admin to view your assigned classes and daily availability.</p>
+
+        <ul class="auth-points instructor-points">
+          <li>Date-wise slot schedule managed by admin</li>
+          <li>Upcoming class notifications with learner details</li>
+          <li>Secure instructor-only login session</li>
+        </ul>
+
+        <div class="instructor-hero-badges">
+          <span class="dashboard-chip">Instructor Portal</span>
+          <span class="dashboard-chip dashboard-chip-soft">Date-wise Scheduling</span>
+        </div>
+      </article>
+
+      <div class="auth-card instructor-auth-card" id="instructor-auth-card" data-animate="fade-right">
+        <p class="instructor-auth-kicker">Welcome back</p>
+        <h2>Instructor Sign In</h2>
+        <p class="auth-card-sub">Use your instructor email and password shared by admin.</p>
+
+        <form id="instructor-signin-form" class="auth-form" action="#" method="post">
+          <div class="form-group">
+            <label for="instructor-email">Email</label>
+            <input id="instructor-email" type="email" required placeholder="instructor@example.com" />
+          </div>
+          <div class="form-group">
+            <label for="instructor-password">Password</label>
+            <input id="instructor-password" type="password" required placeholder="Enter password" />
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+        </form>
+
+        <div class="instructor-auth-note">Need help with account access? Contact admin for password reset.</div>
+        <div id="instructor-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
       </div>
     </div>
 
-    <div class="dashboard-gate-card" id="instructor-auth-card">
-      <h2>Instructor Sign In</h2>
-      <form id="instructor-signin-form" class="profile-setup-form" action="#" method="post">
-        <div class="form-group">
-          <label for="instructor-email">Email</label>
-          <input id="instructor-email" type="email" required placeholder="instructor@example.com" />
-        </div>
-        <div class="form-group">
-          <label for="instructor-password">Password</label>
-          <input id="instructor-password" type="password" required placeholder="Enter password" />
-        </div>
-        <button type="submit" class="btn btn-primary">Sign In</button>
-      </form>
-      <div id="instructor-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
-    </div>
-
     <div id="instructor-dashboard" hidden>
-      <div class="dashboard-gate-card">
+      <div class="dashboard-gate-card instructor-profile-card">
         <div class="dashboard-gate-head">
           <div>
             <h2 id="instructor-name">Instructor</h2>
@@ -38,14 +54,16 @@
         </div>
       </div>
 
-      <div class="dashboard-gate-card">
-        <h2>My Weekly Availability</h2>
-        <div id="instructor-availability" class="admin-profile-preview">No slots configured by admin.</div>
-      </div>
+      <div class="instructor-dashboard-grid">
+        <div class="dashboard-gate-card">
+          <h2>My Availability</h2>
+          <div id="instructor-availability" class="admin-profile-preview">No slots configured by admin.</div>
+        </div>
 
-      <div class="dashboard-gate-card">
-        <h2>Upcoming Classes Notifications</h2>
-        <div id="instructor-classes" class="support-messages">No class activations yet.</div>
+        <div class="dashboard-gate-card">
+          <h2>Upcoming Class Notifications</h2>
+          <div id="instructor-classes" class="support-messages">No class activations yet.</div>
+        </div>
       </div>
     </div>
   </div>
