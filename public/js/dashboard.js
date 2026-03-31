@@ -767,6 +767,7 @@ function setTimeslotOptions(instructors, instructorId, selectedTimeslotId = '') 
   const slots = Array.isArray(instructor?.timeSlots) ? instructor.timeSlots : [];
 
   if (!slots.length) {
+    activationTimeslotEl.disabled = true;
     const emptyOption = document.createElement('option');
     emptyOption.value = '';
     emptyOption.textContent = 'No timeslots currently available';
@@ -774,6 +775,8 @@ function setTimeslotOptions(instructors, instructorId, selectedTimeslotId = '') 
     activationTimeslotEl.value = '';
     return;
   }
+
+  activationTimeslotEl.disabled = false;
 
   const placeholder = document.createElement('option');
   placeholder.value = '';
@@ -790,6 +793,29 @@ function setTimeslotOptions(instructors, instructorId, selectedTimeslotId = '') 
   activationTimeslotEl.value = selectedTimeslotId && slots.some((slot) => slot.slotId === selectedTimeslotId)
     ? selectedTimeslotId
     : '';
+}
+
+function pickActivationInstructor(instructors, currentActivation) {
+  if (!Array.isArray(instructors) || !instructors.length) return '';
+
+  const selectedInstructorId = String(currentActivation?.instructorId || '').trim();
+  const selectedInstructor = instructors.find((item) => item.instructorId === selectedInstructorId) || null;
+  const selectedHasSlots = Boolean(selectedInstructor && Array.isArray(selectedInstructor.timeSlots) && selectedInstructor.timeSlots.length);
+
+  if (selectedHasSlots) {
+    return selectedInstructorId;
+  }
+
+  if (currentActivation?.noGoodTimeslot) {
+    const firstWithSlots = instructors.find((item) => Array.isArray(item.timeSlots) && item.timeSlots.length);
+    if (firstWithSlots?.instructorId) return firstWithSlots.instructorId;
+  }
+
+  if (selectedInstructorId && selectedInstructor) {
+    return selectedInstructorId;
+  }
+
+  return String(instructors[0]?.instructorId || '');
 }
 
 async function openActivationModal(purchase) {
@@ -854,22 +880,19 @@ async function openActivationModal(purchase) {
   const lockedTimeZone = Boolean(currentActivation?.learnerTimezone);
   activationContext.learnerTimezone = currentActivation?.learnerTimezone || payload.learnerTimeZone || browserTimeZone;
   populateActivationTimezone(activationContext.learnerTimezone, lockedTimeZone);
-  if (currentActivation?.instructorId && instructors.some((i) => i.instructorId === currentActivation.instructorId)) {
-    activationInstructorEl.value = currentActivation.instructorId;
-  } else if (instructors[0]) {
-    activationInstructorEl.value = instructors[0].instructorId;
-  }
+  activationInstructorEl.value = pickActivationInstructor(instructors, currentActivation);
 
   const selectedInstructorId = String(activationInstructorEl.value || '');
   setTimeslotOptions(instructors, selectedInstructorId, currentActivation?.timeslotId || '');
 
-  if (activationTimeslotEl) activationTimeslotEl.disabled = false;
-
   activationModalEl.hidden = false;
+  const hasFreshSlots = instructors.some((item) => Array.isArray(item.timeSlots) && item.timeSlots.length > 0);
   setActivationFeedback(
-    currentActivation
-      ? 'Existing activation loaded. You can update instructor/timeslot.'
-      : 'Choose instructor and timeslot, or select No good timeslots.',
+    currentActivation?.noGoodTimeslot && hasFreshSlots
+      ? 'New timeslots are available. Choose a slot and save to update your class.'
+      : currentActivation
+        ? 'Existing activation loaded. You can update instructor/timeslot.'
+        : 'Choose instructor and timeslot, or select No good timeslots.',
     'info',
   );
 }
