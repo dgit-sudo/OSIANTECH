@@ -277,6 +277,7 @@ async function getInstructorAvailability(options = {}) {
   const learnerTimeZone = normalizeTimeZone(options.learnerTimeZone || 'Asia/Kolkata');
   const excludeUid = String(options.excludeUid || '').trim();
   const excludeCourseId = Number.parseInt(String(options.excludeCourseId || '0'), 10) || 0;
+  const nowMs = Date.now();
 
   await ensureInstructorTables();
 
@@ -294,10 +295,8 @@ async function getInstructorAvailability(options = {}) {
       left join ${instructorSlotsTable} s
         on s.instructor_uid = i.instructor_uid and s.is_active = true and s.slot_date is not null
       where i.is_active = true
-        and (s.slot_date is null or s.slot_date >= $1)
       order by i.display_name asc, s.slot_date asc, s.start_time asc
     `,
-    [todayIstDateString()],
   );
 
   const byInstructor = new Map();
@@ -325,6 +324,7 @@ async function getInstructorAvailability(options = {}) {
     const rangeStart = parseIstDateTime(row.slot_date, row.start_time);
     const rangeEnd = parseIstDateTime(row.slot_date, row.end_time);
     if (!rangeStart || !rangeEnd || rangeStart >= rangeEnd) continue;
+    if (rangeEnd.getTime() <= nowMs) continue;
 
     let cursorMs = rangeStart.getTime();
     const endMs = rangeEnd.getTime();
