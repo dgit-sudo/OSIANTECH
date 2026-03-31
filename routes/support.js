@@ -242,6 +242,7 @@ async function getChatSummaryByUid(uid) {
         limit 1
       ) msg on true
       where c.uid = $1
+      and c.status != 'ended'
       order by c.updated_at desc, c.id desc
     `,
     [uid],
@@ -527,6 +528,7 @@ router.get('/admin/chats', requireAdminAuth, async (_req, res) => {
       left join ${profileTable} p on p.uid = c.uid
       left join purchase_counts pc on pc.uid = c.uid
       left join latest on latest.chat_id = c.id
+      where c.status != 'ended'
       order by c.updated_at desc, c.id desc
     `;
 
