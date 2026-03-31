@@ -54,9 +54,27 @@ if (!root) {
 
   function addChatMessage(sender, text, own = false) {
     if (!chatListEl) return;
+
+    // Hide empty-state placeholder once a message arrives
+    const emptyEl = document.getElementById('session-chat-empty');
+    if (emptyEl) emptyEl.hidden = true;
+
+    const escHtml = (s) => String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+
+    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
     const wrap = document.createElement('div');
-    wrap.className = `support-msg ${own ? 'support-msg-admin' : 'support-msg-user'}`;
-    wrap.innerHTML = `<div class="support-msg-text"><strong>${sender}:</strong> ${text}</div>`;
+    wrap.className = `session-chat-msg ${own ? 'session-chat-msg--own' : 'session-chat-msg--other'}`;
+    wrap.innerHTML = `
+      <div class="session-chat-bubble">
+        ${!own ? `<span class="session-chat-sender">${escHtml(sender)}</span>` : ''}
+        <p class="session-chat-text">${escHtml(text)}</p>
+        <time class="session-chat-time">${time}</time>
+      </div>`;
     chatListEl.appendChild(wrap);
     chatListEl.scrollTop = chatListEl.scrollHeight;
   }

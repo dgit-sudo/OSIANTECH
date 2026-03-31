@@ -31,11 +31,22 @@
 
       <section class="session-tools-grid">
         <article class="session-chat-card">
-          <h2>Live Chat</h2>
-          <div id="session-chat-list" class="session-chat-list"></div>
-          <form id="session-chat-form" class="session-chat-form" action="#" method="post">
-            <input id="session-chat-input" type="text" placeholder="Type a message" maxlength="500" required />
-            <button type="submit" class="btn btn-primary">Send</button>
+          <div class="session-chat-head">
+            <span class="session-chat-status-dot" aria-hidden="true"></span>
+            <h2 class="session-chat-title">Live Chat</h2>
+            <span class="session-chat-badge">In Session</span>
+          </div>
+          <div id="session-chat-list" class="session-chat-list" role="log" aria-live="polite" aria-label="Chat messages">
+            <div class="session-chat-empty" id="session-chat-empty">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              <p>No messages yet. Say hi!</p>
+            </div>
+          </div>
+          <form id="session-chat-form" class="session-chat-form" action="#" method="post" autocomplete="off">
+            <input id="session-chat-input" type="text" placeholder="Type a message…" maxlength="500" required autocomplete="off" />
+            <button type="submit" class="session-chat-send" aria-label="Send message">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            </button>
           </form>
         </article>
 
