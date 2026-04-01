@@ -833,7 +833,7 @@ function pickActivationInstructor(instructors, currentActivation) {
 }
 
 async function openActivationModal(purchase) {
-  if (!activationModalEl || !activationInstructorEl) return;
+  if (!purchase) return;
 
   const user = auth.currentUser;
   if (!user) throw new Error('Please sign in first.');
@@ -841,19 +841,8 @@ async function openActivationModal(purchase) {
   activationContext.courseId = Number(purchase.courseId || 0);
   activationContext.courseTitle = purchase.courseTitle || `Course #${purchase.courseId}`;
 
-  if (activationTitleEl) activationTitleEl.textContent = `Activate: ${activationContext.courseTitle}`;
-  activationModalEl.hidden = false;
-  activationInstructorEl.innerHTML = '';
-  if (activationTimeslotEl) {
-    activationTimeslotEl.innerHTML = '';
-    const loadingOption = document.createElement('option');
-    loadingOption.value = '';
-    loadingOption.textContent = 'Loading timeslots...';
-    activationTimeslotEl.appendChild(loadingOption);
-    activationTimeslotEl.disabled = true;
-  }
-  if (activationSaveBtn) activationSaveBtn.disabled = true;
-  setActivationFeedback('Loading instructor availability...', 'info');
+  if (activationModalEl) activationModalEl.hidden = true;
+  setActivationFeedback('Debug mode active. Fetching activation-options and logging to browser console...', 'info');
 
   const token = await getActivationToken();
   const browserTimeZone = getBrowserTimeZone();
@@ -871,63 +860,41 @@ async function openActivationModal(purchase) {
 
   const payload = await response.json().catch(() => ({}));
   if (!response.ok) {
+    // eslint-disable-next-line no-console
+    console.error('activation-options error', {
+      courseId: activationContext.courseId,
+      courseTitle: activationContext.courseTitle,
+      status: response.status,
+      payload,
+    });
     throw new Error(payload?.error || 'Could not load activation options. Please try again.');
   }
 
-  if (payload?.debug && activationFeedbackEl) {
-    const debugCount = Number(payload.debug.instructorCount || 0);
-    const totalSlots = Array.isArray(payload.debug.slotStats)
-      ? payload.debug.slotStats.reduce((sum, item) => sum + Number(item.slotCount || 0), 0)
-      : 0;
-    setActivationFeedback(`Debug: ${debugCount} instructors, ${totalSlots} visible slots loaded.`, 'info');
-  }
-
   const instructors = Array.isArray(payload.instructors) ? payload.instructors : [];
-  activationContext.instructors = instructors;
-
-  activationInstructorEl.innerHTML = '';
-  instructors.forEach((instructor) => {
-    const option = document.createElement('option');
-    option.value = instructor.instructorId;
-    option.textContent = instructor.instructorName;
-    activationInstructorEl.appendChild(option);
-  });
-
-  if (!instructors.length) {
-    if (activationTimeslotEl) {
-      activationTimeslotEl.innerHTML = '';
-      const noSlot = document.createElement('option');
-      noSlot.value = '';
-      noSlot.textContent = 'No instructor availability set by admin yet';
-      activationTimeslotEl.appendChild(noSlot);
-      activationTimeslotEl.disabled = true;
-    }
-    if (activationSaveBtn) activationSaveBtn.disabled = true;
-    setActivationFeedback('No instructor slots are available right now. Please try later.', 'error');
-    return;
-  }
-
-  if (activationSaveBtn) activationSaveBtn.disabled = false;
-
-  const currentActivation = payload.activation || null;
-  activationContext.previousActivation = currentActivation;
-  const lockedTimeZone = Boolean(currentActivation?.learnerTimezone);
-  activationContext.learnerTimezone = currentActivation?.learnerTimezone || payload.learnerTimeZone || browserTimeZone;
-  populateActivationTimezone(activationContext.learnerTimezone, lockedTimeZone);
-  activationInstructorEl.value = pickActivationInstructor(instructors, currentActivation);
-
-  const selectedInstructorId = String(activationInstructorEl.value || '');
-  setTimeslotOptions(instructors, selectedInstructorId, currentActivation?.timeslotId || '');
-
-  const hasFreshSlots = instructors.some((item) => Array.isArray(item.timeSlots) && item.timeSlots.length > 0);
-  setActivationFeedback(
-    currentActivation?.noGoodTimeslot && hasFreshSlots
-      ? 'New timeslots are available. Choose a slot and save to update your class.'
-      : currentActivation
-        ? 'Existing activation loaded. You can update instructor/timeslot.'
-        : 'Choose instructor and timeslot, or select No good timeslots.',
-    'info',
+  const totalSlots = instructors.reduce(
+    (sum, item) => sum + (Array.isArray(item?.timeSlots) ? item.timeSlots.length : 0),
+    0,
   );
+
+  // eslint-disable-next-line no-console
+  console.group('activation-options debug');
+  // eslint-disable-next-line no-console
+  console.log('course', {
+    courseId: activationContext.courseId,
+    courseTitle: activationContext.courseTitle,
+    browserTimeZone,
+    requestedAt: new Date().toISOString(),
+  });
+  // eslint-disable-next-line no-console
+  console.log('response payload', payload);
+  // eslint-disable-next-line no-console
+  console.log('instructors', instructors);
+  // eslint-disable-next-line no-console
+  console.log('summary', { instructorCount: instructors.length, totalSlots });
+  // eslint-disable-next-line no-console
+  console.groupEnd();
+
+  setActivationFeedback(`Debug logged to console: ${instructors.length} instructors, ${totalSlots} slots.`, 'info');
 }
 
 function closeActivationModal() {
