@@ -12,6 +12,8 @@ if (!root) {
   const feedbackEl = document.getElementById('session-feedback');
   const roleEl = document.getElementById('session-role');
   const metaEl = document.getElementById('session-meta');
+  const connectionStateEl = document.getElementById('session-connection-state');
+  const participantCountEl = document.getElementById('session-participant-count');
   const localVideoEl = document.getElementById('session-local-video');
   const gridEl = document.getElementById('session-video-grid');
 
@@ -40,6 +42,26 @@ if (!root) {
 
   const peers = new Map();
   const remoteVideos = new Map();
+
+  function setConnectionState(label = 'Connecting', tone = 'neutral') {
+    if (!connectionStateEl) return;
+    connectionStateEl.textContent = label;
+    connectionStateEl.className = `session-state-pill session-state-pill--${tone}`;
+  }
+
+  function updateParticipantCount() {
+    if (!participantCountEl) return;
+    const count = remoteVideos.size + 1;
+    participantCountEl.textContent = `${count} participant${count === 1 ? '' : 's'}`;
+  }
+
+  function setControlButtonState(button, { active = true, tone = 'default', label = '' } = {}) {
+    if (!button) return;
+    button.classList.toggle('session-control-btn--inactive', !active);
+    button.classList.toggle('session-control-btn--danger', tone === 'danger');
+    button.classList.toggle('session-control-btn--primary', tone === 'primary');
+    if (label) button.textContent = label;
+  }
 
   function setFeedback(message = '', type = 'info') {
     if (!feedbackEl) return;
@@ -84,13 +106,18 @@ if (!root) {
     if (remoteVideos.has(socketId)) return remoteVideos.get(socketId).video;
 
     const card = document.createElement('article');
-    card.className = 'session-video-card';
+    card.className = 'session-video-card session-video-card--remote';
     card.setAttribute('data-peer', socketId);
 
     const header = document.createElement('header');
     const title = document.createElement('span');
     title.textContent = label || 'Participant';
     header.appendChild(title);
+
+    const tag = document.createElement('span');
+    tag.className = 'session-video-tag';
+    tag.textContent = 'Remote';
+    header.appendChild(tag);
 
     const video = document.createElement('video');
     video.autoplay = true;
@@ -99,6 +126,7 @@ if (!root) {
     card.append(header, video);
     gridEl.appendChild(card);
     remoteVideos.set(socketId, { card, video });
+    updateParticipantCount();
     return video;
   }
 
@@ -107,6 +135,7 @@ if (!root) {
     if (!record) return;
     record.card.remove();
     remoteVideos.delete(socketId);
+    updateParticipantCount();
   }
 
   async function getAuthHeaders() {
@@ -247,6 +276,7 @@ if (!root) {
     socket.on('connect', () => {
       socket.emit('session:join');
       setFeedback('Connected to live class.', 'success');
+      setConnectionState('Connected', 'live');
     });
 
     socket.on('session:participants', (participants = []) => {
@@ -260,6 +290,7 @@ if (!root) {
       if (!participant?.socketId || participant.socketId === socket.id) return;
       createPeer(participant.socketId, true, participant);
       addChatMessage('System', `${participant.name || 'Participant'} joined the class`);
+      updateParticipantCount();
     });
 
     socket.on('session:participant-left', ({ socketId }) => {
@@ -269,6 +300,7 @@ if (!root) {
         peers.delete(socketId);
       }
       removeRemoteVideo(socketId);
+      updateParticipantCount();
     });
 
     socket.on('session:signal', (payload) => {
@@ -305,6 +337,7 @@ if (!root) {
 
     socket.on('session:ended', () => {
       setFeedback('Class ended by instructor.', 'info');
+      setConnectionState('Meeting Ended', 'danger');
       window.setTimeout(() => {
         window.location.replace('/dashboard');
       }, 2500);
@@ -312,6 +345,7 @@ if (!root) {
 
     socket.on('disconnect', () => {
       setFeedback('Disconnected from meeting room.', 'error');
+      setConnectionState('Disconnected', 'danger');
     });
   }
 
@@ -400,7 +434,11 @@ if (!root) {
         const track = localStream.getAudioTracks()[0];
         if (!track) return;
         track.enabled = !track.enabled;
-        toggleMicBtn.textContent = track.enabled ? 'Mute Mic' : 'Unmute Mic';
+        setControlButtonState(toggleMicBtn, {
+          active: track.enabled,
+          tone: 'primary',
+          label: track.enabled ? 'Mute Mic' : 'Unmute Mic',
+        });
       });
     }
 
@@ -410,7 +448,11 @@ if (!root) {
         const track = localStream.getVideoTracks()[0];
         if (!track) return;
         track.enabled = !track.enabled;
-        toggleCamBtn.textContent = track.enabled ? 'Turn Off Camera' : 'Turn On Camera';
+        setControlButtonState(toggleCamBtn, {
+          active: track.enabled,
+          tone: 'primary',
+          label: track.enabled ? 'Turn Off Camera' : 'Turn On Camera',
+        });
       });
     }
 
@@ -424,7 +466,7 @@ if (!root) {
               const sender = pc.getSenders().find((s) => s.track && s.track.kind === 'video');
               if (sender) sender.replaceTrack(screenTrack);
             });
-            shareScreenBtn.textContent = 'Stop Sharing';
+            setControlButtonState(shareScreenBtn, { active: true, label: 'Stop Sharing' });
 
             screenTrack.onended = () => {
               const camTrack = localStream?.getVideoTracks?.()[0] || null;
@@ -433,12 +475,12 @@ if (!root) {
                 if (sender && camTrack) sender.replaceTrack(camTrack);
               });
               screenStream = null;
-              shareScreenBtn.textContent = 'Share Screen';
+              setControlButtonState(shareScreenBtn, { active: true, label: 'Share Screen' });
             };
           } else {
             screenStream.getTracks().forEach((t) => t.stop());
             screenStream = null;
-            shareScreenBtn.textContent = 'Share Screen';
+            setControlButtonState(shareScreenBtn, { active: true, label: 'Share Screen' });
           }
         } catch {
           setFeedback('Screen share is not available.', 'error');
@@ -464,6 +506,7 @@ if (!root) {
           return;
         }
         setFeedback('Technical support alert sent to admin.', 'success');
+        setControlButtonState(supportBtn, { active: true, label: 'Support Requested' });
       });
     }
 
@@ -523,6 +566,7 @@ if (!root) {
       myRole = accessPayload.role;
 
       if (roleEl) roleEl.textContent = myRole.toUpperCase();
+      setConnectionState('Joining...', 'neutral');
       if (metaEl) {
         const startsAt = accessPayload?.meeting?.startsAt ? new Date(accessPayload.meeting.startsAt) : null;
         const endsAt = accessPayload?.meeting?.endsAt ? new Date(accessPayload.meeting.endsAt) : null;
@@ -541,6 +585,11 @@ if (!root) {
       }
 
       await setupLocalMedia();
+      updateParticipantCount();
+      setControlButtonState(toggleMicBtn, { active: true, tone: 'primary', label: 'Mute Mic' });
+      setControlButtonState(toggleCamBtn, { active: true, tone: 'primary', label: 'Turn Off Camera' });
+      setControlButtonState(shareScreenBtn, { active: true, label: 'Share Screen' });
+      setControlButtonState(supportBtn, { active: true, label: 'Raise Technical Support' });
       setupControls();
       scheduleEndClassUnlock();
       setupWhiteboard();

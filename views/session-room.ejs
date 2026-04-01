@@ -1,40 +1,62 @@
 <%- include('partials/head') %>
 
 <section class="section session-shell" data-session-page data-meeting-id="<%= meetingId %>" data-course-slug="<%= courseSlug %>">
-  <div class="container session-layout">
-    <aside class="session-sidebar">
-      <div class="session-meta-card">
+  <div class="container session-room">
+    <header class="session-topbar">
+      <div class="session-topbar-copy">
         <div class="section-tag">Live Class</div>
         <h1 class="session-title">Session Room</h1>
         <p class="session-sub" id="session-meta">Connecting...</p>
+      </div>
+      <div class="session-topbar-pills">
         <div id="session-role" class="dashboard-chip">Role</div>
+        <div id="session-connection-state" class="session-state-pill">Connecting</div>
+        <div id="session-participant-count" class="session-state-pill session-state-pill-soft">1 participant</div>
       </div>
+    </header>
 
-      <div class="session-controls-card">
-        <button type="button" class="btn btn-primary btn-block" id="session-toggle-mic">Mute Mic</button>
-        <button type="button" class="btn btn-primary btn-block" id="session-toggle-cam">Turn Off Camera</button>
-        <button type="button" class="btn btn-ghost btn-block" id="session-share-screen">Share Screen</button>
-        <button type="button" class="btn btn-ghost btn-block" id="session-support">Raise Technical Support</button>
-        <button type="button" class="btn btn-outline btn-block" id="session-end-class" hidden>End Class</button>
-      </div>
+    <div class="session-body">
+      <main class="session-stage-shell">
+        <section class="session-stage-card">
+          <div class="session-stage-head">
+            <div>
+              <p class="session-stage-kicker">Meeting stage</p>
+              <h2 class="session-stage-title">Classroom Call</h2>
+            </div>
+            <div class="session-stage-meta">
+              <span class="session-stage-chip">HD</span>
+              <span class="session-stage-chip">Encrypted</span>
+            </div>
+          </div>
 
-      <div id="session-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
-    </aside>
+          <section class="session-video-grid" id="session-video-grid">
+            <article class="session-video-card session-video-card--self">
+              <header>
+                <span>You</span>
+                <span class="session-video-tag">Local</span>
+              </header>
+              <video id="session-local-video" autoplay playsinline muted></video>
+            </article>
+          </section>
 
-    <main class="session-main">
-      <section class="session-video-grid" id="session-video-grid">
-        <article class="session-video-card">
-          <header><span>You</span></header>
-          <video id="session-local-video" autoplay playsinline muted></video>
-        </article>
-      </section>
+          <div class="session-control-dock">
+            <button type="button" class="session-control-btn session-control-btn--primary" id="session-toggle-mic">Mute Mic</button>
+            <button type="button" class="session-control-btn session-control-btn--primary" id="session-toggle-cam">Turn Off Camera</button>
+            <button type="button" class="session-control-btn" id="session-share-screen">Share Screen</button>
+            <button type="button" class="session-control-btn" id="session-support">Raise Technical Support</button>
+            <button type="button" class="session-control-btn session-control-btn--danger" id="session-end-class" hidden>End Class</button>
+          </div>
 
-      <section class="session-tools-grid">
+          <div id="session-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
+        </section>
+      </main>
+
+      <aside class="session-sidepanel">
         <article class="session-chat-card">
           <div class="session-chat-head">
             <span class="session-chat-status-dot" aria-hidden="true"></span>
-            <h2 class="session-chat-title">Live Chat</h2>
-            <span class="session-chat-badge">In Session</span>
+            <h2 class="session-chat-title">Meeting Chat</h2>
+            <span class="session-chat-badge">Live</span>
           </div>
           <div id="session-chat-list" class="session-chat-list" role="log" aria-live="polite" aria-label="Chat messages">
             <div class="session-chat-empty" id="session-chat-empty">
@@ -43,7 +65,7 @@
             </div>
           </div>
           <form id="session-chat-form" class="session-chat-form" action="#" method="post" autocomplete="off">
-            <input id="session-chat-input" type="text" placeholder="Type a message…" maxlength="500" required autocomplete="off" />
+            <input id="session-chat-input" type="text" placeholder="Message everyone in the room" maxlength="500" required autocomplete="off" />
             <button type="submit" class="session-chat-send" aria-label="Send message">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
             </button>
@@ -51,14 +73,17 @@
         </article>
 
         <article class="session-whiteboard-card" id="session-whiteboard-wrap" hidden>
-          <h2>Whiteboard (Instructor)</h2>
-          <canvas id="session-whiteboard" width="960" height="420"></canvas>
-          <div class="session-whiteboard-actions">
+          <div class="session-whiteboard-head">
+            <div>
+              <p class="session-stage-kicker">Collaboration</p>
+              <h2>Whiteboard</h2>
+            </div>
             <button type="button" class="btn btn-ghost" id="session-whiteboard-clear">Clear Board</button>
           </div>
+          <canvas id="session-whiteboard" width="960" height="420"></canvas>
         </article>
-      </section>
-    </main>
+      </aside>
+    </div>
   </div>
 </section>
 
