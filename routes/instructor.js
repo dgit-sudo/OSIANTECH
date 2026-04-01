@@ -201,6 +201,21 @@ async function ensureInstructorTables() {
   instructorTablesReady = true;
 }
 
+async function pruneExpiredInstructorSlots() {
+  if (!pool) return;
+  await ensureInstructorTables();
+  await pool.query(
+    `
+      update ${instructorSlotsTable}
+      set is_active = false,
+          updated_at = current_timestamp
+      where is_active = true
+        and slot_date is not null
+        and ((slot_date + end_time::time) at time zone coalesce(nullif(timezone, ''), 'Asia/Kolkata')) <= current_timestamp
+    `,
+  );
+}
+
 async function requireInstructorAuth(req, res, next) {
   const token = getBearerToken(req);
   if (!token) return res.status(401).json({ error: 'Unauthorized.' });
@@ -330,6 +345,7 @@ router.get('/api/me', requireInstructorAuth, async (req, res) => {
 
   try {
     await ensureInstructorTables();
+    await pruneExpiredInstructorSlots();
 
     const slotsResult = await pool.query(
       `

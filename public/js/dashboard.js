@@ -847,7 +847,8 @@ async function openActivationModal(purchase) {
     throw new Error(payload?.error || 'Could not load activation options.');
   }
 
-  const instructors = Array.isArray(payload.instructors) ? payload.instructors : [];
+  const instructors = (Array.isArray(payload.instructors) ? payload.instructors : [])
+    .filter((item) => Array.isArray(item?.timeSlots) && item.timeSlots.length > 0);
   activationContext.instructors = instructors;
 
   activationInstructorEl.innerHTML = '';

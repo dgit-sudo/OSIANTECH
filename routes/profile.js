@@ -189,6 +189,21 @@ async function ensureInstructorTables() {
   instructorTablesReady = true;
 }
 
+async function pruneExpiredInstructorSlots() {
+  if (!pool) return;
+  await ensureInstructorTables();
+  await pool.query(
+    `
+      update ${instructorSlotsTable}
+      set is_active = false,
+          updated_at = current_timestamp
+      where is_active = true
+        and slot_date is not null
+        and ((slot_date + end_time::time) at time zone coalesce(nullif(timezone, ''), 'Asia/Kolkata')) <= current_timestamp
+    `,
+  );
+}
+
 function isValidTimeZone(value = '') {
   try {
     Intl.DateTimeFormat('en-US', { timeZone: String(value || '') });
@@ -280,6 +295,7 @@ async function getInstructorAvailability(options = {}) {
   const nowMs = Date.now();
 
   await ensureInstructorTables();
+  await pruneExpiredInstructorSlots();
 
   const rows = await pool.query(
     `

@@ -132,6 +132,21 @@ async function ensureInstructorTables() {
   instructorTablesReady = true;
 }
 
+async function pruneExpiredInstructorSlots() {
+  if (!pool) return;
+  await ensureInstructorTables();
+  await pool.query(
+    `
+      update ${instructorSlotsTable}
+      set is_active = false,
+          updated_at = current_timestamp
+      where is_active = true
+        and slot_date is not null
+        and ((slot_date + end_time::time) at time zone coalesce(nullif(timezone, ''), 'Asia/Kolkata')) <= current_timestamp
+    `,
+  );
+}
+
 async function verifyFirebaseToken(idToken) {
   if (!firebaseApiKey || !idToken) return {
     valid: null, uid: null, email: null, providerIds: [],
@@ -833,11 +848,12 @@ router.get('/api/instructors/:instructorUid/slots', requireAdminAuth, async (req
 
   try {
     await ensureInstructorTables();
+    await pruneExpiredInstructorSlots();
     const rows = await pool.query(
       `
         select id, slot_date, weekday, start_time, end_time, timezone, is_active
         from ${instructorSlotsTable}
-        where instructor_uid = $1
+        where instructor_uid = $1 and is_active = true
         order by slot_date asc nulls last, weekday asc, start_time asc
       `,
       [instructorUid],
