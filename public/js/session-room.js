@@ -16,12 +16,20 @@ if (!root) {
   const participantCountEl = document.getElementById('session-participant-count');
   const localVideoEl = document.getElementById('session-local-video');
   const gridEl = document.getElementById('session-video-grid');
+  const controlDockEl = document.getElementById('session-control-dock');
+  const sidepanelEl = document.getElementById('session-sidepanel');
+  const chatPanelEl = document.getElementById('session-chat-panel');
 
   const toggleMicBtn = document.getElementById('session-toggle-mic');
   const toggleCamBtn = document.getElementById('session-toggle-cam');
   const shareScreenBtn = document.getElementById('session-share-screen');
+  const toggleChatBtn = document.getElementById('session-toggle-chat');
+  const toggleWhiteboardBtn = document.getElementById('session-toggle-whiteboard');
   const supportBtn = document.getElementById('session-support');
   const endClassBtn = document.getElementById('session-end-class');
+  const moreWrapEl = document.getElementById('session-more-wrap');
+  const moreBtn = document.getElementById('session-more-btn');
+  const moreMenuEl = document.getElementById('session-more-menu');
 
   const chatListEl = document.getElementById('session-chat-list');
   const chatForm = document.getElementById('session-chat-form');
@@ -39,6 +47,9 @@ if (!root) {
   let accessPayload = null;
   let drawing = false;
   let endClassTimer = null;
+  let controlsHideTimer = null;
+  let moreMenuHideTimer = null;
+  let activeSidePanel = '';
 
   const peers = new Map();
   const remoteVideos = new Map();
@@ -60,7 +71,76 @@ if (!root) {
     button.classList.toggle('session-control-btn--inactive', !active);
     button.classList.toggle('session-control-btn--danger', tone === 'danger');
     button.classList.toggle('session-control-btn--primary', tone === 'primary');
-    if (label) button.textContent = label;
+    if (label) {
+      const labelEl = button.querySelector('[data-btn-label]');
+      if (labelEl) labelEl.textContent = label;
+    }
+  }
+
+  function updatePanelButtons() {
+    if (toggleChatBtn) toggleChatBtn.classList.toggle('session-control-btn--active', activeSidePanel === 'chat');
+    if (toggleWhiteboardBtn) toggleWhiteboardBtn.classList.toggle('session-control-btn--active', activeSidePanel === 'whiteboard');
+  }
+
+  function showSidePanel(panelName = '') {
+    activeSidePanel = panelName;
+    if (sidepanelEl) sidepanelEl.hidden = !panelName;
+    if (chatPanelEl) chatPanelEl.hidden = panelName !== 'chat';
+    if (whiteboardWrapEl) whiteboardWrapEl.hidden = panelName !== 'whiteboard';
+    updatePanelButtons();
+  }
+
+  function toggleSidePanel(panelName = '') {
+    showSidePanel(activeSidePanel === panelName ? '' : panelName);
+  }
+
+  function clearControlsHideTimer() {
+    if (!controlsHideTimer) return;
+    window.clearTimeout(controlsHideTimer);
+    controlsHideTimer = null;
+  }
+
+  function scheduleControlDockAutoHide() {
+    if (!controlDockEl) return;
+    clearControlsHideTimer();
+    controlsHideTimer = window.setTimeout(() => {
+      if (moreMenuEl && !moreMenuEl.hidden) return;
+      controlDockEl.classList.add('session-control-dock--hidden');
+    }, 3500);
+  }
+
+  function revealControlDock() {
+    if (!controlDockEl) return;
+    controlDockEl.classList.remove('session-control-dock--hidden');
+    scheduleControlDockAutoHide();
+  }
+
+  function clearMoreMenuHideTimer() {
+    if (!moreMenuHideTimer) return;
+    window.clearTimeout(moreMenuHideTimer);
+    moreMenuHideTimer = null;
+  }
+
+  function scheduleMoreMenuHide() {
+    if (!moreMenuEl) return;
+    clearMoreMenuHideTimer();
+    moreMenuHideTimer = window.setTimeout(() => {
+      moreMenuEl.hidden = true;
+      revealControlDock();
+    }, 2200);
+  }
+
+  function setMoreMenuOpen(open) {
+    if (!moreMenuEl) return;
+    moreMenuEl.hidden = !open;
+    if (open) {
+      clearControlsHideTimer();
+      clearMoreMenuHideTimer();
+      scheduleMoreMenuHide();
+      return;
+    }
+    clearMoreMenuHideTimer();
+    scheduleControlDockAutoHide();
   }
 
   function setFeedback(message = '', type = 'info') {
@@ -428,6 +508,37 @@ if (!root) {
   }
 
   function setupControls() {
+    if (root) {
+      root.addEventListener('mousemove', () => revealControlDock());
+      root.addEventListener('touchstart', () => revealControlDock(), { passive: true });
+    }
+
+    if (moreBtn) {
+      moreBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        const shouldOpen = Boolean(moreMenuEl?.hidden);
+        setMoreMenuOpen(shouldOpen);
+      });
+    }
+
+    if (moreWrapEl) {
+      moreWrapEl.addEventListener('mouseenter', () => {
+        if (!moreMenuEl?.hidden) clearMoreMenuHideTimer();
+      });
+      moreWrapEl.addEventListener('mouseleave', () => {
+        if (!moreMenuEl?.hidden) scheduleMoreMenuHide();
+      });
+    }
+
+    document.addEventListener('click', (event) => {
+      if (!moreMenuEl || moreMenuEl.hidden) return;
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      if (moreWrapEl && moreWrapEl.contains(target)) return;
+      setMoreMenuOpen(false);
+    });
+
     if (toggleMicBtn) {
       toggleMicBtn.addEventListener('click', () => {
         if (!localStream) return;
@@ -439,6 +550,18 @@ if (!root) {
           tone: 'primary',
           label: track.enabled ? 'Mute Mic' : 'Unmute Mic',
         });
+      });
+    }
+
+    if (toggleChatBtn) {
+      toggleChatBtn.addEventListener('click', () => {
+        toggleSidePanel('chat');
+      });
+    }
+
+    if (toggleWhiteboardBtn) {
+      toggleWhiteboardBtn.addEventListener('click', () => {
+        toggleSidePanel('whiteboard');
       });
     }
 
@@ -490,6 +613,7 @@ if (!root) {
 
     if (supportBtn) {
       supportBtn.addEventListener('click', async () => {
+        setMoreMenuOpen(false);
         if (socket) socket.emit('session:support-request');
         const response = await fetch(`/api/session/${encodeURIComponent(meetingId)}/support`, {
           method: 'POST',
@@ -523,6 +647,7 @@ if (!root) {
 
     if (endClassBtn) {
       endClassBtn.addEventListener('click', async () => {
+        setMoreMenuOpen(false);
         const response = await fetch(`/api/session/${encodeURIComponent(meetingId)}/end`, {
           method: 'POST',
           headers: {
@@ -577,11 +702,17 @@ if (!root) {
       }
 
       if (whiteboardWrapEl) {
-        whiteboardWrapEl.hidden = myRole !== 'instructor';
+        whiteboardWrapEl.hidden = true;
+      }
+      if (whiteboardClearBtn && myRole !== 'instructor') {
+        whiteboardClearBtn.hidden = true;
       }
       if (endClassBtn) {
         endClassBtn.hidden = !(myRole === 'instructor');
         endClassBtn.disabled = !Boolean(accessPayload?.permissions?.canEndClass);
+      }
+      if (toggleWhiteboardBtn && myRole !== 'instructor') {
+        toggleWhiteboardBtn.hidden = true;
       }
 
       await setupLocalMedia();
@@ -590,6 +721,8 @@ if (!root) {
       setControlButtonState(toggleCamBtn, { active: true, tone: 'primary', label: 'Turn Off Camera' });
       setControlButtonState(shareScreenBtn, { active: true, label: 'Share Screen' });
       setControlButtonState(supportBtn, { active: true, label: 'Raise Technical Support' });
+      showSidePanel('');
+      revealControlDock();
       setupControls();
       scheduleEndClassUnlock();
       setupWhiteboard();
