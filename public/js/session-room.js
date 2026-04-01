@@ -48,6 +48,7 @@ if (!root) {
   const whiteboardWrapEl = document.getElementById('session-whiteboard-wrap');
   const whiteboardEl = document.getElementById('session-whiteboard');
   const whiteboardClearBtn = document.getElementById('session-whiteboard-clear');
+  const selfVideoCardEl = document.querySelector('.session-video-card--self');
 
   let myRole = '';
   let authHeaders = {};
@@ -766,6 +767,80 @@ if (!root) {
   }
 
   function setupControls() {
+    if (selfVideoCardEl && gridEl) {
+      let isDragging = false;
+      let startX, startY;
+
+      const onDragStart = (e) => {
+        // Prevent default to avoid text selection issues while dragging
+        if (e.type === 'mousedown') {
+          e.preventDefault();
+        }
+        isDragging = true;
+        const pointer = e.touches ? e.touches[0] : e;
+        startX = pointer.clientX;
+        startY = pointer.clientY;
+
+        const rect = selfVideoCardEl.getBoundingClientRect();
+        const gridRect = gridEl.getBoundingClientRect();
+
+        // Convert the position to grid-relative
+        const currentLeft = rect.left - gridRect.left;
+        const currentTop = rect.top - gridRect.top;
+
+        selfVideoCardEl.style.right = 'auto';
+        selfVideoCardEl.style.bottom = 'auto';
+        selfVideoCardEl.style.left = `${currentLeft}px`;
+        selfVideoCardEl.style.top = `${currentTop}px`;
+      };
+
+      const onDragMove = (e) => {
+        if (!isDragging) return;
+        
+        const pointer = e.touches ? e.touches[0] : e;
+        const dx = pointer.clientX - startX;
+        const dy = pointer.clientY - startY;
+        
+        // Update anchor points
+        startX = pointer.clientX;
+        startY = pointer.clientY;
+
+        const rect = selfVideoCardEl.getBoundingClientRect();
+        const gridRect = gridEl.getBoundingClientRect();
+        
+        let newLeft = (rect.left - gridRect.left) + dx;
+        let newTop = (rect.top - gridRect.top) + dy;
+
+        // Bounds check
+        const maxLeft = gridRect.width - rect.width;
+        const maxTop = gridRect.height - rect.height;
+        
+        newLeft = Math.max(0, Math.min(newLeft, maxLeft));
+        newTop = Math.max(0, Math.min(newTop, maxTop));
+
+        selfVideoCardEl.style.left = `${newLeft}px`;
+        selfVideoCardEl.style.top = `${newTop}px`;
+      };
+
+      const onDragEnd = () => {
+        isDragging = false;
+      };
+
+      selfVideoCardEl.addEventListener('mousedown', onDragStart);
+      document.addEventListener('mousemove', onDragMove);
+      document.addEventListener('mouseup', onDragEnd);
+
+      selfVideoCardEl.addEventListener('touchstart', onDragStart, { passive: false });
+      // Only preventDefault on touchmove when dragging
+      document.addEventListener('touchmove', (e) => {
+        if (isDragging) {
+          e.preventDefault();
+          onDragMove(e);
+        }
+      }, { passive: false });
+      document.addEventListener('touchend', onDragEnd);
+    }
+
     if (root) {
       root.addEventListener('mousemove', () => revealControlDock());
       root.addEventListener('touchstart', () => revealControlDock(), { passive: true });

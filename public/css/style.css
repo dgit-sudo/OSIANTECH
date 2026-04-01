@@ -2776,6 +2776,12 @@ body:not(.page-home) [data-animate] {
   min-width: 180px;
   z-index: 4;
   box-shadow: 0 18px 40px rgba(0,0,0,0.5);
+  cursor: grab;
+  touch-action: none;
+}
+
+.session-video-card--self:active {
+  cursor: grabbing;
 }
 
 .session-video-card--self video {
@@ -2785,6 +2791,14 @@ body:not(.page-home) [data-animate] {
 .session-video-card--spotlight {
   border-color: rgba(95,184,184,0.45);
   box-shadow: 0 20px 50px rgba(20, 120, 125, 0.26);
+}
+
+.session-video-card--spotlight video {
+  object-fit: contain;
+  background: #000;
+  max-height: calc(100vh - 220px);
+  width: 100%;
+  aspect-ratio: auto;
 }
 
 .session-control-dock {
