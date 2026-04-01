@@ -574,7 +574,10 @@ if (!root) {
       auth: {
         token: socketToken,
       },
-      transports: ['websocket', 'polling'],
+      // Polling-first avoids hard failures on hosts where WebSocket upgrade is restricted.
+      transports: ['polling', 'websocket'],
+      upgrade: true,
+      tryAllTransports: true,
     });
 
     socket.on('connect', () => {
