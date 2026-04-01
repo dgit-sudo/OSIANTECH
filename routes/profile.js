@@ -225,9 +225,12 @@ function normalizeTimeZone(value = '') {
 
 function parseIstDateTime(slotDate, hhmm) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(String(slotDate || ''))) return null;
-  if (!/^\d{2}:\d{2}$/.test(String(hhmm || ''))) return null;
+  const rawTime = String(hhmm || '').trim();
+  const match = rawTime.match(/^(\d{2}):(\d{2})(?::\d{2})?$/);
+  if (!match) return null;
   const [year, month, day] = String(slotDate).split('-').map((v) => Number.parseInt(v, 10));
-  const [hour, minute] = String(hhmm).split(':').map((v) => Number.parseInt(v, 10));
+  const hour = Number.parseInt(match[1], 10);
+  const minute = Number.parseInt(match[2], 10);
   if (!Number.isInteger(year) || !Number.isInteger(month) || !Number.isInteger(day)) return null;
   if (!Number.isInteger(hour) || !Number.isInteger(minute)) return null;
   const utcMs = Date.UTC(year, month - 1, day, hour, minute, 0, 0) - (330 * 60 * 1000);
