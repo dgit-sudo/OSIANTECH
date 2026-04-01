@@ -187,10 +187,7 @@ router.post('/api/session/:meetingId/access', async (req, res) => {
 
     const socketToken = createSessionAccessToken(meeting, authz.role, actorIdentity);
     const endAt = meeting.endsAt ? new Date(meeting.endsAt) : null;
-    const canEndClass = authz.role === 'instructor'
-      && endAt
-      && !Number.isNaN(endAt.getTime())
-      && Date.now() >= endAt.getTime();
+    const canEndClass = authz.role === 'instructor';
 
     return res.json({
       ok: true,

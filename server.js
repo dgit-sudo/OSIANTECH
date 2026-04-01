@@ -100,11 +100,6 @@ io.use(async (socket, next) => {
       return next(new Error('Meeting not active.'));
     }
 
-    const endsAt = meeting.endsAt ? new Date(meeting.endsAt) : null;
-    if (!endsAt || Number.isNaN(endsAt.getTime()) || Date.now() > endsAt.getTime()) {
-      return next(new Error('Meeting expired.'));
-    }
-
     socket.data.meetingId = meeting.meetingId;
     socket.data.role = payload.role;
     socket.data.identity = String(payload.identity || '');
