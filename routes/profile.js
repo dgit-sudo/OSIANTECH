@@ -398,7 +398,7 @@ async function getInstructorAvailability(options = {}) {
     while (cursorMs + 3600000 <= endMs) {
       const nextMs = cursorMs + 3600000;
       stats.totalHourChunks += 1;
-      if (nextMs <= nowMs) {
+      if (cursorMs < nowMs) {
         stats.expiredChunks += 1;
         cursorMs = nextMs;
         continue;
@@ -479,6 +479,7 @@ async function getInstructorSlot(instructorId, slotId) {
   const rangeStart = parseIstDateTime(row.slot_date, row.start_time);
   const rangeEnd = parseIstDateTime(row.slot_date, row.end_time);
   if (!rangeStart || !rangeEnd) return null;
+  if (selectedStart.getTime() < nowMs) return null;
   if (selectedEnd.getTime() <= nowMs) return null;
 
   const inRange = selectedStart.getTime() >= rangeStart.getTime()
