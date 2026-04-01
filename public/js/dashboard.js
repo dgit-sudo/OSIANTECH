@@ -45,6 +45,7 @@ let supportChats = [];
 let supportActiveChatId = 0;
 let supportPollTimer = null;
 let purchasesCache = [];
+let purchasesByCourseId = new Map();
 let activationContext = {
   courseId: 0,
   courseTitle: '',
@@ -623,6 +624,11 @@ function renderPurchases(purchases) {
   if (!purchasedCoursesEl || !purchasedEmptyEl) return;
   purchasedCoursesEl.innerHTML = '';
   purchasesCache = Array.isArray(purchases) ? purchases : [];
+  purchasesByCourseId = new Map(
+    purchasesCache
+      .filter((item) => Number.isFinite(Number(item?.courseId)) && Number(item.courseId) > 0)
+      .map((item) => [String(Number(item.courseId)), item]),
+  );
 
   if (!Array.isArray(purchases) || purchases.length === 0) {
     purchasedEmptyEl.hidden = false;
@@ -696,6 +702,8 @@ function renderPurchases(purchases) {
     const activate = document.createElement('button');
     activate.type = 'button';
     activate.className = 'dashboard-course-action-btn';
+    activate.setAttribute('data-open-activation', '1');
+    activate.setAttribute('data-course-id', String(purchase.courseId || ''));
     if (!purchase?.activation) {
       activate.textContent = 'Activate';
     } else if (classEnded) {
@@ -703,12 +711,6 @@ function renderPurchases(purchases) {
     } else {
       activate.textContent = 'Update Activation';
     }
-    activate.addEventListener('click', () => {
-      openActivationModal(purchase).catch((error) => {
-        setFeedback(activationFeedbackEl, error?.message || 'Could not open activation popup.', 'error');
-        setFeedback(gateFeedbackEl, error?.message || 'Could not open activation popup.', 'error');
-      });
-    });
 
     actions.append(open, activate);
 
@@ -747,6 +749,11 @@ function renderPurchases(purchases) {
   });
 
   purchasedCoursesEl.appendChild(fragment);
+}
+
+function getPurchaseByCourseId(courseId) {
+  const key = String(Number(courseId || 0));
+  return purchasesByCourseId.get(key) || null;
 }
 
 function setActivationFeedback(message = '', type = 'info') {
@@ -1237,6 +1244,27 @@ if (activationNoGoodBtn) {
   activationNoGoodBtn.addEventListener('click', () => {
     handleNoGoodTimeslots().catch((error) => {
       setActivationFeedback(error?.message || 'Could not send no-timeslot request.', 'error');
+    });
+  });
+}
+
+if (purchasedCoursesEl) {
+  purchasedCoursesEl.addEventListener('click', (event) => {
+    const btn = event.target instanceof Element
+      ? event.target.closest('button[data-open-activation="1"]')
+      : null;
+    if (!btn) return;
+
+    const courseId = String(btn.getAttribute('data-course-id') || '').trim();
+    const purchase = getPurchaseByCourseId(courseId);
+    if (!purchase) {
+      setFeedback(gateFeedbackEl, 'Could not find course activation context. Please refresh.', 'error');
+      return;
+    }
+
+    openActivationModal(purchase).catch((error) => {
+      setFeedback(activationFeedbackEl, error?.message || 'Could not open activation popup.', 'error');
+      setFeedback(gateFeedbackEl, error?.message || 'Could not open activation popup.', 'error');
     });
   });
 }
