@@ -6,6 +6,12 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 const server = http.createServer(app);
+const assetVersion = String(
+  process.env.ASSET_VERSION
+  || process.env.RENDER_GIT_COMMIT
+  || process.env.GITHUB_SHA
+  || Date.now(),
+);
 const io = new Server(server, {
   cors: { origin: true, credentials: true },
 });
@@ -13,6 +19,7 @@ const io = new Server(server, {
 // View engine setup
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+app.locals.assetVersion = assetVersion;
 
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));

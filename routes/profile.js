@@ -351,6 +351,10 @@ async function getInstructorAvailability(options = {}) {
     const endMs = rangeEnd.getTime();
     while (cursorMs + 3600000 <= endMs) {
       const nextMs = cursorMs + 3600000;
+      if (nextMs <= nowMs) {
+        cursorMs = nextMs;
+        continue;
+      }
       const startIso = new Date(cursorMs).toISOString();
       const endIso = new Date(nextMs).toISOString();
       const bookedSet = bookedByInstructor.get(instructorId);
@@ -418,6 +422,7 @@ async function getInstructorSlot(instructorId, slotId) {
   const rangeStart = parseIstDateTime(row.slot_date, row.start_time);
   const rangeEnd = parseIstDateTime(row.slot_date, row.end_time);
   if (!rangeStart || !rangeEnd) return null;
+  if (selectedEnd.getTime() <= Date.now()) return null;
 
   const inRange = selectedStart.getTime() >= rangeStart.getTime()
     && selectedEnd.getTime() <= rangeEnd.getTime();
