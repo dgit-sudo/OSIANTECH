@@ -306,6 +306,7 @@ async function getBookedSlotStarts(instructorId, exclude = {}) {
 }
 
 async function getInstructorAvailability(options = {}) {
+  const includeDebug = Boolean(options.includeDebug);
   const learnerTimeZone = normalizeTimeZone(options.learnerTimeZone || 'Asia/Kolkata');
   const excludeUid = String(options.excludeUid || '').trim();
   const excludeCourseId = Number.parseInt(String(options.excludeCourseId || '0'), 10) || 0;
@@ -334,9 +335,29 @@ async function getInstructorAvailability(options = {}) {
 
   const byInstructor = new Map();
   const bookedByInstructor = new Map();
+  const debugByInstructor = new Map();
+
+  function ensureDebugStats(instructorId, instructorName) {
+    if (!debugByInstructor.has(instructorId)) {
+      debugByInstructor.set(instructorId, {
+        instructorId,
+        instructorName,
+        missingSlotRows: 0,
+        rawSlotRows: 0,
+        invalidRanges: 0,
+        endedRanges: 0,
+        totalHourChunks: 0,
+        expiredChunks: 0,
+        bookedChunks: 0,
+        includedChunks: 0,
+      });
+    }
+    return debugByInstructor.get(instructorId);
+  }
 
   for (const row of rows.rows) {
     const instructorId = row.instructor_uid;
+    const stats = ensureDebugStats(instructorId, row.display_name);
     if (!byInstructor.has(instructorId)) {
       byInstructor.set(instructorId, {
         instructorId,
@@ -352,18 +373,30 @@ async function getInstructorAvailability(options = {}) {
       );
     }
 
-    if (!row.slot_id || !row.slot_date) continue;
+    if (!row.slot_id || !row.slot_date) {
+      stats.missingSlotRows += 1;
+      continue;
+    }
+    stats.rawSlotRows += 1;
 
     const rangeStart = parseIstDateTime(row.slot_date, row.start_time);
     const rangeEnd = parseIstDateTime(row.slot_date, row.end_time);
-    if (!rangeStart || !rangeEnd || rangeStart >= rangeEnd) continue;
-    if (rangeEnd.getTime() <= nowMs) continue;
+    if (!rangeStart || !rangeEnd || rangeStart >= rangeEnd) {
+      stats.invalidRanges += 1;
+      continue;
+    }
+    if (rangeEnd.getTime() <= nowMs) {
+      stats.endedRanges += 1;
+      continue;
+    }
 
     let cursorMs = rangeStart.getTime();
     const endMs = rangeEnd.getTime();
     while (cursorMs + 3600000 <= endMs) {
       const nextMs = cursorMs + 3600000;
+      stats.totalHourChunks += 1;
       if (nextMs <= nowMs) {
+        stats.expiredChunks += 1;
         cursorMs = nextMs;
         continue;
       }
@@ -371,6 +404,7 @@ async function getInstructorAvailability(options = {}) {
       const endIso = new Date(nextMs).toISOString();
       const bookedSet = bookedByInstructor.get(instructorId);
       if (!bookedSet || !bookedSet.has(startIso)) {
+        stats.includedChunks += 1;
         byInstructor.get(instructorId).timeSlots.push({
           slotId: `${row.slot_id}|${startIso}`,
           baseSlotId: String(row.slot_id),
@@ -380,12 +414,19 @@ async function getInstructorAvailability(options = {}) {
           sourceTimeZone: row.timezone || 'Asia/Kolkata',
           label: formatUtcRangeInTimeZone(startIso, endIso, learnerTimeZone),
         });
+      } else {
+        stats.bookedChunks += 1;
       }
       cursorMs = nextMs;
     }
   }
 
-  return [...byInstructor.values()];
+  const instructors = [...byInstructor.values()];
+  if (!includeDebug) return instructors;
+  return {
+    instructors,
+    debugStats: [...debugByInstructor.values()],
+  };
 }
 
 async function getInstructorById(instructorId = '') {
@@ -890,17 +931,32 @@ router.get('/:uid/purchases/:courseId/activation-options', async (req, res) => {
       : null;
 
     const learnerTimeZone = normalizeTimeZone(activation?.learnerTimezone || requestedTimeZone);
-    const instructors = await getInstructorAvailability({
+    const availability = await getInstructorAvailability({
       learnerTimeZone,
       excludeUid: uid,
       excludeCourseId: courseIdNum,
+      includeDebug: debugEnabled,
     });
+    const instructors = Array.isArray(availability) ? availability : availability.instructors;
+    const availabilityDebugStats = Array.isArray(availability?.debugStats) ? availability.debugStats : [];
 
     if (debugEnabled) {
-      const slotStats = instructors.map((item) => ({
+      const slotStats = instructors.map((item) => {
+        const extra = availabilityDebugStats.find((s) => s.instructorId === String(item?.instructorId || '')) || {};
+        return {
         instructorId: String(item?.instructorId || ''),
         instructorName: String(item?.instructorName || ''),
         slotCount: Array.isArray(item?.timeSlots) ? item.timeSlots.length : 0,
+        filterStats: {
+          rawSlotRows: Number(extra.rawSlotRows || 0),
+          missingSlotRows: Number(extra.missingSlotRows || 0),
+          invalidRanges: Number(extra.invalidRanges || 0),
+          endedRanges: Number(extra.endedRanges || 0),
+          totalHourChunks: Number(extra.totalHourChunks || 0),
+          expiredChunks: Number(extra.expiredChunks || 0),
+          bookedChunks: Number(extra.bookedChunks || 0),
+          includedChunks: Number(extra.includedChunks || 0),
+        },
         previewSlots: Array.isArray(item?.timeSlots)
           ? item.timeSlots.slice(0, 3).map((slot) => ({
             slotId: slot?.slotId || '',
@@ -909,7 +965,8 @@ router.get('/:uid/purchases/:courseId/activation-options', async (req, res) => {
             label: slot?.label || '',
           }))
           : [],
-      }));
+      };
+      });
 
       const nowDbMs = await getCurrentDbTimeMs();
       const logPayload = {
