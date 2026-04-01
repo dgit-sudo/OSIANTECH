@@ -711,6 +711,12 @@ function renderPurchases(purchases) {
     } else {
       activate.textContent = 'Update Activation';
     }
+    activate.addEventListener('click', () => {
+      openActivationModal(purchase).catch((error) => {
+        setFeedback(activationFeedbackEl, error?.message || 'Could not open activation popup.', 'error');
+        setFeedback(gateFeedbackEl, error?.message || 'Could not open activation popup.', 'error');
+      });
+    });
 
     actions.append(open, activate);
 
