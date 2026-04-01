@@ -34,6 +34,7 @@ if (!root) {
   const toggleChatBtn = document.getElementById('session-toggle-chat');
   const toggleWhiteboardBtn = document.getElementById('session-toggle-whiteboard');
   const supportBtn = document.getElementById('session-support');
+  const leaveBtn = document.getElementById('session-leave');
   const endClassBtn = document.getElementById('session-end-class');
   const moreWrapEl = document.getElementById('session-more-wrap');
   const moreBtn = document.getElementById('session-more-btn');
@@ -639,6 +640,55 @@ if (!root) {
         }
         setFeedback('Technical support alert sent to admin.', 'success');
         setControlButtonState(supportBtn, { active: true, label: 'Support Requested' });
+      });
+    }
+
+    if (leaveBtn) {
+      leaveBtn.addEventListener('click', () => {
+        setMoreMenuOpen(false);
+
+        if (endClassTimer) {
+          clearInterval(endClassTimer);
+          endClassTimer = null;
+        }
+
+        if (socket) {
+          socket.disconnect();
+          socket = null;
+        }
+
+        peers.forEach((pc) => {
+          try { pc.close(); } catch {}
+        });
+        peers.clear();
+
+        if (screenStream) {
+          screenStream.getTracks().forEach((track) => {
+            try { track.stop(); } catch {}
+          });
+          screenStream = null;
+        }
+
+        if (localStream) {
+          localStream.getTracks().forEach((track) => {
+            try { track.stop(); } catch {}
+          });
+          localStream = null;
+        }
+
+        remoteVideos.forEach((record) => {
+          if (record?.card) record.card.remove();
+        });
+        remoteVideos.clear();
+
+        if (localVideoEl) localVideoEl.srcObject = null;
+        updateParticipantCount();
+        setFeedback('You left the call. Rejoin anytime from your dashboard.', 'info');
+
+        const redirectPath = myRole === 'instructor' ? '/instructor' : '/dashboard';
+        window.setTimeout(() => {
+          window.location.replace(redirectPath);
+        }, 250);
       });
     }
 
