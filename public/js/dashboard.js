@@ -859,7 +859,7 @@ async function openActivationModal(purchase) {
   const browserTimeZone = getBrowserTimeZone();
   const cacheBust = Date.now();
   const response = await fetch(
-    `${profileBaseUrl}/${encodeURIComponent(user.uid)}/purchases/${encodeURIComponent(String(activationContext.courseId))}/activation-options?timeZone=${encodeURIComponent(browserTimeZone)}&t=${encodeURIComponent(String(cacheBust))}&debug=1`,
+    `${profileBaseUrl}/${encodeURIComponent(user.uid)}/purchases/${encodeURIComponent(String(activationContext.courseId))}/activation-options?timeZone=${encodeURIComponent(browserTimeZone)}&t=${encodeURIComponent(String(cacheBust))}`,
     {
       cache: 'no-store',
       headers: {
@@ -886,28 +886,6 @@ async function openActivationModal(purchase) {
     (sum, item) => sum + (Array.isArray(item?.timeSlots) ? item.timeSlots.length : 0),
     0,
   );
-
-  // eslint-disable-next-line no-console
-  console.group('activation-options debug');
-  // eslint-disable-next-line no-console
-  console.log('course', {
-    courseId: activationContext.courseId,
-    courseTitle: activationContext.courseTitle,
-    browserTimeZone,
-    requestedAt: new Date().toISOString(),
-  });
-  // eslint-disable-next-line no-console
-  console.log('response payload', payload);
-  // eslint-disable-next-line no-console
-  console.log('instructors', instructors);
-  // eslint-disable-next-line no-console
-  console.log('debug', payload?.debug || null);
-  // eslint-disable-next-line no-console
-  console.log('filterStats', payload?.debug?.slotStats?.[0]?.filterStats || null);
-  // eslint-disable-next-line no-console
-  console.log('summary', { instructorCount: instructors.length, totalSlots });
-  // eslint-disable-next-line no-console
-  console.groupEnd();
 
   activationContext.instructors = instructors;
 
@@ -946,16 +924,13 @@ async function openActivationModal(purchase) {
   setTimeslotOptions(instructors, selectedInstructorId, currentActivation?.timeslotId || '');
 
   const hasFreshSlots = instructors.some((item) => Array.isArray(item.timeSlots) && item.timeSlots.length > 0);
-  const filterStats = payload?.debug?.slotStats?.[0]?.filterStats || null;
-  const filterSummary = filterStats
-    ? ` raw=${Number(filterStats.rawSlotRows || 0)} missing=${Number(filterStats.missingSlotRows || 0)} invalid=${Number(filterStats.invalidRanges || 0)} ended=${Number(filterStats.endedRanges || 0)} chunks=${Number(filterStats.totalHourChunks || 0)} expired=${Number(filterStats.expiredChunks || 0)} booked=${Number(filterStats.bookedChunks || 0)} included=${Number(filterStats.includedChunks || 0)}`
-    : '';
+  
   setActivationFeedback(
     currentActivation?.noGoodTimeslot && hasFreshSlots
       ? 'New timeslots are available. Choose a slot and save to update your class.'
       : currentActivation
-        ? `Existing activation loaded. You can update instructor/timeslot. [debug slots=${totalSlots}${filterSummary}]`
-        : `Choose instructor and timeslot, or select No good timeslots. [debug slots=${totalSlots}${filterSummary}]`,
+        ? `Existing activation loaded. You can update instructor/timeslot.`
+        : `Choose instructor and timeslot, or select No good timeslots.`,
     'info',
   );
 }

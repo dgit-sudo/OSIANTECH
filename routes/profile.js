@@ -972,40 +972,10 @@ router.get('/:uid/purchases/:courseId/activation-options', async (req, res) => {
       };
       });
 
-      const nowDbMs = await getCurrentDbTimeMs();
-      const logPayload = {
-        tag: 'activation-options-debug',
-        uid,
-        courseId: courseIdNum,
-        requestedTimeZone,
-        learnerTimeZone,
-        nowServerIso: new Date().toISOString(),
-        nowDbIso: new Date(nowDbMs).toISOString(),
-        activation: activation
-          ? {
-              instructorId: activation.instructorId,
-              timeslotId: activation.timeslotId,
-              noGoodTimeslot: activation.noGoodTimeslot,
-              status: activation.status,
-            }
-          : null,
-        instructorCount: instructors.length,
-        slotStats,
-      };
-
-      // eslint-disable-next-line no-console
-      console.log(JSON.stringify(logPayload));
-
       return res.json({
         instructors,
         activation,
         learnerTimeZone,
-        debug: {
-          nowServerIso: logPayload.nowServerIso,
-          nowDbIso: logPayload.nowDbIso,
-          instructorCount: logPayload.instructorCount,
-          slotStats,
-        },
       });
     }
 
