@@ -265,6 +265,18 @@ function todayIstDateString() {
   return `${y}-${m}-${d}`;
 }
 
+async function getCurrentDbTimeMs() {
+  if (!pool) return Date.now();
+  try {
+    const result = await pool.query('select current_timestamp as now_ts');
+    const raw = result.rows?.[0]?.now_ts;
+    const value = raw ? new Date(raw).getTime() : Number.NaN;
+    return Number.isFinite(value) ? value : Date.now();
+  } catch {
+    return Date.now();
+  }
+}
+
 async function getBookedSlotStarts(instructorId, exclude = {}) {
   await ensureActivationsTable();
   const rows = await pool.query(
@@ -297,7 +309,7 @@ async function getInstructorAvailability(options = {}) {
   const learnerTimeZone = normalizeTimeZone(options.learnerTimeZone || 'Asia/Kolkata');
   const excludeUid = String(options.excludeUid || '').trim();
   const excludeCourseId = Number.parseInt(String(options.excludeCourseId || '0'), 10) || 0;
-  const nowMs = Date.now();
+  const nowMs = await getCurrentDbTimeMs();
 
   await ensureInstructorTables();
   await syncInstructorSlotActivity();
@@ -405,6 +417,7 @@ async function getInstructorSlot(instructorId, slotId) {
   const selectedStart = new Date(startIso);
   if (Number.isNaN(selectedStart.getTime())) return null;
   const selectedEnd = new Date(selectedStart.getTime() + 3600000);
+  const nowMs = await getCurrentDbTimeMs();
 
   await ensureInstructorTables();
   const result = await pool.query(
@@ -422,7 +435,7 @@ async function getInstructorSlot(instructorId, slotId) {
   const rangeStart = parseIstDateTime(row.slot_date, row.start_time);
   const rangeEnd = parseIstDateTime(row.slot_date, row.end_time);
   if (!rangeStart || !rangeEnd) return null;
-  if (selectedEnd.getTime() <= Date.now()) return null;
+  if (selectedEnd.getTime() <= nowMs) return null;
 
   const inRange = selectedStart.getTime() >= rangeStart.getTime()
     && selectedEnd.getTime() <= rangeEnd.getTime();
@@ -986,7 +999,8 @@ router.post('/:uid/purchases/:courseId/activate', async (req, res) => {
       : null;
     let classNo = Math.max(previousClassNo, 1);
     if (!noGoodTimeslot && selectedSlot && previousClassStart && selectedSlot.startAtUtc !== previousClassStart) {
-      const ended = Number.isFinite(previousClassEndMs) && Date.now() > previousClassEndMs;
+      const nowMs = await getCurrentDbTimeMs();
+      const ended = Number.isFinite(previousClassEndMs) && nowMs > previousClassEndMs;
       classNo = ended ? previousClassNo + 1 : previousClassNo;
     }
 
