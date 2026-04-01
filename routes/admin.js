@@ -132,17 +132,22 @@ async function ensureInstructorTables() {
   instructorTablesReady = true;
 }
 
-async function pruneExpiredInstructorSlots() {
+async function syncInstructorSlotActivity() {
   if (!pool) return;
   await ensureInstructorTables();
   await pool.query(
     `
       update ${instructorSlotsTable}
-      set is_active = false,
-          updated_at = current_timestamp
-      where is_active = true
-        and slot_date is not null
-        and ((slot_date + end_time::time) at time zone coalesce(nullif(timezone, ''), 'Asia/Kolkata')) <= current_timestamp
+      set is_active = (
+        ((slot_date + end_time::time) at time zone coalesce(nullif(timezone, ''), 'Asia/Kolkata')) > current_timestamp
+      ),
+      updated_at = case
+        when is_active is distinct from (
+          ((slot_date + end_time::time) at time zone coalesce(nullif(timezone, ''), 'Asia/Kolkata')) > current_timestamp
+        ) then current_timestamp
+        else updated_at
+      end
+      where slot_date is not null
     `,
   );
 }
@@ -848,7 +853,7 @@ router.get('/api/instructors/:instructorUid/slots', requireAdminAuth, async (req
 
   try {
     await ensureInstructorTables();
-    await pruneExpiredInstructorSlots();
+    await syncInstructorSlotActivity();
     const rows = await pool.query(
       `
         select id, slot_date, weekday, start_time, end_time, timezone, is_active
