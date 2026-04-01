@@ -832,9 +832,11 @@ async function openActivationModal(purchase) {
 
   const token = await getActivationToken();
   const browserTimeZone = getBrowserTimeZone();
+  const cacheBust = Date.now();
   const response = await fetch(
-    `${profileBaseUrl}/${encodeURIComponent(user.uid)}/purchases/${encodeURIComponent(String(activationContext.courseId))}/activation-options?timeZone=${encodeURIComponent(browserTimeZone)}`,
+    `${profileBaseUrl}/${encodeURIComponent(user.uid)}/purchases/${encodeURIComponent(String(activationContext.courseId))}/activation-options?timeZone=${encodeURIComponent(browserTimeZone)}&t=${encodeURIComponent(String(cacheBust))}`,
     {
+      cache: 'no-store',
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${token}`,

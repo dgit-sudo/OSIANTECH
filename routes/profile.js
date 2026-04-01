@@ -790,6 +790,10 @@ router.get('/:uid/purchases', async (req, res) => {
 
 router.get('/:uid/purchases/:courseId/activation-options', async (req, res) => {
   if (!ensureDatabaseConfigured(res)) return;
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
+  res.set('Surrogate-Control', 'no-store');
 
   const { uid, courseId } = req.params;
   if (!isValidUid(uid)) {
