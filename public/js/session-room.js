@@ -57,10 +57,12 @@ if (!root) {
   let accessPayload = null;
   let drawing = false;
   let endClassTimer = null;
+  let accessCheckTimer = null;
   let controlsHideTimer = null;
   let moreMenuHideTimer = null;
   let activeSidePanel = '';
   let isScreenSharing = false;
+  let didBootstrap = false;
   let roomState = {
     allowLearnerScreenShare: false,
     activeScreenSharerSocketId: '',
@@ -69,6 +71,12 @@ if (!root) {
 
   const peers = new Map();
   const remoteVideos = new Map();
+  const joinedParticipants = new Set();
+
+  function hasInstructorSession() {
+    const token = String(window.localStorage.getItem(instructorTokenStorageKey) || '').trim();
+    return Boolean(token);
+  }
 
   function setConnectionState(label = 'Connecting', tone = 'neutral') {
     if (!connectionStateEl) return;
@@ -78,8 +86,22 @@ if (!root) {
 
   function updateParticipantCount() {
     if (!participantCountEl) return;
-    const count = remoteVideos.size + 1;
+    const count = Math.max(1, joinedParticipants.size || 1);
     participantCountEl.textContent = `${count} participant${count === 1 ? '' : 's'}`;
+  }
+
+  function markParticipantJoined(socketId) {
+    const id = String(socketId || '').trim();
+    if (!id) return;
+    joinedParticipants.add(id);
+    updateParticipantCount();
+  }
+
+  function markParticipantLeft(socketId) {
+    const id = String(socketId || '').trim();
+    if (!id) return;
+    joinedParticipants.delete(id);
+    updateParticipantCount();
   }
 
   function setControlButtonState(button, { active = true, tone = 'default', label = '' } = {}) {
@@ -343,7 +365,6 @@ if (!root) {
     gridEl.appendChild(card);
     remoteVideos.set(socketId, { card, video });
     updateSpotlightCard();
-    updateParticipantCount();
     return video;
   }
 
@@ -353,7 +374,6 @@ if (!root) {
     record.card.remove();
     remoteVideos.delete(socketId);
     updateSpotlightCard();
-    updateParticipantCount();
   }
 
   async function getAuthHeaders() {
@@ -390,6 +410,72 @@ if (!root) {
       throw new Error(payload?.error || 'Access denied.');
     }
     return payload;
+  }
+
+  function cleanupSessionState() {
+    if (accessCheckTimer) {
+      clearInterval(accessCheckTimer);
+      accessCheckTimer = null;
+    }
+
+    if (endClassTimer) {
+      clearInterval(endClassTimer);
+      endClassTimer = null;
+    }
+
+    if (socket) {
+      try { socket.disconnect(); } catch {}
+      socket = null;
+    }
+
+    peers.forEach((pc) => {
+      try { pc.close(); } catch {}
+    });
+    peers.clear();
+
+    stopScreenShare(false);
+
+    if (localStream) {
+      localStream.getTracks().forEach((track) => {
+        try { track.stop(); } catch {}
+      });
+      localStream = null;
+    }
+
+    remoteVideos.forEach((record) => {
+      if (record?.card) record.card.remove();
+    });
+    remoteVideos.clear();
+
+    joinedParticipants.clear();
+    if (localVideoEl) localVideoEl.srcObject = null;
+    updateParticipantCount();
+  }
+
+  function disconnectUnauthorized(message = 'Session unauthorized. Please rejoin from your dashboard.') {
+    cleanupSessionState();
+    setConnectionState('Unauthorized', 'danger');
+    setFeedback(message, 'error');
+    const redirectPath = myRole === 'instructor' ? '/instructor' : '/dashboard';
+    window.setTimeout(() => {
+      window.location.replace(redirectPath);
+    }, 700);
+  }
+
+  async function verifyAccessStillValid() {
+    if (!meetingId) return;
+    try {
+      await fetchAccess();
+    } catch {
+      disconnectUnauthorized('Your session is no longer authorized. Please sign in again.');
+    }
+  }
+
+  function startAccessValidityChecks() {
+    if (accessCheckTimer) clearInterval(accessCheckTimer);
+    accessCheckTimer = setInterval(() => {
+      verifyAccessStillValid();
+    }, 30000);
   }
 
   async function setupLocalMedia() {
@@ -495,9 +581,24 @@ if (!root) {
       socket.emit('session:join');
       setFeedback('Connected to live class.', 'success');
       setConnectionState('Connected', 'live');
+      joinedParticipants.clear();
+      markParticipantJoined(socket.id);
+    });
+
+    socket.on('connect_error', (error) => {
+      const message = String(error?.message || '').toLowerCase();
+      if (message.includes('unauthorized') || message.includes('expired') || message.includes('not active')) {
+        disconnectUnauthorized('Session authorization failed. Please rejoin from your dashboard.');
+        return;
+      }
+      setConnectionState('Connection Error', 'danger');
+      setFeedback('Could not connect to live class.', 'error');
     });
 
     socket.on('session:participants', (participants = []) => {
+      participants.forEach((participant) => {
+        if (participant?.socketId) markParticipantJoined(participant.socketId);
+      });
       participants.forEach((participant) => {
         if (!participant?.socketId || participant.socketId === socket.id) return;
         createPeer(participant.socketId, true, participant);
@@ -507,9 +608,9 @@ if (!root) {
 
     socket.on('session:participant-joined', (participant) => {
       if (!participant?.socketId || participant.socketId === socket.id) return;
+      markParticipantJoined(participant.socketId);
       createPeer(participant.socketId, false, participant);
       addChatMessage('System', `${participant.name || 'Participant'} joined the class`);
-      updateParticipantCount();
     });
 
     socket.on('session:participant-left', ({ socketId }) => {
@@ -518,8 +619,8 @@ if (!root) {
         peer.close();
         peers.delete(socketId);
       }
+      markParticipantLeft(socketId);
       removeRemoteVideo(socketId);
-      updateParticipantCount();
     });
 
     socket.on('session:signal', (payload) => {
@@ -578,6 +679,8 @@ if (!root) {
     socket.on('disconnect', () => {
       setFeedback('Disconnected from meeting room.', 'error');
       setConnectionState('Disconnected', 'danger');
+      joinedParticipants.clear();
+      updateParticipantCount();
     });
   }
 
@@ -778,40 +881,10 @@ if (!root) {
       leaveBtn.addEventListener('click', () => {
         setMoreMenuOpen(false);
 
-        if (endClassTimer) {
-          clearInterval(endClassTimer);
-          endClassTimer = null;
+        if (socket && isScreenSharing) {
+          socket.emit('session:screen-share-state', { active: false });
         }
-
-        if (socket) {
-          if (isScreenSharing) {
-            socket.emit('session:screen-share-state', { active: false });
-          }
-          socket.disconnect();
-          socket = null;
-        }
-
-        peers.forEach((pc) => {
-          try { pc.close(); } catch {}
-        });
-        peers.clear();
-
-        stopScreenShare(false);
-
-        if (localStream) {
-          localStream.getTracks().forEach((track) => {
-            try { track.stop(); } catch {}
-          });
-          localStream = null;
-        }
-
-        remoteVideos.forEach((record) => {
-          if (record?.card) record.card.remove();
-        });
-        remoteVideos.clear();
-
-        if (localVideoEl) localVideoEl.srcObject = null;
-        updateParticipantCount();
+        cleanupSessionState();
         setFeedback('You left the call. Rejoin anytime from your dashboard.', 'info');
 
         const redirectPath = myRole === 'instructor' ? '/instructor' : '/dashboard';
@@ -919,6 +992,7 @@ if (!root) {
       scheduleEndClassUnlock();
       setupWhiteboard();
       setupSocket(accessPayload.socketToken);
+      startAccessValidityChecks();
     } catch (error) {
       setFeedback(error?.message || 'Unable to access this meeting.', 'error');
       window.setTimeout(() => {
@@ -927,11 +1001,28 @@ if (!root) {
     }
   }
 
-  onAuthStateChanged(auth, () => {
+  onAuthStateChanged(auth, (user) => {
     if (!meetingId) {
       setFeedback('Invalid meeting id.', 'error');
       return;
     }
-    bootstrap();
+
+    if (!didBootstrap) {
+      didBootstrap = true;
+      bootstrap();
+      return;
+    }
+
+    if (!hasInstructorSession() && !user) {
+      disconnectUnauthorized('You signed out. Meeting access is now unauthorized.');
+    }
+  });
+
+  window.addEventListener('storage', (event) => {
+    if (event.key !== instructorTokenStorageKey) return;
+    const tokenValue = String(event.newValue || '').trim();
+    if (!tokenValue && myRole === 'instructor') {
+      disconnectUnauthorized('Instructor session ended. Please sign in again.');
+    }
   });
 }
