@@ -1,6 +1,6 @@
 <%- include('partials/head') %>
 
-<section class="section session-shell" data-session-page data-meeting-id="<%= meetingId %>" data-course-slug="<%= courseSlug %>">
+<section class="section session-shell" data-session-page data-meeting-id="<%= meetingId %>" data-course-slug="<%= courseSlug %>" data-course-title="<%= courseTitle %>" data-instructor-name="<%= instructorName %>" data-class-no="<%= classNo %>">
   <div class="container session-room">
     <header class="session-topbar">
       <div class="session-topbar-copy">
@@ -8,9 +8,11 @@
           <img src="/images/osian-logo-transparent.svg" alt="Osian Academy" class="session-brand-logo" />
           <span class="session-brand-text">Osian Academy</span>
         </a>
-        <div class="section-tag">Live Class</div>
-        <h1 class="session-title">Session Room</h1>
-        <p class="session-sub" id="session-meta">Connecting...</p>
+        <div class="session-quick-meta">
+          <span class="session-quick-meta-item">Course: <strong id="session-course-name"><%= courseTitle %></strong></span>
+          <span class="session-quick-meta-item">Instructor: <strong id="session-instructor-name"><%= instructorName %></strong></span>
+          <span class="session-quick-meta-item">Class: <strong id="session-class-no"><%= classNo %></strong></span>
+        </div>
       </div>
       <div class="session-topbar-pills">
         <div id="session-role" class="dashboard-chip">Role</div>

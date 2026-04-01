@@ -8,10 +8,18 @@ if (!root) {
   // No meeting page.
 } else {
   const meetingId = String(root.getAttribute('data-meeting-id') || '').trim();
+  const courseTitleFromPage = String(root.getAttribute('data-course-title') || '').trim();
+  const instructorNameFromPage = String(root.getAttribute('data-instructor-name') || '').trim();
+  const classNoFromPage = String(root.getAttribute('data-class-no') || '').trim();
+
+  const isMobileClient = /android|iphone|ipad|ipod|mobile|windows phone|blackberry|opera mini/i
+    .test(String(navigator.userAgent || '').toLowerCase());
 
   const feedbackEl = document.getElementById('session-feedback');
   const roleEl = document.getElementById('session-role');
-  const metaEl = document.getElementById('session-meta');
+  const courseNameEl = document.getElementById('session-course-name');
+  const instructorNameEl = document.getElementById('session-instructor-name');
+  const classNoEl = document.getElementById('session-class-no');
   const connectionStateEl = document.getElementById('session-connection-state');
   const participantCountEl = document.getElementById('session-participant-count');
   const localVideoEl = document.getElementById('session-local-video');
@@ -687,18 +695,26 @@ if (!root) {
 
   async function bootstrap() {
     try {
+      if (isMobileClient) {
+        throw new Error('Session room is available on desktop/laptop only.');
+      }
+
       accessPayload = await fetchAccess();
       myRole = accessPayload.role;
 
       if (roleEl) roleEl.textContent = myRole.toUpperCase();
       setConnectionState('Joining...', 'neutral');
-      if (metaEl) {
-        const startsAt = accessPayload?.meeting?.startsAt ? new Date(accessPayload.meeting.startsAt) : null;
-        const endsAt = accessPayload?.meeting?.endsAt ? new Date(accessPayload.meeting.endsAt) : null;
-        const when = startsAt && !Number.isNaN(startsAt.getTime())
-          ? `${startsAt.toLocaleString()} - ${endsAt ? endsAt.toLocaleTimeString() : ''}`
-          : 'Class session';
-        metaEl.textContent = `Class ${accessPayload?.meeting?.classNo || 1} • ${when}`;
+      if (courseNameEl) {
+        courseNameEl.textContent = accessPayload?.meeting?.courseTitle
+          || courseTitleFromPage
+          || accessPayload?.meeting?.courseSlug
+          || '-';
+      }
+      if (instructorNameEl) {
+        instructorNameEl.textContent = accessPayload?.meeting?.instructorName || instructorNameFromPage || '-';
+      }
+      if (classNoEl) {
+        classNoEl.textContent = String(accessPayload?.meeting?.classNo || classNoFromPage || '1');
       }
 
       if (whiteboardWrapEl) {

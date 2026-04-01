@@ -18,7 +18,18 @@ const {
 
 const router = express.Router();
 
+function isMobileRequest(req) {
+  const ua = String(req.headers['user-agent'] || '').toLowerCase();
+  const chMobile = String(req.headers['sec-ch-ua-mobile'] || '').trim();
+  if (chMobile === '?1') return true;
+  return /android|iphone|ipad|ipod|mobile|windows phone|blackberry|opera mini/i.test(ua);
+}
+
 router.get('/session/:courseSlug/:meetingId', async (req, res) => {
+  if (isMobileRequest(req)) {
+    return res.status(403).send('Session room is available on desktop/laptop only.');
+  }
+
   const meetingId = String(req.params.meetingId || '').trim();
   const courseSlug = String(req.params.courseSlug || '').trim();
 
@@ -34,6 +45,9 @@ router.get('/session/:courseSlug/:meetingId', async (req, res) => {
       page: 'session-room',
       meetingId,
       courseSlug,
+      courseTitle: meeting.courseTitle || courseSlug,
+      instructorName: meeting.instructorName || meeting.instructorUid,
+      classNo: Number(meeting.classNo || 1),
     });
   } catch {
     return res.status(404).render('404', { title: '404 - Session Not Found', page: '' });
@@ -146,6 +160,10 @@ router.get('/api/session/admin/ongoing', async (req, res) => {
 
 router.post('/api/session/:meetingId/access', async (req, res) => {
   try {
+    if (isMobileRequest(req)) {
+      return res.status(403).json({ error: 'Session room is available on desktop/laptop only.' });
+    }
+
     await ensureSessionTables();
     const actor = await resolveActorFromRequest(req);
     if (!actor) {
@@ -180,8 +198,10 @@ router.post('/api/session/:meetingId/access', async (req, res) => {
       meeting: {
         meetingId: meeting.meetingId,
         courseSlug: meeting.courseSlug,
+        courseTitle: meeting.courseTitle || meeting.courseSlug,
         courseId: meeting.courseId,
         classNo: meeting.classNo,
+        instructorName: meeting.instructorName || meeting.instructorUid,
         startsAt: meeting.startsAt,
         endsAt: meeting.endsAt,
       },

@@ -2591,15 +2591,20 @@ body:not(.page-home) [data-animate] {
   letter-spacing: 0.01em;
 }
 
-.session-title {
-  font-family: 'Merriweather', serif;
-  font-size: clamp(1.8rem, 3vw, 2.4rem);
-  margin: 8px 0 10px;
+.session-quick-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
 }
 
-.session-sub {
-  color: rgba(223,229,243,0.76);
-  font-size: 0.95rem;
+.session-quick-meta-item {
+  color: rgba(223,229,243,0.78);
+  font-size: 0.88rem;
+}
+
+.session-quick-meta-item strong {
+  color: #fff;
+  font-weight: 800;
 }
 
 .session-topbar-pills {
