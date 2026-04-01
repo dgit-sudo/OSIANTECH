@@ -324,7 +324,7 @@ async function getInstructorAvailability(options = {}) {
         i.instructor_uid,
         i.display_name,
         s.id as slot_id,
-        s.slot_date,
+        s.slot_date::text as slot_date,
         s.start_time,
         s.end_time,
         s.timezone
@@ -466,7 +466,7 @@ async function getInstructorSlot(instructorId, slotId) {
   await ensureInstructorTables();
   const result = await pool.query(
     `
-      select id, slot_date, start_time, end_time, timezone
+      select id, slot_date::text as slot_date, start_time, end_time, timezone
       from ${instructorSlotsTable}
       where instructor_uid = $1 and id = $2 and is_active = true and slot_date is not null
       limit 1
