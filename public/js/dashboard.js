@@ -706,6 +706,7 @@ function renderPurchases(purchases) {
     activate.addEventListener('click', () => {
       openActivationModal(purchase).catch((error) => {
         setFeedback(activationFeedbackEl, error?.message || 'Could not open activation popup.', 'error');
+        setFeedback(gateFeedbackEl, error?.message || 'Could not open activation popup.', 'error');
       });
     });
 
@@ -828,6 +829,17 @@ async function openActivationModal(purchase) {
   activationContext.courseTitle = purchase.courseTitle || `Course #${purchase.courseId}`;
 
   if (activationTitleEl) activationTitleEl.textContent = `Activate: ${activationContext.courseTitle}`;
+  activationModalEl.hidden = false;
+  activationInstructorEl.innerHTML = '';
+  if (activationTimeslotEl) {
+    activationTimeslotEl.innerHTML = '';
+    const loadingOption = document.createElement('option');
+    loadingOption.value = '';
+    loadingOption.textContent = 'Loading timeslots...';
+    activationTimeslotEl.appendChild(loadingOption);
+    activationTimeslotEl.disabled = true;
+  }
+  if (activationSaveBtn) activationSaveBtn.disabled = true;
   setActivationFeedback('Loading instructor availability...', 'info');
 
   const token = await getActivationToken();
@@ -846,7 +858,7 @@ async function openActivationModal(purchase) {
 
   const payload = await response.json().catch(() => ({}));
   if (!response.ok) {
-    throw new Error(payload?.error || 'Could not load activation options.');
+    throw new Error(payload?.error || 'Could not load activation options. Please try again.');
   }
 
   if (payload?.debug && activationFeedbackEl) {
@@ -878,7 +890,6 @@ async function openActivationModal(purchase) {
       activationTimeslotEl.disabled = true;
     }
     if (activationSaveBtn) activationSaveBtn.disabled = true;
-    activationModalEl.hidden = false;
     setActivationFeedback('No instructor slots are available right now. Please try later.', 'error');
     return;
   }
@@ -895,7 +906,6 @@ async function openActivationModal(purchase) {
   const selectedInstructorId = String(activationInstructorEl.value || '');
   setTimeslotOptions(instructors, selectedInstructorId, currentActivation?.timeslotId || '');
 
-  activationModalEl.hidden = false;
   const hasFreshSlots = instructors.some((item) => Array.isArray(item.timeSlots) && item.timeSlots.length > 0);
   setActivationFeedback(
     currentActivation?.noGoodTimeslot && hasFreshSlots
