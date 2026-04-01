@@ -36,6 +36,7 @@ if (!root) {
   const supportBtn = document.getElementById('session-support');
   const leaveBtn = document.getElementById('session-leave');
   const endClassBtn = document.getElementById('session-end-class');
+  const toggleLearnerShareBtn = document.getElementById('session-toggle-learner-share');
   const moreWrapEl = document.getElementById('session-more-wrap');
   const moreBtn = document.getElementById('session-more-btn');
   const moreMenuEl = document.getElementById('session-more-menu');
@@ -59,6 +60,12 @@ if (!root) {
   let controlsHideTimer = null;
   let moreMenuHideTimer = null;
   let activeSidePanel = '';
+  let isScreenSharing = false;
+  let roomState = {
+    allowLearnerScreenShare: false,
+    activeScreenSharerSocketId: '',
+    activeScreenSharerRole: '',
+  };
 
   const peers = new Map();
   const remoteVideos = new Map();
@@ -96,6 +103,7 @@ if (!root) {
     if (sidepanelEl) sidepanelEl.hidden = !panelName;
     if (chatPanelEl) chatPanelEl.hidden = panelName !== 'chat';
     if (whiteboardWrapEl) whiteboardWrapEl.hidden = panelName !== 'whiteboard';
+    document.body.classList.toggle('session-priority-whiteboard', panelName === 'whiteboard');
     updatePanelButtons();
   }
 
@@ -163,6 +171,125 @@ if (!root) {
     feedbackEl.textContent = message;
   }
 
+  function canCurrentRoleShareScreen() {
+    if (myRole === 'instructor') return !roomState.allowLearnerScreenShare;
+    if (myRole === 'learner') return roomState.allowLearnerScreenShare;
+    return false;
+  }
+
+  function updateLearnerShareToggleButton() {
+    if (!toggleLearnerShareBtn) return;
+    if (myRole !== 'instructor') {
+      toggleLearnerShareBtn.hidden = true;
+      return;
+    }
+    toggleLearnerShareBtn.hidden = false;
+    const labelSpan = toggleLearnerShareBtn.querySelector('span');
+    if (labelSpan) {
+      labelSpan.textContent = `Give screen sharing permission to student: ${roomState.allowLearnerScreenShare ? 'On' : 'Off'}`;
+    }
+  }
+
+  function updateShareScreenButton() {
+    if (!shareScreenBtn) return;
+    const canShare = canCurrentRoleShareScreen();
+    shareScreenBtn.hidden = myRole === 'learner' && !roomState.allowLearnerScreenShare;
+    shareScreenBtn.disabled = !canShare && !isScreenSharing;
+    setControlButtonState(shareScreenBtn, {
+      active: canShare || isScreenSharing,
+      label: isScreenSharing ? 'Stop Sharing' : 'Share Screen',
+    });
+  }
+
+  function updateSpotlightCard() {
+    const spotlightId = String(roomState.activeScreenSharerSocketId || '');
+    remoteVideos.forEach((record, socketId) => {
+      if (!record?.card) return;
+      record.card.classList.toggle('session-video-card--spotlight', Boolean(spotlightId) && socketId === spotlightId);
+    });
+  }
+
+  async function stopScreenShare(emitUpdate = true, feedbackMessage = '') {
+    const wasSharing = isScreenSharing;
+
+    if (screenStream) {
+      const tracks = screenStream.getVideoTracks();
+      tracks.forEach((track) => {
+        track.onended = null;
+      });
+      screenStream.getTracks().forEach((track) => {
+        try { track.stop(); } catch {}
+      });
+      screenStream = null;
+    }
+
+    const camTrack = localStream?.getVideoTracks?.()[0] || null;
+    peers.forEach((pc) => {
+      const sender = pc.getSenders().find((s) => s.track && s.track.kind === 'video');
+      if (sender && camTrack) sender.replaceTrack(camTrack).catch(() => {});
+    });
+
+    isScreenSharing = false;
+
+    if (emitUpdate && socket && wasSharing) {
+      socket.emit('session:screen-share-state', { active: false });
+    }
+
+    updateShareScreenButton();
+    if (feedbackMessage) setFeedback(feedbackMessage, 'info');
+  }
+
+  async function startScreenShare() {
+    if (!canCurrentRoleShareScreen()) {
+      setFeedback('You do not currently have permission to share screen.', 'error');
+      return;
+    }
+
+    try {
+      const nextScreenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+      const screenTrack = nextScreenStream.getVideoTracks()[0];
+      if (!screenTrack) {
+        setFeedback('Screen share is not available.', 'error');
+        return;
+      }
+
+      screenStream = nextScreenStream;
+      peers.forEach((pc) => {
+        const sender = pc.getSenders().find((s) => s.track && s.track.kind === 'video');
+        if (sender) sender.replaceTrack(screenTrack).catch(() => {});
+      });
+
+      isScreenSharing = true;
+      updateShareScreenButton();
+
+      if (socket) {
+        socket.emit('session:screen-share-state', { active: true });
+      }
+
+      screenTrack.onended = () => {
+        stopScreenShare(true);
+      };
+    } catch {
+      setFeedback('Screen share is not available.', 'error');
+    }
+  }
+
+  function applyRoomState(nextState = {}) {
+    roomState = {
+      allowLearnerScreenShare: Boolean(nextState.allowLearnerScreenShare),
+      activeScreenSharerSocketId: String(nextState.activeScreenSharerSocketId || ''),
+      activeScreenSharerRole: String(nextState.activeScreenSharerRole || ''),
+    };
+
+    updateLearnerShareToggleButton();
+    updateShareScreenButton();
+    updateSpotlightCard();
+
+    if (myRole === 'instructor' && roomState.allowLearnerScreenShare && isScreenSharing) {
+      stopScreenShare(false, 'Instructor sharing stopped because learner sharing is enabled.');
+    }
+  }
+
   function addChatMessage(sender, text, own = false) {
     if (!chatListEl) return;
 
@@ -215,6 +342,7 @@ if (!root) {
     card.append(header, video);
     gridEl.appendChild(card);
     remoteVideos.set(socketId, { card, video });
+    updateSpotlightCard();
     updateParticipantCount();
     return video;
   }
@@ -224,6 +352,7 @@ if (!root) {
     if (!record) return;
     record.card.remove();
     remoteVideos.delete(socketId);
+    updateSpotlightCard();
     updateParticipantCount();
   }
 
@@ -373,11 +502,12 @@ if (!root) {
         if (!participant?.socketId || participant.socketId === socket.id) return;
         createPeer(participant.socketId, true, participant);
       });
+      updateSpotlightCard();
     });
 
     socket.on('session:participant-joined', (participant) => {
       if (!participant?.socketId || participant.socketId === socket.id) return;
-      createPeer(participant.socketId, true, participant);
+      createPeer(participant.socketId, false, participant);
       addChatMessage('System', `${participant.name || 'Participant'} joined the class`);
       updateParticipantCount();
     });
@@ -396,6 +526,19 @@ if (!root) {
       handleSignal(payload).catch(() => {
         // Ignore signaling failures to keep room alive.
       });
+    });
+
+    socket.on('session:room-state', (payload = {}) => {
+      applyRoomState(payload);
+    });
+
+    socket.on('session:screen-share-denied', (payload = {}) => {
+      stopScreenShare(false);
+      setFeedback(payload?.reason || 'Screen sharing was denied.', 'error');
+    });
+
+    socket.on('session:force-stop-share', (payload = {}) => {
+      stopScreenShare(false, payload?.reason || 'Screen sharing was stopped by room settings.');
     });
 
     socket.on('session:chat', (payload) => {
@@ -590,33 +733,21 @@ if (!root) {
 
     if (shareScreenBtn) {
       shareScreenBtn.addEventListener('click', async () => {
-        try {
-          if (!screenStream) {
-            screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
-            const screenTrack = screenStream.getVideoTracks()[0];
-            peers.forEach((pc) => {
-              const sender = pc.getSenders().find((s) => s.track && s.track.kind === 'video');
-              if (sender) sender.replaceTrack(screenTrack);
-            });
-            setControlButtonState(shareScreenBtn, { active: true, label: 'Stop Sharing' });
-
-            screenTrack.onended = () => {
-              const camTrack = localStream?.getVideoTracks?.()[0] || null;
-              peers.forEach((pc) => {
-                const sender = pc.getSenders().find((s) => s.track && s.track.kind === 'video');
-                if (sender && camTrack) sender.replaceTrack(camTrack);
-              });
-              screenStream = null;
-              setControlButtonState(shareScreenBtn, { active: true, label: 'Share Screen' });
-            };
-          } else {
-            screenStream.getTracks().forEach((t) => t.stop());
-            screenStream = null;
-            setControlButtonState(shareScreenBtn, { active: true, label: 'Share Screen' });
-          }
-        } catch {
-          setFeedback('Screen share is not available.', 'error');
+        if (!isScreenSharing) {
+          await startScreenShare();
+          return;
         }
+        await stopScreenShare(true);
+      });
+    }
+
+    if (toggleLearnerShareBtn) {
+      toggleLearnerShareBtn.addEventListener('click', () => {
+        if (myRole !== 'instructor' || !socket) return;
+        setMoreMenuOpen(false);
+        socket.emit('session:toggle-learner-share', {
+          enabled: !roomState.allowLearnerScreenShare,
+        });
       });
     }
 
@@ -653,6 +784,9 @@ if (!root) {
         }
 
         if (socket) {
+          if (isScreenSharing) {
+            socket.emit('session:screen-share-state', { active: false });
+          }
           socket.disconnect();
           socket = null;
         }
@@ -662,12 +796,7 @@ if (!root) {
         });
         peers.clear();
 
-        if (screenStream) {
-          screenStream.getTracks().forEach((track) => {
-            try { track.stop(); } catch {}
-          });
-          screenStream = null;
-        }
+        stopScreenShare(false);
 
         if (localStream) {
           localStream.getTracks().forEach((track) => {
@@ -777,15 +906,12 @@ if (!root) {
         endClassBtn.hidden = !(myRole === 'instructor');
         endClassBtn.disabled = !Boolean(accessPayload?.permissions?.canEndClass);
       }
-      if (toggleWhiteboardBtn && myRole !== 'instructor') {
-        toggleWhiteboardBtn.hidden = true;
-      }
-
       await setupLocalMedia();
       updateParticipantCount();
       setControlButtonState(toggleMicBtn, { active: true, tone: 'primary', label: 'Mute Mic' });
       setControlButtonState(toggleCamBtn, { active: true, tone: 'primary', label: 'Turn Off Camera' });
-      setControlButtonState(shareScreenBtn, { active: true, label: 'Share Screen' });
+      updateLearnerShareToggleButton();
+      updateShareScreenButton();
       setControlButtonState(supportBtn, { active: true, label: 'Raise Technical Support' });
       showSidePanel('');
       revealControlDock();

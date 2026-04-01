@@ -54,6 +54,31 @@ app.use('/instructor', instructorRouter);
 app.use('/', sessionRouter);
 
 const roomParticipants = new Map();
+const roomStates = new Map();
+
+function getDefaultRoomState() {
+  return {
+    allowLearnerScreenShare: false,
+    activeScreenSharerSocketId: '',
+    activeScreenSharerRole: '',
+  };
+}
+
+function getRoomState(roomKey) {
+  if (!roomStates.has(roomKey)) {
+    roomStates.set(roomKey, getDefaultRoomState());
+  }
+  return roomStates.get(roomKey);
+}
+
+function emitRoomState(roomKey) {
+  const state = getRoomState(roomKey);
+  io.to(roomKey).emit('session:room-state', {
+    allowLearnerScreenShare: Boolean(state.allowLearnerScreenShare),
+    activeScreenSharerSocketId: String(state.activeScreenSharerSocketId || ''),
+    activeScreenSharerRole: String(state.activeScreenSharerRole || ''),
+  });
+}
 
 function participantNameFromRole(role, identity) {
   if (role === 'instructor') return 'Instructor';
@@ -104,10 +129,64 @@ io.on('connection', (socket) => {
     const current = roomParticipants.get(roomKey) || new Map();
     current.set(socket.id, participant);
     roomParticipants.set(roomKey, current);
+    getRoomState(roomKey);
 
     const others = [...current.values()].filter((p) => p.socketId !== socket.id);
     socket.emit('session:participants', others);
+    socket.emit('session:room-state', getRoomState(roomKey));
     socket.to(roomKey).emit('session:participant-joined', participant);
+  });
+
+  socket.on('session:toggle-learner-share', (payload = {}) => {
+    if (socket.data.role !== 'instructor') return;
+    const state = getRoomState(roomKey);
+    state.allowLearnerScreenShare = Boolean(payload.enabled);
+
+    // If learners are now allowed to share, instructor screen share must stop immediately.
+    if (state.allowLearnerScreenShare && state.activeScreenSharerRole === 'instructor' && state.activeScreenSharerSocketId) {
+      io.to(state.activeScreenSharerSocketId).emit('session:force-stop-share', {
+        reason: 'Instructor sharing stopped because learner share permission was enabled.',
+      });
+      state.activeScreenSharerSocketId = '';
+      state.activeScreenSharerRole = '';
+    }
+
+    emitRoomState(roomKey);
+  });
+
+  socket.on('session:screen-share-state', (payload = {}) => {
+    const state = getRoomState(roomKey);
+    const wantsActive = Boolean(payload.active);
+    const role = socket.data.role;
+
+    if (!wantsActive) {
+      if (state.activeScreenSharerSocketId === socket.id) {
+        state.activeScreenSharerSocketId = '';
+        state.activeScreenSharerRole = '';
+        emitRoomState(roomKey);
+      }
+      return;
+    }
+
+    const canShareAsInstructor = role === 'instructor' && !state.allowLearnerScreenShare;
+    const canShareAsLearner = role === 'learner' && state.allowLearnerScreenShare;
+    if (!canShareAsInstructor && !canShareAsLearner) {
+      socket.emit('session:screen-share-denied', {
+        reason: 'You do not currently have permission to share screen.',
+      });
+      return;
+    }
+
+    if (state.activeScreenSharerSocketId && state.activeScreenSharerSocketId !== socket.id) {
+      socket.emit('session:screen-share-denied', {
+        reason: 'Another participant is already sharing screen.',
+      });
+      return;
+    }
+
+    state.activeScreenSharerSocketId = socket.id;
+    state.activeScreenSharerRole = role;
+    emitRoomState(roomKey);
   });
 
   socket.on('session:signal', (payload = {}) => {
@@ -177,9 +256,16 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     const current = roomParticipants.get(roomKey);
     if (!current) return;
+    const state = roomStates.get(roomKey);
+    if (state && state.activeScreenSharerSocketId === socket.id) {
+      state.activeScreenSharerSocketId = '';
+      state.activeScreenSharerRole = '';
+      emitRoomState(roomKey);
+    }
     current.delete(socket.id);
     if (current.size === 0) {
       roomParticipants.delete(roomKey);
+      roomStates.delete(roomKey);
       return;
     }
     roomParticipants.set(roomKey, current);
