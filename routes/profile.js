@@ -833,6 +833,8 @@ router.get('/:uid/purchases/:courseId/activation-options', async (req, res) => {
   }
 
   const requestedTimeZone = normalizeTimeZone(req.query?.timeZone || req.query?.timezone || 'Asia/Kolkata');
+  const debugEnabled = String(req.query?.debug || '').trim() === '1'
+    || String(process.env.ACTIVATION_DEBUG_LOG || '').trim() === '1';
 
   try {
     await ensurePurchasesTable();
@@ -893,6 +895,58 @@ router.get('/:uid/purchases/:courseId/activation-options', async (req, res) => {
       excludeUid: uid,
       excludeCourseId: courseIdNum,
     });
+
+    if (debugEnabled) {
+      const slotStats = instructors.map((item) => ({
+        instructorId: String(item?.instructorId || ''),
+        instructorName: String(item?.instructorName || ''),
+        slotCount: Array.isArray(item?.timeSlots) ? item.timeSlots.length : 0,
+        previewSlots: Array.isArray(item?.timeSlots)
+          ? item.timeSlots.slice(0, 3).map((slot) => ({
+            slotId: slot?.slotId || '',
+            startAtUtc: slot?.startAtUtc || '',
+            endAtUtc: slot?.endAtUtc || '',
+            label: slot?.label || '',
+          }))
+          : [],
+      }));
+
+      const nowDbMs = await getCurrentDbTimeMs();
+      const logPayload = {
+        tag: 'activation-options-debug',
+        uid,
+        courseId: courseIdNum,
+        requestedTimeZone,
+        learnerTimeZone,
+        nowServerIso: new Date().toISOString(),
+        nowDbIso: new Date(nowDbMs).toISOString(),
+        activation: activation
+          ? {
+              instructorId: activation.instructorId,
+              timeslotId: activation.timeslotId,
+              noGoodTimeslot: activation.noGoodTimeslot,
+              status: activation.status,
+            }
+          : null,
+        instructorCount: instructors.length,
+        slotStats,
+      };
+
+      // eslint-disable-next-line no-console
+      console.log(JSON.stringify(logPayload));
+
+      return res.json({
+        instructors,
+        activation,
+        learnerTimeZone,
+        debug: {
+          nowServerIso: logPayload.nowServerIso,
+          nowDbIso: logPayload.nowDbIso,
+          instructorCount: logPayload.instructorCount,
+          slotStats,
+        },
+      });
+    }
 
     return res.json({ instructors, activation, learnerTimeZone });
   } catch {

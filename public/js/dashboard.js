@@ -834,7 +834,7 @@ async function openActivationModal(purchase) {
   const browserTimeZone = getBrowserTimeZone();
   const cacheBust = Date.now();
   const response = await fetch(
-    `${profileBaseUrl}/${encodeURIComponent(user.uid)}/purchases/${encodeURIComponent(String(activationContext.courseId))}/activation-options?timeZone=${encodeURIComponent(browserTimeZone)}&t=${encodeURIComponent(String(cacheBust))}`,
+    `${profileBaseUrl}/${encodeURIComponent(user.uid)}/purchases/${encodeURIComponent(String(activationContext.courseId))}/activation-options?timeZone=${encodeURIComponent(browserTimeZone)}&t=${encodeURIComponent(String(cacheBust))}&debug=1`,
     {
       cache: 'no-store',
       headers: {
@@ -847,6 +847,14 @@ async function openActivationModal(purchase) {
   const payload = await response.json().catch(() => ({}));
   if (!response.ok) {
     throw new Error(payload?.error || 'Could not load activation options.');
+  }
+
+  if (payload?.debug && activationFeedbackEl) {
+    const debugCount = Number(payload.debug.instructorCount || 0);
+    const totalSlots = Array.isArray(payload.debug.slotStats)
+      ? payload.debug.slotStats.reduce((sum, item) => sum + Number(item.slotCount || 0), 0)
+      : 0;
+    setActivationFeedback(`Debug: ${debugCount} instructors, ${totalSlots} visible slots loaded.`, 'info');
   }
 
   const instructors = Array.isArray(payload.instructors) ? payload.instructors : [];
