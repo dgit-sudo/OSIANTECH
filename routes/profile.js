@@ -35,6 +35,8 @@ const pool = dbReady
     })
   : null;
 
+let usersTableReady = false;
+let profileTableReady = false;
 let purchasesTableReady = false;
 let activationsTableReady = false;
 let instructorTablesReady = false;
@@ -54,6 +56,53 @@ function ensureDatabaseConfigured(res) {
     error: 'Database is not configured. Set SUPABASE_DB_URL or DATABASE_URL.',
   });
   return false;
+}
+
+async function ensureUsersTable() {
+  if (!pool || usersTableReady) return;
+
+  await pool.query(`
+    create table if not exists ${usersTable} (
+      id serial primary key,
+      uid varchar(128) not null unique,
+      email text not null,
+      display_name text null,
+      auth_provider varchar(40) not null default 'password',
+      profile_completed boolean not null default false,
+      created_at timestamp not null default current_timestamp,
+      updated_at timestamp not null default current_timestamp
+    )
+  `);
+
+  await pool.query(`create index if not exists idx_${usersTable}_email on ${usersTable}(email)`);
+
+  usersTableReady = true;
+}
+
+async function ensureProfileTable() {
+  if (!pool || profileTableReady) return;
+
+  await pool.query(`
+    create table if not exists ${profileTable} (
+      id serial primary key,
+      uid varchar(128) not null unique,
+      name text not null default '',
+      age integer not null default 0,
+      nationality text null,
+      phone_number text null,
+      gender text null,
+      city text null,
+      education text null,
+      email text null,
+      completed_profile boolean not null default false,
+      created_at timestamp not null default current_timestamp,
+      updated_at timestamp not null default current_timestamp
+    )
+  `);
+
+  await pool.query(`create index if not exists idx_${profileTable}_uid on ${profileTable}(uid)`);
+
+  profileTableReady = true;
 }
 
 async function ensurePurchasesTable() {
@@ -609,6 +658,7 @@ router.post('/sync-user', async (req, res) => {
   }
 
   try {
+    await ensureUsersTable();
     const now = new Date().toISOString();
     const query = `
       insert into ${usersTable} (
@@ -625,7 +675,8 @@ router.post('/sync-user', async (req, res) => {
     const result = await pool.query(query, values);
 
     return res.json({ user: mapUserRow(result.rows[0]) });
-  } catch (_error) {
+  } catch (error) {
+    console.error('[profile] sync-user failed:', error);
     return res.status(500).json({ error: 'Failed to sync user.' });
   }
 });
@@ -648,6 +699,7 @@ router.get('/:uid', async (req, res) => {
   }
 
   try {
+    await ensureProfileTable();
     const query = `
       select uid, name, age, nationality, phone_number, gender, city, education, email, completed_profile, created_at, updated_at
       from ${profileTable}
@@ -661,7 +713,8 @@ router.get('/:uid', async (req, res) => {
     }
 
     return res.json({ profile: mapProfileRow(result.rows[0]) });
-  } catch (_error) {
+  } catch (error) {
+    console.error('[profile] GET /:uid failed:', error);
     return res.status(500).json({ error: 'Failed to load profile.' });
   }
 });
@@ -708,6 +761,8 @@ router.put('/:uid', async (req, res) => {
   }
 
   try {
+    await ensureProfileTable();
+    await ensureUsersTable();
     const now = new Date().toISOString();
     const profileQuery = `
       insert into ${profileTable} (
@@ -765,7 +820,8 @@ router.put('/:uid', async (req, res) => {
     await pool.query(userQuery, userValues);
 
     return res.json({ profile: mapProfileRow(profileRow) });
-  } catch (_error) {
+  } catch (error) {
+    console.error('[profile] PUT /:uid failed:', error);
     return res.status(500).json({ error: 'Failed to save profile.' });
   }
 });
