@@ -15,6 +15,7 @@ const assetVersion = String(
 const io = new Server(server, {
   cors: { origin: true, credentials: true },
 });
+require('./lib/io-instance').setIo(io);
 
 // View engine setup
 app.set('view engine', 'ejs');

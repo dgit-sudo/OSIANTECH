@@ -13,8 +13,11 @@ const {
   markMeetingSupportRequested,
   listOngoingMeetings,
   endMeeting,
+  forceEndMeeting,
   canOpenJoinWindow,
 } = require('../lib/session-core');
+
+const { getIo } = require('../lib/io-instance');
 
 const router = express.Router();
 
@@ -252,6 +255,30 @@ router.post('/api/session/:meetingId/end', async (req, res) => {
     return res.json({ ok: true, alreadyEnded: Boolean(result?.alreadyEnded) });
   } catch (error) {
     return res.status(400).json({ error: error?.message || 'Could not end class.' });
+  }
+});
+
+router.post('/api/session/:meetingId/force-end', async (req, res) => {
+  try {
+    await ensureSessionTables();
+    const actor = await resolveActorFromRequest(req);
+    if (!actor || actor.role !== 'admin') {
+      return res.status(401).json({ error: 'Only admin can force-end a class.' });
+    }
+
+    const meetingId = String(req.params.meetingId || '').trim();
+    await forceEndMeeting(meetingId);
+
+    const io = getIo();
+    if (io) {
+      const roomKey = `session:${meetingId}`;
+      io.to(roomKey).emit('session:ended', { by: 'admin', at: new Date().toISOString() });
+      setTimeout(() => io.in(roomKey).disconnectSockets(true), 1000);
+    }
+
+    return res.json({ ok: true });
+  } catch (error) {
+    return res.status(500).json({ error: error?.message || 'Could not force-end class.' });
   }
 });
 

@@ -746,7 +746,38 @@ if (!root) {
           });
       });
 
+      const endBtn = document.createElement('button');
+      endBtn.type = 'button';
+      endBtn.className = 'dashboard-course-action-btn';
+      endBtn.style.cssText = 'background:var(--color-error,#e53e3e);color:#fff;margin-left:8px;';
+      endBtn.textContent = 'End Class';
+      endBtn.addEventListener('click', () => {
+        if (!window.confirm(`End Class ${meeting?.classNo || 1} for ${meeting?.learnerEmail || meeting?.learnerUid || 'this learner'}? This will remove the meeting and disconnect all participants.`)) return;
+        endBtn.disabled = true;
+        joinBtn.disabled = true;
+        fetch(`/api/session/${encodeURIComponent(meeting.meetingId)}/force-end`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: `Bearer ${currentToken}`,
+          },
+        })
+          .then((r) => r.json().then((p) => ({ ok: r.ok, payload: p })))
+          .then(({ ok, payload }) => {
+            if (!ok) throw new Error(payload?.error || 'Could not end class.');
+            setFeedback(supportFeedbackEl, 'Class ended and meeting deleted.', 'success');
+            loadLiveMeetings();
+          })
+          .catch((error) => {
+            setFeedback(supportFeedbackEl, error?.message || 'Could not end class.', 'error');
+            endBtn.disabled = false;
+            joinBtn.disabled = false;
+          });
+      });
+
       row.appendChild(joinBtn);
+      row.appendChild(endBtn);
       liveMeetingsEl.appendChild(row);
     });
   }
