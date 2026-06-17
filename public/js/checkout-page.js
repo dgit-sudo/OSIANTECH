@@ -12,7 +12,6 @@ const payBtn = document.getElementById('checkout-pay-btn');
 const feedbackEl = document.getElementById('checkout-feedback');
 const currentFeeEl = document.getElementById('checkout-current-fee');
 const baseFeeEl = document.getElementById('checkout-base-fee');
-const gstFeeEl = document.getElementById('checkout-gst-fee');
 const currencyEl = document.getElementById('checkout-currency');
 
 let selectedCountry = '';
@@ -208,7 +207,6 @@ function renderQuote(quote) {
   checkoutQuote = quote;
   if (currencyEl) currencyEl.textContent = quote.currency;
   if (baseFeeEl) baseFeeEl.textContent = quote.baseAmountDisplay;
-  if (gstFeeEl) gstFeeEl.textContent = `${quote.gstAmountDisplay} (${quote.gstPercent}%)`;
   if (currentFeeEl) currentFeeEl.textContent = quote.totalAmountDisplay;
 }
 

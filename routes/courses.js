@@ -84,11 +84,6 @@ function resolveCurrency(selectedCurrency = '', country = '') {
   };
 }
 
-function getGstPercent(country = '') {
-  const domestic = Number.parseFloat(String(process.env.GST_IN_PERCENT || '18'));
-  const international = Number.parseFloat(String(process.env.GST_GLOBAL_PERCENT || '0'));
-  return normalizeCountry(country).includes('india') ? domestic : international;
-}
 
 function formatAmount(amount, currency = 'INR') {
   const value = Number.parseFloat(String(amount || '0'));
@@ -369,18 +364,13 @@ function quoteForCheckout(course, body = {}) {
   const locationDenied = Boolean(body.locationDenied);
 
   const fee = getLocationAwareFee(course, { locationDenied });
-  const gstPercent = getGstPercent(country);
-  const gstAmount = Number((fee.selectedFee * (gstPercent / 100)).toFixed(2));
-  const totalAmount = Number((fee.selectedFee + gstAmount).toFixed(2));
   const currencyInfo = resolveCurrency(String(body.selectedCurrency || ''), country);
 
   return {
     country,
     postalCode,
     baseAmount: fee.selectedFee,
-    gstPercent,
-    gstAmount,
-    totalAmount,
+    totalAmount: fee.selectedFee,
     feeBasis: fee.basis,
     currency: currencyInfo.currency,
     currencyFallbackApplied: currencyInfo.fallbackApplied,
@@ -486,7 +476,6 @@ router.post('/:id/checkout/quote', (req, res) => {
     quote: {
       ...quote,
       baseAmountDisplay: formatAmount(quote.baseAmount, quote.currency),
-      gstAmountDisplay: formatAmount(quote.gstAmount, quote.currency),
       totalAmountDisplay: formatAmount(quote.totalAmount, quote.currency),
     },
   });
@@ -544,7 +533,6 @@ router.post('/:id/checkout/create-order', async (req, res) => {
         city,
         postalCode,
         feeBasis: quote.feeBasis,
-        gstPercent: String(quote.gstPercent),
         offerId: offerId || '',
       },
     };
@@ -577,7 +565,6 @@ router.post('/:id/checkout/create-order', async (req, res) => {
       quote: {
         ...quote,
         baseAmountDisplay: formatAmount(quote.baseAmount, quote.currency),
-        gstAmountDisplay: formatAmount(quote.gstAmount, quote.currency),
         totalAmountDisplay: formatAmount(quote.totalAmount, quote.currency),
       },
     });
