@@ -34,6 +34,32 @@ const supportedRazorpayCurrencies = new Set([
 
 let purchasesTableReady = false;
 
+// Exchange rate cache (base: INR, refreshed every hour)
+let ratesCache = null;
+let ratesCacheTime = 0;
+const RATES_TTL_MS = 60 * 60 * 1000;
+
+async function getExchangeRates() {
+  const now = Date.now();
+  if (ratesCache && (now - ratesCacheTime) < RATES_TTL_MS) return ratesCache;
+
+  try {
+    const response = await fetch('https://open.er-api.com/v6/latest/INR', {
+      signal: AbortSignal.timeout(5000),
+    });
+    const data = await response.json();
+    if (data.result === 'success' && data.conversion_rates) {
+      ratesCache = data.conversion_rates;
+      ratesCacheTime = now;
+      return ratesCache;
+    }
+  } catch {
+    // fall through to stale cache
+  }
+
+  return ratesCache || null;
+}
+
 function getGeneratedCourseImage(courseId) {
   const id = Number.parseInt(String(courseId || ''), 10);
   if (!Number.isFinite(id) || id <= 0) return '';
@@ -358,7 +384,7 @@ async function diagnoseOffer(offerId, orderAmountSmallestUnit, currency) {
   }
 }
 
-function quoteForCheckout(course, body = {}) {
+async function quoteForCheckout(course, body = {}) {
   const country = String(body.country || '').trim();
   const postalCode = String(body.postalCode || '').trim();
   const locationDenied = Boolean(body.locationDenied);
@@ -366,11 +392,29 @@ function quoteForCheckout(course, body = {}) {
   const fee = getLocationAwareFee(course, { locationDenied });
   const currencyInfo = resolveCurrency(String(body.selectedCurrency || ''), country);
 
+  let totalAmount = fee.selectedFee;
+  let conversionRate = 1;
+
+  if (currencyInfo.currency !== 'INR') {
+    const rates = await getExchangeRates();
+    const rate = rates?.[currencyInfo.currency];
+    if (rate && rate > 0) {
+      conversionRate = rate;
+      totalAmount = Number((fee.selectedFee * rate).toFixed(2));
+    } else {
+      // Rate unavailable — fall back to INR
+      currencyInfo.currency = 'INR';
+      currencyInfo.fallbackApplied = true;
+      totalAmount = fee.selectedFee;
+    }
+  }
+
   return {
     country,
     postalCode,
     baseAmount: fee.selectedFee,
-    totalAmount: fee.selectedFee,
+    totalAmount,
+    conversionRate,
     feeBasis: fee.basis,
     currency: currencyInfo.currency,
     currencyFallbackApplied: currencyInfo.fallbackApplied,
@@ -463,19 +507,19 @@ router.post('/checkout/context', (req, res) => {
   });
 });
 
-router.post('/:id/checkout/quote', (req, res) => {
+router.post('/:id/checkout/quote', async (req, res) => {
   const course = allCourses.find(c => c.id === parseInt(req.params.id, 10));
   if (!course) return res.status(404).json({ error: 'Course not found.' });
 
   const country = String(req.body?.country || '').trim();
   if (!country) return res.status(400).json({ error: 'Country is required.' });
 
-  const quote = quoteForCheckout(course, req.body || {});
+  const quote = await quoteForCheckout(course, req.body || {});
   return res.json({
     ok: true,
     quote: {
       ...quote,
-      baseAmountDisplay: formatAmount(quote.baseAmount, quote.currency),
+      baseAmountDisplay: formatAmount(quote.baseAmount, 'INR'),
       totalAmountDisplay: formatAmount(quote.totalAmount, quote.currency),
     },
   });
@@ -513,7 +557,7 @@ router.post('/:id/checkout/create-order', async (req, res) => {
     }
   }
 
-  const quote = quoteForCheckout(course, req.body || {});
+  const quote = await quoteForCheckout(course, req.body || {});
   const orderAmount = toSmallestUnit(quote.totalAmount, quote.currency);
   const offerDiagnostics = await diagnoseOffer(offerId, orderAmount, quote.currency);
 
@@ -564,7 +608,7 @@ router.post('/:id/checkout/create-order', async (req, res) => {
       offerNote: offerDiagnostics.note || '',
       quote: {
         ...quote,
-        baseAmountDisplay: formatAmount(quote.baseAmount, quote.currency),
+        baseAmountDisplay: formatAmount(quote.baseAmount, 'INR'),
         totalAmountDisplay: formatAmount(quote.totalAmount, quote.currency),
       },
     });
