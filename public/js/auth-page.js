@@ -200,6 +200,7 @@ if (!root) {
       return;
     }
 
+    suppressAutoRedirect = true;
     setFeedback('Checking account...', 'info');
 
     try {
@@ -213,15 +214,18 @@ if (!root) {
         }
         await syncUserToSupabase(cred.user);
         setFeedback('Account created successfully. Redirecting...', 'success');
+        suppressAutoRedirect = false;
         redirectToDashboard();
       } else {
         setFeedback('Signing in...', 'info');
         const cred = await signInWithEmailAndPassword(auth, email, password);
         await syncUserToSupabase(cred.user);
         setFeedback('Welcome back! Redirecting...', 'success');
+        suppressAutoRedirect = false;
         redirectToDashboard();
       }
     } catch (error) {
+      suppressAutoRedirect = false;
       try {
         if (auth.currentUser) await signOut(auth);
       } catch {
