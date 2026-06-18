@@ -1,67 +1,90 @@
 <%- include('partials/head') %>
 <%- include('partials/navbar') %>
 
-<!-- ── HERO ── -->
-<section class="home-section hs-hero" id="hs-hero">
-  <div class="container hs-two-col">
-    <div class="hs-left">
-      <p class="hs-eyebrow">Professional Online Education</p>
-      <h1 class="hs-headline">Expert&#8209;led<br>learning.</h1>
-      <p class="hs-sub">1-on-1 mentored courses in technology, design and business. Live sessions built around your goals.</p>
-      <div class="hs-cta-row">
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content" data-animate="fade-up">
+      <p class="hero-label">Professional Online Education</p>
+      <h1 class="hero-title">Expert-led learning.<br><span class="hero-accent">Real outcomes.</span></h1>
+      <p class="hero-desc">1-on-1 mentored courses in technology, design, and business. Every session is live, personal, and built around your goals.</p>
+      <div class="hero-actions">
         <a href="/courses" class="btn btn-primary btn-lg">Browse Courses</a>
-        <a href="/auth?mode=signup" class="btn btn-ghost btn-lg" data-auth-guest>Get Started</a>
-        <a href="/dashboard" class="btn btn-ghost btn-lg" data-auth-user hidden>Dashboard</a>
+        <a href="/auth?mode=signup" class="btn btn-ghost btn-lg" data-auth-guest>Create Account</a>
+        <a href="/dashboard" class="btn btn-ghost btn-lg" data-auth-user hidden>Go to Dashboard</a>
       </div>
     </div>
-    <div class="hs-right">
-      <div class="hs-feat-list">
-        <div class="hs-feat">
-          <div class="hs-feat-marker"></div>
+    <div class="hero-aside" data-animate="fade-up" style="transition-delay:.1s">
+      <div class="hero-feature-list">
+        <div class="hero-feature-item">
+          <div class="hero-feature-dot"></div>
           <div>
-            <p class="hs-feat-name">1-on-1 live sessions</p>
-            <p class="hs-feat-desc">Direct time with your instructor — not a pre-recorded video</p>
+            <p class="hero-feature-title">1-on-1 live sessions</p>
+            <p class="hero-feature-desc">Direct time with your instructor, not a pre-recorded video</p>
           </div>
         </div>
-        <div class="hs-feat">
-          <div class="hs-feat-marker"></div>
+        <div class="hero-feature-item">
+          <div class="hero-feature-dot"></div>
           <div>
-            <p class="hs-feat-name">Certified instructors</p>
-            <p class="hs-feat-desc">Professionals with years of real-world industry experience</p>
+            <p class="hero-feature-title">Industry-certified instructors</p>
+            <p class="hero-feature-desc">Taught by professionals with real-world experience</p>
           </div>
         </div>
-        <div class="hs-feat">
-          <div class="hs-feat-marker"></div>
+        <div class="hero-feature-item">
+          <div class="hero-feature-dot"></div>
           <div>
-            <p class="hs-feat-name">Structured curriculum</p>
-            <p class="hs-feat-desc">Clear progression from fundamentals to advanced topics</p>
+            <p class="hero-feature-title">Structured curriculum</p>
+            <p class="hero-feature-desc">Clear progression from fundamentals to advanced topics</p>
           </div>
         </div>
-        <div class="hs-feat">
-          <div class="hs-feat-marker"></div>
+        <div class="hero-feature-item">
+          <div class="hero-feature-dot"></div>
           <div>
-            <p class="hs-feat-name">Recognised certification</p>
-            <p class="hs-feat-desc">Credentials valued by employers across industries</p>
+            <p class="hero-feature-title">Recognised certification</p>
+            <p class="hero-feature-desc">Credentials valued by employers across industries</p>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="hs-scroll-cue" aria-hidden="true">
-    <div class="hs-mouse"><div class="hs-wheel"></div></div>
-    <span>Scroll</span>
   </div>
 </section>
 
-<!-- ── COURSES ── -->
-<section class="home-section hs-courses" id="hs-courses">
-  <div class="container hs-courses-inner">
-    <div class="hs-section-top" id="courses">
-      <div>
-        <p class="hs-eyebrow">Catalogue</p>
-        <h2 class="hs-section-title">Available programmes</h2>
+<!-- ===== DIVIDER STATS ===== -->
+<div class="stats-strip">
+  <div class="container">
+    <div class="stats-strip-inner">
+      <div class="stats-strip-item">
+        <span class="stats-strip-val">1-on-1</span>
+        <span class="stats-strip-label">Personal mentorship model</span>
       </div>
-      <a href="/courses" class="btn btn-ghost">View all →</a>
+      <div class="stats-strip-divider"></div>
+      <div class="stats-strip-item">
+        <span class="stats-strip-val">Live</span>
+        <span class="stats-strip-label">Interactive online sessions</span>
+      </div>
+      <div class="stats-strip-divider"></div>
+      <div class="stats-strip-item">
+        <span class="stats-strip-val">Expert</span>
+        <span class="stats-strip-label">Certified industry instructors</span>
+      </div>
+      <div class="stats-strip-divider"></div>
+      <div class="stats-strip-item">
+        <span class="stats-strip-val">Flexible</span>
+        <span class="stats-strip-label">Sessions on your schedule</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== COURSES ===== -->
+<section class="section" id="courses">
+  <div class="container">
+    <div class="section-header-row" data-animate="fade-up">
+      <div>
+        <p class="section-label">Course Catalog</p>
+        <h2 class="section-title">Available programmes</h2>
+      </div>
+      <a href="/courses" class="btn btn-ghost">View all courses →</a>
     </div>
     <% if (featuredCourses.length) { %>
     <div class="catalog-carousel" data-catalog-carousel>
@@ -70,7 +93,7 @@
         <div class="catalog-track" data-carousel-track>
           <% featuredCourses.forEach(function(course) { %>
           <div class="catalog-slide">
-            <a href="/courses/<%= course.id %>" class="course-card-link">
+            <a href="/courses/<%= course.id %>" class="course-card-link" data-animate="fade-up">
               <article class="course-card">
                 <div class="course-img course-img-<%= (course.id % 9) + 1 %> <%= course.image ? 'has-course-image' : '' %>"<% if (course.image) { %> style="--course-image: url('<%= course.image %>');"<% } %>>
                   <div class="course-category-tag"><%= course.category || 'General' %></div>
@@ -92,54 +115,57 @@
       <button type="button" class="catalog-nav catalog-nav-next" data-carousel-next aria-label="Next">›</button>
     </div>
     <% } else { %>
-    <div class="hs-empty-courses">
-      <p>Courses are currently being prepared. Check back soon.</p>
-      <a href="/courses" class="btn btn-primary" style="margin-top:16px">Open courses page</a>
+    <div class="course-empty" data-animate="fade-up">
+      <h3>No courses available yet</h3>
+      <p>The course catalog is currently being prepared.</p>
+      <a href="/courses" class="btn btn-primary">Open Courses Page</a>
     </div>
     <% } %>
   </div>
 </section>
 
-<!-- ── WHY OSIAN ── -->
-<section class="home-section hs-why" id="hs-why">
-  <div class="container hs-two-col">
-    <div class="hs-left why-left">
-      <p class="hs-eyebrow">Why Osian Academy</p>
-      <h2 class="hs-section-title">Education built<br>around you.</h2>
-      <p class="why-body">Every learner is different. Our courses are delivered 1-on-1 with a dedicated instructor — no crowded classrooms, no generic content. Just focused time on your specific goals.</p>
-      <a href="/courses" class="btn btn-primary">Explore Programmes</a>
-    </div>
-    <div class="hs-right">
-      <div class="why-grid">
-        <div class="why-item">
-          <p class="why-item-title">Personal attention</p>
-          <p class="why-item-desc">Sessions adapt to your pace and learning style — the curriculum bends to you, not the other way round.</p>
-        </div>
-        <div class="why-item">
-          <p class="why-item-title">Real-world curriculum</p>
-          <p class="why-item-desc">Content built in collaboration with industry professionals and updated to reflect current practices.</p>
-        </div>
-        <div class="why-item">
-          <p class="why-item-title">Career-focused outcomes</p>
-          <p class="why-item-desc">Every programme is designed with a specific career goal in mind — from job readiness to skill advancement.</p>
-        </div>
-        <div class="why-item">
-          <p class="why-item-title">Ongoing support</p>
-          <p class="why-item-desc">Access to your instructor between sessions for questions, guidance and accountability through your journey.</p>
+<!-- ===== WHY ===== -->
+<section class="section why-section" id="why">
+  <div class="container">
+    <div class="why-layout">
+      <div class="why-left" data-animate="fade-up">
+        <p class="section-label">Why Osian Academy</p>
+        <h2 class="section-title">Education built around you</h2>
+        <p class="why-body">Every learner is different. That is why our courses are delivered one-on-one with a dedicated instructor — no crowded classrooms, no generic content. Just focused time on your specific goals.</p>
+        <a href="/courses" class="btn btn-primary">Explore Programmes</a>
+      </div>
+      <div class="why-right" data-animate="fade-up" style="transition-delay:.1s">
+        <div class="why-grid">
+          <div class="why-item">
+            <p class="why-item-title">Personal attention</p>
+            <p class="why-item-desc">Each session is scheduled directly with your instructor, ensuring the curriculum adapts to your pace and learning style.</p>
+          </div>
+          <div class="why-item">
+            <p class="why-item-title">Real-world curriculum</p>
+            <p class="why-item-desc">Course content is built in collaboration with industry professionals and updated to reflect current practices.</p>
+          </div>
+          <div class="why-item">
+            <p class="why-item-title">Career-focused outcomes</p>
+            <p class="why-item-desc">Every programme is designed with a specific career outcome in mind — from job readiness to skill advancement.</p>
+          </div>
+          <div class="why-item">
+            <p class="why-item-title">Ongoing support</p>
+            <p class="why-item-desc">Access to your instructor between sessions for questions, guidance, and accountability through your journey.</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── CATEGORIES ── -->
-<section class="home-section hs-categories" id="hs-categories">
-  <div class="container hs-categories-inner">
-    <div class="hs-section-header">
-      <p class="hs-eyebrow">Browse by subject</p>
-      <h2 class="hs-section-title">Every field. Every level.</h2>
+<!-- ===== CATEGORIES ===== -->
+<section class="section section-alt" id="categories">
+  <div class="container">
+    <div class="section-header" data-animate="fade-up">
+      <p class="section-label">Browse by Subject</p>
+      <h2 class="section-title">Every field. Every level.</h2>
     </div>
-    <div class="categories-grid">
+    <div class="categories-grid" data-animate="fade-up" style="transition-delay:.05s">
       <a href="/courses?category=Technology" class="cat-card">
         <div class="cat-icon cat-icon-blue">⚡</div>
         <div><h3>Technology</h3><p>Web, Mobile, Cloud &amp; More</p></div>
@@ -168,14 +194,14 @@
   </div>
 </section>
 
-<!-- ── CTA ── -->
-<section class="home-section hs-cta" id="hs-cta">
+<!-- ===== CTA ===== -->
+<section class="cta-section" id="enroll">
   <div class="container">
-    <div class="hs-cta-content" id="enroll">
-      <p class="hs-eyebrow hs-eyebrow-light">Get started</p>
-      <h2 class="hs-cta-title">Ready to begin?</h2>
-      <p class="hs-cta-sub">Admissions are open. Create an account to access the platform and receive updates when new courses are published.</p>
-      <div class="hs-cta-row">
+    <div class="cta-content" data-animate="fade-up">
+      <p class="section-label cta-label">Get started</p>
+      <h2 class="cta-title">Ready to begin?</h2>
+      <p class="cta-sub">Admissions are open. Create your account to access the platform and receive updates when new courses are published.</p>
+      <div class="cta-actions">
         <a href="/auth?mode=signup" class="btn btn-white btn-lg" data-auth-guest>Create Account</a>
         <a href="/auth?mode=signin" class="btn btn-outline-white btn-lg" data-auth-guest>Sign In</a>
         <a href="/dashboard" class="btn btn-white btn-lg" data-auth-user hidden>Go to Dashboard</a>
@@ -184,7 +210,4 @@
   </div>
 </section>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d+g/uCL1UiizFl/1Q0ikjMGZCfLGRh70Ziw7B/n0DP3mRKUFMBZRSlMQz00HqK3ZxHWBPKp3Q==" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TfIKyBkAAIKm7k6v0bDkh0T7MnMt0SM2J9H4IQBA==" crossorigin="anonymous"></script>
-<script src="/js/home-animations.js?v=<%= assetVersion %>"></script>
 <%- include('partials/footer') %>
