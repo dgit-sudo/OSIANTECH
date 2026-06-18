@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const allCourses = require('../data/coursesCatalog.json');
+const { pool } = require('../lib/session-core');
 
 function getGeneratedCourseImage(courseId) {
   const id = Number.parseInt(String(courseId || ''), 10);
@@ -60,6 +61,15 @@ router.get('/cookie-policy', (_req, res) => {
     title: 'Cookie Policy - Osian Academy',
     page: 'legal',
   });
+});
+
+router.get('/ping', async (_req, res) => {
+  try {
+    if (pool) await pool.query('SELECT 1');
+    res.json({ ok: true, ts: new Date().toISOString() });
+  } catch {
+    res.json({ ok: true, db: 'unreachable', ts: new Date().toISOString() });
+  }
 });
 
 module.exports = router;
