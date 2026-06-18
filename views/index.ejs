@@ -1,203 +1,190 @@
 <%- include('partials/head') %>
 <%- include('partials/navbar') %>
 
-<div class="home-wrapper">
-
-  <!-- ── 1. HERO ── -->
-  <section class="home-section hs-hero" id="hs-hero">
-    <div class="container hs-two-col">
-      <div class="hs-left">
-        <p class="hs-eyebrow">Professional Online Education</p>
-        <h1 class="hs-headline">Expert&#8209;led<br>learning.</h1>
-        <p class="hs-sub">1-on-1 mentored courses in technology, design and business. Live sessions built around your goals.</p>
-        <div class="hs-cta-row">
-          <a href="/courses" class="btn btn-primary btn-lg">Browse Courses</a>
-          <a href="/auth?mode=signup" class="btn btn-ghost btn-lg" data-auth-guest>Get Started</a>
-          <a href="/dashboard" class="btn btn-ghost btn-lg" data-auth-user hidden>Dashboard</a>
-        </div>
+<!-- ── HERO ── -->
+<section class="home-section hs-hero" id="hs-hero">
+  <div class="container hs-two-col">
+    <div class="hs-left">
+      <p class="hs-eyebrow">Professional Online Education</p>
+      <h1 class="hs-headline">Expert&#8209;led<br>learning.</h1>
+      <p class="hs-sub">1-on-1 mentored courses in technology, design and business. Live sessions built around your goals.</p>
+      <div class="hs-cta-row">
+        <a href="/courses" class="btn btn-primary btn-lg">Browse Courses</a>
+        <a href="/auth?mode=signup" class="btn btn-ghost btn-lg" data-auth-guest>Get Started</a>
+        <a href="/dashboard" class="btn btn-ghost btn-lg" data-auth-user hidden>Dashboard</a>
       </div>
-      <div class="hs-right">
-        <div class="hs-feat-list">
-          <div class="hs-feat">
-            <div class="hs-feat-marker"></div>
-            <div>
-              <p class="hs-feat-name">1-on-1 live sessions</p>
-              <p class="hs-feat-desc">Direct time with your instructor — not a pre-recorded video</p>
-            </div>
+    </div>
+    <div class="hs-right">
+      <div class="hs-feat-list">
+        <div class="hs-feat">
+          <div class="hs-feat-marker"></div>
+          <div>
+            <p class="hs-feat-name">1-on-1 live sessions</p>
+            <p class="hs-feat-desc">Direct time with your instructor — not a pre-recorded video</p>
           </div>
-          <div class="hs-feat">
-            <div class="hs-feat-marker"></div>
-            <div>
-              <p class="hs-feat-name">Certified instructors</p>
-              <p class="hs-feat-desc">Professionals with real-world industry experience</p>
-            </div>
+        </div>
+        <div class="hs-feat">
+          <div class="hs-feat-marker"></div>
+          <div>
+            <p class="hs-feat-name">Certified instructors</p>
+            <p class="hs-feat-desc">Professionals with years of real-world industry experience</p>
           </div>
-          <div class="hs-feat">
-            <div class="hs-feat-marker"></div>
-            <div>
-              <p class="hs-feat-name">Structured curriculum</p>
-              <p class="hs-feat-desc">Clear progression from fundamentals to advanced topics</p>
-            </div>
+        </div>
+        <div class="hs-feat">
+          <div class="hs-feat-marker"></div>
+          <div>
+            <p class="hs-feat-name">Structured curriculum</p>
+            <p class="hs-feat-desc">Clear progression from fundamentals to advanced topics</p>
           </div>
-          <div class="hs-feat">
-            <div class="hs-feat-marker"></div>
-            <div>
-              <p class="hs-feat-name">Recognised certification</p>
-              <p class="hs-feat-desc">Credentials valued by employers across industries</p>
-            </div>
+        </div>
+        <div class="hs-feat">
+          <div class="hs-feat-marker"></div>
+          <div>
+            <p class="hs-feat-name">Recognised certification</p>
+            <p class="hs-feat-desc">Credentials valued by employers across industries</p>
           </div>
         </div>
       </div>
     </div>
-    <div class="hs-scroll-cue" aria-hidden="true">
-      <div class="hs-mouse"><div class="hs-wheel"></div></div>
-      <span>Scroll</span>
-    </div>
-  </section>
+  </div>
+  <div class="hs-scroll-cue" aria-hidden="true">
+    <div class="hs-mouse"><div class="hs-wheel"></div></div>
+    <span>Scroll</span>
+  </div>
+</section>
 
-  <!-- ── 2. COURSES ── -->
-  <section class="home-section hs-courses" id="hs-courses">
-    <div class="container hs-courses-inner">
-      <div class="hs-section-top">
-        <div>
-          <p class="hs-eyebrow">Catalogue</p>
-          <h2 class="hs-section-title">Available programmes</h2>
-        </div>
-        <a href="/courses" class="btn btn-ghost">View all →</a>
+<!-- ── COURSES ── -->
+<section class="home-section hs-courses" id="hs-courses">
+  <div class="container hs-courses-inner">
+    <div class="hs-section-top" id="courses">
+      <div>
+        <p class="hs-eyebrow">Catalogue</p>
+        <h2 class="hs-section-title">Available programmes</h2>
       </div>
-      <% if (featuredCourses.length) { %>
-      <div class="catalog-carousel" data-catalog-carousel>
-        <button type="button" class="catalog-nav catalog-nav-prev" data-carousel-prev aria-label="Previous">‹</button>
-        <div class="catalog-viewport">
-          <div class="catalog-track" data-carousel-track>
-            <% featuredCourses.forEach(function(course) { %>
-            <div class="catalog-slide">
-              <a href="/courses/<%= course.id %>" class="course-card-link">
-                <article class="course-card">
-                  <div class="course-img course-img-<%= (course.id % 9) + 1 %> <%= course.image ? 'has-course-image' : '' %>"<% if (course.image) { %> style="--course-image: url('<%= course.image %>');"<% } %>>
-                    <div class="course-category-tag"><%= course.category || 'General' %></div>
+      <a href="/courses" class="btn btn-ghost">View all →</a>
+    </div>
+    <% if (featuredCourses.length) { %>
+    <div class="catalog-carousel" data-catalog-carousel>
+      <button type="button" class="catalog-nav catalog-nav-prev" data-carousel-prev aria-label="Previous">‹</button>
+      <div class="catalog-viewport">
+        <div class="catalog-track" data-carousel-track>
+          <% featuredCourses.forEach(function(course) { %>
+          <div class="catalog-slide">
+            <a href="/courses/<%= course.id %>" class="course-card-link">
+              <article class="course-card">
+                <div class="course-img course-img-<%= (course.id % 9) + 1 %> <%= course.image ? 'has-course-image' : '' %>"<% if (course.image) { %> style="--course-image: url('<%= course.image %>');"<% } %>>
+                  <div class="course-category-tag"><%= course.category || 'General' %></div>
+                </div>
+                <div class="course-body">
+                  <h3 class="course-title"><%= course.title %></h3>
+                  <p class="course-description"><%= course.description %></p>
+                  <div class="course-footer">
+                    <span class="course-meta-pill">Professional Programme</span>
+                    <span class="course-arrow">→</span>
                   </div>
-                  <div class="course-body">
-                    <h3 class="course-title"><%= course.title %></h3>
-                    <p class="course-description"><%= course.description %></p>
-                    <div class="course-footer">
-                      <span class="course-meta-pill">Professional Programme</span>
-                      <span class="course-arrow">→</span>
-                    </div>
-                  </div>
-                </article>
-              </a>
-            </div>
-            <% }); %>
+                </div>
+              </article>
+            </a>
           </div>
+          <% }); %>
         </div>
-        <button type="button" class="catalog-nav catalog-nav-next" data-carousel-next aria-label="Next">›</button>
       </div>
-      <% } else { %>
-      <div class="hs-empty-courses">
-        <p>Courses are being prepared. <a href="/courses">Open courses page →</a></p>
-      </div>
-      <% } %>
+      <button type="button" class="catalog-nav catalog-nav-next" data-carousel-next aria-label="Next">›</button>
     </div>
-  </section>
+    <% } else { %>
+    <div class="hs-empty-courses">
+      <p>Courses are currently being prepared. Check back soon.</p>
+      <a href="/courses" class="btn btn-primary" style="margin-top:16px">Open courses page</a>
+    </div>
+    <% } %>
+  </div>
+</section>
 
-  <!-- ── 3. WHY OSIAN ── -->
-  <section class="home-section hs-why" id="hs-why">
-    <div class="container hs-two-col">
-      <div class="hs-left why-left">
-        <p class="hs-eyebrow">Why Osian Academy</p>
-        <h2 class="hs-section-title">Education built<br>around you.</h2>
-        <p class="why-body">Our courses are delivered 1-on-1 with a dedicated instructor. No crowded classrooms, no generic content — just focused time on your specific goals.</p>
-        <a href="/courses" class="btn btn-primary">Explore Programmes</a>
-      </div>
-      <div class="hs-right">
-        <div class="why-grid">
-          <div class="why-item">
-            <p class="why-item-title">Personal attention</p>
-            <p class="why-item-desc">Sessions adapt to your pace and learning style. The curriculum bends to you.</p>
-          </div>
-          <div class="why-item">
-            <p class="why-item-title">Real-world curriculum</p>
-            <p class="why-item-desc">Built with industry professionals. Updated to reflect current practices.</p>
-          </div>
-          <div class="why-item">
-            <p class="why-item-title">Career-focused outcomes</p>
-            <p class="why-item-desc">Every programme targets a specific career goal — from entry-level to advanced.</p>
-          </div>
-          <div class="why-item">
-            <p class="why-item-title">Ongoing support</p>
-            <p class="why-item-desc">Access to your instructor between sessions for questions and accountability.</p>
-          </div>
+<!-- ── WHY OSIAN ── -->
+<section class="home-section hs-why" id="hs-why">
+  <div class="container hs-two-col">
+    <div class="hs-left why-left">
+      <p class="hs-eyebrow">Why Osian Academy</p>
+      <h2 class="hs-section-title">Education built<br>around you.</h2>
+      <p class="why-body">Every learner is different. Our courses are delivered 1-on-1 with a dedicated instructor — no crowded classrooms, no generic content. Just focused time on your specific goals.</p>
+      <a href="/courses" class="btn btn-primary">Explore Programmes</a>
+    </div>
+    <div class="hs-right">
+      <div class="why-grid">
+        <div class="why-item">
+          <p class="why-item-title">Personal attention</p>
+          <p class="why-item-desc">Sessions adapt to your pace and learning style — the curriculum bends to you, not the other way round.</p>
+        </div>
+        <div class="why-item">
+          <p class="why-item-title">Real-world curriculum</p>
+          <p class="why-item-desc">Content built in collaboration with industry professionals and updated to reflect current practices.</p>
+        </div>
+        <div class="why-item">
+          <p class="why-item-title">Career-focused outcomes</p>
+          <p class="why-item-desc">Every programme is designed with a specific career goal in mind — from job readiness to skill advancement.</p>
+        </div>
+        <div class="why-item">
+          <p class="why-item-title">Ongoing support</p>
+          <p class="why-item-desc">Access to your instructor between sessions for questions, guidance and accountability through your journey.</p>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ── 4. CATEGORIES ── -->
-  <section class="home-section hs-categories" id="hs-categories">
-    <div class="container hs-categories-inner">
-      <div class="hs-section-header">
-        <p class="hs-eyebrow">Browse by subject</p>
-        <h2 class="hs-section-title">Every field. Every level.</h2>
-      </div>
-      <div class="categories-grid">
-        <a href="/courses?category=Technology" class="cat-card">
-          <div class="cat-icon cat-icon-blue">⚡</div>
-          <div><h3>Technology</h3><p>Web, Mobile, Cloud &amp; More</p></div>
-        </a>
-        <a href="/courses?category=Data" class="cat-card">
-          <div class="cat-icon cat-icon-teal">📊</div>
-          <div><h3>Data Science</h3><p>ML, AI &amp; Analytics</p></div>
-        </a>
-        <a href="/courses?category=Design" class="cat-card">
-          <div class="cat-icon cat-icon-purple">🎨</div>
-          <div><h3>Design</h3><p>UI/UX, Branding &amp; Motion</p></div>
-        </a>
-        <a href="/courses?category=Security" class="cat-card">
-          <div class="cat-icon cat-icon-red">🔐</div>
-          <div><h3>Cybersecurity</h3><p>Ethical Hacking &amp; Defence</p></div>
-        </a>
-        <a href="/courses?category=Cloud" class="cat-card">
-          <div class="cat-icon cat-icon-sky">☁️</div>
-          <div><h3>Cloud &amp; DevOps</h3><p>AWS, Azure &amp; Kubernetes</p></div>
-        </a>
-        <a href="/courses?category=Business" class="cat-card">
-          <div class="cat-icon cat-icon-amber">📈</div>
-          <div><h3>Business</h3><p>Strategy, Marketing &amp; Finance</p></div>
-        </a>
+<!-- ── CATEGORIES ── -->
+<section class="home-section hs-categories" id="hs-categories">
+  <div class="container hs-categories-inner">
+    <div class="hs-section-header">
+      <p class="hs-eyebrow">Browse by subject</p>
+      <h2 class="hs-section-title">Every field. Every level.</h2>
+    </div>
+    <div class="categories-grid">
+      <a href="/courses?category=Technology" class="cat-card">
+        <div class="cat-icon cat-icon-blue">⚡</div>
+        <div><h3>Technology</h3><p>Web, Mobile, Cloud &amp; More</p></div>
+      </a>
+      <a href="/courses?category=Data" class="cat-card">
+        <div class="cat-icon cat-icon-teal">📊</div>
+        <div><h3>Data Science</h3><p>ML, AI &amp; Analytics</p></div>
+      </a>
+      <a href="/courses?category=Design" class="cat-card">
+        <div class="cat-icon cat-icon-purple">🎨</div>
+        <div><h3>Design</h3><p>UI/UX, Branding &amp; Motion</p></div>
+      </a>
+      <a href="/courses?category=Security" class="cat-card">
+        <div class="cat-icon cat-icon-red">🔐</div>
+        <div><h3>Cybersecurity</h3><p>Ethical Hacking &amp; Defence</p></div>
+      </a>
+      <a href="/courses?category=Cloud" class="cat-card">
+        <div class="cat-icon cat-icon-sky">☁️</div>
+        <div><h3>Cloud &amp; DevOps</h3><p>AWS, Azure &amp; Kubernetes</p></div>
+      </a>
+      <a href="/courses?category=Business" class="cat-card">
+        <div class="cat-icon cat-icon-amber">📈</div>
+        <div><h3>Business</h3><p>Strategy, Marketing &amp; Finance</p></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="home-section hs-cta" id="hs-cta">
+  <div class="container">
+    <div class="hs-cta-content" id="enroll">
+      <p class="hs-eyebrow hs-eyebrow-light">Get started</p>
+      <h2 class="hs-cta-title">Ready to begin?</h2>
+      <p class="hs-cta-sub">Admissions are open. Create an account to access the platform and receive updates when new courses are published.</p>
+      <div class="hs-cta-row">
+        <a href="/auth?mode=signup" class="btn btn-white btn-lg" data-auth-guest>Create Account</a>
+        <a href="/auth?mode=signin" class="btn btn-outline-white btn-lg" data-auth-guest>Sign In</a>
+        <a href="/dashboard" class="btn btn-white btn-lg" data-auth-user hidden>Go to Dashboard</a>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ── 5. CTA ── -->
-  <section class="home-section hs-cta" id="hs-cta">
-    <div class="container">
-      <div class="hs-cta-content">
-        <p class="hs-eyebrow hs-eyebrow-light">Get started</p>
-        <h2 class="hs-cta-title">Ready to begin?</h2>
-        <p class="hs-cta-sub">Admissions are open. Create an account to access the platform and be notified when new courses are published.</p>
-        <div class="hs-cta-row">
-          <a href="/auth?mode=signup" class="btn btn-white btn-lg" data-auth-guest>Create Account</a>
-          <a href="/auth?mode=signin" class="btn btn-outline-white btn-lg" data-auth-guest>Sign In</a>
-          <a href="/dashboard" class="btn btn-white btn-lg" data-auth-user hidden>Go to Dashboard</a>
-        </div>
-      </div>
-    </div>
-    <div class="hs-mini-footer">
-      <a href="/privacy-policy">Privacy</a>
-      <span>·</span>
-      <a href="/terms-of-service">Terms</a>
-      <span>·</span>
-      <a href="/courses">Courses</a>
-      <span>·</span>
-      <a href="/contact">Contact</a>
-      <span>·</span>
-      <span>&copy; <%= new Date().getFullYear() %> Osian Academy</span>
-    </div>
-  </section>
-
-</div><!-- .home-wrapper -->
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d+g/uCL1UiizFl/1Q0ikjMGZCfLGRh70Ziw7B/n0DP3mRKUFMBZRSlMQz00HqK3ZxHWBPKp3Q==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TfIKyBkAAIKm7k6v0bDkh0T7MnMt0SM2J9H4IQBA==" crossorigin="anonymous"></script>
 <script src="/js/home-animations.js?v=<%= assetVersion %>"></script>
 <%- include('partials/footer') %>
