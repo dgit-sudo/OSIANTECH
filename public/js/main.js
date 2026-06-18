@@ -155,24 +155,7 @@ if (isHomePage && statValues.length) {
   statValues.forEach(el => statObserver.observe(el));
 }
 
-/* ---- Course card hover tilt ---- */
-if (isHomePage) {
-  document.querySelectorAll('.course-card').forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top)  / rect.height - 0.5;
-      card.style.transform = `translateY(-6px) rotateX(${-y * 4}deg) rotateY(${x * 4}deg)`;
-    });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = '';
-      card.style.transition = 'all 0.4s ease';
-    });
-    card.addEventListener('mouseenter', () => {
-      card.style.transition = 'transform 0.1s ease';
-    });
-  });
-}
+/* Card tilt removed — CSS handles hover */
 
 /* ---- Active nav link on scroll ---- */
 const sections = document.querySelectorAll('section[id]');
@@ -208,18 +191,20 @@ document.querySelectorAll('[data-catalog-carousel]').forEach((carousel) => {
     return 3;
   };
 
+  const SLIDE_GAP = 24;
+
   const update = () => {
     const visible = getVisibleCount();
     const maxIndex = Math.max(0, slides.length - visible);
     if (index > maxIndex) index = maxIndex;
 
-    const slideWidth = viewport.clientWidth / visible;
+    const slideWidth = (viewport.clientWidth - (visible - 1) * SLIDE_GAP) / visible;
     slides.forEach((slide) => {
       slide.style.flex = `0 0 ${slideWidth}px`;
       slide.style.maxWidth = `${slideWidth}px`;
     });
 
-    track.style.transform = `translateX(-${index * slideWidth}px)`;
+    track.style.transform = `translateX(-${index * (slideWidth + SLIDE_GAP)}px)`;
     prevBtn.disabled = index <= 0;
     nextBtn.disabled = index >= maxIndex;
   };
