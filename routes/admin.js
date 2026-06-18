@@ -975,4 +975,20 @@ router.delete('/api/instructors/:instructorUid/slots/:slotId', requireAdminAuth,
   }
 });
 
+router.post('/api/users/:uid/delete', requireAdminAuth, async (req, res) => {
+  if (!ensureDatabaseConfigured(res)) return;
+
+  const uid = String(req.params.uid || '').trim();
+  if (!isValidUid(uid)) {
+    return res.status(400).json({ error: 'Invalid uid.' });
+  }
+
+  try {
+    await deleteUserRemnants(uid);
+    return res.json({ ok: true });
+  } catch (error) {
+    return res.status(500).json({ error: error?.message || 'Could not delete user.' });
+  }
+});
+
 module.exports = router;

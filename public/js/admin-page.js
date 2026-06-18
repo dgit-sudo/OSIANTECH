@@ -239,10 +239,79 @@ if (!root) {
     `;
   }
 
-  function createUserButton(user) {
+  async function deleteUserDirectly(user) {
+    if (!window.confirm(`Delete ${optionLabel(user)} and all their data? This cannot be undone.`)) return;
+    try {
+      setFeedback(feedbackEl, 'Deleting user...', 'info');
+      const resp = await fetch(`/admin/api/users/${encodeURIComponent(user.uid)}/delete`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${currentToken}` },
+      });
+      const payload = await resp.json().catch(() => ({}));
+      if (!resp.ok) throw new Error(payload?.error || 'Delete failed.');
+      setFeedback(feedbackEl, `${optionLabel(user)} deleted.`, 'success');
+      await loadUsers();
+    } catch (error) {
+      setFeedback(feedbackEl, error?.message || 'Could not delete user.', 'error');
+    }
+  }
+
+  async function deleteUserWithPurchases(user) {
+    const choice = window.confirm(
+      `${optionLabel(user)} has purchased courses.\n\nClick OK to transfer their courses to another user first.\nClick Cancel to delete everything without transferring.`
+    );
+
+    if (choice) {
+      // Transfer flow
+      const targetEmail = window.prompt('Enter the email of an existing user (with no purchases) to transfer courses to:');
+      if (!targetEmail) return;
+      const trimmed = targetEmail.trim().toLowerCase();
+      const target = usersWithoutPurchases.find((u) => (u.email || '').toLowerCase() === trimmed);
+      if (!target) {
+        setFeedback(feedbackEl, `No user without purchases found with email: ${trimmed}`, 'error');
+        return;
+      }
+      try {
+        setFeedback(feedbackEl, 'Transferring courses...', 'info');
+        const resp = await fetch('/admin/api/transfer-courses', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${currentToken}` },
+          body: JSON.stringify({ sourceUid: user.uid, targetUid: target.uid }),
+        });
+        const payload = await resp.json().catch(() => ({}));
+        if (!resp.ok) throw new Error(payload?.error || 'Transfer failed.');
+        setFeedback(feedbackEl, `Courses transferred to ${trimmed}. User deleted.`, 'success');
+        await loadUsers();
+      } catch (error) {
+        setFeedback(feedbackEl, error?.message || 'Transfer failed.', 'error');
+      }
+    } else {
+      // Delete all flow
+      if (!window.confirm(`Delete ${optionLabel(user)} AND all their courses permanently? This cannot be undone.`)) return;
+      try {
+        setFeedback(feedbackEl, 'Deleting user...', 'info');
+        const resp = await fetch(`/admin/api/users/${encodeURIComponent(user.uid)}/delete`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${currentToken}` },
+        });
+        const payload = await resp.json().catch(() => ({}));
+        if (!resp.ok) throw new Error(payload?.error || 'Delete failed.');
+        setFeedback(feedbackEl, `${optionLabel(user)} and all data deleted.`, 'success');
+        await loadUsers();
+      } catch (error) {
+        setFeedback(feedbackEl, error?.message || 'Could not delete user.', 'error');
+      }
+    }
+  }
+
+  function createUserButton(user, hasPurchases) {
+    const wrapper = document.createElement('div');
+    wrapper.style.cssText = 'display:flex;align-items:center;gap:6px;';
+
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'admin-user-item';
+    button.style.flex = '1';
     button.textContent = optionLabel(user);
     button.addEventListener('click', async () => {
       try {
@@ -253,7 +322,23 @@ if (!root) {
         setFeedback(feedbackEl, error?.message || 'Could not load profile.', 'error');
       }
     });
-    return button;
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.type = 'button';
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.style.cssText = 'background:#c0392b;color:#fff;border:none;border-radius:4px;padding:4px 10px;cursor:pointer;font-size:12px;white-space:nowrap;flex-shrink:0;';
+    deleteBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (hasPurchases) {
+        deleteUserWithPurchases(user);
+      } else {
+        deleteUserDirectly(user);
+      }
+    });
+
+    wrapper.appendChild(button);
+    wrapper.appendChild(deleteBtn);
+    return wrapper;
   }
 
   function renderUserLists() {
@@ -261,11 +346,11 @@ if (!root) {
     if (notPurchasedListEl) notPurchasedListEl.innerHTML = '';
 
     usersWithPurchases.forEach((user) => {
-      if (purchasedListEl) purchasedListEl.appendChild(createUserButton(user));
+      if (purchasedListEl) purchasedListEl.appendChild(createUserButton(user, true));
     });
 
     usersWithoutPurchases.forEach((user) => {
-      if (notPurchasedListEl) notPurchasedListEl.appendChild(createUserButton(user));
+      if (notPurchasedListEl) notPurchasedListEl.appendChild(createUserButton(user, false));
     });
 
     if (purchasedEmptyEl) purchasedEmptyEl.hidden = usersWithPurchases.length > 0;
