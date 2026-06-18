@@ -89,7 +89,7 @@ if (hamburger && navLinks && navActions) {
 
 /* ---- Intersection Observer for scroll animations ---- */
 const animatedEls = document.querySelectorAll('[data-animate]');
-if (isHomePage && animatedEls.length) {
+if (animatedEls.length) {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry, i) => {
       if (entry.isIntersecting) {
