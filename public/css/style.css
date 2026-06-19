@@ -909,11 +909,6 @@ h1,h2,h3,h4,h5,h6 {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
 }
-@keyframes hs-float {
-  0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-14px); }
-}
-.hs-float { animation: hs-float 3.2s ease-in-out infinite; }
 @keyframes chat-dot-pulse {
   0%, 100% { box-shadow: 0 0 0 0 rgba(220,38,38,.4); }
   50%       { box-shadow: 0 0 0 5px rgba(220,38,38,0); }

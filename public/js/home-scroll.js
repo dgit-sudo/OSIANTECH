@@ -1,282 +1,297 @@
 /* =========================================================
-   OSIAN ACADEMY — HOME SCROLL ANIMATIONS
-   GSAP + ScrollTrigger — cinematic scroll experience
+   OSIAN ACADEMY — HOME SCROLL ANIMATIONS  v2
+   GSAP + ScrollTrigger — cinematic, no continuous motion
    ========================================================= */
 
 gsap.registerPlugin(ScrollTrigger);
 
-const $ = s => document.querySelector(s);
+const $  = s => document.querySelector(s);
 const $$ = s => gsap.utils.toArray(s);
 
-/* ─── Immediately hide hero elements to prevent flash ─── */
-gsap.set([
-  '.sh-headline', '.sh-placement',
-  '.sh-pill', '.sh-join',
-  '.sh-tags span', '.sh-partner-row',
-  '.sh-visual-card', '.s-topbar'
-], { opacity: 0 });
+/* ─── Shorthand: create a one-shot ScrollTrigger config ─── */
+function ST(trigger, start) {
+  return { trigger, start: start || 'top 80%', once: true, invalidateOnRefresh: true };
+}
 
-/* ═══════════════════════════════════════════════════════
-   1.  HERO — cinematic entrance on page load
-═══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════
+   1.  HERO — cinematic entrance (set states BEFORE timeline)
+═══════════════════════════════════════════════════════════ */
+
+gsap.set('.s-topbar',       { y: -44, opacity: 0 });
+gsap.set('.sh-headline',    { y: 90,  opacity: 0 });
+gsap.set('.sh-placement',   { x: -70, opacity: 0 });
+gsap.set('.sh-pill',        { y: 50,  scale: 0.6, opacity: 0 });
+gsap.set('.sh-join',        { scale: 0, opacity: 0 });
+gsap.set('.sh-tags span',   { y: 10,  scale: 0.7, opacity: 0 });
+gsap.set('.sh-partner-row', { y: 18,  opacity: 0 });
+gsap.set('.sh-visual-card', { x: 110, rotationY: -18, opacity: 0, transformPerspective: 900 });
 
 const heroTl = gsap.timeline({ defaults: { ease: 'power4.out' }, delay: 0.08 });
-
 heroTl
-  /* top bar slides down */
-  .to('.s-topbar', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 0)
+  .to('.s-topbar',       { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' },         0)
+  .to('.sh-headline',    { opacity: 1, y: 0, duration: 1.05 },                              0.1)
+  .to('.sh-placement',   { opacity: 1, x: 0, duration: 0.7, ease: 'back.out(1.8)' },       0.55)
+  .to('.sh-pill',        { opacity: 1, y: 0, scale: 1, stagger: 0.13, duration: 0.6, ease: 'back.out(2.2)' }, 0.72)
+  .to('.sh-join',        { opacity: 1, scale: 1, duration: 0.55, ease: 'back.out(2.5)' },  1.05)
+  .to('.sh-tags span',   { opacity: 1, scale: 1, y: 0, stagger: 0.04, duration: 0.45, ease: 'back.out(1.6)' }, 1.15)
+  .to('.sh-partner-row', { opacity: 1, y: 0, duration: 0.55 },                             1.35)
+  .to('.sh-visual-card', { opacity: 1, x: 0, rotationY: 0, duration: 1.1, ease: 'power3.out', transformPerspective: 900 }, 0.35);
 
-  /* headline: each line slams up from below using split trick */
-  .to('.sh-headline', { opacity: 1, y: 0, duration: 1.05 }, 0.1)
+/* ═══════════════════════════════════════════════════════════
+   2.  ABOUT / STORY
+═══════════════════════════════════════════════════════════ */
 
-  /* placement badge snaps in from left with overshoot */
-  .to('.sh-placement', { opacity: 1, x: 0, duration: 0.7, ease: 'back.out(1.8)' }, 0.55)
+if ($('.s-about')) {
+  const stAbout = ST('.s-about', 'top 78%');
 
-  /* stat pills bounce in one by one */
-  .to('.sh-pill', { opacity: 1, y: 0, scale: 1, stagger: 0.13, duration: 0.6, ease: 'back.out(2.2)' }, 0.72)
-  .to('.sh-join', { opacity: 1, scale: 1, duration: 0.55, ease: 'back.out(2.5)' }, 1.05)
+  gsap.fromTo('.sa-founded-tag',
+    { scale: 0.3, rotation: -12, opacity: 0 },
+    { scale: 1, rotation: 0, opacity: 1, duration: 0.65, ease: 'back.out(2.8)', scrollTrigger: stAbout }
+  );
+  gsap.fromTo('.sa-title',
+    { clipPath: 'inset(0 100% 0 0)', opacity: 1 },
+    { clipPath: 'inset(0 0% 0 0)', duration: 1.1, ease: 'power3.inOut', delay: 0.15, scrollTrigger: stAbout }
+  );
 
-  /* topic tags wave across */
-  .to('.sh-tags span', { opacity: 1, scale: 1, y: 0, stagger: 0.04, duration: 0.45, ease: 'back.out(1.6)' }, 1.15)
+  const aboutLeft = $$('.sa-meta, .sa-list li, .sa-link');
+  if (aboutLeft.length) {
+    gsap.fromTo(aboutLeft,
+      { x: -55, opacity: 0 },
+      { x: 0, opacity: 1, stagger: 0.1, duration: 0.65, ease: 'power3.out', delay: 0.3, scrollTrigger: stAbout }
+    );
+  }
 
-  /* partner logos rise */
-  .to('.sh-partner-row', { opacity: 1, y: 0, duration: 0.55 }, 1.35)
+  if ($('.sa-video-card')) {
+    gsap.fromTo('.sa-video-card',
+      { x: 100, rotationY: -20, opacity: 0, transformPerspective: 900 },
+      { x: 0, rotationY: 0, opacity: 1, duration: 1.15, ease: 'power3.out', scrollTrigger: stAbout }
+    );
+  }
+}
 
-  /* visual card sweeps in from the right with 3-D tilt */
-  .to('.sh-visual-card', {
-    opacity: 1, x: 0, rotationY: 0, duration: 1.1,
-    ease: 'power3.out', transformPerspective: 900
-  }, 0.35);
+/* ═══════════════════════════════════════════════════════════
+   3.  FEATURE CARDS — fly in from 6 different directions
+═══════════════════════════════════════════════════════════ */
 
-/* Set GSAP initial FROM states for hero elements */
-gsap.set('.sh-headline',    { y: 90, opacity: 0 });
-gsap.set('.sh-placement',   { x: -70, opacity: 0 });
-gsap.set('.sh-pill',        { y: 50, scale: 0.6, opacity: 0 });
-gsap.set('.sh-join',        { scale: 0, opacity: 0 });
-gsap.set('.sh-tags span',   { y: 10, scale: 0.7, opacity: 0 });
-gsap.set('.sh-partner-row', { y: 18, opacity: 0 });
-gsap.set('.sh-visual-card', { x: 110, rotationY: -18, opacity: 0, transformPerspective: 900 });
-gsap.set('.s-topbar',       { y: -44, opacity: 0 });
-
-/* Gentle float on visual card after entrance (CSS handles this
-   so GSAP transform doesn't conflict with scrub parallax) */
-heroTl.call(() => {
-  const card = $('.sh-visual-card');
-  if (card) card.classList.add('hs-float');
-}, [], '>+0.2');
-
-/* Parallax — visual card drifts upward as hero scrolls out */
-if ($('.sh-right')) {
-  gsap.to('.sh-right', {
-    yPercent: 18,
-    ease: 'none',
-    scrollTrigger: {
-      trigger: '.s-hero',
-      start: 'top top',
-      end: 'bottom top',
-      scrub: 1.5
-    }
+const featCards = $$('.sft-card');
+if (featCards.length) {
+  const featDirs = [
+    { x: -100, y: -60, rX: 18 },  { x: 0,    y: -100, rX: 25 }, { x: 100, y: -60, rX: 18 },
+    { x: -100, y:  60, rX: -18 }, { x: 0,    y:  100, rX: -25 }, { x: 100, y:  60, rX: -18 }
+  ];
+  featCards.forEach((card, i) => {
+    const d = featDirs[i] || { x: 0, y: 80, rX: 10 };
+    gsap.fromTo(card,
+      { x: d.x, y: d.y, opacity: 0, scale: 0.72, rotationX: d.rX, transformPerspective: 700 },
+      { x: 0, y: 0, opacity: 1, scale: 1, rotationX: 0,
+        duration: 1.0, delay: i * 0.1, ease: 'power3.out',
+        scrollTrigger: ST('.sft-grid', 'top 85%') }
+    );
   });
 }
 
-/* ═══════════════════════════════════════════════════════
-   2.  ABOUT / STORY
-═══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════
+   4.  STATS BAND — band slides up, numbers flip in 3-D
+═══════════════════════════════════════════════════════════ */
 
-const ST_about = { trigger: '.s-about', start: 'top 78%', once: true };
-
-gsap.from('.sa-founded-tag', {
-  scrollTrigger: ST_about,
-  opacity: 0, scale: 0.4, duration: 0.55, ease: 'back.out(2.5)'
-});
-gsap.fromTo('.sa-title',
-  { clipPath: 'inset(0 100% 0 0)', opacity: 1 },
-  { scrollTrigger: { ...ST_about }, clipPath: 'inset(0 0% 0 0)', duration: 0.95, ease: 'power3.inOut', delay: 0.1 }
-);
-gsap.from(['.sa-meta', '.sa-list li', '.sa-link'], {
-  scrollTrigger: ST_about,
-  x: -45, opacity: 0, stagger: 0.1, duration: 0.65, ease: 'power3.out', delay: 0.3
-});
-gsap.from('.sa-video-card', {
-  scrollTrigger: ST_about,
-  x: 90, opacity: 0, rotationY: -16, duration: 1.05,
-  ease: 'power3.out', transformPerspective: 900, delay: 0.1
-});
-
-/* Parallax on video card */
-gsap.to('.sa-video-card', {
-  yPercent: -12,
-  ease: 'none',
-  scrollTrigger: { trigger: '.s-about', start: 'top bottom', end: 'bottom top', scrub: 1.2 }
-});
-
-/* ═══════════════════════════════════════════════════════
-   3.  FEATURE CARDS — 6 different directions
-═══════════════════════════════════════════════════════ */
-
-const featDirs = [
-  { x: -90, y: -55 }, { x:  0,  y: -90 }, { x:  90, y: -55 },
-  { x: -90, y:  55 }, { x:  0,  y:  90 }, { x:  90, y:  55 }
-];
-
-$$('.sft-card').forEach((card, i) => {
-  const d = featDirs[i] || { x: 0, y: 70 };
-  gsap.from(card, {
-    scrollTrigger: { trigger: '.sft-grid', start: 'top 82%', once: true },
-    x: d.x, y: d.y, opacity: 0, scale: 0.82, rotationX: 12,
-    duration: 0.9, delay: i * 0.09, ease: 'power3.out',
-    transformPerspective: 700
+if ($('.s-stats')) {
+  gsap.fromTo('.s-stats',
+    { y: 60, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out', scrollTrigger: ST('.s-stats', 'top 88%') }
+  );
+  $$('.sst-item').forEach((item, i) => {
+    gsap.fromTo(item,
+      { scale: 0, opacity: 0, rotationY: 90, transformPerspective: 600 },
+      { scale: 1, opacity: 1, rotationY: 0, duration: 0.75, delay: i * 0.15,
+        ease: 'back.out(2)', scrollTrigger: ST('.s-stats', 'top 84%') }
+    );
   });
-});
+}
 
-/* ═══════════════════════════════════════════════════════
-   4.  STATS BAND — band slides up, each number pops
-═══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════
+   5.  JOB PROGRAMS GRID — waterfall with 3-D tilt
+═══════════════════════════════════════════════════════════ */
 
-gsap.from('.s-stats', {
-  scrollTrigger: { trigger: '.s-stats', start: 'top 88%', once: true },
-  y: 50, opacity: 0, duration: 0.65, ease: 'power3.out'
-});
-gsap.from('.sst-item', {
-  scrollTrigger: { trigger: '.s-stats', start: 'top 82%', once: true },
-  scale: 0, opacity: 0, stagger: 0.15, duration: 0.6, delay: 0.2, ease: 'back.out(2.4)'
-});
+if ($('.s-programs')) {
+  gsap.fromTo('.spr-head',
+    { y: 55, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', scrollTrigger: ST('.s-programs', 'top 82%') }
+  );
+  $$('.spr-card').forEach((card, i) => {
+    gsap.fromTo(card,
+      { y: 70, opacity: 0, scale: 0.82, rotationX: 14, transformPerspective: 800 },
+      { y: 0, opacity: 1, scale: 1, rotationX: 0, duration: 0.7, delay: i * 0.07,
+        ease: 'power3.out', scrollTrigger: ST('.spr-grid', 'top 88%') }
+    );
+  });
+}
 
-/* ═══════════════════════════════════════════════════════
-   5.  NEWSLETTER
-═══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════
+   6.  COURSES CAROUSEL
+═══════════════════════════════════════════════════════════ */
 
-gsap.from('.s-newsletter', {
-  scrollTrigger: { trigger: '.s-newsletter', start: 'top 88%', once: true },
-  y: 35, opacity: 0, duration: 0.6, ease: 'power3.out'
-});
-gsap.from('.snl-form', {
-  scrollTrigger: { trigger: '.s-newsletter', start: 'top 84%', once: true },
-  scaleX: 0.6, opacity: 0, duration: 0.65, ease: 'back.out(1.8)', delay: 0.15
-});
+if ($('#courses')) {
+  gsap.fromTo('.section-header-row',
+    { y: 40, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out', scrollTrigger: ST('#courses', 'top 82%') }
+  );
+  gsap.fromTo('.catalog-carousel',
+    { y: 80, opacity: 0, scale: 0.95 },
+    { y: 0, opacity: 1, scale: 1, duration: 0.9, ease: 'power3.out', delay: 0.2,
+      scrollTrigger: ST('#courses', 'top 78%') }
+  );
+}
 
-/* ═══════════════════════════════════════════════════════
-   6.  PROGRAMS GRID — heading reveals, cards waterfall
-═══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════
+   7.  FAQ — curtain reveal title, alternate-side items
+═══════════════════════════════════════════════════════════ */
 
-gsap.from('.spr-head', {
-  scrollTrigger: { trigger: '.s-programs', start: 'top 80%', once: true },
-  y: 50, opacity: 0, duration: 0.75, ease: 'power3.out'
-});
-gsap.from($$('.spr-card'), {
-  scrollTrigger: { trigger: '.spr-grid', start: 'top 85%', once: true },
-  y: 65, opacity: 0, scale: 0.88,
-  stagger: { amount: 1.4, from: 'start' },
-  duration: 0.6, ease: 'power3.out'
-});
+if ($('.s-faq')) {
+  gsap.fromTo('.sfaq-title',
+    { clipPath: 'inset(0 100% 0 0)', opacity: 1 },
+    { clipPath: 'inset(0 0% 0 0)', duration: 1.0, ease: 'power3.inOut',
+      scrollTrigger: ST('.s-faq', 'top 80%') }
+  );
+  gsap.fromTo('.sfaq-sub',
+    { y: 30, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.65, ease: 'power3.out', delay: 0.3,
+      scrollTrigger: ST('.s-faq', 'top 80%') }
+  );
+  $$('.sfaq-item').forEach((item, i) => {
+    gsap.fromTo(item,
+      { x: i % 2 === 0 ? -70 : 70, opacity: 0, rotationX: 10, transformPerspective: 600 },
+      { x: 0, opacity: 1, rotationX: 0, duration: 0.65, delay: i * 0.07,
+        ease: 'power3.out', scrollTrigger: ST('.sfaq-list', 'top 88%') }
+    );
+  });
+}
 
-/* ═══════════════════════════════════════════════════════
-   7.  FEATURED COURSES CAROUSEL
-═══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════
+   8.  ONE PLATFORM — staggered rise with scale punch
+═══════════════════════════════════════════════════════════ */
 
-gsap.from('.section-header-row', {
-  scrollTrigger: { trigger: '#courses', start: 'top 82%', once: true },
-  y: 40, opacity: 0, duration: 0.7, ease: 'power3.out'
-});
-gsap.from('.catalog-carousel', {
-  scrollTrigger: { trigger: '#courses', start: 'top 78%', once: true },
-  y: 70, opacity: 0, duration: 0.85, ease: 'power3.out', delay: 0.2
-});
+if ($('.s-oneplatform')) {
+  const sopEls = $$('.sop-tagline, .sop-body, .sop-tabs');
+  if (sopEls.length) {
+    gsap.fromTo(sopEls,
+      { y: 55, opacity: 0, scale: 0.94 },
+      { y: 0, opacity: 1, scale: 1, stagger: 0.18, duration: 0.75, ease: 'power3.out',
+        scrollTrigger: ST('.s-oneplatform', 'top 80%') }
+    );
+  }
+}
 
-/* ═══════════════════════════════════════════════════════
-   8.  FAQ — heading slides, items fly in from left
-═══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════
+   9.  TRUSTED BRANDS — badges pop + spin
+═══════════════════════════════════════════════════════════ */
 
-gsap.fromTo('.sfaq-title',
-  { clipPath: 'inset(0 100% 0 0)', opacity: 1 },
-  { scrollTrigger: { trigger: '.s-faq', start: 'top 80%', once: true },
-    clipPath: 'inset(0 0% 0 0)', duration: 0.95, ease: 'power3.inOut' }
-);
-gsap.from('.sfaq-sub', {
-  scrollTrigger: { trigger: '.s-faq', start: 'top 80%', once: true },
-  y: 25, opacity: 0, duration: 0.6, ease: 'power3.out', delay: 0.3
-});
-gsap.from($$('.sfaq-item'), {
-  scrollTrigger: { trigger: '.sfaq-list', start: 'top 86%', once: true },
-  x: -55, opacity: 0, stagger: 0.07, duration: 0.55, ease: 'power3.out'
-});
+if ($('.s-trusted')) {
+  gsap.fromTo('.str-head',
+    { y: 40, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out', scrollTrigger: ST('.s-trusted', 'top 80%') }
+  );
+  $$('.str-badge').forEach((badge, i) => {
+    gsap.fromTo(badge,
+      { scale: 0, opacity: 0, rotation: i % 2 === 0 ? -30 : 30 },
+      { scale: 1, opacity: 1, rotation: 0, duration: 0.75, delay: i * 0.12,
+        ease: 'back.out(2.4)', scrollTrigger: ST('.str-badges', 'top 86%') }
+    );
+  });
+}
 
-/* ═══════════════════════════════════════════════════════
-   9.  ONE PLATFORM SOLUTION
-═══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════
+   10. COVERAGE GRID — diagonal cascade (row + col delay)
+═══════════════════════════════════════════════════════════ */
 
-gsap.from(['.sop-tagline', '.sop-body', '.sop-tabs'], {
-  scrollTrigger: { trigger: '.s-oneplatform', start: 'top 80%', once: true },
-  y: 40, opacity: 0, stagger: 0.14, duration: 0.7, ease: 'power3.out'
-});
+if ($('.s-coverage')) {
+  gsap.fromTo('.scov-head',
+    { y: 45, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out', scrollTrigger: ST('.s-coverage', 'top 82%') }
+  );
+  $$('.scov-state').forEach((state, i) => {
+    const col = i % 4;
+    const row = Math.floor(i / 4);
+    gsap.fromTo(state,
+      { y: 65, x: (col - 1.5) * 18, opacity: 0, scale: 0.65 },
+      { y: 0, x: 0, opacity: 1, scale: 1,
+        duration: 0.6, delay: (row + col) * 0.06,
+        ease: 'back.out(1.8)', scrollTrigger: ST('.scov-grid', 'top 88%') }
+    );
+  });
+  if ($('.scov-cta')) {
+    gsap.fromTo('.scov-cta',
+      { y: 35, opacity: 0, scale: 0.9 },
+      { y: 0, opacity: 1, scale: 1, duration: 0.65, ease: 'back.out(1.7)',
+        scrollTrigger: ST('.scov-cta', 'top 90%') }
+    );
+  }
+}
 
-/* ═══════════════════════════════════════════════════════
-   10. TRUSTED BRANDS — badges pop in with rotation
-═══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════
+   11. TESTIMONIALS — cards rise with 3-D Y-axis tilt
+═══════════════════════════════════════════════════════════ */
 
-gsap.from('.str-head', {
-  scrollTrigger: { trigger: '.s-trusted', start: 'top 80%', once: true },
-  y: 40, opacity: 0, duration: 0.7, ease: 'power3.out'
-});
-gsap.from($$('.str-badge'), {
-  scrollTrigger: { trigger: '.str-badges', start: 'top 86%', once: true },
-  scale: 0, opacity: 0, rotation: -15,
-  stagger: 0.1, duration: 0.65, ease: 'back.out(2.4)'
-});
+if ($('.s-testi')) {
+  gsap.fromTo('.stesti-head',
+    { y: 50, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.75, ease: 'power3.out', scrollTrigger: ST('.s-testi', 'top 80%') }
+  );
+  $$('.stesti-card').forEach((card, i) => {
+    gsap.fromTo(card,
+      { y: 90, opacity: 0, scale: 0.82,
+        rotationY: i % 2 === 0 ? -18 : 18, transformPerspective: 900 },
+      { y: 0, opacity: 1, scale: 1, rotationY: 0,
+        duration: 0.85, delay: i * 0.15, ease: 'power3.out',
+        scrollTrigger: ST('.stesti-grid', 'top 86%') }
+    );
+  });
+}
 
-/* ═══════════════════════════════════════════════════════
-   11. COVERAGE GRID — states cascade top-left → bottom-right
-═══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════
+   12. PLACEMENT PARTNERS — scatter-to-grid
+═══════════════════════════════════════════════════════════ */
 
-gsap.from('.scov-head', {
-  scrollTrigger: { trigger: '.s-coverage', start: 'top 80%', once: true },
-  y: 40, opacity: 0, duration: 0.7, ease: 'power3.out'
-});
-gsap.from($$('.scov-state'), {
-  scrollTrigger: { trigger: '.scov-grid', start: 'top 86%', once: true },
-  y: 60, opacity: 0, scale: 0.75,
-  stagger: { amount: 1.0, from: 'start' },
-  duration: 0.55, ease: 'back.out(1.8)'
-});
-gsap.from('.scov-cta', {
-  scrollTrigger: { trigger: '.scov-cta', start: 'top 90%', once: true },
-  y: 30, opacity: 0, scale: 0.92, duration: 0.6, ease: 'back.out(1.7)'
-});
+if ($('.s-partners')) {
+  gsap.fromTo('.spart-head',
+    { y: 40, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out', scrollTrigger: ST('.s-partners', 'top 80%') }
+  );
+  $$('.spart-logo').forEach((logo, i) => {
+    gsap.fromTo(logo,
+      { y: 35, opacity: 0, scale: 0.45, rotation: (i % 3 - 1) * 12 },
+      { y: 0, opacity: 1, scale: 1, rotation: 0,
+        duration: 0.55, delay: i * 0.04,
+        ease: 'back.out(2.2)', scrollTrigger: ST('.spart-grid', 'top 88%') }
+    );
+  });
+}
 
-/* ═══════════════════════════════════════════════════════
-   12. TESTIMONIALS — cards scale up with stagger
-═══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════
+   13. NEWSLETTER
+═══════════════════════════════════════════════════════════ */
 
-gsap.from('.stesti-head', {
-  scrollTrigger: { trigger: '.s-testi', start: 'top 80%', once: true },
-  y: 40, opacity: 0, duration: 0.7, ease: 'power3.out'
-});
-gsap.from($$('.stesti-card'), {
-  scrollTrigger: { trigger: '.stesti-grid', start: 'top 86%', once: true },
-  y: 90, opacity: 0, scale: 0.88,
-  stagger: 0.15, duration: 0.75, ease: 'power3.out'
-});
+if ($('.s-newsletter')) {
+  gsap.fromTo('.s-newsletter',
+    { y: 50, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out', scrollTrigger: ST('.s-newsletter', 'top 88%') }
+  );
+  if ($('.snl-form')) {
+    gsap.fromTo('.snl-form',
+      { scaleX: 0.55, opacity: 0 },
+      { scaleX: 1, opacity: 1, duration: 0.75, ease: 'back.out(2)', delay: 0.2,
+        scrollTrigger: ST('.s-newsletter', 'top 84%') }
+    );
+  }
+}
 
-/* ═══════════════════════════════════════════════════════
-   13. PLACEMENT PARTNERS — logos appear from random positions
-═══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════
+   14. CTA SECTION — zoom-punch entrance
+═══════════════════════════════════════════════════════════ */
 
-gsap.from('.spart-head', {
-  scrollTrigger: { trigger: '.s-partners', start: 'top 80%', once: true },
-  y: 40, opacity: 0, duration: 0.7, ease: 'power3.out'
-});
-gsap.from($$('.spart-logo'), {
-  scrollTrigger: { trigger: '.spart-grid', start: 'top 86%', once: true },
-  opacity: 0, scale: 0.6, y: 25,
-  stagger: { amount: 0.9, from: 'random' },
-  duration: 0.5, ease: 'back.out(2)'
-});
-
-/* ═══════════════════════════════════════════════════════
-   14. CTA SECTION
-═══════════════════════════════════════════════════════ */
-
-gsap.from('.cta-content', {
-  scrollTrigger: { trigger: '.cta-section', start: 'top 82%', once: true },
-  y: 60, scale: 0.93, opacity: 0, duration: 0.85, ease: 'power3.out'
-});
+if ($('.cta-section')) {
+  gsap.fromTo('.cta-content',
+    { y: 70, scale: 0.88, opacity: 0 },
+    { y: 0, scale: 1, opacity: 1, duration: 0.95, ease: 'power3.out',
+      scrollTrigger: ST('.cta-section', 'top 82%') }
+  );
+}
