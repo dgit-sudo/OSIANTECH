@@ -227,6 +227,22 @@ document.querySelectorAll('[data-catalog-carousel]').forEach((carousel) => {
 });
 }
 
+/* ---- FAQ accordion ---- */
+document.querySelectorAll('[data-faq-question]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('[data-faq-item]');
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('[data-faq-item]').forEach(i => {
+      i.classList.remove('open');
+      i.querySelector('[data-faq-question]')?.setAttribute('aria-expanded', 'false');
+    });
+    if (!wasOpen) {
+      item.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+    }
+  });
+});
+
 /* ---- Courses live search (client-side instant filter) ---- */
 (() => {
   const form = document.querySelector('[data-courses-search-form]');

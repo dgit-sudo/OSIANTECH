@@ -1,47 +1,112 @@
 <%- include('partials/head') %>
 <%- include('partials/navbar') %>
 
+<!-- ===== TOP ANNOUNCEMENT BAR ===== -->
+<div class="top-bar">
+  <div class="top-bar-track">
+    <span class="top-bar-item">&#10003; ISO Certified Quality Education</span>
+    <span class="tb-sep">&#9679;</span>
+    <span class="top-bar-item">&#127891; 100% Live 1-on-1 Sessions</span>
+    <span class="tb-sep">&#9679;</span>
+    <span class="top-bar-item">&#128196; Industry-Recognised Certifications</span>
+    <span class="tb-sep">&#9679;</span>
+    <span class="top-bar-item">&#128188; Career Guidance Included</span>
+    <span class="tb-sep">&#9679;</span>
+    <span class="top-bar-item">&#127758; Learn From Anywhere in India</span>
+    <span class="tb-sep">&#9679;</span>
+    <span class="top-bar-item">&#127942; Expert Industry Instructors</span>
+    <span class="tb-sep">&#9679;</span>
+    <span class="top-bar-item">&#128204; Admissions Open Now</span>
+    <span class="tb-sep">&#9679;</span>
+    <!-- Duplicate for seamless loop -->
+    <span class="top-bar-item">&#10003; ISO Certified Quality Education</span>
+    <span class="tb-sep">&#9679;</span>
+    <span class="top-bar-item">&#127891; 100% Live 1-on-1 Sessions</span>
+    <span class="tb-sep">&#9679;</span>
+    <span class="top-bar-item">&#128196; Industry-Recognised Certifications</span>
+    <span class="tb-sep">&#9679;</span>
+    <span class="top-bar-item">&#128188; Career Guidance Included</span>
+    <span class="tb-sep">&#9679;</span>
+    <span class="top-bar-item">&#127758; Learn From Anywhere in India</span>
+    <span class="tb-sep">&#9679;</span>
+    <span class="top-bar-item">&#127942; Expert Industry Instructors</span>
+    <span class="tb-sep">&#9679;</span>
+    <span class="top-bar-item">&#128204; Admissions Open Now</span>
+    <span class="tb-sep">&#9679;</span>
+  </div>
+</div>
+
 <!-- ===== HERO ===== -->
-<section class="hero">
+<section class="home-hero">
   <div class="container">
-    <div class="hero-content" data-animate="fade-up">
-      <p class="hero-label">Professional Online Education</p>
-      <h1 class="hero-title">Expert-led learning.<br><span class="hero-accent">Real outcomes.</span></h1>
-      <p class="hero-desc">1-on-1 mentored courses in technology, design, and business. Every session is live, personal, and built around your goals.</p>
-      <div class="hero-actions">
-        <a href="/courses" class="btn btn-primary btn-lg">Browse Courses</a>
-        <a href="/auth?mode=signup" class="btn btn-ghost btn-lg" data-auth-guest>Create Account</a>
-        <a href="/dashboard" class="btn btn-ghost btn-lg" data-auth-user hidden>Go to Dashboard</a>
+    <div class="hh-grid">
+      <div class="hh-content" data-animate="fade-up">
+        <div class="hh-tag">India's Premier Online Academy</div>
+        <h1 class="hh-title">
+          Learn From<br>
+          <span class="hh-accent">India's Best</span><br>
+          Online Educators
+        </h1>
+        <p class="hh-sub">100% Live 1-on-1 mentorship programmes. Personal attention, real skills, industry-recognised certifications — all from anywhere in India.</p>
+        <div class="hh-badges">
+          <div class="hh-badge">
+            <span class="hh-badge-num">500+</span>
+            <span class="hh-badge-lbl">Students</span>
+          </div>
+          <div class="hh-badge">
+            <span class="hh-badge-num">25+</span>
+            <span class="hh-badge-lbl">Programmes</span>
+          </div>
+          <div class="hh-badge">
+            <span class="hh-badge-num">10+</span>
+            <span class="hh-badge-lbl">Instructors</span>
+          </div>
+          <a href="/auth?mode=signup" class="btn btn-accent btn-lg" data-auth-guest>Enrol Now</a>
+        </div>
+        <div class="hh-actions">
+          <a href="/courses" class="btn btn-primary btn-lg">Browse Programmes</a>
+          <a href="/auth?mode=signin" class="btn btn-ghost btn-lg" data-auth-guest>Sign In</a>
+          <a href="/dashboard" class="btn btn-primary btn-lg" data-auth-user hidden>My Dashboard</a>
+        </div>
       </div>
-    </div>
-    <div class="hero-aside" data-animate="fade-up" style="transition-delay:.1s">
-      <div class="hero-feature-list">
-        <div class="hero-feature-item">
-          <div class="hero-feature-dot"></div>
-          <div>
-            <p class="hero-feature-title">1-on-1 live sessions</p>
-            <p class="hero-feature-desc">Direct time with your instructor, not a pre-recorded video</p>
+      <div class="hh-visual" data-animate="fade-up" style="transition-delay:.15s">
+        <div class="hsv">
+          <div class="hsv-main">
+            <div class="hsv-top">
+              <div class="hsv-live">
+                <span class="hsv-dot"></span>
+                <span>LIVE SESSION</span>
+              </div>
+              <span class="hsv-time">Now</span>
+            </div>
+            <h3 class="hsv-title">Advanced JavaScript — Closures &amp; Async</h3>
+            <div class="hsv-instructor">
+              <div class="hsv-avatar">AK</div>
+              <div class="hsv-iinfo">
+                <p class="hsv-name">Anand Kumar</p>
+                <p class="hsv-role">Senior Full-Stack Engineer, 8 yrs exp</p>
+              </div>
+            </div>
+            <div class="hsv-prog-wrap">
+              <div class="hsv-prog-bar"><div class="hsv-prog-fill" style="width:52%"></div></div>
+              <div class="hsv-prog-labels"><span>Module 4 of 8</span><span>52% Complete</span></div>
+            </div>
           </div>
-        </div>
-        <div class="hero-feature-item">
-          <div class="hero-feature-dot"></div>
-          <div>
-            <p class="hero-feature-title">Industry-certified instructors</p>
-            <p class="hero-feature-desc">Taught by professionals with real-world experience</p>
-          </div>
-        </div>
-        <div class="hero-feature-item">
-          <div class="hero-feature-dot"></div>
-          <div>
-            <p class="hero-feature-title">Structured curriculum</p>
-            <p class="hero-feature-desc">Clear progression from fundamentals to advanced topics</p>
-          </div>
-        </div>
-        <div class="hero-feature-item">
-          <div class="hero-feature-dot"></div>
-          <div>
-            <p class="hero-feature-title">Recognised certification</p>
-            <p class="hero-feature-desc">Credentials valued by employers across industries</p>
+          <div class="hsv-mini-row">
+            <div class="hsv-mini-card">
+              <span class="hsv-mini-icon hsv-ic-green">&#10003;</span>
+              <div>
+                <p class="hsv-mini-t">Certification Earned</p>
+                <p class="hsv-mini-s">Web Dev Professional</p>
+              </div>
+            </div>
+            <div class="hsv-mini-card">
+              <span class="hsv-mini-icon hsv-ic-blue">&#128218;</span>
+              <div>
+                <p class="hsv-mini-t">Next Session</p>
+                <p class="hsv-mini-s">Tomorrow, 10:00 AM</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -49,46 +114,191 @@
   </div>
 </section>
 
-<!-- ===== DIVIDER STATS ===== -->
-<div class="stats-strip">
+<!-- ===== TECHNOLOGIES STRIP ===== -->
+<section class="recog-section">
   <div class="container">
-    <div class="stats-strip-inner">
-      <div class="stats-strip-item">
-        <span class="stats-strip-val">1-on-1</span>
-        <span class="stats-strip-label">Personal mentorship model</span>
+    <p class="recog-label">Technologies You'll Master</p>
+    <div class="recog-logos">
+      <span class="recog-logo">JavaScript</span>
+      <span class="recog-logo">Python</span>
+      <span class="recog-logo">React</span>
+      <span class="recog-logo">Node.js</span>
+      <span class="recog-logo">AWS</span>
+      <span class="recog-logo">Microsoft</span>
+      <span class="recog-logo">Google Cloud</span>
+      <span class="recog-logo">Adobe</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURE CARDS ===== -->
+<section class="section features-section" id="features">
+  <div class="container">
+    <div class="section-header" data-animate="fade-up">
+      <p class="section-label">What We Offer</p>
+      <h2 class="section-title">Everything you need to succeed</h2>
+      <p class="section-sub">From live sessions to career support — every element of Osian Academy is built around your personal growth.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card" data-animate="fade-up">
+        <div class="feature-icon fc-blue">&#128249;</div>
+        <h3 class="feature-title">Live 1-on-1 Sessions</h3>
+        <p class="feature-desc">Every class is conducted live with your dedicated instructor. No recordings, no generic videos — just focused learning time tailored to you.</p>
       </div>
-      <div class="stats-strip-divider"></div>
-      <div class="stats-strip-item">
-        <span class="stats-strip-val">Live</span>
-        <span class="stats-strip-label">Interactive online sessions</span>
+      <div class="feature-card" data-animate="fade-up" style="transition-delay:.07s">
+        <div class="feature-icon fc-green">&#127891;</div>
+        <h3 class="feature-title">Expert Instructors</h3>
+        <p class="feature-desc">Learn from professionals with years of industry experience. All instructors are rigorously vetted and certified in their domain.</p>
       </div>
-      <div class="stats-strip-divider"></div>
-      <div class="stats-strip-item">
-        <span class="stats-strip-val">Expert</span>
-        <span class="stats-strip-label">Certified industry instructors</span>
+      <div class="feature-card" data-animate="fade-up" style="transition-delay:.14s">
+        <div class="feature-icon fc-purple">&#128218;</div>
+        <h3 class="feature-title">Industry Curriculum</h3>
+        <p class="feature-desc">Course content designed with industry professionals and updated continuously to reflect real-world practices and the latest tools.</p>
       </div>
-      <div class="stats-strip-divider"></div>
-      <div class="stats-strip-item">
-        <span class="stats-strip-val">Flexible</span>
-        <span class="stats-strip-label">Sessions on your schedule</span>
+      <div class="feature-card" data-animate="fade-up" style="transition-delay:.21s">
+        <div class="feature-icon fc-orange">&#128336;</div>
+        <h3 class="feature-title">Flexible Schedule</h3>
+        <p class="feature-desc">Book sessions at times that work for you. Early mornings, evenings, weekends — your schedule, your pace, your control.</p>
+      </div>
+      <div class="feature-card" data-animate="fade-up" style="transition-delay:.28s">
+        <div class="feature-icon fc-teal">&#128200;</div>
+        <h3 class="feature-title">Career Guidance</h3>
+        <p class="feature-desc">Resume reviews, interview preparation, and job search strategy — comprehensive career support included in every programme.</p>
+      </div>
+      <div class="feature-card" data-animate="fade-up" style="transition-delay:.35s">
+        <div class="feature-icon fc-red">&#127942;</div>
+        <h3 class="feature-title">Recognised Certification</h3>
+        <p class="feature-desc">Earn a certification valued by employers across India and internationally. Verifiable, shareable, and proudly earned.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STATS BAND ===== -->
+<div class="stats-band">
+  <div class="container">
+    <div class="sb-grid">
+      <div class="sb-item" data-animate="fade-up">
+        <span class="sb-num stat-value">500+</span>
+        <span class="sb-label">Students Enrolled</span>
+      </div>
+      <div class="sb-item" data-animate="fade-up" style="transition-delay:.08s">
+        <span class="sb-num stat-value">25+</span>
+        <span class="sb-label">Programmes Available</span>
+      </div>
+      <div class="sb-item" data-animate="fade-up" style="transition-delay:.16s">
+        <span class="sb-num stat-value">10+</span>
+        <span class="sb-label">Expert Instructors</span>
+      </div>
+      <div class="sb-item" data-animate="fade-up" style="transition-delay:.24s">
+        <span class="sb-num stat-value">95%</span>
+        <span class="sb-label">Student Satisfaction</span>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ===== COURSES ===== -->
-<section class="section" id="courses">
+<!-- ===== JOB ORIENTED PROGRAMMES GRID ===== -->
+<section class="section programmes-section" id="programmes">
+  <div class="container">
+    <div class="section-header" data-animate="fade-up">
+      <p class="section-label">Job Oriented Programmes</p>
+      <h2 class="section-title">12 in-demand fields. One platform.</h2>
+      <p class="section-sub">Choose from India's most career-relevant technology and business programmes — all delivered live, 1-on-1, by verified experts.</p>
+    </div>
+    <div class="prog-grid">
+      <a href="/courses?category=Technology" class="prog-card" data-animate="fade-up">
+        <div class="prog-icon">&#9889;</div>
+        <h3 class="prog-title">Web Development</h3>
+        <p class="prog-desc">HTML, CSS, JavaScript, React, Node.js, Full Stack</p>
+        <span class="prog-link">Explore &#8594;</span>
+      </a>
+      <a href="/courses?category=Technology" class="prog-card" data-animate="fade-up" style="transition-delay:.04s">
+        <div class="prog-icon">&#128241;</div>
+        <h3 class="prog-title">Mobile App Development</h3>
+        <p class="prog-desc">React Native, Flutter, Android, iOS Development</p>
+        <span class="prog-link">Explore &#8594;</span>
+      </a>
+      <a href="/courses?category=Data" class="prog-card" data-animate="fade-up" style="transition-delay:.08s">
+        <div class="prog-icon">&#128202;</div>
+        <h3 class="prog-title">Data Science &amp; AI</h3>
+        <p class="prog-desc">Python, ML, Deep Learning, TensorFlow, NLP</p>
+        <span class="prog-link">Explore &#8594;</span>
+      </a>
+      <a href="/courses?category=Business" class="prog-card" data-animate="fade-up" style="transition-delay:.12s">
+        <div class="prog-icon">&#128483;</div>
+        <h3 class="prog-title">Digital Marketing</h3>
+        <p class="prog-desc">SEO, SEM, Social Media, Email Marketing, Analytics</p>
+        <span class="prog-link">Explore &#8594;</span>
+      </a>
+      <a href="/courses?category=Design" class="prog-card" data-animate="fade-up" style="transition-delay:.16s">
+        <div class="prog-icon">&#127912;</div>
+        <h3 class="prog-title">UI/UX Design</h3>
+        <p class="prog-desc">Figma, User Research, Prototyping, Design Systems</p>
+        <span class="prog-link">Explore &#8594;</span>
+      </a>
+      <a href="/courses?category=Security" class="prog-card" data-animate="fade-up" style="transition-delay:.20s">
+        <div class="prog-icon">&#128274;</div>
+        <h3 class="prog-title">Cybersecurity</h3>
+        <p class="prog-desc">Ethical Hacking, CEH, CompTIA Security+, VAPT</p>
+        <span class="prog-link">Explore &#8594;</span>
+      </a>
+      <a href="/courses?category=Cloud" class="prog-card" data-animate="fade-up" style="transition-delay:.04s">
+        <div class="prog-icon">&#9729;</div>
+        <h3 class="prog-title">Cloud &amp; DevOps</h3>
+        <p class="prog-desc">AWS, Azure, GCP, Docker, Kubernetes, CI/CD</p>
+        <span class="prog-link">Explore &#8594;</span>
+      </a>
+      <a href="/courses?category=Technology" class="prog-card" data-animate="fade-up" style="transition-delay:.08s">
+        <div class="prog-icon">&#128187;</div>
+        <h3 class="prog-title">Programming Languages</h3>
+        <p class="prog-desc">Python, Java, C++, JavaScript, Go, Rust</p>
+        <span class="prog-link">Explore &#8594;</span>
+      </a>
+      <a href="/courses?category=Business" class="prog-card" data-animate="fade-up" style="transition-delay:.12s">
+        <div class="prog-icon">&#128200;</div>
+        <h3 class="prog-title">Business Analytics</h3>
+        <p class="prog-desc">Power BI, Tableau, Excel, SQL, Business Intelligence</p>
+        <span class="prog-link">Explore &#8594;</span>
+      </a>
+      <a href="/courses?category=Design" class="prog-card" data-animate="fade-up" style="transition-delay:.16s">
+        <div class="prog-icon">&#128444;</div>
+        <h3 class="prog-title">Graphic Design</h3>
+        <p class="prog-desc">Photoshop, Illustrator, InDesign, Canva, Branding</p>
+        <span class="prog-link">Explore &#8594;</span>
+      </a>
+      <a href="/courses?category=Security" class="prog-card" data-animate="fade-up" style="transition-delay:.20s">
+        <div class="prog-icon">&#128737;</div>
+        <h3 class="prog-title">Ethical Hacking</h3>
+        <p class="prog-desc">Penetration Testing, Kali Linux, Bug Bounty, OSCP</p>
+        <span class="prog-link">Explore &#8594;</span>
+      </a>
+      <a href="/courses?category=Technology" class="prog-card" data-animate="fade-up" style="transition-delay:.24s">
+        <div class="prog-icon">&#128310;</div>
+        <h3 class="prog-title">Microsoft Technologies</h3>
+        <p class="prog-desc">Azure, .NET, Power Platform, Microsoft 365</p>
+        <span class="prog-link">Explore &#8594;</span>
+      </a>
+    </div>
+    <div class="prog-more" data-animate="fade-up">
+      <a href="/courses" class="btn btn-primary btn-lg">View All Programmes</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURED COURSES (LIVE FROM DB) ===== -->
+<section class="section section-alt" id="courses">
   <div class="container">
     <div class="section-header-row" data-animate="fade-up">
       <div>
         <p class="section-label">Course Catalog</p>
-        <h2 class="section-title">Available programmes</h2>
+        <h2 class="section-title">Featured programmes</h2>
       </div>
-      <a href="/courses" class="btn btn-ghost">View all courses →</a>
+      <a href="/courses" class="btn btn-ghost">View all courses &#8594;</a>
     </div>
     <% if (featuredCourses.length) { %>
     <div class="catalog-carousel" data-catalog-carousel>
-      <button type="button" class="catalog-nav catalog-nav-prev" data-carousel-prev aria-label="Previous">‹</button>
+      <button type="button" class="catalog-nav catalog-nav-prev" data-carousel-prev aria-label="Previous">&#8249;</button>
       <div class="catalog-viewport">
         <div class="catalog-track" data-carousel-track>
           <% featuredCourses.forEach(function(course) { %>
@@ -103,7 +313,7 @@
                   <p class="course-description"><%= course.description %></p>
                   <div class="course-footer">
                     <span class="course-meta-pill">Professional Programme</span>
-                    <span class="course-arrow">→</span>
+                    <span class="course-arrow">&#8594;</span>
                   </div>
                 </div>
               </article>
@@ -112,7 +322,7 @@
           <% }); %>
         </div>
       </div>
-      <button type="button" class="catalog-nav catalog-nav-next" data-carousel-next aria-label="Next">›</button>
+      <button type="button" class="catalog-nav catalog-nav-next" data-carousel-next aria-label="Next">&#8250;</button>
     </div>
     <% } else { %>
     <div class="course-empty" data-animate="fade-up">
@@ -124,33 +334,88 @@
   </div>
 </section>
 
-<!-- ===== WHY ===== -->
-<section class="section why-section" id="why">
+<!-- ===== WHY OSIAN / FAQ ===== -->
+<section class="section faq-section" id="why">
   <div class="container">
-    <div class="why-layout">
-      <div class="why-left" data-animate="fade-up">
-        <p class="section-label">Why Osian Academy</p>
-        <h2 class="section-title">Education built around you</h2>
-        <p class="why-body">Every learner is different. That is why our courses are delivered one-on-one with a dedicated instructor — no crowded classrooms, no generic content. Just focused time on your specific goals.</p>
-        <a href="/courses" class="btn btn-primary">Explore Programmes</a>
+    <div class="faq-layout">
+      <div class="faq-left" data-animate="fade-up">
+        <p class="section-label">Why Choose Osian</p>
+        <h2 class="section-title">What Makes Us Different</h2>
+        <p class="faq-sub">Osian Academy is built on a simple belief: every learner deserves personal attention. Here's how we deliver on that promise.</p>
+        <div class="faq-highlight">
+          <div class="faq-hl-item">
+            <span class="faq-hl-num">500+</span>
+            <span class="faq-hl-text">Satisfied Students</span>
+          </div>
+          <div class="faq-hl-item">
+            <span class="faq-hl-num">100%</span>
+            <span class="faq-hl-text">Live Sessions</span>
+          </div>
+          <div class="faq-hl-item">
+            <span class="faq-hl-num">5+</span>
+            <span class="faq-hl-text">Years Experience</span>
+          </div>
+          <div class="faq-hl-item">
+            <span class="faq-hl-num">95%</span>
+            <span class="faq-hl-text">Satisfaction Rate</span>
+          </div>
+        </div>
       </div>
-      <div class="why-right" data-animate="fade-up" style="transition-delay:.1s">
-        <div class="why-grid">
-          <div class="why-item">
-            <p class="why-item-title">Personal attention</p>
-            <p class="why-item-desc">Each session is scheduled directly with your instructor, ensuring the curriculum adapts to your pace and learning style.</p>
+      <div class="faq-right" data-animate="fade-up" style="transition-delay:.1s">
+        <div class="faq-list">
+          <div class="faq-item open" data-faq-item>
+            <button class="faq-q" data-faq-question aria-expanded="true">
+              <span>What makes Osian Academy different from other platforms?</span>
+              <span class="faq-arrow">&#8964;</span>
+            </button>
+            <div class="faq-a">
+              <p>Unlike platforms that offer pre-recorded lectures to thousands simultaneously, Osian delivers every session live and 1-on-1. Your dedicated instructor knows your progress, adapts to your pace, and answers questions in real time. No batch-based classes, no generic content.</p>
+            </div>
           </div>
-          <div class="why-item">
-            <p class="why-item-title">Real-world curriculum</p>
-            <p class="why-item-desc">Course content is built in collaboration with industry professionals and updated to reflect current practices.</p>
+          <div class="faq-item" data-faq-item>
+            <button class="faq-q" data-faq-question aria-expanded="false">
+              <span>Who are the instructors at Osian Academy?</span>
+              <span class="faq-arrow">&#8964;</span>
+            </button>
+            <div class="faq-a">
+              <p>All Osian instructors are working professionals with a minimum of 5 years of industry experience. They go through a rigorous selection process — only the top applicants are accepted. You learn from people who actively do the work, not just teach it.</p>
+            </div>
           </div>
-          <div class="why-item">
-            <p class="why-item-title">Career-focused outcomes</p>
-            <p class="why-item-desc">Every programme is designed with a specific career outcome in mind — from job readiness to skill advancement.</p>
+          <div class="faq-item" data-faq-item>
+            <button class="faq-q" data-faq-question aria-expanded="false">
+              <span>How do 1-on-1 sessions work exactly?</span>
+              <span class="faq-arrow">&#8964;</span>
+            </button>
+            <div class="faq-a">
+              <p>After enrolment, you're matched with an instructor based on your goals and schedule. Sessions are conducted on our online platform — you collaborate in real time, share screens, and can pause or revisit any topic. Sessions are typically 60–90 minutes.</p>
+            </div>
           </div>
-          <div class="why-item">
-            <p class="why-item-title">Ongoing support</p>
-            <p class="why-item-desc">Access to your instructor between sessions for questions, guidance, and accountability through your journey.</p>
+          <div class="faq-item" data-faq-item>
+            <button class="faq-q" data-faq-question aria-expanded="false">
+              <span>What certifications will I receive upon completion?</span>
+              <span class="faq-arrow">&#8964;</span>
+            </button>
+            <div class="faq-a">
+              <p>You receive an Osian Academy certification that is verifiable online. For select courses, we also prepare you for globally recognised third-party certifications — AWS, Google, Microsoft, and CompTIA. All credentials are added to your Osian profile and shareable on LinkedIn.</p>
+            </div>
+          </div>
+          <div class="faq-item" data-faq-item>
+            <button class="faq-q" data-faq-question aria-expanded="false">
+              <span>Is there career support after I complete a programme?</span>
+              <span class="faq-arrow">&#8964;</span>
+            </button>
+            <div class="faq-a">
+              <p>Yes — career support is included in all programmes. This covers resume review, LinkedIn profile optimisation, mock interviews with industry professionals, and access to our hiring partner network. Your instructor also provides mentorship as you begin your job search.</p>
+            </div>
+          </div>
+          <div class="faq-item" data-faq-item>
+            <button class="faq-q" data-faq-question aria-expanded="false">
+              <span>Can I learn at my own pace and on my own schedule?</span>
+              <span class="faq-arrow">&#8964;</span>
+            </button>
+            <div class="faq-a">
+              <p>Absolutely. Because sessions are 1-on-1, the curriculum is fully flexible. Need more time on a topic? Your instructor adapts. Moving quickly? They'll push further. There is no fixed cohort schedule — just you and your instructor, moving at the right pace for you.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -158,38 +423,76 @@
   </div>
 </section>
 
-<!-- ===== CATEGORIES ===== -->
-<section class="section section-alt" id="categories">
+<!-- ===== TESTIMONIALS ===== -->
+<section class="section section-alt testimonials-section" id="testimonials">
   <div class="container">
     <div class="section-header" data-animate="fade-up">
-      <p class="section-label">Browse by Subject</p>
-      <h2 class="section-title">Every field. Every level.</h2>
+      <p class="section-label">Student Stories</p>
+      <h2 class="section-title">Students placed in top companies</h2>
+      <p class="section-sub">Real outcomes from real learners who chose Osian Academy to transform their careers.</p>
     </div>
-    <div class="categories-grid" data-animate="fade-up" style="transition-delay:.05s">
-      <a href="/courses?category=Technology" class="cat-card">
-        <div class="cat-icon cat-icon-blue">⚡</div>
-        <div><h3>Technology</h3><p>Web, Mobile, Cloud &amp; More</p></div>
-      </a>
-      <a href="/courses?category=Data" class="cat-card">
-        <div class="cat-icon cat-icon-teal">📊</div>
-        <div><h3>Data Science</h3><p>ML, AI &amp; Analytics</p></div>
-      </a>
-      <a href="/courses?category=Design" class="cat-card">
-        <div class="cat-icon cat-icon-purple">🎨</div>
-        <div><h3>Design</h3><p>UI/UX, Branding &amp; Motion</p></div>
-      </a>
-      <a href="/courses?category=Security" class="cat-card">
-        <div class="cat-icon cat-icon-red">🔐</div>
-        <div><h3>Cybersecurity</h3><p>Ethical Hacking &amp; Defence</p></div>
-      </a>
-      <a href="/courses?category=Cloud" class="cat-card">
-        <div class="cat-icon cat-icon-sky">☁️</div>
-        <div><h3>Cloud &amp; DevOps</h3><p>AWS, Azure &amp; Kubernetes</p></div>
-      </a>
-      <a href="/courses?category=Business" class="cat-card">
-        <div class="cat-icon cat-icon-amber">📈</div>
-        <div><h3>Business</h3><p>Strategy, Marketing &amp; Finance</p></div>
-      </a>
+    <div class="testi-grid">
+      <div class="testi-card" data-animate="fade-up">
+        <div class="testi-top">
+          <div class="testi-avatar" style="--av-c:#dbeafe;--av-t:#1d4ed8">PS</div>
+          <div class="testi-info">
+            <p class="testi-name">Priya Sharma</p>
+            <p class="testi-course">Web Development Programme</p>
+            <p class="testi-placed">&#8594; Now at <strong>Infosys</strong></p>
+          </div>
+        </div>
+        <p class="testi-quote">"The 1-on-1 format changed everything for me. I had tried 3 other platforms before Osian. Here, my instructor actually understood my weak points and worked on them specifically. I got placed within 2 months of completing the programme."</p>
+        <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      </div>
+      <div class="testi-card" data-animate="fade-up" style="transition-delay:.09s">
+        <div class="testi-top">
+          <div class="testi-avatar" style="--av-c:#dcfce7;--av-t:#166534">RM</div>
+          <div class="testi-info">
+            <p class="testi-name">Rahul Mehta</p>
+            <p class="testi-course">Data Science &amp; AI Programme</p>
+            <p class="testi-placed">&#8594; Now at <strong>Amazon</strong></p>
+          </div>
+        </div>
+        <p class="testi-quote">"I was a complete beginner in Python when I started. My Osian instructor built a custom learning path and never let me fall behind. The mock interviews were challenging in the best way — I was fully prepared on the actual interview day."</p>
+        <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      </div>
+      <div class="testi-card" data-animate="fade-up" style="transition-delay:.18s">
+        <div class="testi-top">
+          <div class="testi-avatar" style="--av-c:#fef3c7;--av-t:#92400e">AS</div>
+          <div class="testi-info">
+            <p class="testi-name">Ananya Singh</p>
+            <p class="testi-course">UI/UX Design Programme</p>
+            <p class="testi-placed">&#8594; Now at <strong>Accenture</strong></p>
+          </div>
+        </div>
+        <p class="testi-quote">"Osian's design programme was the most thorough I've seen in India. My instructor reviewed every project with detailed feedback. The career guidance team helped me build a portfolio that landed me multiple interviews. Absolutely recommend."</p>
+        <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PLACEMENT PARTNERS ===== -->
+<section class="section partners-section" id="partners">
+  <div class="container">
+    <div class="section-header" data-animate="fade-up">
+      <p class="section-label">Placement Partners</p>
+      <h2 class="section-title">Where our graduates work</h2>
+      <p class="section-sub">Companies that have hired Osian Academy graduates. Join the growing community of professionals advancing their careers.</p>
+    </div>
+    <div class="partners-grid" data-animate="fade-up" style="transition-delay:.1s">
+      <div class="partner-pill">Infosys</div>
+      <div class="partner-pill">Wipro</div>
+      <div class="partner-pill">TCS</div>
+      <div class="partner-pill">HCL</div>
+      <div class="partner-pill">Accenture</div>
+      <div class="partner-pill">IBM</div>
+      <div class="partner-pill">Amazon</div>
+      <div class="partner-pill">Deloitte</div>
+      <div class="partner-pill">Cognizant</div>
+      <div class="partner-pill">Capgemini</div>
+      <div class="partner-pill">Mindtree</div>
+      <div class="partner-pill">Tech Mahindra</div>
     </div>
   </div>
 </section>
@@ -198,11 +501,11 @@
 <section class="cta-section" id="enroll">
   <div class="container">
     <div class="cta-content" data-animate="fade-up">
-      <p class="section-label cta-label">Get started</p>
-      <h2 class="cta-title">Ready to begin?</h2>
-      <p class="cta-sub">Admissions are open. Create your account to access the platform and receive updates when new courses are published.</p>
+      <p class="section-label cta-label">Get started today</p>
+      <h2 class="cta-title">Your career transformation starts here</h2>
+      <p class="cta-sub">Admissions are open. Join 500+ students who chose personal mentorship over generic online courses. Create your account in 30 seconds.</p>
       <div class="cta-actions">
-        <a href="/auth?mode=signup" class="btn btn-white btn-lg" data-auth-guest>Create Account</a>
+        <a href="/auth?mode=signup" class="btn btn-white btn-lg" data-auth-guest>Create Free Account</a>
         <a href="/auth?mode=signin" class="btn btn-outline-white btn-lg" data-auth-guest>Sign In</a>
         <a href="/dashboard" class="btn btn-white btn-lg" data-auth-user hidden>Go to Dashboard</a>
       </div>
