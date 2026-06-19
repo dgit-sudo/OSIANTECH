@@ -1,14 +1,10 @@
 <%- include('partials/head') %>
 <%- include('partials/navbar') %>
 
-<section class="page-hero">
+<section class="page-hero page-hero-slim">
   <div class="container">
     <div class="page-hero-content" data-animate="fade-up">
       <div class="section-tag">Course Detail</div>
-      <h1 class="page-hero-title"><%= course.title %></h1>
-      <div class="course-hero-meta">
-        <span class="meta-badge"><%= course.category || 'General' %></span>
-      </div>
     </div>
   </div>
 </section>
@@ -17,6 +13,7 @@
   <div class="container">
     <div class="course-img course-img-<%= (course.id % 9) + 1 %> course-img-lg <%= course.image ? 'has-course-image' : '' %>" data-animate="fade-up"<% if (course.image) { %> style="--course-image: url('<%= course.image %>');"<% } %>>
       <div class="course-category-tag"><%= course.category || 'General' %></div>
+      <div class="course-img-title-overlay"><%= course.title %></div>
     </div>
     <div class="course-detail-grid">
       <div class="course-detail-main" data-animate="fade-right">
