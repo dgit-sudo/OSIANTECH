@@ -1,84 +1,312 @@
 <%- include('partials/head') %>
 <%- include('partials/navbar') %>
 
-<section class="page-hero">
+<style>
+/* ── Courses mega-page ─────────────────────────────────── */
+.cp-hero { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); padding: 100px 0 60px; color: #fff; }
+.cp-hero-tag { display: inline-block; background: rgba(249,115,22,.18); color: #f97316; font-size: .75rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; padding: 5px 14px; border-radius: 20px; margin-bottom: 16px; font-family: 'Inter', sans-serif; }
+.cp-hero-title { font-family: 'Oswald', sans-serif; font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 700; line-height: 1.1; margin-bottom: 14px; }
+.cp-hero-title span { color: #f97316; }
+.cp-hero-sub { font-size: 1.05rem; color: rgba(255,255,255,.72); max-width: 560px; margin-bottom: 28px; font-family: 'Inter', sans-serif; line-height: 1.65; }
+.cp-hero-stats { display: flex; gap: 36px; flex-wrap: wrap; }
+.cp-hero-stat { text-align: center; }
+.cp-hero-stat-num { font-family: 'Oswald', sans-serif; font-size: 2rem; font-weight: 700; color: #f97316; line-height: 1; }
+.cp-hero-stat-lbl { font-size: .78rem; color: rgba(255,255,255,.6); font-family: 'Inter', sans-serif; margin-top: 3px; }
+
+/* Search bar */
+.cp-search-bar { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 18px 0; position: sticky; top: 64px; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+.cp-search-inner { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.cp-search-form { display: flex; flex: 1; min-width: 260px; gap: 0; }
+.cp-search-input { flex: 1; border: 1.5px solid #e2e8f0; border-right: none; border-radius: 8px 0 0 8px; padding: 10px 18px; font-size: .92rem; font-family: 'Inter', sans-serif; outline: none; }
+.cp-search-input:focus { border-color: #f97316; }
+.cp-search-btn { background: #f97316; color: #fff; border: none; border-radius: 0 8px 8px 0; padding: 10px 22px; font-weight: 700; font-family: 'Inter', sans-serif; font-size: .88rem; cursor: pointer; transition: background .2s; }
+.cp-search-btn:hover { background: #ea580c; }
+.cp-cat-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.cp-cat-pill { font-size: .78rem; font-weight: 600; font-family: 'Inter', sans-serif; padding: 5px 14px; border-radius: 20px; border: 1.5px solid #e2e8f0; color: #475569; text-decoration: none; transition: all .18s; white-space: nowrap; }
+.cp-cat-pill:hover, .cp-cat-pill.active { background: #f97316; border-color: #f97316; color: #fff; }
+
+/* Job Oriented Programs band */
+.cp-job-band { background: #fff7ed; border-top: 3px solid #f97316; border-bottom: 3px solid #f97316; padding: 56px 0; }
+.cp-job-head { text-align: center; margin-bottom: 40px; }
+.cp-job-title { font-family: 'Oswald', sans-serif; font-size: clamp(1.7rem, 3.2vw, 2.4rem); font-weight: 700; color: #0f172a; margin-bottom: 8px; }
+.cp-job-sub { font-size: .95rem; color: #64748b; font-family: 'Inter', sans-serif; }
+.cp-job-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+.cp-job-card { background: #fff; border: 1.5px solid #fed7aa; border-radius: 12px; padding: 20px 16px; text-decoration: none; display: flex; flex-direction: column; gap: 8px; transition: all .2s; }
+.cp-job-card:hover { border-color: #f97316; box-shadow: 0 6px 20px rgba(249,115,22,.15); transform: translateY(-2px); }
+.cp-job-card-icon { font-size: 1.8rem; line-height: 1; }
+.cp-job-card h3 { font-size: .88rem; font-weight: 700; color: #0f172a; font-family: 'Inter', sans-serif; line-height: 1.3; }
+.cp-job-card p { font-size: .75rem; color: #64748b; font-family: 'Inter', sans-serif; line-height: 1.5; flex: 1; }
+.cp-job-card-link { font-size: .75rem; font-weight: 700; color: #f97316; font-family: 'Inter', sans-serif; margin-top: auto; }
+
+/* Category sections */
+.cp-cat-section { padding: 60px 0; }
+.cp-cat-section:nth-child(even) { background: #f8fafc; }
+.cp-cat-hdr { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 32px; gap: 20px; flex-wrap: wrap; }
+.cp-cat-hdr-left {}
+.cp-cat-badge { display: inline-block; padding: 3px 12px; border-radius: 20px; font-size: .7rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; font-family: 'Inter', sans-serif; margin-bottom: 8px; }
+.cp-cat-badge-prog  { background: #dbeafe; color: #1d4ed8; }
+.cp-cat-badge-design { background: #ede9fe; color: #7c3aed; }
+.cp-cat-badge-net   { background: #dcfce7; color: #15803d; }
+.cp-cat-badge-kids  { background: #fef9c3; color: #a16207; }
+.cp-cat-badge-acc   { background: #fce7f3; color: #be185d; }
+.cp-cat-badge-data  { background: #ffedd5; color: #c2410c; }
+.cp-cat-title { font-family: 'Oswald', sans-serif; font-size: clamp(1.5rem, 2.8vw, 2rem); font-weight: 700; color: #0f172a; }
+.cp-cat-desc { font-size: .9rem; color: #64748b; font-family: 'Inter', sans-serif; max-width: 540px; margin-top: 4px; }
+.cp-cat-view-all { font-size: .88rem; font-weight: 700; color: #f97316; font-family: 'Inter', sans-serif; text-decoration: none; white-space: nowrap; border: 2px solid #f97316; padding: 8px 20px; border-radius: 8px; transition: all .2s; }
+.cp-cat-view-all:hover { background: #f97316; color: #fff; }
+.cp-course-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.cp-course-card-link { text-decoration: none; }
+.cp-course-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; transition: all .22s; height: 100%; }
+.cp-course-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,.1); border-color: rgba(249,115,22,.3); }
+.cp-course-img { height: 140px; position: relative; overflow: hidden; }
+.cp-course-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,.55)); }
+.cp-course-cat-tag { position: absolute; top: 10px; left: 10px; z-index: 2; background: rgba(249,115,22,.9); color: #fff; font-size: .65rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 3px 9px; border-radius: 4px; font-family: 'Inter', sans-serif; }
+.cp-course-body { padding: 16px; }
+.cp-course-title { font-size: .92rem; font-weight: 700; color: #0f172a; font-family: 'Inter', sans-serif; line-height: 1.35; margin-bottom: 6px; }
+.cp-course-desc { font-size: .78rem; color: #64748b; font-family: 'Inter', sans-serif; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 12px; }
+.cp-course-footer { display: flex; align-items: center; justify-content: space-between; }
+.cp-course-level { font-size: .7rem; font-weight: 600; color: #94a3b8; font-family: 'Inter', sans-serif; text-transform: uppercase; letter-spacing: .05em; }
+.cp-course-arrow { font-size: .78rem; font-weight: 700; color: #f97316; font-family: 'Inter', sans-serif; }
+
+/* All courses section */
+.cp-all-section { padding: 60px 0; background: #fff; }
+.cp-all-head { text-align: center; margin-bottom: 40px; }
+.cp-all-title { font-family: 'Oswald', sans-serif; font-size: clamp(1.7rem, 3vw, 2.3rem); font-weight: 700; color: #0f172a; margin-bottom: 8px; }
+.cp-all-sub { font-size: .95rem; color: #64748b; font-family: 'Inter', sans-serif; }
+.cp-all-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.cp-no-results { text-align: center; padding: 60px 20px; }
+
+/* Responsive */
+@media (max-width: 1100px) { .cp-course-grid, .cp-all-grid { grid-template-columns: repeat(3, 1fr); } .cp-job-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 768px) { .cp-course-grid, .cp-all-grid { grid-template-columns: repeat(2, 1fr); } .cp-job-grid { grid-template-columns: repeat(2, 1fr); } .cp-search-inner { flex-direction: column; align-items: stretch; } }
+@media (max-width: 480px) { .cp-course-grid, .cp-all-grid { grid-template-columns: 1fr; } .cp-job-grid { grid-template-columns: 1fr 1fr; } }
+</style>
+
+<!-- ═══ HERO ═══════════════════════════════════════════════════════ -->
+<section class="cp-hero">
   <div class="container">
-    <div class="page-hero-content" data-animate="fade-up">
-      <div class="section-tag">All Programmes</div>
-      <h1 class="page-hero-title">Explore Our Courses</h1>
-      <p class="page-hero-sub">Discover a visually curated list of courses. Click any card to open full details.</p>
-      <% const shownCount = (typeof shownCourses !== 'undefined') ? shownCourses : (Array.isArray(courses) ? courses.length : 0); %>
-      <% const totalCount = (typeof totalCourses !== 'undefined') ? totalCourses : shownCount; %>
-      <p class="page-hero-sub">Showing <%= shownCount %> of <%= totalCount %> courses</p>
+    <div class="cp-hero-tag">250+ Courses Available</div>
+    <h1 class="cp-hero-title">India's Most Comprehensive<br><span>IT Training Catalogue</span></h1>
+    <p class="cp-hero-sub">From beginner to advanced — Programming, Design, Networking, Accounting, Data Science, and Kids Programs. Every course is live, personal, and job-focused.</p>
+    <div class="cp-hero-stats">
+      <div class="cp-hero-stat">
+        <div class="cp-hero-stat-num">248+</div>
+        <div class="cp-hero-stat-lbl">Courses</div>
+      </div>
+      <div class="cp-hero-stat">
+        <div class="cp-hero-stat-num">6</div>
+        <div class="cp-hero-stat-lbl">Categories</div>
+      </div>
+      <div class="cp-hero-stat">
+        <div class="cp-hero-stat-num">500+</div>
+        <div class="cp-hero-stat-lbl">Students Placed</div>
+      </div>
+      <div class="cp-hero-stat">
+        <div class="cp-hero-stat-num">100%</div>
+        <div class="cp-hero-stat-lbl">Live Sessions</div>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="section">
+<!-- ═══ STICKY SEARCH + CATEGORY PILLS ═══════════════════════════ -->
+<div class="cp-search-bar">
   <div class="container">
-    <% const safeSearchQuery = (typeof searchQuery !== 'undefined' && searchQuery) ? searchQuery : ''; %>
-    <form class="courses-search" action="/courses" method="GET" data-animate="fade-up" data-courses-search-form>
-      <label for="course-search" class="courses-search-label">Search courses</label>
-      <div class="courses-search-row">
-        <input
-          id="course-search"
-          class="courses-search-input"
-          type="search"
-          name="q"
-          value="<%= safeSearchQuery %>"
-          placeholder="Search by title, topic, or keyword"
-          data-courses-search-input
-        />
-        <button type="submit" class="btn btn-primary">Search</button>
-        <% if (safeSearchQuery) { %>
-        <a href="<%= activeCategory === 'All' ? '/courses' : '/courses?category=' + encodeURIComponent(activeCategory) %>" class="btn btn-ghost">Clear</a>
-        <% } %>
+    <div class="cp-search-inner">
+      <% const safeSearchQuery = (typeof searchQuery !== 'undefined' && searchQuery) ? searchQuery : ''; %>
+      <form class="cp-search-form" action="/courses" method="GET" data-courses-search-form>
+        <input id="course-search" class="cp-search-input" type="search" name="q" value="<%= safeSearchQuery %>" placeholder="Search by course name, topic or tool…" data-courses-search-input autocomplete="off" />
+        <button type="submit" class="cp-search-btn">Search</button>
+      </form>
+      <div class="cp-cat-pills">
+        <a href="/courses" class="cp-cat-pill <%= (!safeSearchQuery && (typeof activeCategory === 'undefined' || activeCategory === 'All')) ? 'active' : '' %>">All</a>
+        <% if (typeof categories !== 'undefined') { categories.forEach(function(cat) { %>
+        <a href="/courses?category=<%= encodeURIComponent(cat) %>" class="cp-cat-pill <%= (typeof activeCategory !== 'undefined' && activeCategory === cat) ? 'active' : '' %>"><%= cat %></a>
+        <% }); } %>
       </div>
-    </form>
-
-    <!-- Filter Bar -->
-    <% if (categories.length) { %>
-    <div class="filter-bar" data-animate="fade-up">
-      <a href="<%= safeSearchQuery ? '/courses?q=' + encodeURIComponent(safeSearchQuery) : '/courses' %>" class="filter-btn <%= activeCategory === 'All' ? 'active' : '' %>">All</a>
-      <% categories.forEach(function(cat) { %>
-      <a href="/courses?category=<%= encodeURIComponent(cat) %><%= safeSearchQuery ? '&q=' + encodeURIComponent(safeSearchQuery) : '' %>" class="filter-btn <%= activeCategory === cat ? 'active' : '' %>"><%= cat %></a>
-      <% }); %>
     </div>
-    <% } %>
+  </div>
+</div>
 
-    <% if (courses.length) { %>
-    <div class="courses-grid courses-grid-full" data-courses-grid>
-      <% courses.forEach(function(course) { %>
-      <a href="/courses/<%= course.id %>" class="course-card-link" data-course-card data-course-title="<%= course.title %>">
-      <article class="course-card course-card-rich">
-        <div class="course-img course-img-<%= (course.id % 9) + 1 %> <%= course.image ? 'has-course-image' : '' %>"<% if (course.image) { %> style="--course-image: url('<%= course.image %>');"<% } %>>
-          <div class="course-category-tag"><%= course.category %></div>
-        </div>
-        <div class="course-body">
-          <h3 class="course-title"><%= course.title %></h3>
-          <p class="course-description"><%= course.description %></p>
-          <div class="course-meta">
-            <span class="meta-item">Professional Program</span>
+<%
+const safeActiveCategory = (typeof activeCategory !== 'undefined') ? activeCategory : 'All';
+const isFiltered = safeActiveCategory !== 'All' || safeSearchQuery;
+%>
+
+<% if (!isFiltered) { %>
+
+<!-- ═══ JOB ORIENTED PROGRAMS ════════════════════════════════════ -->
+<section class="cp-job-band">
+  <div class="container">
+    <div class="cp-job-head">
+      <h2 class="cp-job-title">Job Oriented Programs</h2>
+      <p class="cp-job-sub">Osian Academy's most popular career-focused tracks — chosen by our industry experts to get you hired fast.</p>
+    </div>
+    <div class="cp-job-grid">
+      <a href="/courses?category=Programming+%26+Software" class="cp-job-card">
+        <div class="cp-job-card-icon">⚡</div>
+        <h3>Programming Languages</h3>
+        <p>Python, Java, C++, JavaScript, Go — from fundamentals to advanced, industry-standard coding.</p>
+        <span class="cp-job-card-link">Explore →</span>
+      </a>
+      <a href="/courses?category=Programming+%26+Software" class="cp-job-card">
+        <div class="cp-job-card-icon">📱</div>
+        <h3>Web &amp; App Development</h3>
+        <p>HTML5, CSS3, React, Vue, Node.js, .NET — full-stack web and mobile application development.</p>
+        <span class="cp-job-card-link">Explore →</span>
+      </a>
+      <a href="/courses?category=Data%2C+AI+%26+Digital+Marketing" class="cp-job-card">
+        <div class="cp-job-card-icon">📈</div>
+        <h3>Digital Marketing &amp; Data</h3>
+        <p>SEO, SEM, Google Ads, Meta Ads, analytics, data science and AI — the digital growth stack.</p>
+        <span class="cp-job-card-link">Explore →</span>
+      </a>
+      <a href="/courses?category=Design+%26+Animation" class="cp-job-card">
+        <div class="cp-job-card-icon">🎨</div>
+        <h3>Graphic &amp; UI/UX Design</h3>
+        <p>Photoshop, Illustrator, Figma, After Effects — creative and interface design careers.</p>
+        <span class="cp-job-card-link">Explore →</span>
+      </a>
+      <a href="/courses?category=Networking%2C+Hardware+%26+Engineering" class="cp-job-card">
+        <div class="cp-job-card-icon">🔌</div>
+        <h3>Hardware &amp; Networking</h3>
+        <p>A+, CCNA, cybersecurity, Cisco — infrastructure and networking career paths.</p>
+        <span class="cp-job-card-link">Explore →</span>
+      </a>
+      <a href="/courses?category=Accounting%2C+Finance+%26+Office+Skills" class="cp-job-card">
+        <div class="cp-job-card-icon">💰</div>
+        <h3>Banking &amp; Accounts</h3>
+        <p>Tally Prime, GST, SAP FICO, income tax — finance and accounting professional tracks.</p>
+        <span class="cp-job-card-link">Explore →</span>
+      </a>
+      <a href="/courses?category=Design+%26+Animation" class="cp-job-card">
+        <div class="cp-job-card-icon">📐</div>
+        <h3>CAD &amp; Engineering Design</h3>
+        <p>AutoCAD, SolidWorks, 3ds Max, V-Ray — architectural, civil and product design.</p>
+        <span class="cp-job-card-link">Explore →</span>
+      </a>
+      <a href="/courses?category=Networking%2C+Hardware+%26+Engineering" class="cp-job-card">
+        <div class="cp-job-card-icon">🛡️</div>
+        <h3>Cybersecurity &amp; Ethical Hacking</h3>
+        <p>CEH, Kali Linux, penetration testing, VAPT — high-demand security careers.</p>
+        <span class="cp-job-card-link">Explore →</span>
+      </a>
+      <a href="/courses?category=Data%2C+AI+%26+Digital+Marketing" class="cp-job-card">
+        <div class="cp-job-card-icon">🤖</div>
+        <h3>AI &amp; Machine Learning</h3>
+        <p>Python, TensorFlow, ML pipelines, NLP — build intelligent systems for industry.</p>
+        <span class="cp-job-card-link">Explore →</span>
+      </a>
+      <a href="/courses?category=Accounting%2C+Finance+%26+Office+Skills" class="cp-job-card">
+        <div class="cp-job-card-icon">📊</div>
+        <h3>Professional Certifications</h3>
+        <p>HR Management, Project Management, Six Sigma, ITIL — business and management tracks.</p>
+        <span class="cp-job-card-link">Explore →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<%
+const catMeta = [
+  { name: 'Programming & Software', badge: 'cp-cat-badge-prog', icon: '💻', desc: 'Master the languages and frameworks that power every app, website and system on the planet. From Oracle and .NET to Python, Java, and full-stack web.', color: '#1d4ed8' },
+  { name: 'Design & Animation', badge: 'cp-cat-badge-design', icon: '🎨', desc: 'Create stunning visuals, animations, and user experiences. Adobe Suite, 3ds Max, AutoCAD, Figma, Blender and more.', color: '#7c3aed' },
+  { name: 'Networking, Hardware & Engineering', badge: 'cp-cat-badge-net', icon: '🔌', desc: 'Build and secure the infrastructure the world runs on. Cisco, Linux, hardware, robotics, embedded systems, and cybersecurity.', color: '#15803d' },
+  { name: 'Accounting, Finance & Office Skills', badge: 'cp-cat-badge-acc', icon: '💼', desc: 'Build a career in finance and business operations. Tally, SAP, GST, income tax, HR management and advanced MS Office.', color: '#be185d' },
+  { name: 'Data, AI & Digital Marketing', badge: 'cp-cat-badge-data', icon: '📊', desc: 'The fastest-growing field in IT. Data science, AI/ML, digital marketing, SEO, Google Ads, Python analytics, Power BI.', color: '#c2410c' },
+  { name: 'Kids Programs', badge: 'cp-cat-badge-kids', icon: '⭐', desc: 'Spark curiosity and build STEM foundations early. Abacus, coding, robotics, and creative computing for ages 5–16.', color: '#a16207' },
+];
+%>
+
+<!-- ═══ CATEGORY SECTIONS ═════════════════════════════════════════ -->
+<% catMeta.forEach(function(cat) { %>
+<%
+  const catCourses = (typeof courses !== 'undefined' ? courses : []).filter(c => c.category === cat.name).slice(0, 8);
+  if (!catCourses.length) return;
+%>
+<section class="cp-cat-section">
+  <div class="container">
+    <div class="cp-cat-hdr">
+      <div class="cp-cat-hdr-left">
+        <span class="cp-cat-badge <%= cat.badge %>"><%= cat.icon %> <%= cat.name %></span>
+        <h2 class="cp-cat-title"><%= cat.name %></h2>
+        <p class="cp-cat-desc"><%= cat.desc %></p>
+      </div>
+      <a href="/courses?category=<%= encodeURIComponent(cat.name) %>" class="cp-cat-view-all">View All <%= cat.name %> Courses →</a>
+    </div>
+    <div class="cp-course-grid">
+      <% catCourses.forEach(function(course) { %>
+      <a href="/courses/<%= course.id %>" class="cp-course-card-link" data-course-card data-course-title="<%= course.title %>">
+        <div class="cp-course-card">
+          <div class="cp-course-img course-img-<%= (course.id % 9) + 1 %> <%= course.image ? 'has-course-image' : '' %>"<% if (course.image) { %> style="--course-image: url('<%= course.image %>');"<% } %>>
+            <span class="cp-course-cat-tag"><%= course.level || 'Professional' %></span>
           </div>
-          <span class="btn btn-card">View Details →</span>
+          <div class="cp-course-body">
+            <h3 class="cp-course-title"><%= course.title %></h3>
+            <p class="cp-course-desc"><%= course.description %></p>
+            <div class="cp-course-footer">
+              <span class="cp-course-level"><%= course.duration || '–' %></span>
+              <span class="cp-course-arrow">View Details →</span>
+            </div>
+          </div>
         </div>
-      </article>
       </a>
       <% }); %>
     </div>
-    <div class="course-empty" data-courses-empty style="display:none;">
+  </div>
+</section>
+<% }); %>
+
+<% } else { %>
+
+<!-- ═══ FILTERED RESULTS ══════════════════════════════════════════ -->
+<section class="cp-all-section">
+  <div class="container">
+    <div class="cp-all-head">
+      <% const shownCount = (typeof shownCourses !== 'undefined') ? shownCourses : (Array.isArray(courses) ? courses.length : 0); %>
+      <% const totalCount = (typeof totalCourses !== 'undefined') ? totalCourses : shownCount; %>
+      <h2 class="cp-all-title">
+        <% if (safeSearchQuery) { %>Search Results for "<%= safeSearchQuery %>"
+        <% } else { %><%= safeActiveCategory %>
+        <% } %>
+      </h2>
+      <p class="cp-all-sub">Showing <%= shownCount %> of <%= totalCount %> courses
+        <% if (safeActiveCategory !== 'All') { %> in <%= safeActiveCategory %><% } %>
+      </p>
+    </div>
+    <% if (typeof courses !== 'undefined' && courses.length) { %>
+    <div class="cp-all-grid" data-courses-grid>
+      <% courses.forEach(function(course) { %>
+      <a href="/courses/<%= course.id %>" class="cp-course-card-link" data-course-card data-course-title="<%= course.title %>">
+        <div class="cp-course-card">
+          <div class="cp-course-img course-img-<%= (course.id % 9) + 1 %> <%= course.image ? 'has-course-image' : '' %>"<% if (course.image) { %> style="--course-image: url('<%= course.image %>');"<% } %>>
+            <span class="cp-course-cat-tag"><%= course.level || 'Professional' %></span>
+          </div>
+          <div class="cp-course-body">
+            <h3 class="cp-course-title"><%= course.title %></h3>
+            <p class="cp-course-desc"><%= course.description %></p>
+            <div class="cp-course-footer">
+              <span class="cp-course-level"><%= course.duration || '–' %></span>
+              <span class="cp-course-arrow">View Details →</span>
+            </div>
+          </div>
+        </div>
+      </a>
+      <% }); %>
+    </div>
+    <div class="cp-no-results" data-courses-empty style="display:none;">
       <h3>No matching courses found</h3>
-      <p>Try a different keyword or clear the search.</p>
-      <a href="/courses" class="btn btn-primary">View All Courses</a>
+      <p>Try a different keyword or <a href="/courses" style="color:#f97316">view all courses</a>.</p>
     </div>
     <% } else { %>
-    <div class="course-empty" data-animate="fade-up">
-      <h3><%= safeSearchQuery ? 'No matching courses found' : 'No courses available yet' %></h3>
-      <p><%= safeSearchQuery ? 'Try a different keyword or clear the search to see all courses.' : 'Course data could not be loaded right now.' %></p>
-      <a href="/courses" class="btn btn-primary">View All Courses</a>
+    <div class="cp-no-results">
+      <h3>No courses found</h3>
+      <p><a href="/courses" style="color:#f97316">Clear filters and view all courses →</a></p>
     </div>
     <% } %>
   </div>
 </section>
+
+<% } %>
 
 <%- include('partials/footer') %>

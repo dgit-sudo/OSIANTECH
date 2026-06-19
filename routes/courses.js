@@ -2,6 +2,7 @@ const express = require('express');
 const crypto = require('crypto');
 const { Pool } = require('pg');
 const Razorpay = require('razorpay');
+const { enrichCourse } = require('../lib/courseEnrichment');
 
 const router = express.Router();
 
@@ -676,10 +677,11 @@ router.post('/:id/checkout/verify-payment', async (req, res) => {
 router.get('/:id', (req, res) => {
   const course = allCourses.find(c => c.id === parseInt(req.params.id));
   if (!course) return res.status(404).render('404', { title: '404 – Course Not Found', page: '' });
+  const enriched = enrichCourse(course);
   res.render('course-detail', {
     title: `${course.title} – Osian Academy`,
     page: 'courses',
-    course,
+    course: enriched,
   });
 });
 

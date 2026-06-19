@@ -1,0 +1,565 @@
+<style>
+/* ── Feature Page Styles ─────────────────────────────────────── */
+.feature-hero {
+  background: linear-gradient(155deg, #ea580c 0%, #f97316 55%, #fb923c 100%);
+  padding: 140px 0 72px;
+  position: relative;
+  overflow: hidden;
+}
+.feature-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+  background-size: 52px 52px;
+}
+.feature-hero::after {
+  content: '';
+  position: absolute;
+  right: -120px;
+  top: -80px;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.06);
+  pointer-events: none;
+}
+.feature-hero .section-tag {
+  background: rgba(255,255,255,.15);
+  border-color: rgba(255,255,255,.3);
+  color: rgba(255,255,255,.92);
+}
+.feature-hero-content {
+  position: relative;
+  max-width: 700px;
+}
+.feature-hero-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  backdrop-filter: blur(6px);
+}
+.feature-hero-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(2.4rem, 4.5vw, 3.6rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+.feature-hero-tagline {
+  font-size: 1.12rem;
+  color: rgba(255,255,255,.82);
+  line-height: 1.72;
+  font-family: 'Inter', sans-serif;
+  max-width: 580px;
+}
+.feature-hero-cta {
+  display: flex;
+  gap: 14px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+.btn-white {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  color: #ea580c;
+  padding: 13px 28px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: .95rem;
+  text-decoration: none;
+  transition: transform .2s, box-shadow .2s;
+  font-family: 'Inter', sans-serif;
+}
+.btn-white:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.18);
+}
+.btn-ghost-white {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: #fff;
+  padding: 13px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: .95rem;
+  text-decoration: none;
+  border: 1.5px solid rgba(255,255,255,.45);
+  transition: background .2s, border-color .2s;
+  font-family: 'Inter', sans-serif;
+}
+.btn-ghost-white:hover {
+  background: rgba(255,255,255,.1);
+  border-color: rgba(255,255,255,.7);
+}
+
+/* ── What This Means ─────────────────────────────────────────── */
+.what-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+.what-label {
+  display: inline-block;
+  font-family: 'Oswald', sans-serif;
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: #f97316;
+  margin-bottom: 16px;
+}
+.what-heading {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 700;
+  color: var(--text-primary, #0f172a);
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+.what-text {
+  font-size: 1.02rem;
+  color: var(--text-secondary, #475569);
+  line-height: 1.78;
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 18px;
+}
+.what-text:last-child { margin-bottom: 0; }
+.what-stat-card {
+  background: linear-gradient(145deg, #fff7ed, #fff);
+  border: 1.5px solid rgba(249,115,22,.18);
+  border-radius: 20px;
+  padding: 44px 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.what-stat-card::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: rgba(249,115,22,.07);
+}
+.what-stat-icon {
+  font-size: 3.2rem;
+  margin-bottom: 20px;
+  display: block;
+}
+.what-stat-number {
+  font-family: 'Oswald', sans-serif;
+  font-size: 4rem;
+  font-weight: 700;
+  color: #f97316;
+  line-height: 1;
+  display: block;
+  margin-bottom: 8px;
+}
+.what-stat-desc {
+  font-size: 1rem;
+  color: var(--text-secondary, #475569);
+  font-family: 'Inter', sans-serif;
+  line-height: 1.5;
+}
+
+/* ── How We Do It ────────────────────────────────────────────── */
+.how-section { background: var(--bg-2, #f8fafc); }
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+  margin-top: 48px;
+}
+.how-step {
+  background: #fff;
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 14px;
+  padding: 30px 28px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  transition: box-shadow .22s, border-color .22s, transform .22s;
+}
+.how-step:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 32px rgba(0,0,0,.08);
+  border-color: rgba(249,115,22,.3);
+}
+.how-step-num {
+  min-width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  color: #fff;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.how-step-icon {
+  min-width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #fff7ed;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.how-step-body h3 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: var(--text-primary, #0f172a);
+  margin-bottom: 6px;
+  letter-spacing: .2px;
+}
+.how-step-body p {
+  font-size: .9rem;
+  color: var(--text-secondary, #475569);
+  line-height: 1.65;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+}
+
+/* ── Benefits ────────────────────────────────────────────────── */
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+.benefit-card {
+  background: #fff;
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 16px;
+  padding: 32px 28px;
+  text-align: center;
+  transition: box-shadow .22s, transform .22s, border-color .22s;
+}
+.benefit-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 40px rgba(0,0,0,.09);
+  border-color: rgba(249,115,22,.25);
+}
+.benefit-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  background: #fff7ed;
+  margin: 0 auto 18px;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.benefit-card h3 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary, #0f172a);
+  margin-bottom: 10px;
+}
+.benefit-card p {
+  font-size: .88rem;
+  color: var(--text-secondary, #475569);
+  line-height: 1.68;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+}
+
+/* ── Impact / Testimonials ───────────────────────────────────── */
+.impact-section { background: linear-gradient(160deg, #0f172a 0%, #1e293b 100%); }
+.impact-section .section-title { color: #fff; }
+.impact-section .section-sub { color: rgba(255,255,255,.6); }
+.impact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+.impact-card {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 16px;
+  padding: 36px 28px;
+  text-align: center;
+  backdrop-filter: blur(8px);
+  transition: background .22s, border-color .22s;
+}
+.impact-card:hover {
+  background: rgba(255,255,255,.1);
+  border-color: rgba(249,115,22,.4);
+}
+.impact-stat {
+  font-family: 'Oswald', sans-serif;
+  font-size: 3.2rem;
+  font-weight: 700;
+  color: #f97316;
+  line-height: 1;
+  display: block;
+  margin-bottom: 8px;
+}
+.impact-label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 10px;
+  display: block;
+}
+.impact-desc {
+  font-size: .86rem;
+  color: rgba(255,255,255,.55);
+  line-height: 1.65;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+}
+
+/* ── Related Courses ─────────────────────────────────────────── */
+.related-section { background: var(--bg-2, #f8fafc); }
+.related-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  background: #fff;
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 20px;
+  padding: 44px 48px;
+  flex-wrap: wrap;
+}
+.related-text h2 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--text-primary, #0f172a);
+  margin-bottom: 10px;
+}
+.related-text p {
+  font-size: .97rem;
+  color: var(--text-secondary, #475569);
+  line-height: 1.65;
+  font-family: 'Inter', sans-serif;
+  max-width: 480px;
+  margin: 0;
+}
+
+/* ── CTA Section ─────────────────────────────────────────────── */
+.feature-cta {
+  background: linear-gradient(155deg, #ea580c 0%, #f97316 60%, #fb923c 100%);
+  padding: 96px 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.feature-cta::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.04);
+  pointer-events: none;
+}
+.feature-cta-content { position: relative; }
+.feature-cta h2 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 16px;
+  letter-spacing: -0.3px;
+}
+.feature-cta p {
+  font-size: 1.08rem;
+  color: rgba(255,255,255,.8);
+  line-height: 1.7;
+  max-width: 540px;
+  margin: 0 auto 36px;
+  font-family: 'Inter', sans-serif;
+}
+.feature-cta-btns {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .what-grid { grid-template-columns: 1fr; gap: 40px; }
+  .how-grid { grid-template-columns: 1fr; }
+  .benefits-grid { grid-template-columns: 1fr; }
+  .impact-grid { grid-template-columns: 1fr; }
+  .related-inner { flex-direction: column; padding: 32px 24px; }
+  .feature-hero { padding: 108px 0 52px; }
+  .feature-hero-title { font-size: 2rem; }
+}
+@media (max-width: 480px) {
+  .benefits-grid { grid-template-columns: 1fr; }
+  .how-step { flex-direction: column; gap: 12px; }
+}
+</style>
+
+<%- include('partials/head') %>
+<%- include('partials/navbar') %>
+
+<!-- ── Hero ──────────────────────────────────────────────────── -->
+<section class="feature-hero">
+  <div class="container">
+    <div class="feature-hero-content" data-animate="fade-up">
+      <div class="section-tag">Our Features</div>
+      <div class="feature-hero-icon"><%= feature.icon %></div>
+      <h1 class="feature-hero-title"><%= feature.title %></h1>
+      <p class="feature-hero-tagline"><%= feature.tagline %></p>
+      <div class="feature-hero-cta">
+        <a href="/courses" class="btn-white">Browse Courses &rarr;</a>
+        <a href="/contact" class="btn-ghost-white">Talk to an Advisor</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── What This Means ──────────────────────────────────────── -->
+<section class="section">
+  <div class="container">
+    <div class="what-grid">
+      <div>
+        <span class="what-label">What This Means</span>
+        <h2 class="what-heading"><%= feature.what.heading %></h2>
+        <% feature.what.paragraphs.forEach(function(para) { %>
+          <p class="what-text"><%= para %></p>
+        <% }); %>
+        <% if (feature.what.points && feature.what.points.length) { %>
+        <ul style="margin-top:18px;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:10px;">
+          <% feature.what.points.forEach(function(pt) { %>
+          <li style="display:flex;align-items:flex-start;gap:12px;font-size:.93rem;color:var(--text-secondary,#475569);font-family:'Inter',sans-serif;line-height:1.6;">
+            <span style="color:#f97316;font-size:1.1rem;margin-top:1px;flex-shrink:0;">&#10003;</span>
+            <span><%= pt %></span>
+          </li>
+          <% }); %>
+        </ul>
+        <% } %>
+      </div>
+      <div>
+        <div class="what-stat-card">
+          <span class="what-stat-icon"><%= feature.what.statIcon %></span>
+          <span class="what-stat-number"><%= feature.what.statNumber %></span>
+          <p class="what-stat-desc"><%= feature.what.statDesc %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── How We Do It ────────────────────────────────────────── -->
+<section class="section how-section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title" style="font-family:'Oswald',sans-serif;font-weight:700;">How We Do It</h2>
+      <p class="section-sub">A deliberate, step-by-step process refined over thousands of student journeys.</p>
+    </div>
+    <div class="how-grid">
+      <% feature.howSteps.forEach(function(step, i) { %>
+      <div class="how-step">
+        <div class="how-step-num"><%= i + 1 %></div>
+        <div class="how-step-body">
+          <h3><span style="margin-right:8px;"><%= step.icon %></span><%= step.title %></h3>
+          <p><%= step.desc %></p>
+        </div>
+      </div>
+      <% }); %>
+    </div>
+  </div>
+</section>
+
+<!-- ── Benefits ────────────────────────────────────────────── -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title" style="font-family:'Oswald',sans-serif;font-weight:700;">Why It Matters to You</h2>
+      <p class="section-sub">Real, tangible advantages that set Osian Academy graduates apart in the job market.</p>
+    </div>
+    <div class="benefits-grid">
+      <% feature.benefits.forEach(function(benefit) { %>
+      <div class="benefit-card">
+        <div class="benefit-icon"><%= benefit.icon %></div>
+        <h3><%= benefit.title %></h3>
+        <p><%= benefit.desc %></p>
+      </div>
+      <% }); %>
+    </div>
+  </div>
+</section>
+
+<!-- ── Real Student Impact ──────────────────────────────────── -->
+<section class="section impact-section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title" style="font-family:'Oswald',sans-serif;font-weight:700;">Real Student Impact</h2>
+      <p class="section-sub">Numbers that reflect genuine outcomes from our learning community.</p>
+    </div>
+    <div class="impact-grid">
+      <% feature.impacts.forEach(function(impact) { %>
+      <div class="impact-card">
+        <span class="impact-stat"><%= impact.stat %></span>
+        <span class="impact-label"><%= impact.label %></span>
+        <p class="impact-desc"><%= impact.desc %></p>
+      </div>
+      <% }); %>
+    </div>
+  </div>
+</section>
+
+<!-- ── Related Courses ──────────────────────────────────────── -->
+<section class="section related-section">
+  <div class="container">
+    <div class="related-inner">
+      <div class="related-text">
+        <h2>Explore <%= feature.relatedLabel %></h2>
+        <p>Browse our full catalog of courses in this area. Filter by level, duration, and specialization to find the perfect match for your goals.</p>
+      </div>
+      <a href="/courses<%= feature.relatedCategory ? '?category=' + encodeURIComponent(feature.relatedCategory) : '' %>" class="btn btn-primary" style="white-space:nowrap;font-size:1rem;padding:14px 32px;">View Courses &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ──────────────────────────────────────────────────── -->
+<section class="feature-cta">
+  <div class="container">
+    <div class="feature-cta-content" data-animate="fade-up">
+      <h2>Ready to Experience This Firsthand?</h2>
+      <p>Join thousands of students who have already transformed their careers with Osian Academy's hands-on, outcome-focused approach.</p>
+      <div class="feature-cta-btns">
+        <a href="/courses" class="btn-white">Browse All Courses</a>
+        <a href="/contact" class="btn-ghost-white">Speak to an Advisor</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

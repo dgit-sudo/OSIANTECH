@@ -1,6 +1,138 @@
+<style>
+/* ── Course Detail Page Styles ─────────────────────────────────── */
+
+/* Hero slim */
+.page-hero-slim { padding: 2rem 0 1.5rem; background: #111; }
+.page-hero-slim .section-tag { display: inline-block; background: #f97316; color: #fff; font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: .35rem .85rem; border-radius: 4px; }
+
+/* Course banner image */
+.cd-banner { position: relative; border-radius: 12px; overflow: hidden; height: 340px; background: #1a1a2e; margin-bottom: 0; }
+.cd-banner.has-course-image { background-image: var(--course-image); background-size: cover; background-position: center; }
+.cd-banner-gradient { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.2) 0%, rgba(0,0,0,.75) 100%); }
+.cd-banner-body { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.75rem 2rem; }
+.cd-banner-cat { display: inline-block; background: #f97316; color: #fff; font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: .3rem .75rem; border-radius: 3px; margin-bottom: .65rem; }
+.cd-banner-title { font-family: 'Oswald', sans-serif; font-size: 2rem; font-weight: 700; color: #fff; line-height: 1.2; margin: 0; }
+
+/* Snapshot bar */
+.cd-snapshot { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; background: #f4f4f4; border-radius: 0 0 12px 12px; border-top: 3px solid #f97316; margin-bottom: 2rem; }
+.cd-snapshot-item { padding: 1.1rem 1.25rem; text-align: center; border-right: 1px solid #e2e2e2; }
+.cd-snapshot-item:last-child { border-right: none; }
+.cd-snapshot-label { font-size: .7rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: #888; display: block; margin-bottom: .25rem; }
+.cd-snapshot-value { font-size: .95rem; font-weight: 700; color: #1a1a2e; display: block; }
+.cd-snapshot-value.accent { color: #f97316; }
+
+/* Layout grid */
+.cd-layout { display: grid; grid-template-columns: 1fr 340px; gap: 2rem; align-items: start; }
+@media (max-width: 900px) { .cd-layout { grid-template-columns: 1fr; } }
+
+/* Sidebar */
+.cd-sidebar { position: sticky; top: 1.5rem; }
+.sidebar-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 24px rgba(0,0,0,.08); }
+.sidebar-price { display: flex; align-items: baseline; gap: .5rem; margin-bottom: 1.25rem; }
+.sidebar-price-label { font-size: .75rem; font-weight: 600; color: #888; text-transform: uppercase; }
+.sidebar-price-value { font-size: 1.6rem; font-weight: 800; color: #f97316; }
+.btn-block { display: block; width: 100%; text-align: center; margin-bottom: .6rem; }
+.course-enroll-actions { display: flex; flex-direction: column; gap: .5rem; margin-bottom: .6rem; }
+.sidebar-info { list-style: none; padding: 0; margin: 1rem 0 0; border-top: 1px solid #f0f0f0; padding-top: 1rem; }
+.sidebar-info li { display: flex; justify-content: space-between; gap: .5rem; padding: .4rem 0; border-bottom: 1px solid #f8f8f8; font-size: .83rem; }
+.sidebar-label { color: #888; font-weight: 500; }
+.sidebar-value { color: #1a1a2e; font-weight: 600; text-align: right; }
+.sidebar-guarantee { font-size: .78rem; color: #888; margin-top: 1rem; padding-top: .75rem; border-top: 1px solid #f0f0f0; line-height: 1.5; }
+
+/* Section heading style */
+.cd-section { margin-bottom: 2.5rem; }
+.cd-section-heading { font-family: 'Oswald', sans-serif; font-size: 1.45rem; font-weight: 600; color: #1a1a2e; margin: 0 0 1.25rem; padding-bottom: .6rem; border-bottom: 2px solid #f97316; display: inline-block; }
+
+/* About */
+.cd-description { font-size: .97rem; line-height: 1.8; color: #444; margin-bottom: .85rem; }
+
+/* What You'll Learn */
+.cd-learn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem .75rem; }
+@media (max-width: 640px) { .cd-learn-grid { grid-template-columns: 1fr; } }
+.cd-learn-item { display: flex; align-items: flex-start; gap: .6rem; font-size: .88rem; color: #333; line-height: 1.5; padding: .45rem .6rem; background: #fffaf6; border-radius: 6px; border-left: 3px solid #f97316; }
+.cd-learn-icon { color: #f97316; font-weight: 900; flex-shrink: 0; margin-top: .05rem; }
+
+/* Curriculum accordion */
+.cd-accordion { border: 1px solid #e8e8e8; border-radius: 10px; overflow: hidden; }
+.cd-accordion-item { border-bottom: 1px solid #f0f0f0; }
+.cd-accordion-item:last-child { border-bottom: none; }
+.cd-accordion-toggle { width: 100%; background: #fff; border: none; cursor: pointer; padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; text-align: left; gap: 1rem; transition: background .15s; }
+.cd-accordion-toggle:hover { background: #fffaf6; }
+.cd-accordion-toggle[aria-expanded="true"] { background: #fff8f3; }
+.cd-acc-num { background: #f97316; color: #fff; font-size: .7rem; font-weight: 700; width: 1.6rem; height: 1.6rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.cd-acc-heading { font-size: .95rem; font-weight: 600; color: #1a1a2e; flex: 1; }
+.cd-acc-arrow { font-size: .75rem; color: #f97316; font-weight: 700; transition: transform .2s; }
+.cd-accordion-toggle[aria-expanded="true"] .cd-acc-arrow { transform: rotate(180deg); }
+.cd-accordion-body { display: none; padding: 0 1.25rem 1rem 3.5rem; }
+.cd-accordion-toggle[aria-expanded="true"] + .cd-accordion-body { display: block; }
+.cd-accordion-body p { font-size: .88rem; color: #555; line-height: 1.7; margin: 0 0 .5rem; }
+.cd-accordion-body ul { padding-left: 1rem; margin: 0; }
+.cd-accordion-body ul li { font-size: .87rem; color: #555; line-height: 1.65; margin-bottom: .3rem; }
+
+/* Activities */
+.cd-activities-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 640px) { .cd-activities-grid { grid-template-columns: 1fr; } }
+.cd-activity-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; padding: 1.1rem 1.25rem; display: flex; align-items: flex-start; gap: .85rem; transition: box-shadow .2s, border-color .2s; }
+.cd-activity-card:hover { border-color: #f97316; box-shadow: 0 4px 16px rgba(249,115,22,.1); }
+.cd-activity-icon { background: #fff3e8; color: #f97316; font-size: 1.1rem; width: 2.25rem; height: 2.25rem; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.cd-activity-text { font-size: .88rem; font-weight: 500; color: #333; line-height: 1.5; }
+
+/* Tools pills */
+.cd-tools-grid { display: flex; flex-wrap: wrap; gap: .6rem; }
+.cd-tool-pill { background: #1a1a2e; color: #fff; font-size: .8rem; font-weight: 600; padding: .4rem 1rem; border-radius: 50px; letter-spacing: .02em; }
+
+/* Roadmap */
+.cd-roadmap { display: flex; gap: 0; position: relative; overflow-x: auto; padding-bottom: .5rem; }
+.cd-roadmap-line { position: absolute; top: 2.25rem; left: 2.25rem; right: 2.25rem; height: 2px; background: #f0f0f0; z-index: 0; }
+.cd-roadmap-step { flex: 1; min-width: 140px; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; z-index: 1; padding: 0 .5rem; }
+.cd-rm-circle { width: 2.75rem; height: 2.75rem; border-radius: 50%; background: #f4f4f4; border: 3px solid #e2e2e2; display: flex; align-items: center; justify-content: center; font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 700; color: #888; margin-bottom: .75rem; position: relative; z-index: 2; transition: all .2s; }
+.cd-roadmap-step:hover .cd-rm-circle { background: #f97316; border-color: #f97316; color: #fff; }
+.cd-rm-phase { font-family: 'Oswald', sans-serif; font-size: .9rem; font-weight: 600; color: #1a1a2e; margin-bottom: .4rem; }
+.cd-rm-desc { font-size: .78rem; color: #666; line-height: 1.5; }
+@media (max-width: 640px) { .cd-roadmap { flex-direction: column; } .cd-roadmap-line { display: none; } .cd-roadmap-step { flex-direction: row; text-align: left; align-items: flex-start; gap: 1rem; padding: .75rem 0; border-bottom: 1px solid #f0f0f0; } .cd-rm-circle { flex-shrink: 0; } }
+
+/* Jobs */
+.cd-jobs-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+@media (max-width: 768px) { .cd-jobs-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 480px) { .cd-jobs-grid { grid-template-columns: 1fr; } }
+.cd-job-card { background: #fff; border: 1px solid #e8e8e8; border-top: 4px solid #f97316; border-radius: 10px; padding: 1.25rem; transition: box-shadow .2s; }
+.cd-job-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,.1); }
+.cd-job-title { font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 600; color: #1a1a2e; margin-bottom: .35rem; }
+.cd-job-salary { font-size: .85rem; font-weight: 700; color: #f97316; margin-bottom: .5rem; }
+.cd-job-desc { font-size: .82rem; color: #666; line-height: 1.5; }
+
+/* Who Should Enroll */
+.cd-who-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .65rem; }
+.cd-who-item { display: flex; align-items: flex-start; gap: .75rem; font-size: .92rem; color: #333; line-height: 1.55; }
+.cd-who-check { color: #f97316; font-weight: 900; flex-shrink: 0; margin-top: .1rem; font-size: 1rem; }
+
+/* Prerequisites & Cert */
+.cd-keypoints-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+@media (max-width: 640px) { .cd-keypoints-grid { grid-template-columns: 1fr; } }
+.cd-kp-block { background: #f9f9f9; border-radius: 10px; padding: 1.25rem; }
+.cd-kp-block h4 { font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 600; color: #1a1a2e; margin: 0 0 .85rem; display: flex; align-items: center; gap: .5rem; }
+.cd-kp-block ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .4rem; }
+.cd-kp-block ul li { font-size: .85rem; color: #555; line-height: 1.5; padding-left: 1.2rem; position: relative; }
+.cd-kp-block ul li::before { content: '›'; position: absolute; left: 0; color: #f97316; font-weight: 700; }
+.cd-kp-block ul li.empty-state { color: #aaa; font-style: italic; }
+
+/* FAQ accordion */
+.cd-faq { display: flex; flex-direction: column; gap: .5rem; }
+.cd-faq-item { border: 1px solid #e8e8e8; border-radius: 8px; overflow: hidden; }
+.cd-faq-toggle { width: 100%; background: #fff; border: none; cursor: pointer; padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; text-align: left; font-size: .92rem; font-weight: 600; color: #1a1a2e; transition: background .15s; }
+.cd-faq-toggle:hover { background: #fffaf6; }
+.cd-faq-toggle[aria-expanded="true"] { background: #fff8f3; color: #f97316; }
+.cd-faq-arrow { font-size: .75rem; color: #f97316; transition: transform .2s; }
+.cd-faq-toggle[aria-expanded="true"] .cd-faq-arrow { transform: rotate(180deg); }
+.cd-faq-body { display: none; padding: 0 1.25rem 1rem; }
+.cd-faq-toggle[aria-expanded="true"] + .cd-faq-body { display: block; }
+.cd-faq-body p { font-size: .88rem; color: #555; line-height: 1.7; margin: 0; }
+</style>
+
 <%- include('partials/head') %>
 <%- include('partials/navbar') %>
 
+<%/* ── Section 1: Slim Page Hero ───────────────────────────────────── */%>
 <section class="page-hero page-hero-slim">
   <div class="container">
     <div class="page-hero-content" data-animate="fade-up">
@@ -9,90 +141,223 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section" style="padding-top: 1.5rem;">
   <div class="container">
-    <div class="course-img course-img-<%= (course.id % 9) + 1 %> course-img-lg <%= course.image ? 'has-course-image' : '' %>" data-animate="fade-up"<% if (course.image) { %> style="--course-image: url('<%= course.image %>');"<% } %>>
-      <div class="course-category-tag"><%= course.category || 'General' %></div>
-      <div class="course-img-title-overlay"><%= course.title %></div>
+
+    <%/* ── Section 2: Course Banner + Snapshot Bar ─────────────────── */%>
+    <div class="cd-banner course-img course-img-<%= (course.id % 9) + 1 %> <%= course.image ? 'has-course-image' : '' %>"
+      <% if (course.image) { %> style="--course-image: url('<%= course.image %>');"<% } %>>
+      <div class="cd-banner-gradient"></div>
+      <div class="cd-banner-body">
+        <div class="cd-banner-cat"><%= course.category || 'General' %></div>
+        <h1 class="cd-banner-title"><%= course.title %></h1>
+      </div>
     </div>
-    <div class="course-detail-grid">
-      <div class="course-detail-main" data-animate="fade-right">
-        <div class="detail-card">
-          <h2>Full Course Description</h2>
-          <p class="detail-description"><%= course.description %></p>
 
-          <% const allPoints = Array.isArray(course.keyPoints) ? course.keyPoints.filter(Boolean) : []; %>
-          <% const prereqPoints = allPoints.filter(function(point) { return /^pre[\s-]*requisite\s*:/i.test(point); }); %>
-          <% const certPoints = allPoints.filter(function(point) { return /^certification\s*:/i.test(point); }); %>
-          <% const learnPoints = allPoints.filter(function(point) { return !/^pre[\s-]*requisite\s*:/i.test(point) && !/^certification\s*:/i.test(point); }); %>
+    <div class="cd-snapshot">
+      <div class="cd-snapshot-item">
+        <span class="cd-snapshot-label">Duration</span>
+        <span class="cd-snapshot-value"><%= course.duration || 'Flexible' %></span>
+      </div>
+      <div class="cd-snapshot-item">
+        <span class="cd-snapshot-label">Mode</span>
+        <span class="cd-snapshot-value accent"><%= course.snapshot.mode %></span>
+      </div>
+      <div class="cd-snapshot-item">
+        <span class="cd-snapshot-label">Level</span>
+        <span class="cd-snapshot-value"><%= course.level || 'All Levels' %></span>
+      </div>
+      <div class="cd-snapshot-item">
+        <span class="cd-snapshot-label">Fee (Non-Metro)</span>
+        <span class="cd-snapshot-value">INR <%= Number(course.nonMetroFee || course.displayFee || 0).toLocaleString('en-IN') %></span>
+      </div>
+    </div>
 
-          <% if (prereqPoints.length || certPoints.length || learnPoints.length) { %>
-          <div class="detail-highlights">
-            <% if (learnPoints.length) { %>
-            <section class="highlight-block">
-              <h3>Key Learning Points</h3>
-              <ul class="learn-list">
-                <% learnPoints.forEach(function(point) { %>
-                <li><%= point %></li>
-                <% }) %>
-              </ul>
-            </section>
-            <% } %>
+    <%/* ── Two-column layout ──────────────────────────────────────────── */%>
+    <div class="cd-layout">
 
-            <% if (prereqPoints.length) { %>
-            <section class="highlight-block prereq-block">
-              <h3>Prerequisites</h3>
-              <ul class="learn-list">
-                <% prereqPoints.forEach(function(point) { %>
-                <li><%= point.replace(/^pre[\s-]*requisite\s*:\s*/i, '') %></li>
-                <% }) %>
-              </ul>
-            </section>
-            <% } %>
+      <%/* ── Main column ──────────────────────────────────────────────── */%>
+      <div class="cd-main" data-animate="fade-right">
 
-            <% if (certPoints.length) { %>
-            <section class="highlight-block">
-              <h3>Certification</h3>
-              <ul class="learn-list">
-                <% certPoints.forEach(function(point) { %>
-                <% const certText = point.replace(/^certification\s*:\s*/i, '').replace(/\bsamyak\b/gi, 'Osian'); %>
-                <li><%= certText %></li>
-                <% }) %>
-              </ul>
-            </section>
-            <% } %>
-          </div>
+        <%/* ── Section 3: About This Course ────────────────────────── */%>
+        <div class="cd-section">
+          <h2 class="cd-section-heading">About This Course</h2>
+          <p class="cd-description"><%= course.description %></p>
+          <% if (Array.isArray(course.detailParagraphs) && course.detailParagraphs.length > 1) { %>
+            <% course.detailParagraphs.slice(1).forEach(function(p) { %>
+              <p class="cd-description"><%= p %></p>
+            <% }) %>
           <% } %>
+          <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:.75rem;">
+            <span style="background:#fff3e8;color:#f97316;font-size:.78rem;font-weight:700;padding:.35rem .85rem;border-radius:50px;"><%= course.snapshot.sessions %></span>
+            <span style="background:#e8f5e9;color:#2e7d32;font-size:.78rem;font-weight:700;padding:.35rem .85rem;border-radius:50px;"><%= course.snapshot.support %></span>
+            <span style="background:#e3f2fd;color:#1565c0;font-size:.78rem;font-weight:700;padding:.35rem .85rem;border-radius:50px;"><%= course.snapshot.cert %></span>
+          </div>
+        </div>
 
-          <% if (course.contentSections && course.contentSections.length) { %>
-          <div class="course-sections-long">
-            <% course.contentSections.forEach(function(section) { %>
-            <section class="course-section-block">
-              <h3><%= section.heading %></h3>
-              <% if (section.paragraphs && section.paragraphs.length) { %>
-              <% section.paragraphs.forEach(function(p) { %>
-              <p class="detail-description"><%= p %></p>
-              <% }) %>
-              <% } %>
-              <% if (section.bullets && section.bullets.length) { %>
-              <ul class="learn-list">
-                <% section.bullets.forEach(function(point) { %>
-                <li><%= point %></li>
-                <% }) %>
-              </ul>
-              <% } %>
-            </section>
+        <%/* ── Section 4: What You'll Learn ──────────────────────── */%>
+        <%
+          const allPoints = Array.isArray(course.keyPoints) ? course.keyPoints.filter(Boolean) : [];
+          const prereqPoints = allPoints.filter(function(point) { return /^pre[\s-]*requisite\s*:/i.test(point); });
+          const certPoints = allPoints.filter(function(point) { return /^certification\s*:/i.test(point); });
+          const learnPoints = allPoints.filter(function(point) { return !/^pre[\s-]*requisite\s*:/i.test(point) && !/^certification\s*:/i.test(point); });
+        %>
+        <% if (learnPoints.length) { %>
+        <div class="cd-section">
+          <h2 class="cd-section-heading">What You'll Learn</h2>
+          <div class="cd-learn-grid">
+            <% learnPoints.forEach(function(point) { %>
+            <div class="cd-learn-item">
+              <span class="cd-learn-icon">✓</span>
+              <span><%= point %></span>
+            </div>
             <% }) %>
           </div>
-          <% } else if (course.detailParagraphs && course.detailParagraphs.length) { %>
-          <% course.detailParagraphs.forEach(function(p) { %>
-          <p class="detail-description"><%= p %></p>
-          <% }) %>
-          <% } %>
         </div>
-      </div>
-      <div class="course-detail-sidebar" data-animate="fade-left">
-        <div class="sidebar-card sticky-card">
+        <% } %>
+
+        <%/* ── Section 5: Course Curriculum ──────────────────────── */%>
+        <% if (course.contentSections && course.contentSections.length) { %>
+        <div class="cd-section">
+          <h2 class="cd-section-heading">Course Curriculum</h2>
+          <div class="cd-accordion" id="cd-curriculum">
+            <% course.contentSections.forEach(function(section, idx) { %>
+            <div class="cd-accordion-item">
+              <button class="cd-accordion-toggle" aria-expanded="<%= idx === 0 ? 'true' : 'false' %>" data-cd-toggle>
+                <span class="cd-acc-num"><%= idx + 1 %></span>
+                <span class="cd-acc-heading"><%= section.heading %></span>
+                <span class="cd-acc-arrow">▼</span>
+              </button>
+              <div class="cd-accordion-body">
+                <% if (section.paragraphs && section.paragraphs.length) { %>
+                  <% section.paragraphs.forEach(function(p) { %><p><%= p %></p><% }) %>
+                <% } %>
+                <% if (section.bullets && section.bullets.length) { %>
+                <ul>
+                  <% section.bullets.forEach(function(b) { %><li><%= b %></li><% }) %>
+                </ul>
+                <% } %>
+              </div>
+            </div>
+            <% }) %>
+          </div>
+        </div>
+        <% } %>
+
+        <%/* ── Section 6: Hands-on Activities ────────────────────── */%>
+        <div class="cd-section">
+          <h2 class="cd-section-heading">Hands-on Activities</h2>
+          <div class="cd-activities-grid">
+            <% const activityIcons = ['🛠️','🔬','🎯','🚀','🔍','🎨']; %>
+            <% course.activities.forEach(function(act, i) { %>
+            <div class="cd-activity-card">
+              <div class="cd-activity-icon"><%= activityIcons[i % activityIcons.length] %></div>
+              <div class="cd-activity-text"><%= act %></div>
+            </div>
+            <% }) %>
+          </div>
+        </div>
+
+        <%/* ── Section 7: Tools & Technologies ───────────────────── */%>
+        <div class="cd-section">
+          <h2 class="cd-section-heading">Tools &amp; Technologies</h2>
+          <div class="cd-tools-grid">
+            <% course.toolsList.forEach(function(tool) { %>
+            <span class="cd-tool-pill"><%= tool %></span>
+            <% }) %>
+          </div>
+        </div>
+
+        <%/* ── Section 8: Career Roadmap ──────────────────────────── */%>
+        <div class="cd-section">
+          <h2 class="cd-section-heading">Career Roadmap</h2>
+          <div class="cd-roadmap">
+            <div class="cd-roadmap-line"></div>
+            <% course.roadmap.forEach(function(rm) { %>
+            <div class="cd-roadmap-step">
+              <div class="cd-rm-circle"><%= rm.step %></div>
+              <div class="cd-rm-phase"><%= rm.phase %></div>
+              <div class="cd-rm-desc"><%= rm.desc %></div>
+            </div>
+            <% }) %>
+          </div>
+        </div>
+
+        <%/* ── Section 9: Job Opportunities ──────────────────────── */%>
+        <div class="cd-section">
+          <h2 class="cd-section-heading">Job Opportunities</h2>
+          <div class="cd-jobs-grid">
+            <% course.jobs.forEach(function(job) { %>
+            <div class="cd-job-card">
+              <div class="cd-job-title"><%= job.title %></div>
+              <div class="cd-job-salary"><%= job.salary %></div>
+              <div class="cd-job-desc"><%= job.desc || '' %></div>
+            </div>
+            <% }) %>
+          </div>
+        </div>
+
+        <%/* ── Section 10: Who Should Enroll ─────────────────────── */%>
+        <div class="cd-section">
+          <h2 class="cd-section-heading">Who Should Enroll</h2>
+          <ul class="cd-who-list">
+            <% course.whoShouldEnroll.forEach(function(item) { %>
+            <li class="cd-who-item"><span class="cd-who-check">✓</span><span><%= item %></span></li>
+            <% }) %>
+          </ul>
+        </div>
+
+        <%/* ── Section 11: Prerequisites & Certification ──────────── */%>
+        <div class="cd-section">
+          <h2 class="cd-section-heading">Prerequisites &amp; Certification</h2>
+          <div class="cd-keypoints-grid">
+            <div class="cd-kp-block">
+              <h4>🎓 Prerequisites</h4>
+              <ul>
+                <% if (prereqPoints.length) { %>
+                  <% prereqPoints.forEach(function(p) { %><li><%= p.replace(/^pre[\s-]*requisite\s*:\s*/i, '') %></li><% }) %>
+                <% } else { %>
+                  <li class="empty-state">No specific prerequisites — open to all learners.</li>
+                <% } %>
+              </ul>
+            </div>
+            <div class="cd-kp-block">
+              <h4>📜 Certification</h4>
+              <ul>
+                <% if (certPoints.length) { %>
+                  <% certPoints.forEach(function(p) { %>
+                  <li><%= p.replace(/^certification\s*:\s*/i, '').replace(/\bsamyak\b/gi, 'Osian') %></li>
+                  <% }) %>
+                <% } else { %>
+                  <li>Osian Academy completion certificate awarded on finishing the course.</li>
+                <% } %>
+                <li>Recognised by industry partners and placement networks.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <%/* ── Section 12: FAQs ──────────────────────────────────── */%>
+        <div class="cd-section">
+          <h2 class="cd-section-heading">Frequently Asked Questions</h2>
+          <div class="cd-faq" id="cd-faq">
+            <% course.enrichedFaqs.forEach(function(faq, i) { %>
+            <div class="cd-faq-item">
+              <button class="cd-faq-toggle" aria-expanded="<%= i === 0 ? 'true' : 'false' %>" data-cd-faq-toggle>
+                <%= faq.q %>
+                <span class="cd-faq-arrow">▼</span>
+              </button>
+              <div class="cd-faq-body"><p><%= faq.a %></p></div>
+            </div>
+            <% }) %>
+          </div>
+        </div>
+
+      </div><%/* end .cd-main */%>
+
+      <%/* ── Sidebar ──────────────────────────────────────────────── */%>
+      <div class="cd-sidebar" data-animate="fade-left">
+        <div class="sidebar-card">
           <div class="sidebar-price">
             <span class="sidebar-price-label">Fee</span>
             <span
@@ -103,16 +368,14 @@
               INR <%= Number(course.displayFee || course.nonMetroFee || course.metroFee || 0).toLocaleString('en-IN') %>
             </span>
           </div>
-          <button type="button" class="btn btn-primary btn-block" data-enroll-toggle>Enroll</button>
+          <button type="button" class="btn btn-primary btn-block" data-enroll-toggle>Enroll Now</button>
           <div class="course-enroll-actions" data-enroll-actions hidden>
             <a
               href="https://wa.me/919624284999"
               target="_blank"
               rel="noopener noreferrer"
               class="btn btn-ghost btn-block"
-            >
-              Get More Information
-            </a>
+            >Get More Information</a>
             <a
               href="/checkout/<%= course.id %>"
               class="btn btn-primary btn-block"
@@ -120,30 +383,65 @@
               data-course-id="<%= course.id %>"
             >Buy Now</a>
           </div>
-          <a href="/courses" class="btn btn-primary btn-block">All Courses</a>
-          <a href="/courses" class="btn btn-ghost btn-block">Back to Courses</a>
+          <a href="/courses" class="btn btn-ghost btn-block">All Courses</a>
           <ul class="sidebar-info">
             <li>
-              <span class="sidebar-label">Title</span>
-              <span class="sidebar-value"><%= course.title %></span>
+              <span class="sidebar-label">Duration</span>
+              <span class="sidebar-value"><%= course.duration || 'Flexible' %></span>
+            </li>
+            <li>
+              <span class="sidebar-label">Level</span>
+              <span class="sidebar-value"><%= course.level || 'All Levels' %></span>
+            </li>
+            <li>
+              <span class="sidebar-label">Mode</span>
+              <span class="sidebar-value"><%= course.snapshot.mode %></span>
+            </li>
+            <li>
+              <span class="sidebar-label">Sessions</span>
+              <span class="sidebar-value"><%= course.snapshot.sessions %></span>
+            </li>
+            <li>
+              <span class="sidebar-label">Support</span>
+              <span class="sidebar-value"><%= course.snapshot.support %></span>
+            </li>
+            <li>
+              <span class="sidebar-label">Certificate</span>
+              <span class="sidebar-value"><%= course.snapshot.cert %></span>
             </li>
             <li>
               <span class="sidebar-label">Category</span>
               <span class="sidebar-value"><%= course.category || 'General' %></span>
             </li>
-            <li>
-              <span class="sidebar-label">Type</span>
-              <span class="sidebar-value">Professional Course</span>
-            </li>
           </ul>
           <div class="sidebar-guarantee">
-            <span>ℹ️</span> This page shows curated course details, prerequisites, and certification info.
+            ℹ️ Live 1-on-1 sessions with flexible scheduling. Placement support and Osian certificate included.
           </div>
         </div>
       </div>
-    </div>
+
+    </div><%/* end .cd-layout */%>
   </div>
 </section>
+
+<script>
+(function () {
+  // Curriculum accordion
+  document.querySelectorAll('[data-cd-toggle]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+    });
+  });
+  // FAQ accordion
+  document.querySelectorAll('[data-cd-faq-toggle]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+    });
+  });
+})();
+</script>
 
 <script type="module" src="/js/course-detail-page.js?v=<%= assetVersion %>"></script>
 
