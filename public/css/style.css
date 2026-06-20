@@ -1231,6 +1231,20 @@ h1,h2,h3,h4,h5,h6 {
 .scat-tile-arrow { margin-top: 18px; font-size: 1.1rem; color: #94a3b8; transition: all .2s; align-self: flex-end; }
 
 /* ════════════════════════════════════════════════════════════════
+   38e. WHAT WE OFFER
+   ════════════════════════════════════════════════════════════════ */
+.s-offers { color: #fff; }
+.soff-head { text-align: center; margin-bottom: 52px; }
+.soff-title { font-family: 'Oswald', sans-serif; font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 700; color: #fff; }
+.soff-sub { font-size: 1rem; color: rgba(255,255,255,.85); max-width: 580px; margin: 12px auto 0; line-height: 1.7; }
+.soff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.soff-card { background: rgba(255,255,255,.1); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.15); border-radius: 16px; padding: 32px 28px; text-align: center; transition: all .2s; }
+.soff-card:hover { background: rgba(255,255,255,.15); border-color: rgba(255,255,255,.3); transform: translateY(-4px); }
+.soff-icon { font-size: 2.8rem; margin-bottom: 16px; display: block; }
+.soff-card-title { font-family: 'Oswald', sans-serif; font-size: 1.2rem; font-weight: 700; color: #fff; margin-bottom: 10px; }
+.soff-card-desc { font-size: .95rem; color: rgba(255,255,255,.8); line-height: 1.65; }
+
+/* ════════════════════════════════════════════════════════════════
    39. HOME — RESPONSIVE
    ════════════════════════════════════════════════════════════════ */
 @media (max-width: 1100px) {
@@ -1254,12 +1268,14 @@ h1,h2,h3,h4,h5,h6 {
   .swo-grid { grid-template-columns: 1fr 1fr; }
   .scat-grid { grid-template-columns: repeat(2, 1fr); }
   .shiw-arrow { display: none; }
+  .soff-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 640px) {
   .s-hero { padding: 32px 0 40px; }
   .swo-grid { grid-template-columns: 1fr; }
   .scat-grid { grid-template-columns: 1fr 1fr; }
   .shiw-steps { flex-direction: column; align-items: center; }
+  .soff-grid { grid-template-columns: 1fr; }
   .sh-headline { font-size: 2.6rem; }
   .sft-grid { grid-template-columns: 1fr; }
   .spr-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
