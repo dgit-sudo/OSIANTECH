@@ -5,26 +5,26 @@
 
 /* ── 1. DESIGN TOKENS ─────────────────────────────────────────── */
 :root {
-  /* Backgrounds — Deep Dark Palette */
-  --bg:      #0f1419;
-  --bg-2:    #1a1f2e;
-  --bg-3:    #141a25;
-  --bg-card: #1e2433;
-  --bg-blue-soft: #1a2540;
-  --bg-dark: #0a0d13;
+  /* Backgrounds — GitHub Dark Inspired */
+  --bg:      #0D1117;
+  --bg-2:    #161B22;
+  --bg-3:    #0D1117;
+  --bg-card: #21262D;
+  --bg-blue-soft: #1C2128;
+  --bg-dark: #010409;
 
-  /* Brand Colors — Vibrant Cyan */
-  --blue:       #00d9ff;
-  --blue-dark:  #00b8cc;
-  --blue-light: #33e5ff;
-  --blue-pale:  #1a3d4d;
-  --blue-muted: rgba(0,217,255,0.12);
+  /* Brand Colors — Bright Blue */
+  --blue:       #58A6FF;
+  --blue-dark:  #4184E4;
+  --blue-light: #79C0FF;
+  --blue-pale:  #0F2948;
+  --blue-muted: rgba(88,166,255,0.15);
 
-  /* Accent Warm Coral/Peach */
-  --orange:       #ff7f50;
-  --orange-dark:  #e06a3a;
-  --orange-pale:  #3a2620;
-  --orange-muted: rgba(255,127,80,0.12);
+  /* Accent Warm Red */
+  --orange:       #FF7B72;
+  --orange-dark:  #DA3633;
+  --orange-pale:  #3D2D28;
+  --orange-muted: rgba(255,123,114,0.15);
 
   /* Support colours */
   --green:  #4ade80;
@@ -32,29 +32,29 @@
   --amber:  #fbbf24;
 
   /* Text */
-  --text-primary:   #f5f7fa;
-  --text-secondary: #cbd5e1;
-  --text-muted:     #94a3b8;
+  --text-primary:   #E6EDF3;
+  --text-secondary: #8B949E;
+  --text-muted:     #6E7681;
   --text-white:     #ffffff;
 
   /* Borders */
-  --border:       #2a3040;
-  --border-dark:  #0f1419;
-  --border-blue:  rgba(0,217,255,0.25);
+  --border:       #30363D;
+  --border-dark:  #0D1117;
+  --border-blue:  rgba(88,166,255,0.25);
 
   /* Solid colours */
-  --grad-blue:   #00d9ff;
-  --grad-orange: #ff7f50;
-  --grad-hero:   #1a1f2e;
-  --grad-dark:   #0a0d13;
+  --grad-blue:   #58A6FF;
+  --grad-orange: #FF7B72;
+  --grad-hero:   #161B22;
+  --grad-dark:   #010409;
 
   /* Shadows */
   --shadow-xs: 0 1px 2px rgba(0,0,0,.4);
   --shadow-sm: 0 1px 3px rgba(0,0,0,.5);
   --shadow:    0 2px 8px rgba(0,0,0,.6);
   --shadow-lg: 0 4px 16px rgba(0,0,0,.7);
-  --shadow-blue: 0 2px 12px rgba(0,217,255,.25);
-  --shadow-card-hover: 0 4px 20px rgba(0,217,255,.3);
+  --shadow-blue: 0 2px 12px rgba(88,166,255,.25);
+  --shadow-card-hover: 0 4px 20px rgba(88,166,255,.3);
 
   /* Radius */
   --r-sm: 6px;
