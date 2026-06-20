@@ -978,7 +978,7 @@ h1,h2,h3,h4,h5,h6 {
 /* ════════════════════════════════════════════════════════════════
    27. HERO (Samyak style)
    ════════════════════════════════════════════════════════════════ */
-.s-hero { background: #fff; padding: 52px 0 48px; margin-top: 64px; }
+.s-hero { background: #f5f7fa; padding: 52px 0 48px; margin-top: 64px; }
 .sh-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
 
 /* Left side */
@@ -1118,7 +1118,7 @@ h1,h2,h3,h4,h5,h6 {
 /* ════════════════════════════════════════════════════════════════
    34. ONE PLATFORM SOLUTION
    ════════════════════════════════════════════════════════════════ */
-.s-oneplatform { background: #fff; padding: 64px 0; text-align: center; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.s-oneplatform { background: #f5f7fa; padding: 64px 0; text-align: center; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 .sop-inner { max-width: 680px; margin: 0 auto; }
 .sop-tagline { font-size: 1.35rem; font-weight: 700; color: var(--orange); font-family: 'Poppins', sans-serif; margin-bottom: 14px; letter-spacing: .02em; }
 .sop-body { font-size: .97rem; color: var(--text-secondary); line-height: 1.72; font-family: 'Inter', sans-serif; margin-bottom: 28px; }
@@ -1179,7 +1179,7 @@ h1,h2,h3,h4,h5,h6 {
 /* ════════════════════════════════════════════════════════════════
    38. PLACEMENT PARTNERS
    ════════════════════════════════════════════════════════════════ */
-.s-partners { background: #fff; }
+.s-partners { background: #f5f7fa; }
 .spart-head { text-align: center; margin-bottom: 36px; }
 .spart-title { font-family: 'Poppins', sans-serif; font-size: clamp(1.6rem, 2.8vw, 2.1rem); font-weight: 700; color: #0f172a; letter-spacing: .01em; }
 .spart-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
