@@ -243,12 +243,12 @@ h1,h2,h3,h4,h5,h6 {
 .btn-outline-white:hover { background: rgba(255,255,255,.15); border-color: #fff; }
 
 .btn-white {
-  background: #fff;
-  color: var(--blue-dark);
+  background: var(--bg-card);
+  color: var(--blue);
   border-color: transparent;
   font-weight: 700;
 }
-.btn-white:hover { background: var(--blue-pale); }
+.btn-white:hover { background: var(--blue-muted); }
 
 .btn-card {
   background: var(--blue-muted);
@@ -967,9 +967,9 @@ h1,h2,h3,h4,h5,h6 {
 /* ════════════════════════════════════════════════════════════════
    26. TOP BAR (Samyak style)
    ════════════════════════════════════════════════════════════════ */
-.s-topbar { background: #fff8e1; border-bottom: 2px solid #fde68a; overflow: hidden; height: 38px; display: flex; align-items: center; margin-top: 64px; }
+.s-topbar { background: rgba(233,69,96,.1); border-bottom: 1px solid rgba(233,69,96,.2); overflow: hidden; height: 38px; display: flex; align-items: center; margin-top: 64px; }
 .stb-scroll { display: flex; align-items: center; gap: 0; white-space: nowrap; animation: ticker 36s linear infinite; }
-.stb-pill { color: #92400e; font-size: .79rem; font-family: 'Inter', sans-serif; font-weight: 600; text-decoration: none; padding: 0 14px; border-right: 1px solid #fde68a; transition: color .15s; letter-spacing: .01em; }
+.stb-pill { color: var(--orange); font-size: .79rem; font-family: 'Inter', sans-serif; font-weight: 600; text-decoration: none; padding: 0 14px; border-right: 1px solid rgba(233,69,96,.2); transition: color 0s; letter-spacing: .01em; }
 .stb-pill:hover { color: var(--orange); }
 .stb-pill-cta { background: var(--orange); color: #fff !important; padding: 4px 14px; border-radius: 4px; margin-left: 8px; }
 .stb-pill-cta:hover { background: var(--orange-dark); }
@@ -981,15 +981,15 @@ h1,h2,h3,h4,h5,h6 {
 .sh-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
 
 /* Left side */
-.sh-headline { font-family: 'Oswald', 'Inter', sans-serif; font-size: clamp(2.8rem, 5.8vw, 4.6rem); font-weight: 700; line-height: 1.08; color: #0f172a; margin-bottom: 14px; text-transform: uppercase; letter-spacing: .01em; }
+.sh-headline { font-family: 'Poppins', 'Inter', sans-serif; font-size: clamp(2.8rem, 5.8vw, 4.6rem); font-weight: 700; line-height: 1.08; color: var(--text-primary); margin-bottom: 14px; text-transform: uppercase; letter-spacing: .01em; }
 .sh-hl { color: var(--orange); }
-.sh-placement { font-size: 1.1rem; font-weight: 700; color: var(--orange); background: #fff7ed; display: inline-block; padding: 6px 18px; border-radius: 6px; margin-bottom: 22px; font-family: 'Poppins', sans-serif; border-left: 4px solid var(--orange); letter-spacing: .02em; }
+.sh-placement { font-size: 1.1rem; font-weight: 700; color: var(--orange); background: var(--orange-muted); display: inline-block; padding: 6px 18px; border-radius: 6px; margin-bottom: 22px; font-family: 'Poppins', sans-serif; border-left: 4px solid var(--orange); letter-spacing: .02em; }
 .sh-pill-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
-.sh-pill { background: #fff; border: 2px solid #e2e8f0; border-radius: 8px; padding: 10px 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
-.sh-pill-num { display: block; font-size: 1.2rem; font-weight: 900; color: #0f172a; font-family: 'Poppins', sans-serif; line-height: 1; }
-.sh-pill-lbl { display: block; font-size: .7rem; color: #64748b; font-family: 'Inter', sans-serif; }
-.sh-join { background: #f97316; color: #fff; font-weight: 800; font-family: 'Inter', sans-serif; font-size: .9rem; padding: 12px 22px; border-radius: 8px; text-decoration: none; transition: background .2s; white-space: nowrap; }
-.sh-join:hover { background: #ea6c00; }
+.sh-pill { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; text-align: center; box-shadow: var(--shadow-xs); }
+.sh-pill-num { display: block; font-size: 1.2rem; font-weight: 900; color: var(--blue); font-family: 'Poppins', sans-serif; line-height: 1; }
+.sh-pill-lbl { display: block; font-size: .7rem; color: var(--text-secondary); font-family: 'Inter', sans-serif; }
+.sh-join { background: var(--orange); color: #fff; font-weight: 800; font-family: 'Inter', sans-serif; font-size: .9rem; padding: 12px 22px; border-radius: 8px; text-decoration: none; transition: background 0s; white-space: nowrap; }
+.sh-join:hover { background: var(--orange-dark); }
 .sh-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 20px; }
 .sh-tags span { font-size: .75rem; color: #475569; font-family: 'Inter', sans-serif; background: var(--bg-2); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; }
 .sh-partner-row { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; padding-top: 8px; border-top: 1px solid var(--border); }
