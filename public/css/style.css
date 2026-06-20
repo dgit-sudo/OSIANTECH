@@ -1041,22 +1041,27 @@ h1,h2,h3,h4,h5,h6 {
 .sa-vid-ch { font-size: .78rem; color: rgba(255,255,255,.65); font-family: 'Inter', sans-serif; }
 
 /* ════════════════════════════════════════════════════════════════
-   29. FEATURE CARDS (6 boxes)
+   29. FEATURE CARDS (6 boxes) — REDESIGNED
    ════════════════════════════════════════════════════════════════ */
-.sft-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
-.sft-card { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 28px 22px; display: flex; flex-direction: column; gap: 10px; transition: transform .22s, box-shadow .22s, border-color .22s; }
-.sft-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(0,0,0,.09); border-color: rgba(249,115,22,.35); }
-.sft-icon { width: 52px; height: 52px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.45rem; }
-.sft-blue   { background: #dbeafe; }
-.sft-green  { background: #dcfce7; }
-.sft-purple { background: #ede9fe; }
-.sft-sky    { background: #e0f2fe; }
-.sft-amber  { background: #fef3c7; }
-.sft-red    { background: #fee2e2; }
-.sft-card h3 { font-size: .97rem; font-weight: 700; color: #0f172a; font-family: 'Inter', sans-serif; line-height: 1.3; }
-.sft-card p { font-size: .85rem; color: var(--text-secondary); line-height: 1.65; font-family: 'Inter', sans-serif; flex: 1; }
-.sft-link { font-size: .82rem; font-weight: 700; color: var(--orange); font-family: 'Inter', sans-serif; text-decoration: none; }
-.sft-link:hover { text-decoration: underline; }
+.s-features { background: #f8fafc; }
+.sft-head { text-align: center; margin-bottom: 52px; }
+.sft-title { font-family: 'Oswald', sans-serif; font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 700; color: #0c2d57; }
+.sft-sub { font-size: 1.05rem; color: #64748b; max-width: 600px; margin: 12px auto 0; line-height: 1.7; }
+.sft-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.sft-card { background: #fff; border: 2px solid transparent; border-radius: 18px; padding: 36px 28px; display: flex; flex-direction: column; gap: 14px; transition: all .35s cubic-bezier(.34,.1,.64,1); position: relative; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,.06); }
+.sft-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: transparent; transition: background .35s; }
+.sft-card-blue::before { background: #1a56db; }
+.sft-card-green::before { background: #10b981; }
+.sft-card-purple::before { background: #8b5cf6; }
+.sft-card-sky::before { background: #0ea5e9; }
+.sft-card-amber::before { background: #f59e0b; }
+.sft-card-red::before { background: #ef4444; }
+.sft-card:hover { transform: translateY(-12px) scale(1.02); box-shadow: 0 16px 48px rgba(0,0,0,.12); border-color: rgba(26,86,219,.1); }
+.sft-icon { font-size: 3rem; margin-bottom: 8px; }
+.sft-card h3 { font-family: 'Oswald', sans-serif; font-size: 1.15rem; font-weight: 700; color: #0c2d57; line-height: 1.4; }
+.sft-card p { font-size: .92rem; color: #64748b; line-height: 1.7; flex: 1; }
+.sft-link { font-family: 'Oswald', sans-serif; font-size: .9rem; font-weight: 700; color: #1a56db; text-decoration: none; transition: all .2s; align-self: flex-start; }
+.sft-link:hover { color: #0c2d57; text-decoration: underline; transform: translateX(4px); }
 
 /* ════════════════════════════════════════════════════════════════
    30. STATS BAND (light)
