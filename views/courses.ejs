@@ -123,12 +123,12 @@ const catMeta = [
   </div>
 </section>
 
-<% catMeta.forEach(function(cat, index) { %>
+<% catMeta.forEach(function(cat) { %>
 <%
   const catCourses = (typeof courses !== 'undefined' ? courses : []).filter(c => c.category === cat.name).slice(0, 8);
   if (!catCourses.length) return;
 %>
-<section class="section courses-category-section <%= index % 2 === 1 ? 'section-alt' : '' %>">
+<section class="section courses-category-section">
   <div class="container">
     <div class="section-header-row">
       <div>
@@ -167,7 +167,7 @@ const catMeta = [
 
 <% } else { %>
 
-<section class="section section-alt courses-results-section">
+<section class="section courses-results-section">
   <div class="container">
     <div class="section-header-row">
       <div>

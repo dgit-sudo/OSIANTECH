@@ -87,6 +87,60 @@ if (hamburger && navLinks && navActions) {
   });
 }
 
+/* ---- Courses mega menu ---- */
+(() => {
+  const navbarRoot = document.getElementById('navbar');
+  const coursesGroup = navbarRoot?.querySelector('[data-nav-courses-group]');
+  const coursesToggle = navbarRoot?.querySelector('[data-nav-courses-toggle]');
+  const menu = navbarRoot?.querySelector('[data-nav-courses-menu]');
+  if (!navbarRoot || !coursesGroup || !coursesToggle || !menu) return;
+
+  const categories = Array.from(menu.querySelectorAll('[data-nav-course-category]'));
+  const panels = Array.from(menu.querySelectorAll('[data-nav-course-panel]'));
+  if (!categories.length || !panels.length) return;
+
+  const activate = (key) => {
+    categories.forEach((button) => {
+      const active = button.dataset.navCourseCategory === key;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-expanded', active ? 'true' : 'false');
+    });
+
+    panels.forEach((panel) => {
+      panel.classList.toggle('is-active', panel.dataset.navCoursePanel === key);
+    });
+  };
+
+  const firstKey = categories[0].dataset.navCourseCategory;
+  if (firstKey) activate(firstKey);
+
+  categories.forEach((button) => {
+    const key = button.dataset.navCourseCategory;
+    button.addEventListener('mouseenter', () => activate(key));
+    button.addEventListener('focus', () => activate(key));
+    button.addEventListener('click', () => {
+      activate(key);
+      coursesGroup.classList.add('is-open');
+    });
+  });
+
+  coursesToggle.addEventListener('click', () => {
+    coursesGroup.classList.toggle('is-open');
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!coursesGroup.contains(event.target)) {
+      coursesGroup.classList.remove('is-open');
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      coursesGroup.classList.remove('is-open');
+    }
+  });
+})();
+
 /* ---- Intersection Observer for scroll animations ---- */
 const animatedEls = document.querySelectorAll('[data-animate]');
 if (animatedEls.length) {
