@@ -42,9 +42,7 @@ app.locals.assetVersion = assetVersion;
       navCourseGroups.push(entry);
     }
     const entry = navCourseMap.get(key);
-    if (entry.courses.length < 6) {
-      entry.courses.push(course);
-    }
+    entry.courses.push(course);
   });
 
   app.locals.navCourseCatalog = navCourseGroups;
