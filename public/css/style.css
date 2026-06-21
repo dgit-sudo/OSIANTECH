@@ -578,6 +578,37 @@ h1,h2,h3,h4,h5,h6 {
 .course-arrow { font-size: .9rem; color: var(--text-muted); transition: transform var(--t), color var(--t); font-family: 'Inter', sans-serif; }
 .course-card-link:hover .course-arrow { transform: translateX(4px); color: var(--blue); }
 
+/* Courses page */
+.page-courses { background: var(--bg); }
+.page-courses .courses-hero .page-hero-title span { color: var(--orange); }
+.page-courses .courses-toolbar { padding: 34px 0 22px; }
+.page-courses .courses-toolbar .container { display: grid; gap: 16px; }
+.page-courses .courses-search {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: 20px 22px;
+  box-shadow: var(--shadow-xs);
+  margin-bottom: 0;
+}
+.page-courses .courses-search-label { color: var(--text-secondary); }
+.page-courses .courses-search-row { margin-top: 10px; }
+.page-courses .courses-search-input { background: var(--bg-2); border-color: var(--border); }
+.page-courses .courses-search-input:focus { box-shadow: 0 0 0 3px rgba(26,86,219,.12); }
+.page-courses .filter-bar { margin-bottom: 0; }
+.page-courses .courses-job-section { background: var(--bg-2); }
+.page-courses .courses-job-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.page-courses .courses-category-section { padding: 72px 0; }
+.page-courses .courses-category-section.section-alt { background: var(--bg-2); }
+.page-courses .courses-results-section { background: var(--bg-2); }
+.page-courses .section-header-row { margin-bottom: 28px; }
+.page-courses .section-header-row .section-sub { margin-top: 10px; }
+.page-courses .courses-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.page-courses .course-card { background: var(--bg-card); }
+.page-courses .course-body { gap: 12px; }
+.page-courses .course-meta { margin-bottom: 2px; }
+.page-courses .course-footer { padding-top: 14px; }
+
 /* Why section */
 .why-section { background: var(--bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 .why-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
@@ -1278,6 +1309,8 @@ h1,h2,h3,h4,h5,h6 {
   .scat-grid { grid-template-columns: 1fr; }
   .shiw-arrow { display: none; }
   .soff-grid { grid-template-columns: 1fr 1fr; }
+  .page-courses .courses-job-grid { grid-template-columns: repeat(3, 1fr); }
+  .page-courses .courses-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 640px) {
   .s-hero { padding: 32px 0 40px; }
@@ -1296,4 +1329,7 @@ h1,h2,h3,h4,h5,h6 {
   .sop-tabs { flex-wrap: wrap; }
   .sh-pill-row { gap: 8px; }
   .sh-tags span { font-size: .7rem; }
+  .page-courses .courses-toolbar { padding: 28px 0 18px; }
+  .page-courses .courses-job-grid,
+  .page-courses .courses-grid { grid-template-columns: 1fr; }
 }
