@@ -1209,6 +1209,8 @@ h1,h2,h3,h4,h5,h6 {
 .swo-card { background: var(--bg-card); border: 1.5px solid var(--border); border-radius: 16px; padding: 36px 28px; position: relative; transition: box-shadow .2s, transform .2s; }
 .swo-card:hover { box-shadow: 0 8px 32px rgba(249,115,22,.1); transform: translateY(-4px); }
 .swo-card-featured { border-color: var(--orange); background: linear-gradient(135deg, #fff7ed 0%, #fff 100%); }
+.swo-card-featured .swo-card-title { color: #111827; }
+.swo-card-featured .swo-card-desc { color: #374151; }
 .swo-card-featured::before { content: 'MOST POPULAR'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--orange); color: #fff; font-size: .7rem; font-weight: 700; font-family: 'Poppins', sans-serif; letter-spacing: .08em; padding: 4px 14px; border-radius: 20px; }
 .swo-card-icon { font-size: 2.4rem; margin-bottom: 16px; }
 .swo-card-title { font-family: 'Poppins', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 10px; }

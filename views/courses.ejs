@@ -15,33 +15,34 @@
 
 /* Search bar */
 .cp-search-bar { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 18px 0; position: sticky; top: 64px; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
-.cp-search-inner { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.cp-search-inner { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .cp-search-form { display: flex; flex: 1; min-width: 260px; gap: 0; }
-.cp-search-input { flex: 1; border: 1.5px solid #e2e8f0; border-right: none; border-radius: 8px 0 0 8px; padding: 10px 18px; font-size: .92rem; font-family: 'Inter', sans-serif; outline: none; }
+.cp-search-input { flex: 1; border: 1.5px solid #e2e8f0; border-right: none; border-radius: 8px 0 0 8px; padding: 10px 18px; font-size: .92rem; font-family: 'Inter', sans-serif; outline: none; background: #fff; color: #0f172a; }
+.cp-search-input::placeholder { color: #94a3b8; }
 .cp-search-input:focus { border-color: #f97316; }
 .cp-search-btn { background: #f97316; color: #fff; border: none; border-radius: 0 8px 8px 0; padding: 10px 22px; font-weight: 700; font-family: 'Inter', sans-serif; font-size: .88rem; cursor: pointer; transition: background .2s; }
 .cp-search-btn:hover { background: #ea580c; }
 .cp-cat-pills { display: flex; gap: 8px; flex-wrap: wrap; }
-.cp-cat-pill { font-size: .78rem; font-weight: 600; font-family: 'Inter', sans-serif; padding: 5px 14px; border-radius: 20px; border: 1.5px solid #e2e8f0; color: #475569; text-decoration: none; transition: all .18s; white-space: nowrap; }
+.cp-cat-pill { font-size: .78rem; font-weight: 600; font-family: 'Inter', sans-serif; padding: 5px 14px; border-radius: 20px; border: 1.5px solid #e2e8f0; color: #475569; text-decoration: none; transition: all .18s; white-space: nowrap; background: #fff; }
 .cp-cat-pill:hover, .cp-cat-pill.active { background: #f97316; border-color: #f97316; color: #fff; }
 
 /* Job Oriented Programs band */
-.cp-job-band { background: #fff7ed; border-top: 3px solid #f97316; border-bottom: 3px solid #f97316; padding: 56px 0; }
-.cp-job-head { text-align: center; margin-bottom: 40px; }
+.cp-job-band { background: #fff7ed; border-top: 3px solid #f97316; border-bottom: 3px solid #f97316; padding: 48px 0; }
+.cp-job-head { text-align: center; margin-bottom: 32px; }
 .cp-job-title { font-family: 'Oswald', sans-serif; font-size: clamp(1.7rem, 3.2vw, 2.4rem); font-weight: 700; color: #0f172a; margin-bottom: 8px; }
-.cp-job-sub { font-size: .95rem; color: #64748b; font-family: 'Inter', sans-serif; }
-.cp-job-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
-.cp-job-card { background: #fff; border: 1.5px solid #fed7aa; border-radius: 12px; padding: 20px 16px; text-decoration: none; display: flex; flex-direction: column; gap: 8px; transition: all .2s; }
-.cp-job-card:hover { border-color: #f97316; box-shadow: 0 6px 20px rgba(249,115,22,.15); transform: translateY(-2px); }
+.cp-job-sub { font-size: .95rem; color: #475569; font-family: 'Inter', sans-serif; }
+.cp-job-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.cp-job-card { background: #fff; border: 1.5px solid #fed7aa; border-radius: 12px; padding: 18px 16px; text-decoration: none; display: flex; flex-direction: column; gap: 8px; transition: all .2s; box-shadow: 0 1px 2px rgba(15,23,42,.06); }
+.cp-job-card:hover { border-color: #f97316; box-shadow: 0 10px 24px rgba(249,115,22,.12); transform: translateY(-2px); }
 .cp-job-card-icon { font-size: 1.8rem; line-height: 1; }
 .cp-job-card h3 { font-size: .88rem; font-weight: 700; color: #0f172a; font-family: 'Inter', sans-serif; line-height: 1.3; }
 .cp-job-card p { font-size: .75rem; color: #64748b; font-family: 'Inter', sans-serif; line-height: 1.5; flex: 1; }
 .cp-job-card-link { font-size: .75rem; font-weight: 700; color: #f97316; font-family: 'Inter', sans-serif; margin-top: auto; }
 
 /* Category sections */
-.cp-cat-section { padding: 60px 0; }
+.cp-cat-section { padding: 54px 0; }
 .cp-cat-section:nth-child(even) { background: #f8fafc; }
-.cp-cat-hdr { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 32px; gap: 20px; flex-wrap: wrap; }
+.cp-cat-hdr { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 26px; gap: 20px; flex-wrap: wrap; }
 .cp-cat-hdr-left {}
 .cp-cat-badge { display: inline-block; padding: 3px 12px; border-radius: 20px; font-size: .7rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; font-family: 'Inter', sans-serif; margin-bottom: 8px; }
 .cp-cat-badge-prog  { background: #dbeafe; color: #1d4ed8; }
@@ -51,28 +52,28 @@
 .cp-cat-badge-acc   { background: #fce7f3; color: #be185d; }
 .cp-cat-badge-data  { background: #ffedd5; color: #c2410c; }
 .cp-cat-title { font-family: 'Oswald', sans-serif; font-size: clamp(1.5rem, 2.8vw, 2rem); font-weight: 700; color: #0f172a; }
-.cp-cat-desc { font-size: .9rem; color: #64748b; font-family: 'Inter', sans-serif; max-width: 540px; margin-top: 4px; }
+.cp-cat-desc { font-size: .9rem; color: #475569; font-family: 'Inter', sans-serif; max-width: 540px; margin-top: 4px; line-height: 1.6; }
 .cp-cat-view-all { font-size: .88rem; font-weight: 700; color: #f97316; font-family: 'Inter', sans-serif; text-decoration: none; white-space: nowrap; border: 2px solid #f97316; padding: 8px 20px; border-radius: 8px; transition: all .2s; }
 .cp-cat-view-all:hover { background: #f97316; color: #fff; }
 .cp-course-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
 .cp-course-card-link { text-decoration: none; }
-.cp-course-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; transition: all .22s; height: 100%; }
-.cp-course-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,.1); border-color: rgba(249,115,22,.3); }
+.cp-course-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; transition: all .22s; height: 100%; box-shadow: 0 1px 2px rgba(15,23,42,.06); }
+.cp-course-card:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(15,23,42,.08); border-color: rgba(249,115,22,.3); }
 .cp-course-img { height: 140px; position: relative; overflow: hidden; }
 .cp-course-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,.55)); }
 .cp-course-cat-tag { position: absolute; top: 10px; left: 10px; z-index: 2; background: rgba(249,115,22,.9); color: #fff; font-size: .65rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 3px 9px; border-radius: 4px; font-family: 'Inter', sans-serif; }
 .cp-course-body { padding: 16px; }
-.cp-course-title { font-size: .92rem; font-weight: 700; color: #0f172a; font-family: 'Inter', sans-serif; line-height: 1.35; margin-bottom: 6px; }
-.cp-course-desc { font-size: .78rem; color: #64748b; font-family: 'Inter', sans-serif; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 12px; }
+.cp-course-title { font-size: .92rem; font-weight: 700; color: #111827; font-family: 'Inter', sans-serif; line-height: 1.35; margin-bottom: 6px; }
+.cp-course-desc { font-size: .78rem; color: #4b5563; font-family: 'Inter', sans-serif; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 12px; }
 .cp-course-footer { display: flex; align-items: center; justify-content: space-between; }
-.cp-course-level { font-size: .7rem; font-weight: 600; color: #94a3b8; font-family: 'Inter', sans-serif; text-transform: uppercase; letter-spacing: .05em; }
-.cp-course-arrow { font-size: .78rem; font-weight: 700; color: #f97316; font-family: 'Inter', sans-serif; }
+.cp-course-level { font-size: .7rem; font-weight: 600; color: #64748b; font-family: 'Inter', sans-serif; text-transform: uppercase; letter-spacing: .05em; }
+.cp-course-arrow { font-size: .78rem; font-weight: 700; color: #ea580c; font-family: 'Inter', sans-serif; }
 
 /* All courses section */
 .cp-all-section { padding: 60px 0; background: #fff; }
 .cp-all-head { text-align: center; margin-bottom: 40px; }
 .cp-all-title { font-family: 'Oswald', sans-serif; font-size: clamp(1.7rem, 3vw, 2.3rem); font-weight: 700; color: #0f172a; margin-bottom: 8px; }
-.cp-all-sub { font-size: .95rem; color: #64748b; font-family: 'Inter', sans-serif; }
+.cp-all-sub { font-size: .95rem; color: #475569; font-family: 'Inter', sans-serif; }
 .cp-all-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
 .cp-no-results { text-align: center; padding: 60px 20px; }
 
