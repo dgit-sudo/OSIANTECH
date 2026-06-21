@@ -366,13 +366,22 @@ h1,h2,h3,h4,h5,h6 {
 .nav-link-group {
   position: relative;
 }
+/* Show dropdown on hover for desktop, but is-open takes precedence and keeps it open */
 .nav-link-group:hover .nav-courses-menu,
 .nav-link-group:focus-within .nav-courses-menu,
+.nav-courses-menu:hover,
 .nav-link-group.is-open .nav-courses-menu {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
   pointer-events: auto;
+}
+/* Keep dropdown open when .is-open class is applied (persists until clicked outside) */
+.nav-link-group.is-open .nav-courses-menu {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) !important;
+  pointer-events: auto !important;
 }
 .nav-courses-menu {
   min-width: 800px;
