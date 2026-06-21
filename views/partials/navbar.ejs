@@ -1,27 +1,6 @@
 <%
   const safePage = (typeof page !== 'undefined' && page) ? page : '';
-  const navCourseCatalog = require(process.cwd() + '/data/coursesCatalog.json');
-  const navCategoryKey = (value) => String(value || '')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-
-  const navCourseGroups = [];
-  const navCourseMap = new Map();
-
-  navCourseCatalog.forEach((course) => {
-    const category = String(course.category || 'General').trim() || 'General';
-    const key = navCategoryKey(category);
-    if (!navCourseMap.has(key)) {
-      const entry = { key, name: category, courses: [] };
-      navCourseMap.set(key, entry);
-      navCourseGroups.push(entry);
-    }
-    const entry = navCourseMap.get(key);
-    if (entry.courses.length < 6) {
-      entry.courses.push(course);
-    }
-  });
+  const navCourseGroups = (typeof navCourseCatalog !== 'undefined') ? navCourseCatalog : [];
 %>
 <nav class="navbar" id="navbar">
   <div class="nav-container">

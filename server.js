@@ -22,6 +22,34 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.locals.assetVersion = assetVersion;
 
+// Compute nav course groups from catalog
+(() => {
+  const coursesCatalog = require('./data/coursesCatalog.json');
+  const navCategoryKey = (value) => String(value || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
+  const navCourseGroups = [];
+  const navCourseMap = new Map();
+
+  coursesCatalog.forEach((course) => {
+    const category = String(course.category || 'General').trim() || 'General';
+    const key = navCategoryKey(category);
+    if (!navCourseMap.has(key)) {
+      const entry = { key, name: category, courses: [] };
+      navCourseMap.set(key, entry);
+      navCourseGroups.push(entry);
+    }
+    const entry = navCourseMap.get(key);
+    if (entry.courses.length < 6) {
+      entry.courses.push(course);
+    }
+  });
+
+  app.locals.navCourseCatalog = navCourseGroups;
+})();
+
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
