@@ -1,7 +1,4 @@
-<%
-  const safePage = (typeof page !== 'undefined' && page) ? page : '';
-  const navCourseGroups = (typeof navCourseCatalog !== 'undefined') ? navCourseCatalog : [];
-%>
+<% const safePage = (typeof page !== 'undefined' && page) ? page : ''; %>
 <nav class="navbar" id="navbar">
   <div class="nav-container">
     <a href="/" class="nav-logo">
@@ -10,59 +7,9 @@
     </a>
     <ul class="nav-links" id="navLinks">
       <li><a href="/" class="nav-link <%= safePage === 'home' ? 'active' : '' %>">Home</a></li>
-      <li class="nav-link-group nav-link-group-courses" data-nav-courses-group>
-        <button type="button" class="nav-link nav-link-button" data-nav-courses-toggle aria-expanded="false">
-          Courses <span class="nav-link-caret">▾</span>
-        </button>
-        <div class="nav-courses-menu" data-nav-courses-menu>
-          <div class="nav-courses-menu-head">
-            <div>
-              <p class="nav-courses-kicker">Browse Courses</p>
-              <h3 class="nav-courses-title">Hover a category to preview courses</h3>
-            </div>
-          </div>
-          <div class="nav-courses-menu-body">
-            <div class="nav-courses-sidebar">
-              <% navCourseGroups.forEach(function(group, index) { %>
-              <button
-                type="button"
-                class="nav-course-category <%= index === 0 ? 'is-active' : '' %>"
-                data-nav-course-category="<%= group.key %>"
-                aria-controls="nav-course-panel-<%= group.key %>"
-                aria-expanded="<%= index === 0 ? 'true' : 'false' %>"
-              >
-                <span><%= group.name %></span>
-                <span class="nav-course-count"><%= group.courses.length %></span>
-              </button>
-              <% }); %>
-            </div>
-            <div class="nav-courses-panels">
-              <% navCourseGroups.forEach(function(group, index) { %>
-              <div
-                class="nav-course-panel <%= index === 0 ? 'is-active' : '' %>"
-                data-nav-course-panel="<%= group.key %>"
-                id="nav-course-panel-<%= group.key %>"
-              >
-                <% group.courses.forEach(function(course) { %>
-                <a href="/courses/<%= course.id %>" class="nav-course-item">
-                  <span class="nav-course-item-title"><%= course.title %></span>
-                  <span class="nav-course-item-meta"><%= course.category %></span>
-                </a>
-                <% }); %>
-              </div>
-              <% }); %>
-            </div>
-          </div>
-        </div>
-      </li>
+      <li><a href="/courses" class="nav-link <%= safePage === 'courses' ? 'active' : '' %>">Courses</a></li>
     </ul>
-    <div class="nav-actions <%= safePage === 'home' ? 'nav-actions-home' : '' %>">
-      <% if (safePage === 'home') { %>
-      <form class="nav-home-search" action="/courses" method="GET">
-        <input type="search" name="q" class="nav-home-search-input" placeholder="Search courses…" aria-label="Search courses" />
-        <button type="submit" class="nav-home-search-btn">Search</button>
-      </form>
-      <% } %>
+    <div class="nav-actions">
       <a href="/auth?mode=signin" class="btn btn-ghost" data-auth-guest>Sign In</a>
       <a href="/auth?mode=signup" class="btn btn-primary" data-auth-guest>Enroll</a>
       <a href="/dashboard" class="btn btn-primary" data-auth-user hidden>Dashboard</a>
