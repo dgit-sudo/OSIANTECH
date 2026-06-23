@@ -6,7 +6,6 @@ const countryInput = document.getElementById('checkout-country');
 const cityInput = document.getElementById('checkout-city');
 const postalCodeInput = document.getElementById('checkout-postal-code');
 const couponCodeInput = document.getElementById('checkout-coupon-code');
-const detectLocationBtn = document.getElementById('checkout-detect-location-btn');
 const paymentPanel = document.getElementById('checkout-payment-panel');
 const payBtn = document.getElementById('checkout-pay-btn');
 const feedbackEl = document.getElementById('checkout-feedback');
@@ -19,7 +18,7 @@ let selectedCity = '';
 let selectedPostalCode = '';
 let selectedCouponCode = '';
 let currentUser = null;
-let locationDenied = false;
+const locationDenied = false;
 let checkoutQuote = null;
 
 const currencyStorageKey = 'osian-currency';
@@ -115,60 +114,6 @@ function loadRazorpayScript() {
     script.onload = () => resolve(true);
     script.onerror = () => reject(new Error('Failed to load Razorpay checkout SDK'));
     document.head.appendChild(script);
-  });
-}
-
-async function reverseGeocode(lat, lon) {
-  const response = await fetch(
-    `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${encodeURIComponent(String(lat))}&lon=${encodeURIComponent(String(lon))}`,
-    {
-      headers: {
-        Accept: 'application/json',
-      },
-    },
-  );
-
-  if (!response.ok) {
-    throw new Error('Reverse geocoding failed');
-  }
-
-  const payload = await response.json();
-  const address = payload?.address || {};
-  const city = address.city || address.town || address.village || address.county || '';
-  const country = address.country || '';
-  return { city: String(city).trim(), country: String(country).trim() };
-}
-
-if (detectLocationBtn) {
-  detectLocationBtn.addEventListener('click', async () => {
-    if (!navigator.geolocation) {
-      setFeedback('Geolocation is not supported in this browser. Please enter city manually.', 'error');
-      return;
-    }
-
-    setFeedback('Detecting your location...', 'info');
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        try {
-          const { latitude, longitude } = position.coords;
-          const loc = await reverseGeocode(latitude, longitude);
-          if (cityInput && loc.city) cityInput.value = loc.city;
-          if (countryInput && loc.country) countryInput.value = loc.country;
-          locationDenied = false;
-          setFeedback('Location detected. Please verify city and continue.', 'success');
-        } catch {
-          setFeedback('Could not map coordinates to city. Please enter city manually.', 'error');
-        }
-      },
-      (error) => {
-        locationDenied = error?.code === 1;
-        setFeedback('Location access denied. Please enter city manually.', 'error');
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-      },
-    );
   });
 }
 
