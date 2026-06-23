@@ -504,6 +504,7 @@ async function openSupportPanel() {
   if (!supportPanelEl) return;
   supportPanelEl.hidden = false;
   supportPanelEl.classList.add('open');
+  if (supportFabBtn) supportFabBtn.hidden = true;
   await loadSupportChats();
   if (supportActiveChatId) {
     await loadSupportMessages();
@@ -526,6 +527,7 @@ function closeSupportPanel() {
     supportPanelEl.classList.remove('open');
     supportPanelEl.hidden = true;
   }
+  if (supportFabBtn) supportFabBtn.hidden = false;
   clearSupportPollTimer();
 }
 
