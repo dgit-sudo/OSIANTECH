@@ -348,8 +348,8 @@ h1,h2,h3,h4,h5,h6 {
   top: calc(100% + 14px);
   left: 50%;
   transform: translateX(-50%) translateY(10px);
-  width: 90vw;
-  max-width: 1000px;
+  width: calc(100vw - 80px);
+  max-width: 850px;
   padding: 28px;
   background: var(--bg-card);
   border: 1.5px solid var(--border);
@@ -360,6 +360,8 @@ h1,h2,h3,h4,h5,h6 {
   pointer-events: none;
   transition: opacity var(--t), transform var(--t), visibility var(--t);
   z-index: 2500;
+  max-height: 90vh;
+  overflow: hidden;
 }
 .nav-link-group {
   position: relative;
@@ -449,6 +451,14 @@ h1,h2,h3,h4,h5,h6 {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
+  max-height: calc(90vh - 200px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 4px;
+  scrollbar-width: none;
+}
+.nav-courses-panels::-webkit-scrollbar {
+  display: none;
 }
 .nav-course-panel {
   display: none;
