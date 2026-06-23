@@ -348,12 +348,9 @@ h1,h2,h3,h4,h5,h6 {
   top: calc(100% + 14px);
   left: 50%;
   transform: translateX(-50%) translateY(10px);
-  width: auto;
-  min-width: 750px;
-  max-width: calc(100vw - 40px);
-  max-height: 580px;
-  overflow-y: auto;
-  padding: 22px;
+  width: 90vw;
+  max-width: 1000px;
+  padding: 28px;
   background: var(--bg-card);
   border: 1.5px solid var(--border);
   border-radius: var(--r-xl);
@@ -367,7 +364,6 @@ h1,h2,h3,h4,h5,h6 {
 .nav-link-group {
   position: relative;
 }
-/* Show dropdown on hover for desktop, but is-open takes precedence and keeps it open */
 .nav-link-group:hover .nav-courses-menu,
 .nav-link-group:focus-within .nav-courses-menu,
 .nav-courses-menu:hover,
@@ -377,24 +373,20 @@ h1,h2,h3,h4,h5,h6 {
   transform: translateX(-50%) translateY(0);
   pointer-events: auto;
 }
-/* Keep dropdown open when .is-open class is applied (persists until clicked outside) */
 .nav-link-group.is-open .nav-courses-menu {
   opacity: 1 !important;
   visibility: visible !important;
   transform: translateX(-50%) translateY(0) !important;
   pointer-events: auto !important;
 }
-.nav-courses-menu {
-  min-width: 800px;
-  max-height: 500px;
-  overflow-y: auto;
-}
 .nav-courses-menu-head {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
 }
 .nav-courses-kicker {
   font-size: .76rem;
@@ -406,23 +398,21 @@ h1,h2,h3,h4,h5,h6 {
   margin-bottom: 6px;
 }
 .nav-courses-title {
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 800;
   color: var(--text-primary);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 .nav-courses-menu-body {
   display: grid;
-  grid-template-columns: 240px minmax(0, 1fr);
-  gap: 18px;
+  grid-template-columns: 200px 1fr;
+  gap: 28px;
+  align-items: start;
 }
 .nav-courses-sidebar {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  max-height: 450px;
-  overflow-y: auto;
-  padding-right: 8px;
+  gap: 6px;
 }
 .nav-course-category {
   display: flex;
@@ -430,10 +420,10 @@ h1,h2,h3,h4,h5,h6 {
   justify-content: space-between;
   gap: 10px;
   width: 100%;
-  padding: 11px 14px;
+  padding: 12px 14px;
   border: 1px solid var(--border);
   border-radius: var(--r);
-  background: var(--bg-2);
+  background: transparent;
   color: var(--text-secondary);
   font-family: 'Inter', sans-serif;
   font-size: .84rem;
@@ -449,48 +439,50 @@ h1,h2,h3,h4,h5,h6 {
 }
 .nav-course-count {
   font-size: .72rem;
-  color: var(--blue);
+  color: var(--text-muted);
   font-weight: 700;
 }
+.nav-course-category.is-active .nav-course-count {
+  color: var(--blue);
+}
 .nav-courses-panels {
-  min-height: 280px;
-  max-height: 450px;
-  overflow-y: auto;
-  padding-right: 8px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
 }
 .nav-course-panel {
   display: none;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 10px;
 }
 .nav-course-panel.is-active {
   display: grid;
+  grid-template-columns: 1fr;
 }
 .nav-course-item {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   padding: 14px 16px;
   border: 1px solid var(--border);
   border-radius: var(--r);
   background: var(--bg-2);
-  transition: border-color var(--t), background var(--t), transform var(--t);
+  transition: border-color var(--t), background var(--t);
 }
 .nav-course-item:hover {
   border-color: var(--blue);
   background: var(--blue-muted);
-  transform: translateY(-2px);
 }
 .nav-course-item-title {
-  font-size: .88rem;
+  font-size: .86rem;
   font-weight: 700;
   color: var(--text-primary);
   font-family: 'Inter', sans-serif;
   line-height: 1.35;
 }
 .nav-course-item-meta {
-  font-size: .72rem;
-  color: var(--text-secondary);
+  font-size: .71rem;
+  color: var(--text-muted);
   font-family: 'Inter', sans-serif;
 }
 
