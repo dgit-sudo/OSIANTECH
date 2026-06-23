@@ -248,7 +248,7 @@ h1,h2,h3,h4,h5,h6 {
   border-color: transparent;
   font-weight: 700;
 }
-.btn-white:hover { background: var(--blue-muted); }
+.btn-white:hover { background: var(--bg-card); }
 
 .btn-card {
   background: var(--blue-muted);

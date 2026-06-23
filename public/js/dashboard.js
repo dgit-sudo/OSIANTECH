@@ -503,6 +503,7 @@ async function submitSupportFeedback(event) {
 async function openSupportPanel() {
   if (!supportPanelEl) return;
   supportPanelEl.hidden = false;
+  supportPanelEl.classList.add('open');
   await loadSupportChats();
   if (supportActiveChatId) {
     await loadSupportMessages();
@@ -510,7 +511,7 @@ async function openSupportPanel() {
 
   clearSupportPollTimer();
   supportPollTimer = setInterval(async () => {
-    if (supportPanelEl.hidden) return;
+    if (!supportPanelEl.classList.contains('open')) return;
     try {
       await loadSupportChats();
       if (supportActiveChatId) await loadSupportMessages();
@@ -521,7 +522,10 @@ async function openSupportPanel() {
 }
 
 function closeSupportPanel() {
-  if (supportPanelEl) supportPanelEl.hidden = true;
+  if (supportPanelEl) {
+    supportPanelEl.classList.remove('open');
+    supportPanelEl.hidden = true;
+  }
   clearSupportPollTimer();
 }
 
