@@ -21,8 +21,6 @@ let currentUser = null;
 const locationDenied = false;
 let checkoutQuote = null;
 
-const currencyStorageKey = 'osian-currency';
-
 function getLocalPurchasesKey(uid) {
   return `osian_purchases_${uid}`;
 }
@@ -45,10 +43,6 @@ function saveLocalPurchase(uid, purchase) {
   if (exists) return;
   const next = [purchase, ...existing];
   window.localStorage.setItem(getLocalPurchasesKey(uid), JSON.stringify(next));
-}
-
-function getSelectedCurrency() {
-  return String(window.localStorage.getItem(currencyStorageKey) || 'INR').toUpperCase();
 }
 
 function getEnteredCouponCode() {
@@ -134,7 +128,7 @@ async function requestQuote(courseId) {
       city: selectedCity,
       postalCode: selectedPostalCode,
       offerId: selectedCouponCode,
-      selectedCurrency: getSelectedCurrency(),
+      selectedCurrency: 'INR',
       locationDenied,
     }),
   });
@@ -168,7 +162,7 @@ async function openRazorpay(courseId, idToken, couponCode = '') {
       city: selectedCity,
       postalCode: selectedPostalCode,
       offerId: couponCode,
-      selectedCurrency: getSelectedCurrency(),
+      selectedCurrency: 'INR',
       locationDenied,
     }),
   });

@@ -3,7 +3,6 @@
    ========================================================= */
 
 const themeStorageKey = 'osian-theme';
-const currencyStorageKey = 'osian-currency';
 const initialTheme = localStorage.getItem(themeStorageKey);
 if (initialTheme === 'light') {
   document.body.classList.add('theme-light');
