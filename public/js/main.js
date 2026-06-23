@@ -9,25 +9,6 @@ if (initialTheme === 'light') {
   document.body.classList.add('theme-light');
 }
 
-(() => {
-  const select = document.querySelector('[data-global-currency]');
-  if (!select) return;
-
-  const stored = String(localStorage.getItem(currencyStorageKey) || '').toUpperCase();
-  const defaultCurrency = stored || 'INR';
-
-  if ([...select.options].some((option) => option.value === defaultCurrency)) {
-    select.value = defaultCurrency;
-  } else {
-    select.value = 'INR';
-  }
-
-  localStorage.setItem(currencyStorageKey, select.value);
-
-  select.addEventListener('change', () => {
-    localStorage.setItem(currencyStorageKey, String(select.value || 'INR').toUpperCase());
-  });
-})();
 
 function toggleTheme() {
   const isLight = document.body.classList.toggle('theme-light');

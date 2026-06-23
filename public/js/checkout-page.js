@@ -402,21 +402,3 @@ if (payBtn) {
   });
 }
 
-// Listen for currency changes from footer
-const currencySelect = document.querySelector('[data-global-currency]');
-if (currencySelect) {
-  currencySelect.addEventListener('change', async () => {
-    const courseId = getCourseIdFromPath();
-    if (courseId && selectedCountry && selectedCity && selectedPostalCode) {
-      try {
-        setFeedback('Updating pricing for new currency...', 'info');
-        const quote = await requestQuote(courseId);
-        renderQuote(quote);
-        setFeedback('Pricing updated for new currency.', 'success');
-      } catch (error) {
-        setFeedback(error?.message || 'Could not update pricing for new currency.', 'error');
-      }
-    }
-  });
-}
-
