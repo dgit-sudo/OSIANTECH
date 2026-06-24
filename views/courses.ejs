@@ -13,6 +13,8 @@ const catMeta = [
   { name: 'Data, AI & Digital Marketing', icon: '📊', desc: 'The fastest-growing field in IT. Data science, AI/ML, digital marketing, SEO, Google Ads, Python analytics, Power BI.' },
   { name: 'Kids Programs', icon: '⭐', desc: 'Spark curiosity and build STEM foundations early. Abacus, coding, robotics, and creative computing for ages 5–16.' },
 ];
+const catIconMap = {};
+catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; });
 %>
 
 <section class="page-hero page-hero-slim courses-hero">
@@ -33,18 +35,24 @@ const catMeta = [
 
 <section class="courses-toolbar">
   <div class="container">
-    <div class="courses-search">
-      <label class="courses-search-label" for="course-search">Search by course name, topic or tool</label>
-      <form class="courses-search-row" action="/courses" method="GET" data-courses-search-form>
-        <input id="course-search" class="courses-search-input" type="search" name="q" value="<%= safeSearchQuery %>" placeholder="Search by course name, topic or tool…" data-courses-search-input autocomplete="off" />
-        <button type="submit" class="btn btn-primary">Search</button>
-      </form>
-    </div>
-    <div class="filter-bar">
-      <a href="/courses" class="filter-btn <%= (!safeSearchQuery && safeActiveCategory === 'All') ? 'active' : '' %>">All</a>
-      <% if (typeof categories !== 'undefined') { categories.forEach(function(cat) { %>
-      <a href="/courses?category=<%= encodeURIComponent(cat) %>" class="filter-btn <%= (safeActiveCategory === cat) ? 'active' : '' %>"><%= cat %></a>
-      <% }); } %>
+    <div class="courses-toolbar-inner">
+      <div class="courses-search">
+        <form class="courses-search-row" action="/courses" method="GET" data-courses-search-form>
+          <div class="courses-search-field">
+            <svg class="courses-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input id="course-search" class="courses-search-input" type="search" name="q" value="<%= safeSearchQuery %>" placeholder="Search courses, topics, tools…" data-courses-search-input autocomplete="off" />
+          </div>
+          <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+      </div>
+      <div class="filter-bar">
+        <a href="/courses" class="filter-btn <%= (!safeSearchQuery && safeActiveCategory === 'All') ? 'active' : '' %>">All Courses</a>
+        <% if (typeof categories !== 'undefined') { categories.forEach(function(cat) { %>
+        <a href="/courses?category=<%= encodeURIComponent(cat) %>" class="filter-btn <%= (safeActiveCategory === cat) ? 'active' : '' %>">
+          <% if (catIconMap[cat]) { %><span class="filter-btn-icon"><%= catIconMap[cat] %></span><% } %><%= cat %>
+        </a>
+        <% }); } %>
+      </div>
     </div>
   </div>
 </section>
@@ -60,61 +68,91 @@ const catMeta = [
     </div>
     <div class="spr-grid courses-job-grid">
       <a href="/courses?category=Programming+%26+Software" class="spr-card">
-        <div class="spr-icon">⚡</div>
+        <div class="spr-card-top">
+          <div class="spr-icon">⚡</div>
+          <span class="spr-track-num">01</span>
+        </div>
         <h3>Programming Languages</h3>
         <p>Python, Java, C++, JavaScript, Go — from fundamentals to advanced, industry-standard coding.</p>
         <span class="spr-link">Explore →</span>
       </a>
       <a href="/courses?category=Programming+%26+Software" class="spr-card">
-        <div class="spr-icon">📱</div>
+        <div class="spr-card-top">
+          <div class="spr-icon">📱</div>
+          <span class="spr-track-num">02</span>
+        </div>
         <h3>Web &amp; App Development</h3>
         <p>HTML5, CSS3, React, Vue, Node.js, .NET — full-stack web and mobile application development.</p>
         <span class="spr-link">Explore →</span>
       </a>
       <a href="/courses?category=Data%2C+AI+%26+Digital+Marketing" class="spr-card">
-        <div class="spr-icon">📈</div>
+        <div class="spr-card-top">
+          <div class="spr-icon">📈</div>
+          <span class="spr-track-num">03</span>
+        </div>
         <h3>Digital Marketing &amp; Data</h3>
         <p>SEO, SEM, Google Ads, Meta Ads, analytics, data science and AI — the digital growth stack.</p>
         <span class="spr-link">Explore →</span>
       </a>
       <a href="/courses?category=Design+%26+Animation" class="spr-card">
-        <div class="spr-icon">🎨</div>
+        <div class="spr-card-top">
+          <div class="spr-icon">🎨</div>
+          <span class="spr-track-num">04</span>
+        </div>
         <h3>Graphic &amp; UI/UX Design</h3>
         <p>Photoshop, Illustrator, Figma, After Effects — creative and interface design careers.</p>
         <span class="spr-link">Explore →</span>
       </a>
       <a href="/courses?category=Networking%2C+Hardware+%26+Engineering" class="spr-card">
-        <div class="spr-icon">🔌</div>
+        <div class="spr-card-top">
+          <div class="spr-icon">🔌</div>
+          <span class="spr-track-num">05</span>
+        </div>
         <h3>Hardware &amp; Networking</h3>
         <p>A+, CCNA, cybersecurity, Cisco — infrastructure and networking career paths.</p>
         <span class="spr-link">Explore →</span>
       </a>
       <a href="/courses?category=Accounting%2C+Finance+%26+Office+Skills" class="spr-card">
-        <div class="spr-icon">💰</div>
+        <div class="spr-card-top">
+          <div class="spr-icon">💰</div>
+          <span class="spr-track-num">06</span>
+        </div>
         <h3>Banking &amp; Accounts</h3>
         <p>Tally Prime, GST, SAP FICO, income tax — finance and accounting professional tracks.</p>
         <span class="spr-link">Explore →</span>
       </a>
       <a href="/courses?category=Design+%26+Animation" class="spr-card">
-        <div class="spr-icon">📐</div>
+        <div class="spr-card-top">
+          <div class="spr-icon">📐</div>
+          <span class="spr-track-num">07</span>
+        </div>
         <h3>CAD &amp; Engineering Design</h3>
         <p>AutoCAD, SolidWorks, 3ds Max, V-Ray — architectural, civil and product design.</p>
         <span class="spr-link">Explore →</span>
       </a>
       <a href="/courses?category=Networking%2C+Hardware+%26+Engineering" class="spr-card">
-        <div class="spr-icon">🛡️</div>
+        <div class="spr-card-top">
+          <div class="spr-icon">🛡️</div>
+          <span class="spr-track-num">08</span>
+        </div>
         <h3>Cybersecurity &amp; Ethical Hacking</h3>
         <p>CEH, Kali Linux, penetration testing, VAPT — high-demand security careers.</p>
         <span class="spr-link">Explore →</span>
       </a>
       <a href="/courses?category=Data%2C+AI+%26+Digital+Marketing" class="spr-card">
-        <div class="spr-icon">🤖</div>
+        <div class="spr-card-top">
+          <div class="spr-icon">🤖</div>
+          <span class="spr-track-num">09</span>
+        </div>
         <h3>AI &amp; Machine Learning</h3>
         <p>Python, TensorFlow, ML pipelines, NLP — build intelligent systems for industry.</p>
         <span class="spr-link">Explore →</span>
       </a>
       <a href="/courses?category=Accounting%2C+Finance+%26+Office+Skills" class="spr-card">
-        <div class="spr-icon">📊</div>
+        <div class="spr-card-top">
+          <div class="spr-icon">📊</div>
+          <span class="spr-track-num">10</span>
+        </div>
         <h3>Professional Certifications</h3>
         <p>HR Management, Project Management, Six Sigma, ITIL — business and management tracks.</p>
         <span class="spr-link">Explore →</span>
@@ -123,27 +161,33 @@ const catMeta = [
   </div>
 </section>
 
-<% catMeta.forEach(function(cat) { %>
+<% catMeta.forEach(function(cat, catIdx) { %>
 <%
   const catCourses = (typeof courses !== 'undefined' ? courses : []).filter(c => c.category === cat.name).slice(0, 8);
   if (!catCourses.length) return;
 %>
-<section class="section courses-category-section">
+<section class="section courses-category-section<%= catIdx % 2 !== 0 ? ' section-alt' : '' %>">
   <div class="container">
-    <div class="section-header-row">
-      <div>
-        <p class="section-label"><%= cat.icon %> <%= cat.name %></p>
+    <div class="courses-cat-header">
+      <div class="courses-cat-icon-wrap">
+        <span class="courses-cat-icon"><%= cat.icon %></span>
+      </div>
+      <div class="courses-cat-info">
+        <p class="section-label"><%= cat.name %></p>
         <h2 class="section-title"><%= cat.name %></h2>
         <p class="section-sub"><%= cat.desc %></p>
       </div>
-      <a href="/courses?category=<%= encodeURIComponent(cat.name) %>" class="btn btn-ghost">View all <%= cat.name %> courses →</a>
+      <a href="/courses?category=<%= encodeURIComponent(cat.name) %>" class="btn btn-ghost courses-cat-view-all">View all →</a>
     </div>
     <div class="courses-grid">
       <% catCourses.forEach(function(course) { %>
       <a href="/courses/<%= course.id %>" class="course-card-link" data-course-card data-course-title="<%= course.title %>">
         <article class="course-card">
           <div class="course-img course-img-<%= (course.id % 9) + 1 %> <%= course.image ? 'has-course-image' : '' %>"<% if (course.image) { %> style="--course-image: url('<%= course.image %>');"<% } %>>
-            <div class="course-category-tag"><%= course.category || cat.name %></div>
+            <div class="course-img-overlay">
+              <div class="course-category-tag"><%= course.category || cat.name %></div>
+              <% if (!course.image) { %><span class="course-img-cat-icon"><%= cat.icon %></span><% } %>
+            </div>
           </div>
           <div class="course-body">
             <div class="course-meta">
@@ -161,6 +205,9 @@ const catMeta = [
       </a>
       <% }); %>
     </div>
+    <div class="courses-cat-footer">
+      <a href="/courses?category=<%= encodeURIComponent(cat.name) %>" class="btn btn-ghost">Browse all <%= cat.name %> courses →</a>
+    </div>
   </div>
 </section>
 <% }); %>
@@ -169,16 +216,19 @@ const catMeta = [
 
 <section class="section courses-results-section">
   <div class="container">
-    <div class="section-header-row">
-      <div>
+    <div class="courses-results-header">
+      <div class="courses-results-meta">
         <p class="section-label">Filtered Results</p>
         <h2 class="section-title">
-          <% if (safeSearchQuery) { %>Search Results for "<%= safeSearchQuery %>"
+          <% if (safeSearchQuery) { %>Results for "<%= safeSearchQuery %>"
           <% } else { %><%= safeActiveCategory %>
           <% } %>
         </h2>
-        <p class="section-sub">Showing <%= typeof shownCourses !== 'undefined' ? shownCourses : (Array.isArray(courses) ? courses.length : 0) %> of <%= typeof totalCourses !== 'undefined' ? totalCourses : (Array.isArray(courses) ? courses.length : 0) %> courses<% if (safeActiveCategory !== 'All') { %> in <%= safeActiveCategory %><% } %></p>
+        <p class="section-sub">
+          Showing <strong><%= typeof shownCourses !== 'undefined' ? shownCourses : (Array.isArray(courses) ? courses.length : 0) %></strong> of <strong><%= typeof totalCourses !== 'undefined' ? totalCourses : (Array.isArray(courses) ? courses.length : 0) %></strong> courses<% if (safeActiveCategory !== 'All') { %> in <em><%= safeActiveCategory %></em><% } %>
+        </p>
       </div>
+      <a href="/courses" class="btn btn-ghost">Clear filters ×</a>
     </div>
     <% if (typeof courses !== 'undefined' && courses.length) { %>
     <div class="courses-grid" data-courses-grid>
@@ -186,7 +236,9 @@ const catMeta = [
       <a href="/courses/<%= course.id %>" class="course-card-link" data-course-card data-course-title="<%= course.title %>">
         <article class="course-card">
           <div class="course-img course-img-<%= (course.id % 9) + 1 %> <%= course.image ? 'has-course-image' : '' %>"<% if (course.image) { %> style="--course-image: url('<%= course.image %>');"<% } %>>
-            <div class="course-category-tag"><%= course.level || 'Professional' %></div>
+            <div class="course-img-overlay">
+              <div class="course-category-tag"><%= course.level || 'Professional' %></div>
+            </div>
           </div>
           <div class="course-body">
             <div class="course-meta">
