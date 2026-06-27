@@ -2,7 +2,7 @@ const Groq = require('groq-sdk');
 const { embed } = require('./embedder.cjs');
 const { loadStore, search } = require('./vectorStore.cjs');
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+const groq = new Groq({ apiKey: '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' });
 
 let store = null;
 
