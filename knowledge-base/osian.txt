@@ -1,0 +1,403 @@
+## ABOUT OSIAN ACADEMY
+
+Osian Academy is India's premier online education platform offering personalized learning through live 1-on-1 sessions with industry professionals. All sessions are fully online, live (not recorded), and delivered by expert mentors with 5-10+ years of industry experience.
+
+Key stats:
+- 500+ enrolled students
+- 95% placement rate
+- 87% of graduates secure employment within 90 days
+- 25+ courses across multiple domains
+- 150+ hiring partner companies
+- ISO certified, NASSCOM-recognized member
+- Serves students across 28+ states in India
+- Student satisfaction: 4.9/5 for live sessions
+
+Contact: +91 96242 84999 (Monday-Sunday, 8 AM–8 PM IST)
+Support email: support@osianacademy.com
+Website: https://osian.tech
+
+---
+
+## HOW TO ENROLL
+
+1. Visit https://osian.tech
+2. Click "Enroll" or go to /auth?mode=signup
+3. Create an account and verify your email
+4. Browse courses at /courses and select your course
+5. Complete payment to get access
+6. Your instructor will be assigned and sessions scheduled
+
+Course access requires successful payment completion and account verification.
+
+---
+
+## ONLINE LEARNING FEATURES
+
+- Live 1-on-1 sessions — no recorded videos, no self-paced isolation
+- Flexible scheduling: morning (7–11 AM), afternoon (12–4 PM), evening (5–9 PM), or weekends
+- Sessions can be rescheduled up to 2 hours beforehand with no penalties
+- Works on laptops, tablets, and smartphones — no software to install
+- Browser-based platform supporting Windows, Mac, Linux, iOS, and Android
+- Dedicated instructor who tracks your name, goals, and progress
+- Post-class written summaries, action items, and resources provided after every session
+- Timezone-aware scheduling; international students accommodated with special arrangements
+
+---
+
+## PLACEMENT ASSISTANCE
+
+Every student gets a dedicated career counselor after course completion. The placement process:
+1. Resume & LinkedIn/GitHub profile optimization (ATS-friendly)
+2. Mock HR rounds with experienced recruiters
+3. Role matching — counselor identifies 5-8 tailored company matches
+4. Direct recruiter referrals to 150+ partner companies (bypasses public job boards)
+5. Interview scheduling and company-specific preparation
+6. Offer negotiation coaching
+
+Key placement stats:
+- 60-day average from course completion to first accepted offer
+- 78% of placements come through direct referral channels
+- Graduates negotiate packages 15–25% above average for their roles
+- Exclusive access to roles shared privately before public posting
+
+---
+
+## LIVE PROJECTS
+
+Students build 5+ industry-grade projects during their course using a 6-step professional methodology:
+1. Real-world project briefs with acceptance criteria
+2. Agile sprint planning and effort estimation
+3. Development using professional tech stacks
+4. Line-by-line code review by industry mentors
+5. Live deployment with demo presentations
+6. Professional documentation and GitHub portfolio creation
+
+Stats: 92% interview success rate with portfolio, 5.2× more interview calls vs certificate-only, 30 days average to complete a portfolio-ready project.
+
+---
+
+## INDUSTRY TRAINING
+
+- Curriculum reverse-engineered from 500+ active job descriptions analyzed quarterly
+- 12-member committee of practicing professionals reviews content every 90 days
+- Outdated modules retired and replaced with current tools
+- Monthly guest instructor sessions with working professionals
+- Each student's progress tracked against a skills matrix from real job requirements
+- 94% of students found learning directly applicable within first 90 days on the job
+
+---
+
+## COURSES — PROGRAMMING & SOFTWARE
+
+### Oracle Admin I
+- Duration: 1 month
+- Fee: INR 35,000 (Non-Metro)
+- Prerequisites: SQL knowledge required
+- Certification: Osian Academy (industry-recognized)
+- Career roles: Software Developer (₹4–12 LPA), Backend Engineer (₹6–18 LPA), Database Admin (₹5–14 LPA), Full-Stack Developer (₹5–20 LPA), DevOps Engineer (₹8–22 LPA), QA Engineer (₹3–10 LPA)
+
+### Oracle Admin II
+- Duration: 1 month
+- Fee: INR 20,000 (Non-Metro)
+- Prerequisites: Oracle Admin I completion required
+- Certification: Osian Academy (industry-recognized)
+- Career roles: Same as Oracle Admin I
+
+### SQL
+- Duration: 35–38 days
+- Fee: INR 8,500 (Non-Metro)
+- Prerequisites: None
+- Certification: Osian NSDC Certificate
+- Career roles: Software Developer, Backend Engineer, Database Admin, Full-Stack Developer, DevOps Engineer, QA Engineer
+
+### Net MVC
+- Duration: 1 month
+- Fee: INR 17,700 (Non-Metro)
+- Prerequisites: Basic C Programming
+- Certification: Osian NSDC
+- Career roles: Software Developer (₹4–12 LPA), Backend Engineer (₹6–18 LPA), Full-Stack Developer (₹5–20 LPA)
+
+### 11th / 12th CBSE Book IT
+- Duration: 3–4 months
+- Fee: INR 22,000 (Non-Metro)
+- Prerequisites: None
+- Certification: Osian Academy
+- Career roles: Software Developer, Backend Engineer, Full-Stack Developer
+
+### Adobe Flash
+- Duration: 1.5 months
+- Category: Programming & Software
+
+### Advanced Java (J2EE)
+- Duration: 1.5 months
+- Category: Programming & Software
+
+### Advanced Python - Django Framework
+- Duration: 2 months
+- Category: Programming & Software
+
+---
+
+## COURSES — DESIGN & ANIMATION
+
+### 2D & 3D Animation
+- Duration: 3 months
+- Fee: INR 26,500 (Non-Metro)
+- Prerequisites: None
+- Certification: Osian Adobe certification
+- Tools: Adobe Photoshop, Illustrator, After Effects, Figma, CorelDRAW, 3ds Max, Blender, Premiere Pro, AutoCAD, Canva Pro
+- Projects: Brand identity, 30-second motion graphics, UI wireframes, 3D scene rendering, video editing, poster campaigns
+- Career roles: Graphic Designer (₹3–10 LPA), UI/UX Designer (₹5–16 LPA), Motion Graphics Artist (₹4–12 LPA), 3D Artist/Animator (₹4–15 LPA), Art Director (₹8–22 LPA), Video Editor (₹3–9 LPA)
+
+### 3ds Max for Interior & Architectural Design
+- Duration: 1.5 months
+- Fee: INR 10,500 (Non-Metro)
+- Prerequisites: AutoCAD knowledge required
+- Certification: Osian NSDC
+- Tools: 3ds Max, Blender, AutoCAD, Adobe Photoshop, Illustrator, After Effects, Premiere Pro, Figma, CorelDRAW
+- Career roles: 3D Artist, Motion Graphics Artist, UI/UX Designer, Graphic Designer, Art Director (₹3–22 LPA)
+
+### 3Ds Max with V-Ray Combo
+- Duration: 2.5 months
+- Fee: INR 17,700 (Non-Metro)
+- Prerequisites: AutoCAD knowledge required
+- Certification: Osian NSDC
+- Tools: 3ds Max, V-Ray, Adobe Photoshop, Illustrator, After Effects, Premiere Pro, Figma, CorelDRAW, AutoCAD, Canva Pro
+
+### Adobe After Effects - Visual Effects
+- Duration: 2 months
+- Category: Design & Animation
+
+### Adobe Illustrator - Advanced
+- Duration: 1.5 months
+- Category: Design & Animation
+
+### Adobe InDesign - Advanced
+- Duration: 1 month
+- Category: Design & Animation
+
+### Adobe Premiere Pro - Video Editing
+- Duration: 2 months
+- Category: Design & Animation
+
+### Advanced Diploma In Fashion & Textile Design
+- Duration: 1 year
+- Category: Design & Animation
+
+---
+
+## COURSES — NETWORKING, HARDWARE & ENGINEERING
+
+### A+ - Hardware Diploma
+- Duration: 2–3 months
+- Fee: INR 11,500 (Non-Metro)
+- Prerequisites: None
+- Certification: Osian NSDC
+- Tools: Cisco Packet Tracer, Windows Server, Linux, Wireshark, AutoCAD, Arduino, VMware, TCP/IP
+- Career roles: Network Engineer (₹4–14 LPA), Hardware Technician, Cybersecurity Analyst, System Administrator, CAD/CAM Engineer
+
+### Advanced Diploma In Civil Engineering
+- Duration: 1 year
+- Category: Networking, Hardware & Engineering
+
+### Advanced Diploma in Computer Hardware and Networking
+- Duration: 1 year
+- Category: Networking, Hardware & Engineering
+
+### Advanced Robotics for Seniors and Engineers
+- Duration: 1.5 months
+- Category: Networking, Hardware & Engineering
+
+### CAD / CAM
+- Duration: 1.5 months
+- Category: Networking, Hardware & Engineering
+
+### CATIA Automobile Designing
+- Duration: 1.5 months
+- Category: Networking, Hardware & Engineering
+
+### CCNA (200-120)
+- Duration: 2 months
+- Category: Networking, Hardware & Engineering
+
+### CCNP
+- Duration: 2.5 months
+- Category: Networking, Hardware & Engineering
+
+---
+
+## COURSES — ACCOUNTING, FINANCE & OFFICE SKILLS
+
+### ACC (Awareness in Computer Concepts) - NIELIT
+- Duration: 1 month
+- Category: Accounting, Finance & Office Skills
+
+### Advanced Diploma in Computer Application
+- Duration: 1 year
+- Category: Accounting, Finance & Office Skills
+
+### Advanced Diploma In Ethical Hacking
+- Duration: 1 year
+- Category: Accounting, Finance & Office Skills
+
+### Advanced Diploma In Game Development
+- Duration: 1 year
+- Category: Accounting, Finance & Office Skills
+
+### Advanced Diploma In Human Resource Management
+- Duration: 1 year
+- Category: Accounting, Finance & Office Skills
+
+### Advanced Diploma In Mobile App
+- Duration: 1 year
+- Category: Accounting, Finance & Office Skills
+
+### Advanced Excel
+- Duration: 1 month
+- Category: Accounting, Finance & Office Skills
+
+### Aptitude & Reasoning
+- Duration: 2 months
+- Category: Accounting, Finance & Office Skills
+
+---
+
+## COURSES — DATA, AI & DIGITAL MARKETING
+
+### Advanced Diploma in Data Analytics
+- Duration: 1 year
+- Category: Data, AI & Digital Marketing
+
+### Advanced Diploma In Sales & Marketing Skills
+- Duration: 1 year
+- Category: Data, AI & Digital Marketing
+
+### Advanced Diploma In Stock Marketing
+- Duration: 1 year
+- Category: Data, AI & Digital Marketing
+
+### Advanced Programme in Data Science
+- Duration: 1 year
+- Category: Data, AI & Digital Marketing
+
+### Affiliate Marketing
+- Duration: 1.5 months
+- Category: Data, AI & Digital Marketing
+
+### AI - Artificial Intelligence
+- Duration: 1.5 months
+- Category: Data, AI & Digital Marketing
+
+### Big Data & Hadoop Development
+- Duration: 2 months
+- Category: Data, AI & Digital Marketing
+
+### Blockchain Certification
+- Duration: 2 months
+- Category: Data, AI & Digital Marketing
+
+---
+
+## COURSES — KIDS PROGRAMS
+
+### Abacus Combo (L1 & L2)
+- Duration: 2 months
+- Category: Kids Programs
+
+### Abacus L1
+- Duration: 1 month
+- Category: Kids Programs
+
+### Abacus L2
+- Duration: 1 month
+- Category: Kids Programs
+
+### Kids All-Courses Combo
+- Duration: 2 months
+- Category: Kids Programs
+
+### DMIT - Brain Key
+- Duration: 1 week
+- Category: Kids Programs
+
+### English Combo with H/W
+- Duration: 1.5 months
+- Category: Kids Programs
+
+### English for Kids
+- Duration: 1.5 months
+- Category: Kids Programs
+
+### Greeting Card Designing With Canva
+- Duration: 3 weeks
+- Category: Kids Programs
+
+---
+
+## CERTIFICATIONS
+
+All courses award either:
+- Osian Academy Certification — industry-recognized by 150+ hiring partners across India
+- Osian NSDC Certificate — nationally recognized skill development certificate
+- Osian Adobe Certification — for Adobe-based design courses
+
+Advanced course completers earn 40% higher starting salaries on average versus foundational certificate holders.
+
+---
+
+## PRICING NOTES
+
+Fees shown are Non-Metro pricing. Pricing varies by location. Contact +91 96242 84999 or support@osianacademy.com for exact pricing in your area.
+
+---
+
+## POLICIES
+
+### Payments
+Course access requires successful payment completion and account verification. Access rights are tied to the purchasing account.
+
+### Rescheduling
+Sessions can be rescheduled up to 2 hours before the scheduled time with no penalties or fees.
+
+### Privacy
+Osian Academy collects name, email, phone number, profile details, and course activity. Data is used to provide services, send enrollment notifications, and improve the platform. Contact support@osianacademy.com for privacy inquiries.
+
+### Terms of Use
+Platform is for lawful educational purposes only. Paid course materials may not be copied or redistributed. Continued use of the platform constitutes acceptance of any policy updates.
+
+### Cookies
+Cookies are used for authentication, session management, theme preferences, and course access monitoring. Users can manage cookies through browser settings.
+
+---
+
+## FREQUENTLY ASKED QUESTIONS
+
+Q: Are classes live or recorded?
+A: All classes are 100% live 1-on-1 sessions. There are no recorded videos or self-paced modules.
+
+Q: Can I reschedule a session?
+A: Yes, you can reschedule up to 2 hours before the session with no penalty.
+
+Q: What devices can I use?
+A: Any laptop, tablet, or smartphone. No software installation needed — everything runs in the browser.
+
+Q: Is placement assistance free?
+A: Yes, placement assistance is included with enrollment at no extra cost.
+
+Q: How long does it take to get a job after completing a course?
+A: On average, students receive their first job offer within 60 days of course completion. 87% get placed within 90 days.
+
+Q: Are the certifications recognized by employers?
+A: Yes. Osian certifications are recognized by 150+ hiring partner companies across India.
+
+Q: Do I need prior experience to enroll?
+A: Most courses have no prerequisites. Some advanced courses require prior knowledge — check the specific course page for prerequisites.
+
+Q: What is the refund policy?
+A: For refund details, please contact support@osianacademy.com or call +91 96242 84999.
+
+Q: Do you offer courses for kids?
+A: Yes, Osian Academy offers a dedicated Kids Programs category including Abacus, English, and creative design courses.
+
+Q: How is Osian different from other online learning platforms?
+A: Osian offers live 1-on-1 sessions (not batch classes or recorded videos), curriculum updated quarterly based on real job descriptions, and full placement assistance with 150+ hiring partners.

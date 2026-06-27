@@ -63,6 +63,7 @@ const adminRouter = require('./routes/admin');
 const supportRouter = require('./routes/support');
 const instructorRouter = require('./routes/instructor');
 const sessionRouter = require('./routes/session');
+const chatRouter = require('./routes/chat');
 const {
   getMeetingById,
   verifySessionAccessToken,
@@ -77,6 +78,7 @@ app.use('/dashboard', dashboardRouter);
 app.use('/api/profile', profileRouter);
 app.use('/admin', adminRouter);
 app.use('/api/support', supportRouter);
+app.use('/chat', chatRouter);
 app.use('/instructor', instructorRouter);
 app.use('/', sessionRouter);
 
