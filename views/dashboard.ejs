@@ -148,33 +148,54 @@
     </button>
 
     <div id="dashboard-support-panel" class="support-panel" hidden>
-      <div class="support-panel-head">
-        <h3>Support Chat</h3>
-        <button type="button" id="dashboard-support-close" class="btn btn-ghost">Close</button>
+
+      <!-- AI Chat view (shown first) -->
+      <div id="support-ai-view">
+        <div class="support-panel-head">
+          <h3>&#129302; Osian AI Support</h3>
+          <button type="button" id="dashboard-support-close" class="btn btn-ghost">Close</button>
+        </div>
+        <div id="support-ai-messages" class="support-messages"></div>
+        <div id="support-ai-escalation-bar" class="support-escalation-bar" hidden>
+          <p>Still need help? Our admin team is here for you.</p>
+          <button type="button" id="support-escalate-btn" class="btn btn-secondary">Talk to Admin</button>
+        </div>
+        <div id="support-ai-resolved-bar" class="support-resolved-bar" hidden>
+          <p>&#10003; Glad I could help! Chat closed. Feel free to reopen support anytime.</p>
+        </div>
+        <div class="support-compose" id="support-ai-compose">
+          <textarea id="support-ai-input" rows="3" placeholder="Describe your issue..."></textarea>
+          <button type="button" id="support-ai-send" class="btn btn-primary">Send</button>
+        </div>
       </div>
 
-      <div class="support-panel-actions">
-        <button type="button" id="dashboard-support-new-chat" class="btn btn-primary">New Request</button>
+      <!-- Admin Chat view (shown after escalation) -->
+      <div id="support-admin-view" hidden>
+        <div class="support-panel-head">
+          <h3>Admin Support</h3>
+          <button type="button" id="support-admin-back" class="btn btn-ghost">&#8592; AI Chat</button>
+          <button type="button" id="support-admin-close" class="btn btn-ghost">Close</button>
+        </div>
+        <div class="support-panel-actions">
+          <button type="button" id="dashboard-support-new-chat" class="btn btn-primary">New Request</button>
+        </div>
+        <div id="dashboard-support-chat-list" class="support-chat-list"></div>
+        <div id="dashboard-support-messages" class="support-messages">Start or open a chat request to message admin.</div>
+        <div class="support-compose">
+          <textarea id="dashboard-support-message-input" rows="3" placeholder="Type your message"></textarea>
+          <input id="dashboard-support-image-input" type="file" accept="image/png,image/jpeg,image/jpg,image/gif,image/webp" />
+          <button type="button" id="dashboard-support-send" class="btn btn-primary">Send</button>
+        </div>
+        <form id="dashboard-support-feedback-form" class="support-feedback-form" hidden>
+          <label for="dashboard-support-feedback-rating">Rate this support chat (1-5)</label>
+          <input id="dashboard-support-feedback-rating" type="number" min="1" max="5" required />
+          <label for="dashboard-support-feedback-comment">Feedback (optional)</label>
+          <textarea id="dashboard-support-feedback-comment" rows="2" placeholder="Write your feedback"></textarea>
+          <button type="submit" class="btn btn-primary">Submit Feedback</button>
+        </form>
+        <div id="dashboard-support-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
       </div>
 
-      <div id="dashboard-support-chat-list" class="support-chat-list"></div>
-      <div id="dashboard-support-messages" class="support-messages">Start or open a chat request to message admin.</div>
-
-      <div class="support-compose">
-        <textarea id="dashboard-support-message-input" rows="3" placeholder="Type your message"></textarea>
-        <input id="dashboard-support-image-input" type="file" accept="image/png,image/jpeg,image/jpg,image/gif,image/webp" />
-        <button type="button" id="dashboard-support-send" class="btn btn-primary">Send</button>
-      </div>
-
-      <form id="dashboard-support-feedback-form" class="support-feedback-form" hidden>
-        <label for="dashboard-support-feedback-rating">Rate this support chat (1-5)</label>
-        <input id="dashboard-support-feedback-rating" type="number" min="1" max="5" required />
-        <label for="dashboard-support-feedback-comment">Feedback (optional)</label>
-        <textarea id="dashboard-support-feedback-comment" rows="2" placeholder="Write your feedback"></textarea>
-        <button type="submit" class="btn btn-primary">Submit Feedback</button>
-      </form>
-
-      <div id="dashboard-support-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
     </div>
 
     <div id="dashboard-activation-modal" class="activation-modal" hidden>

@@ -29,6 +29,19 @@ const supportFeedbackEl = document.getElementById('dashboard-support-feedback');
 const supportFeedbackForm = document.getElementById('dashboard-support-feedback-form');
 const supportFeedbackRatingInput = document.getElementById('dashboard-support-feedback-rating');
 const supportFeedbackCommentInput = document.getElementById('dashboard-support-feedback-comment');
+
+// AI chat elements
+const aiViewEl = document.getElementById('support-ai-view');
+const adminViewEl = document.getElementById('support-admin-view');
+const aiMessagesEl = document.getElementById('support-ai-messages');
+const aiInputEl = document.getElementById('support-ai-input');
+const aiSendBtn = document.getElementById('support-ai-send');
+const aiEscalationBar = document.getElementById('support-ai-escalation-bar');
+const aiResolvedBar = document.getElementById('support-ai-resolved-bar');
+const aiComposeEl = document.getElementById('support-ai-compose');
+const escalateBtnEl = document.getElementById('support-escalate-btn');
+const adminBackBtn = document.getElementById('support-admin-back');
+const adminCloseBtn = document.getElementById('support-admin-close');
 const activationModalEl = document.getElementById('dashboard-activation-modal');
 const activationCloseBtn = document.getElementById('dashboard-activation-close');
 const activationBackdropBtn = document.getElementById('dashboard-activation-close-backdrop');
@@ -44,6 +57,17 @@ let unauthRedirectTimer = null;
 let supportChats = [];
 let supportActiveChatId = 0;
 let supportPollTimer = null;
+
+// AI chat state
+let aiSessionId = null;
+let aiHumanRequestCount = 0;
+let aiCantAnswerCount = 0;
+let aiResolved = false;
+let aiInAdminMode = false;
+
+const AI_HUMAN_KEYWORDS = /\b(human|admin|real person|agent|manager|support team|talk to someone|speak to|escalate|person|staff|representative|help desk|live agent)\b/i;
+const AI_RESOLVED_KEYWORDS = /\b(thanks|thank you|got it|resolved|solved|that works|that helped|no more questions|that['']?s all|all good|perfect|great|sorted|done|clear|understood|no thanks|bye|goodbye)\b/i;
+const AI_CANT_ANSWER = /i don['']t have that information|please contact us|I['']m not sure|I cannot|beyond my knowledge|i don['']t know/i;
 let purchasesCache = [];
 let purchasesByCourseId = new Map();
 let activationContext = {
@@ -500,26 +524,156 @@ async function submitSupportFeedback(event) {
   setSupportFeedback('Thanks! Your feedback was saved.', 'success');
 }
 
+// ── AI Chat ──────────────────────────────────────────────────────────────────
+
+function appendAiMessage(role, text) {
+  if (!aiMessagesEl) return;
+  const wrap = document.createElement('div');
+  wrap.className = `support-msg support-msg-${role === 'ai' ? 'admin' : 'user'}`;
+  const bubble = document.createElement('div');
+  bubble.className = 'support-msg-text';
+  bubble.textContent = text;
+  wrap.appendChild(bubble);
+  aiMessagesEl.appendChild(wrap);
+  aiMessagesEl.scrollTop = aiMessagesEl.scrollHeight;
+}
+
+function setAiLoading(loading) {
+  if (aiSendBtn) aiSendBtn.disabled = loading;
+  if (aiSendBtn) aiSendBtn.textContent = loading ? '...' : 'Send';
+}
+
+function closeAiChat() {
+  aiResolved = true;
+  if (aiComposeEl) aiComposeEl.hidden = true;
+  if (aiEscalationBar) aiEscalationBar.hidden = true;
+  if (aiResolvedBar) aiResolvedBar.hidden = false;
+  setTimeout(() => closeSupportPanel(), 3000);
+}
+
+function showEscalationBar() {
+  if (aiEscalationBar) aiEscalationBar.hidden = false;
+}
+
+async function sendAiMessage(messageText) {
+  if (aiResolved) return;
+  const text = messageText || (aiInputEl ? aiInputEl.value.trim() : '');
+  if (!text) return;
+
+  if (aiInputEl) aiInputEl.value = '';
+  appendAiMessage('user', text);
+  setAiLoading(true);
+
+  // Detect if user is asking for a human
+  if (AI_HUMAN_KEYWORDS.test(text)) {
+    aiHumanRequestCount += 1;
+  }
+
+  // Detect if user says issue is resolved
+  if (AI_RESOLVED_KEYWORDS.test(text) && aiMessagesEl && aiMessagesEl.childElementCount > 2) {
+    setAiLoading(false);
+    appendAiMessage('ai', "Wonderful! I'm glad I could help. Take care, and feel free to reach out anytime. Closing this chat now. 👋");
+    setTimeout(() => closeAiChat(), 1800);
+    return;
+  }
+
+  // If user has asked for human 3+ times, escalate without trying again
+  if (aiHumanRequestCount >= 3) {
+    setAiLoading(false);
+    appendAiMessage('ai', "I completely understand. Let me connect you with our admin team right away. Click 'Talk to Admin' below.");
+    showEscalationBar();
+    return;
+  }
+
+  try {
+    const res = await fetch('/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text, sessionId: aiSessionId }),
+    });
+    const data = await res.json().catch(() => ({}));
+    const reply = data.reply || "I'm having trouble right now. Please try again or contact support@osianacademy.com.";
+    aiSessionId = data.sessionId || aiSessionId;
+
+    // Track how many times AI says it can't answer
+    if (AI_CANT_ANSWER.test(reply)) {
+      aiCantAnswerCount += 1;
+    }
+
+    // If user asked for human 1-2 times, acknowledge but still try
+    if (aiHumanRequestCount === 1) {
+      appendAiMessage('ai', "I hear you — let me try my best to help first. " + reply);
+    } else if (aiHumanRequestCount === 2) {
+      appendAiMessage('ai', reply + "\n\nI've done my best to help. If you still need a human, I can connect you with our admin team.");
+      showEscalationBar();
+    } else {
+      appendAiMessage('ai', reply);
+    }
+
+    // Auto-escalate if AI repeatedly can't answer
+    if (aiCantAnswerCount >= 2) {
+      showEscalationBar();
+    }
+  } catch {
+    appendAiMessage('ai', "Something went wrong on my end. You can try again or contact support@osianacademy.com / +91 96242 84999.");
+  } finally {
+    setAiLoading(false);
+  }
+}
+
+function switchToAdminMode() {
+  aiInAdminMode = true;
+  if (aiViewEl) aiViewEl.hidden = true;
+  if (adminViewEl) adminViewEl.hidden = false;
+  loadSupportChats().catch(() => {});
+  clearSupportPollTimer();
+  supportPollTimer = setInterval(async () => {
+    if (!supportPanelEl?.classList.contains('open')) return;
+    try {
+      await loadSupportChats();
+      if (supportActiveChatId) await loadSupportMessages();
+    } catch { /* silent */ }
+  }, 7000);
+}
+
+function switchToAiMode() {
+  aiInAdminMode = false;
+  if (adminViewEl) adminViewEl.hidden = true;
+  if (aiViewEl) aiViewEl.hidden = false;
+  clearSupportPollTimer();
+}
+
+// ── Panel open/close ──────────────────────────────────────────────────────────
+
 async function openSupportPanel() {
   if (!supportPanelEl) return;
   supportPanelEl.hidden = false;
   supportPanelEl.classList.add('open');
   if (supportFabBtn) supportFabBtn.hidden = true;
-  await loadSupportChats();
-  if (supportActiveChatId) {
-    await loadSupportMessages();
+
+  if (aiInAdminMode) {
+    // Already in admin mode (e.g. re-opened after escalation)
+    if (adminViewEl) adminViewEl.hidden = false;
+    if (aiViewEl) aiViewEl.hidden = true;
+    await loadSupportChats();
+    if (supportActiveChatId) await loadSupportMessages();
+    clearSupportPollTimer();
+    supportPollTimer = setInterval(async () => {
+      if (!supportPanelEl.classList.contains('open')) return;
+      try {
+        await loadSupportChats();
+        if (supportActiveChatId) await loadSupportMessages();
+      } catch { /* silent */ }
+    }, 7000);
+    return;
   }
 
-  clearSupportPollTimer();
-  supportPollTimer = setInterval(async () => {
-    if (!supportPanelEl.classList.contains('open')) return;
-    try {
-      await loadSupportChats();
-      if (supportActiveChatId) await loadSupportMessages();
-    } catch {
-      // Keep silent during polling.
-    }
-  }, 7000);
+  // AI mode — show greeting on first open
+  if (aiViewEl) aiViewEl.hidden = false;
+  if (adminViewEl) adminViewEl.hidden = true;
+  if (aiMessagesEl && aiMessagesEl.childElementCount === 0) {
+    appendAiMessage('ai', "👋 Hi! I'm Osian's AI assistant. How can I help you today? You can ask me anything about your courses, enrollment, scheduling, placement, or anything else related to Osian Academy.");
+  }
 }
 
 function closeSupportPanel() {
@@ -1209,6 +1363,36 @@ if (supportFabBtn) {
 
 if (supportCloseBtn) {
   supportCloseBtn.addEventListener('click', () => closeSupportPanel());
+}
+
+if (adminCloseBtn) {
+  adminCloseBtn.addEventListener('click', () => closeSupportPanel());
+}
+
+if (adminBackBtn) {
+  adminBackBtn.addEventListener('click', () => switchToAiMode());
+}
+
+if (aiSendBtn) {
+  aiSendBtn.addEventListener('click', () => {
+    sendAiMessage().catch(() => {});
+  });
+}
+
+if (aiInputEl) {
+  aiInputEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendAiMessage().catch(() => {});
+    }
+  });
+}
+
+if (escalateBtnEl) {
+  escalateBtnEl.addEventListener('click', () => {
+    appendAiMessage('ai', "Connecting you to our admin team now. Please wait while we open the admin chat...");
+    setTimeout(() => switchToAdminMode(), 800);
+  });
 }
 
 if (supportNewChatBtn) {
