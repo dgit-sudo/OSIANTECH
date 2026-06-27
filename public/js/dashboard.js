@@ -555,6 +555,28 @@ function showEscalationBar() {
   if (aiEscalationBar) aiEscalationBar.hidden = false;
 }
 
+async function getAiToken() {
+  const user = auth.currentUser;
+  if (!user) throw new Error('Not signed in.');
+  return user.getIdToken();
+}
+
+async function loadAiHistory() {
+  try {
+    const token = await getAiToken();
+    const res = await fetch('/api/support/ai/history', {
+      headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!data.ok || !data.messages?.length) return;
+
+    aiSessionId = data.sessionId;
+    data.messages.forEach((m) => appendAiMessage(m.role === 'ai' ? 'ai' : 'user', m.message));
+  } catch {
+    // Silently skip — history is optional
+  }
+}
+
 async function sendAiMessage(messageText) {
   if (aiResolved) return;
   const text = messageText || (aiInputEl ? aiInputEl.value.trim() : '');
@@ -586,9 +608,14 @@ async function sendAiMessage(messageText) {
   }
 
   try {
-    const res = await fetch('/chat', {
+    const token = await getAiToken();
+    const res = await fetch('/api/support/ai/message', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify({ message: text, sessionId: aiSessionId }),
     });
     const data = await res.json().catch(() => ({}));
@@ -672,7 +699,10 @@ async function openSupportPanel() {
   if (aiViewEl) aiViewEl.hidden = false;
   if (adminViewEl) adminViewEl.hidden = true;
   if (aiMessagesEl && aiMessagesEl.childElementCount === 0) {
-    appendAiMessage('ai', "👋 Hi! I'm Osian's AI assistant. How can I help you today? You can ask me anything about your courses, enrollment, scheduling, placement, or anything else related to Osian Academy.");
+    await loadAiHistory();
+    if (aiMessagesEl.childElementCount === 0) {
+      appendAiMessage('ai', "👋 Hi! I'm Osian's AI assistant. How can I help you today? You can ask me anything about your courses, enrollment, scheduling, placement, or anything else related to Osian Academy.");
+    }
   }
 }
 

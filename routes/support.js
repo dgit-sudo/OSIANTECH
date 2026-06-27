@@ -25,6 +25,7 @@ const pool = dbReady
   : null;
 
 let supportTablesReady = false;
+let aiTablesReady = false;
 
 function ensureDatabaseConfigured(res) {
   if (dbReady) return true;
@@ -196,6 +197,23 @@ async function ensureSupportTables() {
   await pool.query('create index if not exists idx_support_messages_chat_id on support_messages(chat_id)');
 
   supportTablesReady = true;
+}
+
+async function ensureAiTables() {
+  if (!pool || aiTablesReady) return;
+  await pool.query(`
+    create table if not exists ai_chat_messages (
+      id serial primary key,
+      uid varchar(128) not null,
+      session_id varchar(128) not null,
+      role varchar(10) not null,
+      message text not null,
+      created_at timestamp not null default current_timestamp
+    )
+  `);
+  await pool.query('create index if not exists idx_ai_chat_uid on ai_chat_messages(uid)');
+  await pool.query('create index if not exists idx_ai_chat_session on ai_chat_messages(session_id)');
+  aiTablesReady = true;
 }
 
 async function ensureActivatedDashboard(uid) {
@@ -775,6 +793,97 @@ router.post('/admin/chats/:chatId/end', requireAdminAuth, async (req, res) => {
     });
   } catch {
     return res.status(500).json({ error: 'Could not end chat.' });
+  }
+});
+
+// ── AI Chat persistence ───────────────────────────────────────────────────────
+
+router.get('/ai/history', requireUserAuth, async (req, res) => {
+  if (!ensureDatabaseConfigured(res)) return;
+  const uid = req.authUser.uid;
+  if (!isValidUid(uid)) return res.status(400).json({ error: 'Invalid uid.' });
+
+  try {
+    await ensureAiTables();
+
+    // Get the most recent session_id for this user
+    const sessionRow = await pool.query(
+      'select session_id from ai_chat_messages where uid = $1 order by created_at desc limit 1',
+      [uid],
+    );
+
+    if (!sessionRow.rows[0]) {
+      return res.json({ ok: true, messages: [], sessionId: null });
+    }
+
+    const sessionId = sessionRow.rows[0].session_id;
+    const rows = await pool.query(
+      'select role, message, created_at from ai_chat_messages where uid = $1 and session_id = $2 order by created_at asc, id asc',
+      [uid, sessionId],
+    );
+
+    return res.json({
+      ok: true,
+      sessionId,
+      messages: rows.rows.map((r) => ({ role: r.role, message: r.message, createdAt: r.created_at })),
+    });
+  } catch {
+    return res.status(500).json({ error: 'Could not load AI chat history.' });
+  }
+});
+
+router.post('/ai/message', requireUserAuth, async (req, res) => {
+  if (!ensureDatabaseConfigured(res)) return;
+  const uid = req.authUser.uid;
+  if (!isValidUid(uid)) return res.status(400).json({ error: 'Invalid uid.' });
+
+  const message = toSafeText(req.body?.message || '', 1000);
+  const sessionId = toSafeText(req.body?.sessionId || '', 128);
+  if (!message) return res.status(400).json({ error: 'message is required.' });
+
+  try {
+    await ensureAiTables();
+
+    // Build conversation history for the AI from DB
+    let history = [];
+    let activeSessionId = sessionId;
+
+    if (sessionId) {
+      const histRows = await pool.query(
+        'select role, message from ai_chat_messages where uid = $1 and session_id = $2 order by created_at asc, id asc',
+        [uid, sessionId],
+      );
+      history = histRows.rows.map((r) => ({
+        role: r.role === 'ai' ? 'assistant' : 'user',
+        content: r.message,
+      }));
+    }
+
+    // Call AI
+    const { answer } = require('../src/rag.cjs');
+    const reply = await answer(message, history);
+
+    // Generate a new session ID if none provided
+    if (!activeSessionId) {
+      activeSessionId = require('crypto').randomUUID();
+    }
+
+    // Persist both messages
+    await pool.query(
+      'insert into ai_chat_messages (uid, session_id, role, message) values ($1, $2, $3, $4)',
+      [uid, activeSessionId, 'user', message],
+    );
+    await pool.query(
+      'insert into ai_chat_messages (uid, session_id, role, message) values ($1, $2, $3, $4)',
+      [uid, activeSessionId, 'ai', reply],
+    );
+
+    return res.json({ ok: true, reply, sessionId: activeSessionId });
+  } catch (err) {
+    console.error('[AI Chat Error]', err.message);
+    return res.status(500).json({
+      error: 'Something went wrong. Please contact support@osianacademy.com or call +91 96242 84999.',
+    });
   }
 });
 
