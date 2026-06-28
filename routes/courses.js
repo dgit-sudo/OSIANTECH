@@ -8,6 +8,7 @@ const router = express.Router();
 
 const rawCourses = require('../data/coursesCatalog.json');
 const { verifyFirebaseToken } = require('../lib/firebase-auth');
+const apiCache = require('../lib/api-cache');
 const connectionString = process.env.SUPABASE_DB_URL || process.env.DATABASE_URL || '';
 const purchasesTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_PURCHASES_TABLE || '')
   ? process.env.SUPABASE_PURCHASES_TABLE
@@ -645,6 +646,7 @@ router.post('/:id/checkout/verify-payment', async (req, res) => {
       [verification.uid, course.id, course.title],
     );
     purchaseRecorded = result.rows.length > 0;
+    if (purchaseRecorded) apiCache.invalidate(`dashboard:${verification.uid}`);
   }
 
   return res.json({

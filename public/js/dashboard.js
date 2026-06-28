@@ -170,7 +170,7 @@ function scheduleUnauthRedirect() {
       return;
     }
     window.location.replace('/auth?mode=signin');
-  }, 4500);
+  }, 1500);
 }
 
 function getLocalPurchases(user) {
@@ -1373,34 +1373,72 @@ function validateRequiredProfile(payload) {
   return Boolean(payload.name && payload.age && payload.nationality && payload.phoneNumber && payload.city && payload.education);
 }
 
+const DASH_CACHE_KEY_PREFIX = 'osian_dash_';
+const DASH_CACHE_TTL = 5 * 60 * 1000; // 5 minutes client-side
+
+function getDashboardCache(uid) {
+  try {
+    const raw = sessionStorage.getItem(DASH_CACHE_KEY_PREFIX + uid);
+    if (!raw) return null;
+    const entry = JSON.parse(raw);
+    if (Date.now() > entry.expiresAt) { sessionStorage.removeItem(DASH_CACHE_KEY_PREFIX + uid); return null; }
+    return entry.data;
+  } catch { return null; }
+}
+
+function setDashboardCache(uid, data) {
+  try {
+    sessionStorage.setItem(DASH_CACHE_KEY_PREFIX + uid, JSON.stringify({ data, expiresAt: Date.now() + DASH_CACHE_TTL }));
+  } catch { /* storage full — ignore */ }
+}
+
+async function fetchDashboardData(user) {
+  const idToken = await user.getIdToken();
+  const res = await fetch(`${profileBaseUrl}/${encodeURIComponent(user.uid)}/dashboard`, {
+    headers: { Accept: 'application/json', Authorization: `Bearer ${idToken}` },
+  });
+  if (res.status === 401) { const e = new Error('Unauthorized'); e.status = 401; throw e; }
+  if (!res.ok) throw new Error('Dashboard load failed.');
+  return res.json();
+}
+
+function applyDashboardData(user, data) {
+  const { profile, purchases: remotePurchases } = data;
+  const localPurchases = getLocalPurchases(user);
+  const purchases = remotePurchases?.length
+    ? mergePurchases(remotePurchases, localPurchases)
+    : localPurchases;
+  const displayName = profile?.name || user.displayName || user.email || 'Learner';
+  if (nameEl) nameEl.textContent = displayName;
+  applyProfileToForm(profileForm, profile);
+  applyProfileToForm(settingsForm, profile);
+  renderPurchases(purchases);
+  if (profile?.completedProfile) {
+    showDashboard('overview');
+  } else {
+    showGate();
+    setFeedback(gateFeedbackEl, 'Complete your profile to unlock your dashboard.', 'info');
+  }
+}
+
 async function hydrateDashboardForUser(user) {
   try {
-    // Fetch profile and purchases in parallel — cuts load time roughly in half
-    const localPurchases = getLocalPurchases(user);
-    const [profile, remotePurchases] = await Promise.all([
-      loadProfile(user),
-      loadPurchases(user).catch(() => null),
-    ]);
-    const purchases = remotePurchases
-      ? mergePurchases(remotePurchases, localPurchases)
-      : localPurchases;
-    const displayName = profile?.name || user.displayName || user.email || 'Learner';
-    if (nameEl) nameEl.textContent = displayName;
-    applyProfileToForm(profileForm, profile);
-    applyProfileToForm(settingsForm, profile);
-    renderPurchases(purchases);
-
-    if (profile?.completedProfile) {
-      showDashboard('overview');
-    } else {
-      showGate();
-      setFeedback(gateFeedbackEl, 'Complete your profile to unlock your dashboard.', 'info');
+    // Render from cache immediately so the UI appears instant
+    const cached = getDashboardCache(user.uid);
+    if (cached) {
+      applyDashboardData(user, cached);
     }
+
+    // Always fetch fresh data from server (cache hit there too = very fast)
+    const data = await fetchDashboardData(user);
+    setDashboardCache(user.uid, data);
+    applyDashboardData(user, data);
+    return;
   } catch (error) {
     if (error.status === 401) {
       showGate();
       renderPurchases([]);
-      setFeedback(gateFeedbackEl, 'Session could not be verified by server. Please refresh and try again.', 'error');
+      setFeedback(gateFeedbackEl, 'Session could not be verified. Please refresh.', 'error');
       return;
     }
     showGate();
@@ -1408,6 +1446,7 @@ async function hydrateDashboardForUser(user) {
     setFeedback(gateFeedbackEl, 'Could not load profile data. Please complete your details.', 'error');
   }
 }
+
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
@@ -1473,6 +1512,8 @@ if (settingsForm) {
     try {
       setFeedback(settingsFeedbackEl, 'Saving changes...', 'info');
       const savedProfile = await saveProfile(user, payload);
+      // Bust client cache so next open shows fresh data
+      try { sessionStorage.removeItem(DASH_CACHE_KEY_PREFIX + user.uid); } catch { /* ignore */ }
       if (nameEl) nameEl.textContent = savedProfile?.name || payload.name;
       applyProfileToForm(settingsForm, savedProfile || payload);
       setFeedback(settingsFeedbackEl, 'Profile updated successfully.', 'success');
@@ -1495,6 +1536,8 @@ tabButtons.forEach((button) => {
 if (signoutBtn) {
   signoutBtn.addEventListener('click', async () => {
     closeSupportPanel();
+    const uid = auth.currentUser?.uid;
+    if (uid) { try { sessionStorage.removeItem(DASH_CACHE_KEY_PREFIX + uid); } catch { /* ignore */ } }
     await signOut(auth);
     window.location.href = '/auth?mode=signin';
   });

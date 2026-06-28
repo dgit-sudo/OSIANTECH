@@ -1,6 +1,7 @@
 const express = require('express');
 const { Pool } = require('pg');
 const { verifyFirebaseToken } = require('../lib/firebase-auth');
+const apiCache = require('../lib/api-cache');
 
 const router = express.Router();
 const connectionString = process.env.SUPABASE_DB_URL || process.env.DATABASE_URL || '';
@@ -660,6 +661,81 @@ router.post('/sync-user', async (req, res) => {
   }
 });
 
+// Combined dashboard endpoint — profile + purchases in one request, both cached
+router.get('/:uid/dashboard', async (req, res) => {
+  if (!ensureDatabaseConfigured(res)) return;
+
+  const { uid } = req.params;
+  if (!isValidUid(uid)) return res.status(400).json({ error: 'Invalid uid.' });
+
+  const authHeader = req.headers.authorization || '';
+  if (!authHeader.startsWith('Bearer ')) return res.status(401).json({ error: 'Unauthorized.' });
+
+  const verification = await verifyFirebaseToken(authHeader.slice(7));
+  if (!verification.valid || verification.uid !== uid) {
+    if (verification.valid === false && verification.userDeleted) {
+      await deleteUserFromSupabase(uid);
+      return res.status(401).json({ error: 'Account has been deleted.' });
+    }
+    return res.status(401).json({ error: 'Unauthorized.' });
+  }
+
+  const cacheKey = `dashboard:${uid}`;
+  const cached = apiCache.get(cacheKey);
+  if (cached) return res.json(cached);
+
+  try {
+    await Promise.all([ensureProfileTable(), ensurePurchasesTable(), ensureActivationsTable()]);
+
+    const [profileResult, purchasesResult] = await Promise.all([
+      pool.query(
+        `select uid, name, age, nationality, phone_number, gender, city, education, email, completed_profile, created_at, updated_at
+         from ${profileTable} where uid = $1 limit 1`,
+        [uid],
+      ),
+      pool.query(
+        `select p.course_id, p.course_title, p.purchase_date,
+                a.instructor_id, a.instructor_name, a.timeslot_id, a.timeslot_label,
+                a.learner_timezone, a.class_no, a.selected_slot_date,
+                a.selected_class_start_at, a.selected_class_end_at,
+                a.no_good_timeslot, a.status, a.requested_at
+         from ${purchasesTable} p
+         left join ${activationTable} a on a.uid = p.uid and a.course_id = p.course_id
+         where p.uid = $1 order by p.purchase_date desc`,
+        [uid],
+      ),
+    ]);
+
+    const profile = profileResult.rows[0] ? mapProfileRow(profileResult.rows[0]) : null;
+    const purchases = purchasesResult.rows.map((row) => ({
+      courseId: row.course_id,
+      courseTitle: row.course_title,
+      purchaseDate: row.purchase_date,
+      activation: row.requested_at ? {
+        instructorId: row.instructor_id || '',
+        instructorName: row.instructor_name || '',
+        timeslotId: row.timeslot_id || '',
+        timeslotLabel: row.timeslot_label || '',
+        learnerTimezone: row.learner_timezone || '',
+        classNo: Number(row.class_no || 1),
+        selectedSlotDate: row.selected_slot_date || null,
+        selectedClassStartAt: row.selected_class_start_at || null,
+        selectedClassEndAt: row.selected_class_end_at || null,
+        noGoodTimeslot: Boolean(row.no_good_timeslot),
+        status: row.status || 'requested',
+        requestedAt: row.requested_at,
+      } : null,
+    }));
+
+    const payload = { profile, purchases };
+    apiCache.set(cacheKey, payload, 45 * 1000); // 45-second TTL
+    return res.json(payload);
+  } catch (error) {
+    console.error('[profile] GET /:uid/dashboard failed:', error);
+    return res.status(500).json({ error: 'Failed to load dashboard data.' });
+  }
+});
+
 router.get('/:uid', async (req, res) => {
   if (!ensureDatabaseConfigured(res)) return;
 
@@ -677,21 +753,21 @@ router.get('/:uid', async (req, res) => {
     }
   }
 
+  const cacheKey = `profile:${uid}`;
+  const cached = apiCache.get(cacheKey);
+  if (cached) return res.json(cached);
+
   try {
     await ensureProfileTable();
-    const query = `
-      select uid, name, age, nationality, phone_number, gender, city, education, email, completed_profile, created_at, updated_at
-      from ${profileTable}
-      where uid = $1
-      limit 1
-    `;
-    const result = await pool.query(query, [uid]);
+    const result = await pool.query(
+      `select uid, name, age, nationality, phone_number, gender, city, education, email, completed_profile, created_at, updated_at
+       from ${profileTable} where uid = $1 limit 1`,
+      [uid],
+    );
 
-    if (!result.rows[0]) {
-      return res.json({ profile: null });
-    }
-
-    return res.json({ profile: mapProfileRow(result.rows[0]) });
+    const payload = result.rows[0] ? { profile: mapProfileRow(result.rows[0]) } : { profile: null };
+    apiCache.set(cacheKey, payload, 45 * 1000);
+    return res.json(payload);
   } catch (error) {
     console.error('[profile] GET /:uid failed:', error);
     return res.status(500).json({ error: 'Failed to load profile.' });
@@ -798,6 +874,8 @@ router.put('/:uid', async (req, res) => {
     ];
     await pool.query(userQuery, userValues);
 
+    apiCache.invalidate(`profile:${uid}`);
+    apiCache.invalidate(`dashboard:${uid}`);
     return res.json({ profile: mapProfileRow(profileRow) });
   } catch (error) {
     console.error('[profile] PUT /:uid failed:', error);
@@ -1251,6 +1329,7 @@ router.post('/:uid/purchases/:courseId/activate', async (req, res) => {
         requestedAt: row.requested_at,
       },
     });
+    apiCache.invalidate(`dashboard:${uid}`);
   } catch {
     return res.status(500).json({ error: 'Could not save course activation.' });
   }
