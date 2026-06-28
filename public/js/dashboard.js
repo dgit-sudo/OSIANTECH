@@ -310,6 +310,12 @@ function renderSupportChatList() {
   if (!supportChatListEl) return;
   supportChatListEl.innerHTML = '';
 
+  // Hide "New Request" if an open ticket already exists
+  if (supportNewChatBtn) {
+    const hasOpen = supportChats.some((c) => c.status === 'open');
+    supportNewChatBtn.hidden = hasOpen;
+  }
+
   if (!supportChats.length) {
     supportChatListEl.textContent = 'No support requests yet.';
     return;
