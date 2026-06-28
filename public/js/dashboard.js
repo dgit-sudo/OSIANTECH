@@ -19,7 +19,6 @@ const saveProfileBtn = document.getElementById('profile-save-btn');
 const supportFabBtn = document.getElementById('dashboard-support-button');
 const supportPanelEl = document.getElementById('dashboard-support-panel');
 const supportCloseBtn = document.getElementById('dashboard-support-close');
-const supportNewChatBtn = document.getElementById('dashboard-support-new-chat');
 const supportChatListEl = document.getElementById('dashboard-support-chat-list');
 const supportMessagesEl = document.getElementById('dashboard-support-messages');
 const supportMessageInput = document.getElementById('dashboard-support-message-input');
@@ -39,7 +38,6 @@ const aiSendBtn = document.getElementById('support-ai-send');
 const aiEscalationBar = document.getElementById('support-ai-escalation-bar');
 const aiResolvedBar = document.getElementById('support-ai-resolved-bar');
 const aiComposeEl = document.getElementById('support-ai-compose');
-const escalateBtnEl = document.getElementById('support-escalate-btn');
 const adminBackBtn = document.getElementById('support-admin-back');
 const adminCloseBtn = document.getElementById('support-admin-close');
 const unreadBadgeEl = document.getElementById('support-unread-badge');
@@ -62,10 +60,10 @@ let unreadPollTimer = null;
 
 // AI chat state
 let aiSessionId = null;
-let aiHumanRequestCount = 0;
 let aiCantAnswerCount = 0;
 let aiResolved = false;
 let aiInAdminMode = false;
+let aiAwaitingEscalationQuery = false;
 
 const AI_HUMAN_KEYWORDS = /\b(human|admin|real person|agent|manager|support team|talk to someone|speak to|escalate|person|staff|representative|help desk|live agent)\b/i;
 const AI_RESOLVED_KEYWORDS = /\b(thanks|thank you|got it|resolved|solved|that works|that helped|no more questions|that['']?s all|all good|perfect|great|sorted|done|clear|understood|no thanks|bye|goodbye)\b/i;
@@ -309,12 +307,6 @@ function getActiveChat() {
 function renderSupportChatList() {
   if (!supportChatListEl) return;
   supportChatListEl.innerHTML = '';
-
-  // Hide "New Request" if an open ticket already exists
-  if (supportNewChatBtn) {
-    const hasOpen = supportChats.some((c) => c.status === 'open');
-    supportNewChatBtn.hidden = hasOpen;
-  }
 
   if (!supportChats.length) {
     supportChatListEl.textContent = 'No support requests yet.';
@@ -592,10 +584,6 @@ function closeAiChat() {
   setTimeout(() => closeSupportPanel(), 3000);
 }
 
-function showEscalationBar() {
-  if (aiEscalationBar) aiEscalationBar.hidden = false;
-}
-
 async function getAiToken() {
   const user = auth.currentUser;
   if (!user) throw new Error('Not signed in.');
@@ -625,12 +613,24 @@ async function sendAiMessage(messageText) {
 
   if (aiInputEl) aiInputEl.value = '';
   appendAiMessage('user', text);
-  setAiLoading(true);
 
-  // Detect if user is asking for a human
-  if (AI_HUMAN_KEYWORDS.test(text)) {
-    aiHumanRequestCount += 1;
+  // User provided their issue description — create the admin ticket automatically
+  if (aiAwaitingEscalationQuery) {
+    aiAwaitingEscalationQuery = false;
+    setAiLoading(true);
+    try {
+      await sendSupportMessageText(text);
+      appendAiMessage('ai', "Your support ticket has been created! Our admin team will get back to you shortly. Connecting you now...");
+      setTimeout(() => switchToAdminMode(), 1400);
+    } catch {
+      appendAiMessage('ai', "Sorry, I couldn't create the ticket right now. Please email dhyanam@osian.tech or call +91 96242 84999.");
+    } finally {
+      setAiLoading(false);
+    }
+    return;
   }
+
+  setAiLoading(true);
 
   // Detect if user says issue is resolved
   if (AI_RESOLVED_KEYWORDS.test(text) && aiMessagesEl && aiMessagesEl.childElementCount > 2) {
@@ -640,11 +640,11 @@ async function sendAiMessage(messageText) {
     return;
   }
 
-  // If user has asked for human 3+ times, escalate without trying again
-  if (aiHumanRequestCount >= 3) {
+  // If user asks for a human — immediately collect issue details for ticket creation
+  if (AI_HUMAN_KEYWORDS.test(text)) {
     setAiLoading(false);
-    appendAiMessage('ai', "I completely understand. Let me connect you with our admin team right away. Click 'Talk to Admin' below.");
-    showEscalationBar();
+    aiAwaitingEscalationQuery = true;
+    appendAiMessage('ai', "Of course! Please briefly describe your issue and I'll create a support ticket for you right away.");
     return;
   }
 
@@ -660,30 +660,23 @@ async function sendAiMessage(messageText) {
       body: JSON.stringify({ message: text, sessionId: aiSessionId }),
     });
     const data = await res.json().catch(() => ({}));
-    const reply = data.reply || "I'm having trouble right now. Please try again or contact support@osianacademy.com.";
+    const reply = data.reply || "I'm having trouble right now. Please try again or contact dhyanam@osian.tech.";
     aiSessionId = data.sessionId || aiSessionId;
 
-    // Track how many times AI says it can't answer
     if (AI_CANT_ANSWER.test(reply)) {
       aiCantAnswerCount += 1;
     }
 
-    // If user asked for human 1-2 times, acknowledge but still try
-    if (aiHumanRequestCount === 1) {
-      appendAiMessage('ai', "I hear you — let me try my best to help first. " + reply);
-    } else if (aiHumanRequestCount === 2) {
-      appendAiMessage('ai', reply + "\n\nI've done my best to help. If you still need a human, I can connect you with our admin team.");
-      showEscalationBar();
-    } else {
-      appendAiMessage('ai', reply);
-    }
+    appendAiMessage('ai', reply);
 
     // Auto-escalate if AI repeatedly can't answer
     if (aiCantAnswerCount >= 2) {
-      showEscalationBar();
+      aiCantAnswerCount = 0;
+      aiAwaitingEscalationQuery = true;
+      appendAiMessage('ai', "I don't seem to have enough information to fully resolve this. Let me connect you with our admin team — could you briefly describe what you need help with?");
     }
   } catch {
-    appendAiMessage('ai', "Something went wrong on my end. You can try again or contact support@osianacademy.com / +91 96242 84999.");
+    appendAiMessage('ai', "Something went wrong on my end. You can try again or contact dhyanam@osian.tech / +91 96242 84999.");
   } finally {
     setAiLoading(false);
   }
@@ -1472,20 +1465,6 @@ if (aiInputEl) {
   });
 }
 
-if (escalateBtnEl) {
-  escalateBtnEl.addEventListener('click', () => {
-    appendAiMessage('ai', "Connecting you to our admin team now. Please wait while we open the admin chat...");
-    setTimeout(() => switchToAdminMode(), 800);
-  });
-}
-
-if (supportNewChatBtn) {
-  supportNewChatBtn.addEventListener('click', () => {
-    startSupportChat()
-      .then(() => setSupportFeedback('Support request opened.', 'success'))
-      .catch((error) => setSupportFeedback(error?.message || 'Could not start support request.', 'error'));
-  });
-}
 
 if (supportSendBtn) {
   supportSendBtn.addEventListener('click', () => {
