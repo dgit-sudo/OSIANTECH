@@ -42,6 +42,7 @@ const aiComposeEl = document.getElementById('support-ai-compose');
 const escalateBtnEl = document.getElementById('support-escalate-btn');
 const adminBackBtn = document.getElementById('support-admin-back');
 const adminCloseBtn = document.getElementById('support-admin-close');
+const unreadBadgeEl = document.getElementById('support-unread-badge');
 const activationModalEl = document.getElementById('dashboard-activation-modal');
 const activationCloseBtn = document.getElementById('dashboard-activation-close');
 const activationBackdropBtn = document.getElementById('dashboard-activation-close-backdrop');
@@ -57,6 +58,7 @@ let unauthRedirectTimer = null;
 let supportChats = [];
 let supportActiveChatId = 0;
 let supportPollTimer = null;
+let unreadPollTimer = null;
 
 // AI chat state
 let aiSessionId = null;
@@ -234,12 +236,45 @@ function showDashboard(activeTab = 'overview') {
   if (content) content.hidden = false;
   if (supportFabBtn) supportFabBtn.hidden = false;
   setActiveTab(activeTab);
+  startUnreadPoll();
 }
 
 function clearSupportPollTimer() {
   if (!supportPollTimer) return;
   clearInterval(supportPollTimer);
   supportPollTimer = null;
+}
+
+function updateBadge(count) {
+  if (!unreadBadgeEl) return;
+  if (count > 0) {
+    unreadBadgeEl.textContent = count > 99 ? '99+' : String(count);
+    unreadBadgeEl.hidden = false;
+  } else {
+    unreadBadgeEl.hidden = true;
+  }
+}
+
+async function refreshUnreadBadge() {
+  // Skip badge update while panel is open (user can see messages directly)
+  if (supportPanelEl?.classList.contains('open')) return;
+  try {
+    const token = await getAiToken();
+    const res = await fetch('/api/support/unread-count', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    updateBadge(data.ok ? (data.unreadCount || 0) : 0);
+    // Track open ticket in memory so openSupportPanel can use it
+    if (data.ok && data.openChatId) aiInAdminMode = true;
+  } catch { /* silent */ }
+}
+
+function startUnreadPoll() {
+  if (unreadPollTimer) return; // already running
+  refreshUnreadBadge().catch(() => {});
+  unreadPollTimer = setInterval(() => refreshUnreadBadge().catch(() => {}), 30000);
 }
 
 function setSupportFeedback(message = '', type = 'info') {
@@ -677,9 +712,22 @@ async function openSupportPanel() {
   supportPanelEl.hidden = false;
   supportPanelEl.classList.add('open');
   if (supportFabBtn) supportFabBtn.hidden = true;
+  // Clear badge — user opened the panel
+  updateBadge(0);
+
+  // Always check for open admin ticket (handles page-refresh case)
+  try {
+    const token = await getAiToken();
+    const res = await fetch('/api/support/unread-count', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.ok && data.openChatId) aiInAdminMode = true;
+    }
+  } catch { /* if fetch fails, fall back to in-memory aiInAdminMode */ }
 
   if (aiInAdminMode) {
-    // Already in admin mode (e.g. re-opened after escalation)
     if (adminViewEl) adminViewEl.hidden = false;
     if (aiViewEl) aiViewEl.hidden = true;
     await loadSupportChats();

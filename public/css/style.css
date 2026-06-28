@@ -904,6 +904,7 @@ h1,h2,h3,h4,h5,h6 {
 /* Support FAB */
 .support-fab { position: fixed; bottom: 28px; right: 28px; width: 52px; height: 52px; border-radius: 50%; background: var(--grad-blue); border: none; color: #fff; font-size: .65rem; font-weight: 700; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-blue); cursor: pointer; z-index: 800; transition: transform var(--t), box-shadow var(--t); padding: 0; line-height: 1; }
 .support-fab:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(26,86,219,.45); }
+.support-unread-badge { position: absolute; top: -5px; right: -5px; background: #e53e3e; color: #fff; border-radius: 50%; font-size: 10px; font-weight: 800; min-width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; padding: 0 3px; pointer-events: none; border: 2px solid var(--bg-card); }
 
 /* Support panel */
 .support-panel { position: fixed; top: 68px; right: 0; bottom: 0; width: 380px; background: var(--bg-card); border-left: 2px solid var(--orange); display: flex; flex-direction: column; z-index: 700; transform: translateX(100%); transition: transform var(--t-slow) var(--ease); box-shadow: -8px 0 32px rgba(0,0,0,.15); }

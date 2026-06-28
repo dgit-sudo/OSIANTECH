@@ -195,6 +195,7 @@ async function ensureSupportTables() {
   await pool.query('create index if not exists idx_support_chats_uid on support_chats(uid)');
   await pool.query('create index if not exists idx_support_chats_status on support_chats(status)');
   await pool.query('create index if not exists idx_support_messages_chat_id on support_messages(chat_id)');
+  await pool.query('alter table support_chats add column if not exists user_last_seen_at timestamp null');
 
   supportTablesReady = true;
 }
@@ -311,6 +312,42 @@ async function getChatMessages(chatId) {
   }));
 }
 
+router.get('/unread-count', requireUserAuth, async (req, res) => {
+  if (!ensureDatabaseConfigured(res)) return;
+
+  const uid = req.authUser.uid;
+  if (!isValidUid(uid)) return res.status(400).json({ error: 'Invalid uid.' });
+
+  try {
+    await ensureSupportTables();
+
+    const result = await pool.query(
+      `select
+         c.id,
+         count(m.id) filter (where m.sender_role = 'admin' and m.created_at > coalesce(c.user_last_seen_at, '1970-01-01')) as unread_count
+       from support_chats c
+       left join support_messages m on m.chat_id = c.id
+       where c.uid = $1 and c.status = 'open'
+       group by c.id
+       order by c.id desc
+       limit 1`,
+      [uid],
+    );
+
+    if (!result.rows[0]) {
+      return res.json({ ok: true, unreadCount: 0, openChatId: null });
+    }
+
+    return res.json({
+      ok: true,
+      unreadCount: Number(result.rows[0].unread_count),
+      openChatId: Number(result.rows[0].id),
+    });
+  } catch {
+    return res.status(500).json({ error: 'Could not get unread count.' });
+  }
+});
+
 router.post('/chats/start', requireUserAuth, async (req, res) => {
   if (!ensureDatabaseConfigured(res)) return;
 
@@ -388,6 +425,10 @@ router.get('/chats/:chatId/messages', requireUserAuth, async (req, res) => {
     if (chat.rows[0].uid !== uid) return res.status(403).json({ error: 'Forbidden.' });
 
     const messages = await getChatMessages(chatId);
+
+    // Mark chat as seen by user so unread count resets
+    pool.query('update support_chats set user_last_seen_at = current_timestamp where id = $1', [chatId]).catch(() => {});
+
     return res.json({ ok: true, messages });
   } catch {
     return res.status(500).json({ error: 'Could not load messages.' });
