@@ -68,6 +68,8 @@ let aiAwaitingEscalationQuery = false;
 const AI_HUMAN_KEYWORDS = /\b(human|admin|real person|agent|manager|support team|talk to someone|speak to|escalate|person|staff|representative|help desk|live agent)\b/i;
 const AI_RESOLVED_KEYWORDS = /\b(thanks|thank you|got it|resolved|solved|that works|that helped|no more questions|that['']?s all|all good|perfect|great|sorted|done|clear|understood|no thanks|bye|goodbye)\b/i;
 const AI_CANT_ANSWER = /i don['']t have that information|please contact us|I['']m not sure|I cannot|beyond my knowledge|i don['']t know/i;
+const AI_CLOSE_TICKET_KEYWORDS = /\b(close|end|cancel|resolve)\s+(my\s+|the\s+)?(support\s+)?(ticket|request|admin\s+chat|admin\s+ticket)\b|\bclose\s+the\s+ticket\b/i;
+const AI_CLOSE_CHAT_KEYWORDS = /\b(close|clear|reset|delete|end)\s+(this\s+|the\s+)?(ai\s+)?chat\b|\bstart\s+(over|fresh|a\s+new\s+chat)\b|\bclear\s+chat\b|\bnew\s+chat\b/i;
 let purchasesCache = [];
 let purchasesByCourseId = new Map();
 let activationContext = {
@@ -251,6 +253,51 @@ function updateBadge(count) {
   } else {
     unreadBadgeEl.hidden = true;
   }
+}
+
+async function closeAdminTicket() {
+  let chatId = supportActiveChatId;
+  if (!chatId) {
+    const token = await getAiToken();
+    const res = await fetch('/api/support/unread-count', { headers: { Authorization: `Bearer ${token}` } });
+    const data = await res.json().catch(() => ({}));
+    chatId = data.ok ? data.openChatId : null;
+  }
+  if (!chatId) throw new Error('No open ticket.');
+
+  const token = await getAiToken();
+  const res = await fetch(`/api/support/chats/${encodeURIComponent(chatId)}/end`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
+  });
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data.error || 'Could not close ticket.');
+  }
+
+  aiInAdminMode = false;
+  supportActiveChatId = 0;
+  supportChats = [];
+  updateBadge(0);
+}
+
+async function clearAiSession() {
+  try {
+    const token = await getAiToken();
+    await fetch('/api/support/ai/session', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`, Accept: 'application/json' },
+      body: JSON.stringify({ sessionId: aiSessionId }),
+    });
+  } catch { /* silent — local reset still happens */ }
+
+  aiSessionId = null;
+  aiCantAnswerCount = 0;
+  aiAwaitingEscalationQuery = false;
+  aiResolved = false;
+  if (aiMessagesEl) aiMessagesEl.innerHTML = '';
+  if (aiComposeEl) aiComposeEl.hidden = false;
+  if (aiResolvedBar) aiResolvedBar.hidden = true;
 }
 
 async function refreshUnreadBadge() {
@@ -637,6 +684,29 @@ async function sendAiMessage(messageText) {
     setAiLoading(false);
     appendAiMessage('ai', "Wonderful! I'm glad I could help. Take care, and feel free to reach out anytime. Closing this chat now. 👋");
     setTimeout(() => closeAiChat(), 1800);
+    return;
+  }
+
+  // Close admin ticket on request
+  if (AI_CLOSE_TICKET_KEYWORDS.test(text)) {
+    setAiLoading(false);
+    try {
+      await closeAdminTicket();
+      appendAiMessage('ai', "Your support ticket has been closed. Is there anything else I can help you with?");
+    } catch {
+      appendAiMessage('ai', "I couldn't find an open ticket to close — it may have already been closed by our team.");
+    }
+    return;
+  }
+
+  // Clear AI chat on request
+  if (AI_CLOSE_CHAT_KEYWORDS.test(text)) {
+    setAiLoading(false);
+    appendAiMessage('ai', "Clearing this chat now. Feel free to start fresh anytime!");
+    setTimeout(async () => {
+      await clearAiSession();
+      appendAiMessage('ai', "👋 Hi! I'm Osian's AI assistant. How can I help you today?");
+    }, 1000);
     return;
   }
 

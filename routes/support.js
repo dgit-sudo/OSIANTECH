@@ -496,6 +496,65 @@ router.post('/chats/:chatId/messages', requireUserAuth, async (req, res) => {
   }
 });
 
+router.post('/chats/:chatId/end', requireUserAuth, async (req, res) => {
+  if (!ensureDatabaseConfigured(res)) return;
+
+  const uid = req.authUser.uid;
+  const chatId = Number.parseInt(String(req.params.chatId || ''), 10);
+  if (!Number.isFinite(chatId) || chatId <= 0) {
+    return res.status(400).json({ error: 'Invalid chat id.' });
+  }
+
+  try {
+    await ensureSupportTables();
+
+    const chat = await pool.query('select id, uid from support_chats where id = $1 limit 1', [chatId]);
+    if (!chat.rows[0]) return res.status(404).json({ error: 'Chat not found.' });
+    if (chat.rows[0].uid !== uid) return res.status(403).json({ error: 'Forbidden.' });
+
+    const updated = await pool.query(
+      `update support_chats
+       set status = 'ended', ended_at = current_timestamp, updated_at = current_timestamp
+       where id = $1 and status <> 'ended'
+       returning id`,
+      [chatId],
+    );
+
+    if (!updated.rows[0]) return res.status(400).json({ error: 'Chat already ended.' });
+
+    return res.json({ ok: true });
+  } catch {
+    return res.status(500).json({ error: 'Could not close chat.' });
+  }
+});
+
+router.delete('/ai/session', requireUserAuth, async (req, res) => {
+  if (!ensureDatabaseConfigured(res)) return;
+
+  const uid = req.authUser.uid;
+  const sessionId = String(req.body?.sessionId || '').trim();
+
+  try {
+    await ensureAiTables();
+
+    if (sessionId) {
+      await pool.query('delete from ai_chat_messages where uid = $1 and session_id = $2', [uid, sessionId]);
+    } else {
+      const row = await pool.query(
+        'select session_id from ai_chat_messages where uid = $1 order by created_at desc limit 1',
+        [uid],
+      );
+      if (row.rows[0]) {
+        await pool.query('delete from ai_chat_messages where uid = $1 and session_id = $2', [uid, row.rows[0].session_id]);
+      }
+    }
+
+    return res.json({ ok: true });
+  } catch {
+    return res.status(500).json({ error: 'Could not clear AI chat.' });
+  }
+});
+
 router.post('/chats/:chatId/feedback', requireUserAuth, async (req, res) => {
   if (!ensureDatabaseConfigured(res)) return;
 
