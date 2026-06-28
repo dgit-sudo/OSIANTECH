@@ -1375,15 +1375,15 @@ function validateRequiredProfile(payload) {
 
 async function hydrateDashboardForUser(user) {
   try {
-    const profile = await loadProfile(user);
+    // Fetch profile and purchases in parallel — cuts load time roughly in half
     const localPurchases = getLocalPurchases(user);
-    let purchases = localPurchases;
-    try {
-      const remotePurchases = await loadPurchases(user);
-      purchases = mergePurchases(remotePurchases, localPurchases);
-    } catch {
-      purchases = localPurchases;
-    }
+    const [profile, remotePurchases] = await Promise.all([
+      loadProfile(user),
+      loadPurchases(user).catch(() => null),
+    ]);
+    const purchases = remotePurchases
+      ? mergePurchases(remotePurchases, localPurchases)
+      : localPurchases;
     const displayName = profile?.name || user.displayName || user.email || 'Learner';
     if (nameEl) nameEl.textContent = displayName;
     applyProfileToForm(profileForm, profile);

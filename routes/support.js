@@ -1,9 +1,8 @@
 const express = require('express');
 const { Pool } = require('pg');
+const { verifyFirebaseToken } = require('../lib/firebase-auth');
 
 const router = express.Router();
-
-const firebaseApiKey = process.env.FIREBASE_API_KEY || '';
 const adminEmail = String(process.env.ADMIN_EMAIL || 'dhyanamshah38@gmail.com').trim().toLowerCase();
 const connectionString = process.env.SUPABASE_DB_URL || process.env.DATABASE_URL || '';
 const profileTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_PROFILE_TABLE || '')
@@ -21,6 +20,9 @@ const pool = dbReady
   ? new Pool({
       connectionString,
       ssl: { rejectUnauthorized: false },
+      max: 5,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 3000,
     })
   : null;
 
@@ -64,58 +66,6 @@ function sanitizeImagePayload(image = null) {
   };
 }
 
-async function verifyFirebaseToken(idToken) {
-  if (!firebaseApiKey || !idToken) {
-    return {
-      valid: null,
-      uid: null,
-      email: null,
-      providerIds: [],
-    };
-  }
-
-  try {
-    const response = await fetch(
-      `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${firebaseApiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ idToken }),
-      },
-    );
-    const data = await response.json();
-
-    if (data.error) {
-      return {
-        valid: false,
-        uid: null,
-        email: null,
-        providerIds: [],
-      };
-    }
-
-    const user = data?.users?.[0] || null;
-    const providerIds = Array.isArray(user?.providerUserInfo)
-      ? user.providerUserInfo
-        .map((provider) => String(provider?.providerId || '').trim())
-        .filter(Boolean)
-      : [];
-
-    return {
-      valid: true,
-      uid: user?.localId || null,
-      email: String(user?.email || '').trim().toLowerCase() || null,
-      providerIds,
-    };
-  } catch {
-    return {
-      valid: null,
-      uid: null,
-      email: null,
-      providerIds: [],
-    };
-  }
-}
 
 function getBearerToken(req) {
   const authHeader = req.headers.authorization || '';

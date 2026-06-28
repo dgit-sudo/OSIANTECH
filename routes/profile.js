@@ -1,8 +1,8 @@
 const express = require('express');
 const { Pool } = require('pg');
+const { verifyFirebaseToken } = require('../lib/firebase-auth');
 
 const router = express.Router();
-const firebaseApiKey = process.env.FIREBASE_API_KEY || '';
 const connectionString = process.env.SUPABASE_DB_URL || process.env.DATABASE_URL || '';
 const profileTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_PROFILE_TABLE || '')
   ? process.env.SUPABASE_PROFILE_TABLE
@@ -32,6 +32,9 @@ const pool = dbReady
   ? new Pool({
       connectionString,
       ssl: { rejectUnauthorized: false },
+      max: 5,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 3000,
     })
   : null;
 
@@ -574,30 +577,6 @@ function mapProfileRow(row) {
   };
 }
 
-async function verifyFirebaseToken(idToken) {
-  if (!firebaseApiKey || !idToken) return { valid: null, uid: null };
-  try {
-    const response = await fetch(
-      `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${firebaseApiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ idToken }),
-      },
-    );
-    const data = await response.json();
-    if (data.error) {
-      const msg = data.error?.message || '';
-      return { valid: false, userDeleted: msg === 'USER_NOT_FOUND' };
-    }
-    return {
-      valid: true,
-      uid: data?.users?.[0]?.localId || null,
-    };
-  } catch {
-    return { valid: null };
-  }
-}
 
 async function getUidScopedTables(client) {
   const result = await client.query(

@@ -7,7 +7,7 @@ const { enrichCourse } = require('../lib/courseEnrichment');
 const router = express.Router();
 
 const rawCourses = require('../data/coursesCatalog.json');
-const firebaseApiKey = process.env.FIREBASE_API_KEY || '';
+const { verifyFirebaseToken } = require('../lib/firebase-auth');
 const connectionString = process.env.SUPABASE_DB_URL || process.env.DATABASE_URL || '';
 const purchasesTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_PURCHASES_TABLE || '')
   ? process.env.SUPABASE_PURCHASES_TABLE
@@ -22,6 +22,9 @@ const pool = dbReady
   ? new Pool({
       connectionString,
       ssl: { rejectUnauthorized: false },
+      max: 5,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 3000,
     })
   : null;
 
@@ -194,27 +197,6 @@ function getLocationAwareFee(course, { locationDenied = false } = {}) {
   };
 }
 
-async function verifyFirebaseToken(idToken) {
-  if (!firebaseApiKey || !idToken) return { valid: null, uid: null };
-  try {
-    const response = await fetch(
-      `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${firebaseApiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ idToken }),
-      },
-    );
-    const data = await response.json();
-    if (data.error) return { valid: false, uid: null };
-    return {
-      valid: true,
-      uid: data?.users?.[0]?.localId || null,
-    };
-  } catch {
-    return { valid: null, uid: null };
-  }
-}
 
 function getBearerToken(req) {
   const authHeader = req.headers.authorization || '';

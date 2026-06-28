@@ -4,6 +4,7 @@ const { Pool } = require('pg');
 
 const router = express.Router();
 
+const { verifyFirebaseToken } = require('../lib/firebase-auth');
 const firebaseApiKey = process.env.FIREBASE_API_KEY || '';
 const adminEmail = String(process.env.ADMIN_EMAIL || 'dhyanamshah38@gmail.com').trim().toLowerCase();
 const connectionString = process.env.SUPABASE_DB_URL || process.env.DATABASE_URL || '';
@@ -37,6 +38,9 @@ const pool = dbReady
   ? new Pool({
       connectionString,
       ssl: { rejectUnauthorized: false },
+      max: 5,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 3000,
     })
   : null;
 
@@ -152,44 +156,6 @@ async function syncInstructorSlotActivity() {
   );
 }
 
-async function verifyFirebaseToken(idToken) {
-  if (!firebaseApiKey || !idToken) return {
-    valid: null, uid: null, email: null, providerIds: [],
-  };
-  try {
-    const response = await fetch(
-      `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${firebaseApiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ idToken }),
-      },
-    );
-
-    const data = await response.json();
-    if (data.error) return {
-      valid: false, uid: null, email: null, providerIds: [],
-    };
-
-    const user = data?.users?.[0] || null;
-    const providerIds = Array.isArray(user?.providerUserInfo)
-      ? user.providerUserInfo
-        .map((provider) => String(provider?.providerId || '').trim())
-        .filter(Boolean)
-      : [];
-
-    return {
-      valid: true,
-      uid: user?.localId || null,
-      email: String(user?.email || '').trim().toLowerCase() || null,
-      providerIds,
-    };
-  } catch {
-    return {
-      valid: null, uid: null, email: null, providerIds: [],
-    };
-  }
-}
 
 async function lookupExistingFirebaseUids(uids = []) {
   const normalized = [...new Set((uids || []).map((uid) => String(uid || '').trim()).filter(isValidUid))];
