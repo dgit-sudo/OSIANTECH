@@ -43,9 +43,53 @@ cd OSIANTECH
 npm install --omit=dev
 
 # 5) Create/prepare env file
-cp -n .env.example .env || true
+# You can provide an env source file path as first arg or via ENV_SOURCE
+# e.g. `ENV_SOURCE=/path/to/my.env ./VM_DEPLOY_CHECKLIST.sh` or
+# `./VM_DEPLOY_CHECKLIST.sh /path/to/my.env`.
+ENV_SOURCE="${ENV_SOURCE:-${1:-}}"
 
-echo "Edit /var/www/OSIANTECH/.env now with production values, then save and exit."
+if [ -f .env ]; then
+  echo ".env already exists — leaving as-is."
+else
+  if [ -n "$ENV_SOURCE" ] && [ -f "$ENV_SOURCE" ]; then
+    echo "Copying env from $ENV_SOURCE -> .env"
+    cp "$ENV_SOURCE" .env
+  elif [ -f .env.example ]; then
+    echo "Copying .env.example -> .env"
+    cp .env.example .env
+  else
+    echo "No .env.example found — creating placeholder .env."
+    cat > .env <<'ENV'
+# Placeholder .env — replace values with production credentials
+PORT=3000
+SESSION_SECRET=change_me_now
+# Example optional variables that may be used by this checklist:
+# DOMAIN=yourdomain.com
+# ADMIN_EMAIL=you@example.com
+# VM_IP=YOUR_VM_IP
+# MONGO_URI=your_prod_mongo_uri
+# RAZORPAY_KEY_ID=...
+# RAZORPAY_KEY_SECRET=...
+ENV
+  fi
+fi
+
+# Load a minimal set of variables from .env (DOMAIN, ADMIN_EMAIL, VM_IP).
+# This is tolerant of comments and empty lines; values with spaces are supported if quoted.
+DOMAIN=""
+ADMIN_EMAIL=""
+VM_IP=""
+while IFS='=' read -r key rawval; do
+  key=$(echo "$key" | tr -d ' \t\r')
+  case "$key" in
+    DOMAIN) eval DOMAIN=$(printf "%s" "$rawval") ;;
+    ADMIN_EMAIL) eval ADMIN_EMAIL=$(printf "%s" "$rawval") ;;
+    VM_IP) eval VM_IP=$(printf "%s" "$rawval") ;;
+  esac
+done < <(grep -v '^\s*#' .env | sed -n 's/\s*$//; s/\s*=\s*/=/p')
+
+echo "Prepared .env. Domain: ${DOMAIN:-<not set>}, Admin email: ${ADMIN_EMAIL:-<not set>}"
+echo "Edit /var/www/OSIANTECH/.env now with production values if needed, then save and exit."
 read -r -p "Press Enter after .env is updated..." _
 
 # 6) Ensure app listens on env PORT (already expected)
@@ -63,19 +107,19 @@ pm2 startup systemd -u root --hp /root || true
 pm2 save
 
 # 9) Nginx config (replace domain values below)
-cat >/etc/nginx/sites-available/osiantech <<'NGINX'
+cat >/etc/nginx/sites-available/osiantech <<NGINX
 server {
-    listen 80;
-    server_name yourdomain.com www.yourdomain.com;
+  listen 80;
+  server_name ${DOMAIN:-yourdomain.com} www.${DOMAIN:-yourdomain.com};
 
-    location / {
-        proxy_pass http://127.0.0.1:3000;
-        proxy_http_version 1.1;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
+  location / {
+    proxy_pass http://127.0.0.1:3000;
+    proxy_http_version 1.1;
+    proxy_set_header Host \$host;
+    proxy_set_header X-Real-IP \$remote_addr;
+    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto \$scheme;
+  }
 }
 NGINX
 
@@ -93,7 +137,7 @@ ufw status
 
 # 11) SSL via Let's Encrypt
 apt install -y certbot python3-certbot-nginx
-certbot --nginx -d yourdomain.com -d www.yourdomain.com --redirect -m you@example.com --agree-tos --no-eff-email
+certbot --nginx -d "${DOMAIN:-yourdomain.com}" -d "www.${DOMAIN:-yourdomain.com}" --redirect -m "${ADMIN_EMAIL:-you@example.com}" --agree-tos --no-eff-email
 
 # 12) Verify
 curl -I http://127.0.0.1:3000 || true
