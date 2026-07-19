@@ -6,7 +6,7 @@ const router = express.Router();
 
 const { verifyFirebaseToken } = require('../lib/firebase-auth');
 const firebaseApiKey = process.env.FIREBASE_API_KEY || '';
-const adminEmail = String(process.env.ADMIN_EMAIL || 'dhyanamshah38@gmail.com').trim().toLowerCase();
+const adminEmail = String(process.env.ADMIN_EMAIL || '').trim().toLowerCase();
 const connectionString = process.env.SUPABASE_DB_URL || process.env.DATABASE_URL || '';
 const profileTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_PROFILE_TABLE || '')
   ? process.env.SUPABASE_PROFILE_TABLE

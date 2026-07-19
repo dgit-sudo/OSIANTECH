@@ -11,7 +11,7 @@ const profileTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_PROFIL
 const usersTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_USERS_TABLE || '')
   ? process.env.SUPABASE_USERS_TABLE
   : 'app_users';
-const adminEmail = String(process.env.ADMIN_EMAIL || 'dhyanamshah38@gmail.com').trim().toLowerCase();
+const adminEmail = String(process.env.ADMIN_EMAIL || '').trim().toLowerCase();
 const purchasesTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_PURCHASES_TABLE || '')
   ? process.env.SUPABASE_PURCHASES_TABLE
   : 'user_purchases';

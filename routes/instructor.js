@@ -24,7 +24,10 @@ const profileTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_PROFIL
   ? process.env.SUPABASE_PROFILE_TABLE
   : 'user_profiles';
 
-const instructorTokenSecret = process.env.INSTRUCTOR_AUTH_SECRET || 'osian-instructor-auth-secret-change-me';
+const instructorTokenSecret = process.env.INSTRUCTOR_AUTH_SECRET;
+if (!instructorTokenSecret) {
+  throw new Error('INSTRUCTOR_AUTH_SECRET must be set');
+}
 const tokenValiditySeconds = Number.parseInt(String(process.env.INSTRUCTOR_TOKEN_TTL_SECONDS || '43200'), 10) || 43200;
 
 const dbReady = Boolean(connectionString);
