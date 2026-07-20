@@ -2,52 +2,65 @@
 <%- include('partials/navbar') %>
 
 <!-- ===== HERO ===== -->
-<section class="hero">
+<section class="s-hero">
   <div class="container">
-    <div class="hero-grid">
+    <div class="sh-grid">
 
-      <div class="hero-left">
-        <p class="hero-label">India's Premier Online Academy</p>
-        <h1 class="hero-title">
+      <div class="sh-left">
+        <div class="sh-placement">● India's Premier Online Academy</div>
+        <h1 class="sh-headline">
           Learn From<br>
           Industry<br>
-          <span class="hero-accent">Experts</span>
+          <span class="sh-hl">Experts</span>
         </h1>
-        <p class="hero-desc">Master in-demand skills with 1-on-1 live sessions from working professionals. Get certified, build real projects, and launch your career with placement support.</p>
-        <div class="hero-actions">
-          <a href="/auth?mode=signup" class="btn btn-primary btn-lg" data-auth-guest>Start Learning Free</a>
+        <p class="sh-sub" style="font-size:1.05rem;color:var(--text-secondary);line-height:1.75;max-width:520px;margin-bottom:28px;font-family:'Inter',sans-serif;">Master in-demand skills with 1-on-1 live sessions from working professionals. Get certified, build real projects, and launch your career with placement support.</p>
+        <div class="sh-actions" style="display:flex;flex-wrap:wrap;gap:10px;">
+          <a href="/auth?mode=signup" class="sh-join" data-auth-guest>Start Learning Free</a>
           <a href="/courses" class="btn btn-outline-white btn-lg">Explore Courses</a>
+        </div>
+        <div class="sh-pill-row" style="margin-top:28px;">
+          <div class="sh-pill">
+            <span class="sh-pill-num">100%</span>
+            <span class="sh-pill-lbl">Live Sessions</span>
+          </div>
+          <div class="sh-pill">
+            <span class="sh-pill-num">1-on-1</span>
+            <span class="sh-pill-lbl">Personal Mentorship</span>
+          </div>
+          <div class="sh-pill">
+            <span class="sh-pill-num">95%</span>
+            <span class="sh-pill-lbl">Placement Rate</span>
+          </div>
         </div>
       </div>
 
-      <div class="hero-aside">
-        <div class="hero-feature-list">
-          <div class="hero-feature-item">
-            <div class="hero-feature-dot"></div>
-            <div>
-              <div class="hero-feature-title">100% Live 1-on-1 Sessions</div>
-              <div class="hero-feature-desc">Private sessions with dedicated instructors, not batch lectures</div>
-            </div>
+      <div class="sh-right">
+        <div class="sh-visual-card">
+          <div class="shvc-glow"></div>
+          <div class="shvc-badge-top">
+            <span class="shvc-live-dot"></span>
+            Live Now
           </div>
-          <div class="hero-feature-item">
-            <div class="hero-feature-dot"></div>
-            <div>
-              <div class="hero-feature-title">Expert Industry Instructors</div>
-              <div class="hero-feature-desc">Learn from professionals with 5+ years of real-world experience</div>
-            </div>
+          <div class="shvc-headline">Your Career Transformation Starts Here</div>
+          <div class="shvc-sub">Join 500+ students who chose personal mentorship over generic online courses.</div>
+          <div class="shvc-feats">
+            <div class="shvc-feat">✓ 1-on-1 live sessions with industry experts</div>
+            <div class="shvc-feat">✓ Industry-recognised certifications</div>
+            <div class="shvc-feat">✓ 100% placement assistance included</div>
+            <div class="shvc-feat">✓ Real projects for your portfolio</div>
           </div>
-          <div class="hero-feature-item">
-            <div class="hero-feature-dot"></div>
-            <div>
-              <div class="hero-feature-title">Industry-Recognised Certification</div>
-              <div class="hero-feature-desc">Earn verifiable certificates accepted by 100+ hiring partners</div>
+          <div class="shvc-stats-row">
+            <div class="shvc-stat">
+              <span>500+</span>
+              <small style="color:var(--text-secondary);font-size:.78rem;">Students</small>
             </div>
-          </div>
-          <div class="hero-feature-item">
-            <div class="hero-feature-dot"></div>
-            <div>
-              <div class="hero-feature-title">Career Placement Support</div>
-              <div class="hero-feature-desc">Resume review, mock interviews, and direct hiring partner access</div>
+            <div class="shvc-stat">
+              <span>1M+</span>
+              <small style="color:var(--text-secondary);font-size:.78rem;">Learning Hours</small>
+            </div>
+            <div class="shvc-stat">
+              <span>100+</span>
+              <small style="color:var(--text-secondary);font-size:.78rem;">Hiring Partners</small>
             </div>
           </div>
         </div>
@@ -104,19 +117,19 @@
     </div>
     <div class="swo-grid">
       <div class="swo-card">
-        <div class="swo-card-icon">&#127775;</div>
+        <div class="swo-card-icon">🌟</div>
         <h3 class="swo-card-title">Live 1-on-1 Sessions</h3>
         <p class="swo-card-desc">Every class is a private session with your dedicated instructor — not a recorded lecture or crowded webinar. You get undivided attention, every time.</p>
         <div class="swo-card-stat">100% Live</div>
       </div>
       <div class="swo-card swo-card-featured">
-        <div class="swo-card-icon">&#127942;</div>
+        <div class="swo-card-icon">🏆</div>
         <h3 class="swo-card-title">Placement Guarantee</h3>
         <p class="swo-card-desc">We don't just train you — we get you hired. Our placement cell works with 100+ companies and has a 95% placement rate across all programmes.</p>
         <div class="swo-card-stat">95% Placed</div>
       </div>
       <div class="swo-card">
-        <div class="swo-card-icon">&#128218;</div>
+        <div class="swo-card-icon">📚</div>
         <h3 class="swo-card-title">Industry-Built Curriculum</h3>
         <p class="swo-card-desc">Courses are designed with input from hiring managers and updated every quarter. You learn exactly what companies look for — not outdated theory.</p>
         <div class="swo-card-stat">Updated Quarterly</div>
@@ -182,37 +195,37 @@
       <p class="sft-sub">Six pillars that define excellence in online education</p>
     </div>
     <div class="sft-grid">
-      <div class="sft-card sft-card-blue">
+      <div class="sft-card">
         <div class="sft-icon">📹</div>
         <h3>Live Projects</h3>
         <p>Real projects help you apply your skills in professional life during the course itself, not after.</p>
         <a href="/features/live-projects" class="sft-link">Know More →</a>
       </div>
-      <div class="sft-card sft-card-green">
+      <div class="sft-card">
         <div class="sft-icon">🎓</div>
         <h3>Industry-Oriented Training</h3>
         <p>Training modules align with current industry and practical methods used in real-world environments.</p>
         <a href="/features/industry-training" class="sft-link">Know More →</a>
       </div>
-      <div class="sft-card sft-card-purple">
+      <div class="sft-card">
         <div class="sft-icon">📚</div>
         <h3>Advanced Courses</h3>
         <p>Explore the latest topics in IT and learn the most in-demand tools used by top companies today.</p>
         <a href="/features/advanced-courses" class="sft-link">Know More →</a>
       </div>
-      <div class="sft-card sft-card-sky">
+      <div class="sft-card">
         <div class="sft-icon">🌐</div>
         <h3>100% Online</h3>
         <p>Learn from anywhere in India with our fully online platform — live, personal, flexible sessions daily.</p>
         <a href="/features/online-learning" class="sft-link">Know More →</a>
       </div>
-      <div class="sft-card sft-card-amber">
+      <div class="sft-card">
         <div class="sft-icon">📈</div>
         <h3>Job Oriented</h3>
         <p>All courses aim to get you job-ready, with skills and live projects that employers are looking for.</p>
         <a href="/features/job-oriented" class="sft-link">Know More →</a>
       </div>
-      <div class="sft-card sft-card-red">
+      <div class="sft-card">
         <div class="sft-icon">💼</div>
         <h3>Placement Assistance</h3>
         <p>A dedicated career team guides you through interviews, resume building, and job placement after completing.</p>
@@ -453,27 +466,27 @@
     </div>
     <div class="str-badges">
       <div class="str-badge">
-        <div class="str-badge-icon">&#127942;</div>
+        <div class="str-badge-icon">🏆</div>
         <p class="str-badge-name">ISO Certified</p>
         <p class="str-badge-sub">Quality Education</p>
       </div>
       <div class="str-badge">
-        <div class="str-badge-icon">&#127891;</div>
+        <div class="str-badge-icon">🎓</div>
         <p class="str-badge-name">NASSCOM</p>
         <p class="str-badge-sub">Recognised Member</p>
       </div>
       <div class="str-badge">
-        <div class="str-badge-icon">&#11088;</div>
+        <div class="str-badge-icon">⭐</div>
         <p class="str-badge-name">5-Star Rated</p>
         <p class="str-badge-sub">By Students</p>
       </div>
       <div class="str-badge">
-        <div class="str-badge-icon">&#128249;</div>
+        <div class="str-badge-icon">🔒</div>
         <p class="str-badge-name">100% Live</p>
         <p class="str-badge-sub">Sessions Guaranteed</p>
       </div>
       <div class="str-badge">
-        <div class="str-badge-icon">&#128200;</div>
+        <div class="str-badge-icon">📈</div>
         <p class="str-badge-name">Career Backed</p>
         <p class="str-badge-sub">Placement Support</p>
       </div>
