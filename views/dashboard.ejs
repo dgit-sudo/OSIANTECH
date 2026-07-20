@@ -1,31 +1,28 @@
 <%- include('partials/head') %>
 <%- include('partials/navbar') %>
 
-<!-- Scroll Snap Container -->
-<div class="scroll-container page-scroll" data-scroll-container>
-
-  <section class="dashboard-shell scroll-section" data-scroll-section data-animate="fade-up">
-    <div class="container">
-      <div class="dashboard-header" data-animate="fade-up" style="--delay: 1;">
-        <div class="dashboard-intro">
-          <h1 class="dashboard-title">Welcome back, <span><%= user?.name || 'Learner' %></span></h1>
-          <p class="dashboard-sub">Your personalized learning dashboard — track progress, manage courses, and connect with support.</p>
-          <p class="dashboard-course-cat">Last active: <%= user?.lastActive || 'Just now' %></p>
-        </div>
-        <div class="dashboard-header-actions">
-          <a href="/courses" class="btn btn-primary">Browse Courses</a>
-        </div>
+<section class="dashboard-shell section" data-dashboard-root>
+  <div class="container">
+    <div class="dashboard-header" data-animate="fade-left">
+      <div class="dashboard-intro">
+        <div class="section-tag">Dashboard</div>
+        <h1 class="dashboard-title">Welcome, <span id="dashboard-user-name">Learner</span></h1>
+        <p class="dashboard-sub">Complete and manage your learner profile.</p>
       </div>
+      <div class="dashboard-header-actions">
+        <a href="/courses" class="btn btn-ghost">Browse Courses</a>
+        <button type="button" class="btn btn-primary" id="dashboard-signout">Sign Out</button>
+      </div>
+    </div>
 
-      <%/* ── Profile Completion Gate ───────────────────────────────────── */%>
-      <% if (!user?.profileComplete) { %>
-      <div class="dashboard-gate-card scroll-section" data-scroll-section data-animate="fade-up" style="--delay: 2;">
+    <div class="dashboard-gate" id="dashboard-gate">
+      <div class="dashboard-gate-card">
         <div class="dashboard-gate-head">
           <div>
-            <h2>Complete Your Profile</h2>
-            <p>We need a few details to personalize your learning experience and match you with the right instructor.</p>
+            <h2>Profile Studio</h2>
+            <p id="dashboard-gate-copy">Complete your profile to unlock your full dashboard experience.</p>
           </div>
-          <span class="dashboard-required">Required</span>
+          <span class="dashboard-required" id="dashboard-required-pill">Required</span>
         </div>
         <form id="profile-setup-form" class="profile-setup-form" action="#" method="post">
           <div class="form-row">
@@ -62,69 +59,42 @@
             <label for="profile-education">Highest Education</label>
             <input id="profile-education" name="education" type="text" required />
           </div>
-          <button type="submit" class="btn btn-primary btn-block">Save & Continue</button>
+          <button type="submit" class="btn btn-primary btn-block" id="profile-save-btn">Save Profile</button>
         </form>
         <div id="dashboard-gate-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
       </div>
-      <% } %>
+    </div>
 
-      <%/* ── Dashboard Tabs ───────────────────────────────────────────── */%>
-      <div class="dashboard-tabs" role="tablist" aria-label="Dashboard sections">
-        <button class="dashboard-tab-btn active" role="tab" aria-selected="true" data-dashboard-tab="overview">Overview</button>
-        <button class="dashboard-tab-btn" role="tab" aria-selected="false" data-dashboard-tab="courses">My Courses</button>
-        <button class="dashboard-tab-btn" role="tab" aria-selected="false" data-dashboard-tab="settings">Settings</button>
+    <div id="dashboard-content" hidden>
+      <div class="dashboard-tabs" role="tablist" aria-label="Dashboard tabs">
+        <button type="button" class="dashboard-tab-btn active" data-dashboard-tab-btn="overview" aria-selected="true">Overview</button>
+        <button type="button" class="dashboard-tab-btn" data-dashboard-tab-btn="courses" aria-selected="false">Courses</button>
+        <button type="button" class="dashboard-tab-btn" data-dashboard-tab-btn="settings" aria-selected="false">Settings</button>
       </div>
 
-      <%/* ── Tab: Overview ───────────────────────────────────────────── */%>
-      <section class="dashboard-panel active scroll-section" data-scroll-section role="tabpanel" id="dashboard-tab-overview" aria-labelledby="overview-tab" data-animate="fade-up">
-        <div class="dashboard-stats" data-animate="fade-up" style="--delay: 1;">
-          <div class="stat-card" data-animate="fade-up" style="--delay: 1;">
-            <div class="stat-card-icon">📚</div>
-            <div class="stat-card-value" id="stat-courses">0</div>
-            <div class="stat-card-label">Courses Enrolled</div>
-          </div>
-          <div class="stat-card" data-animate="fade-up" style="--delay: 2;">
-            <div class="stat-card-icon">✅</div>
-            <div class="stat-card-value" id="stat-completed">0</div>
-            <div class="stat-card-label">Completed</div>
-          </div>
-          <div class="stat-card" data-animate="fade-up" style="--delay: 3;">
-            <div class="stat-card-icon">⏱️</div>
-            <div class="stat-card-value" id="stat-hours">0</div>
-            <div class="stat-card-label">Learning Hours</div>
-          </div>
-          <div class="stat-card" data-animate="fade-up" style="--delay: 4;">
-            <div class="stat-card-icon">🏆</div>
-            <div class="stat-card-value" id="stat-certificates">0</div>
-            <div class="stat-card-label">Certificates</div>
-          </div>
-        </div>
-
-        <div class="dashboard-courses" data-animate="fade-up" style="--delay: 2;">
-          <div class="dashboard-courses-header">
-            <h3>Continue Learning</h3>
-            <a class="dashboard-link" href="/courses">Browse More</a>
-          </div>
-          <div id="dashboard-continue-courses" class="dashboard-course-list"></div>
-          <p id="dashboard-continue-empty" class="dashboard-course-cat" hidden>No courses in progress. <a href="/courses">Start learning</a></p>
+      <section class="dashboard-panel active" id="dashboard-tab-overview" data-dashboard-tab-panel="overview">
+        <div class="dashboard-gate-card">
+          <h2>Dashboard Ready</h2>
+          <p>Your profile is complete. Use the Settings tab to review and update your details anytime.</p>
+          <a href="/courses" class="btn btn-primary">Browse Courses</a>
         </div>
       </section>
 
-      <%/* ── Tab: My Courses ─────────────────────────────────────────── */%>
-      <section class="dashboard-panel scroll-section" data-scroll-section role="tabpanel" id="dashboard-tab-courses" aria-labelledby="courses-tab" hidden data-animate="fade-up">
-        <div class="dashboard-courses" data-animate="fade-up" style="--delay: 1;">
-          <div class="dashboard-courses-header">
+      <section class="dashboard-panel" id="dashboard-tab-courses" data-dashboard-tab-panel="courses">
+        <div class="dashboard-courses">
+          <div class="dashboard-courses-head">
             <h2>Your Purchased Courses</h2>
             <a class="dashboard-link" href="/courses">Browse More</a>
           </div>
           <div id="dashboard-purchased-courses" class="dashboard-course-grid"></div>
-          <p id="dashboard-purchased-empty" class="dashboard-course-cat" hidden>No purchased courses yet. <a href="/courses">Buy a course</a> to see it here.</p>
+          <p id="dashboard-purchased-empty" class="dashboard-course-cat" hidden>
+            No purchased courses yet. Buy a course to see it here.
+          </p>
         </div>
       </section>
 
-      <%/* ── Tab: Settings ───────────────────────────────────────────── */%>
-      <section class="dashboard-panel scroll-section" data-scroll-section role="tabpanel" id="dashboard-tab-settings" aria-labelledby="settings-tab" hidden data-animate="fade-up">
-        <div class="dashboard-gate-card" data-animate="fade-up" style="--delay: 1;">
+      <section class="dashboard-panel" id="dashboard-tab-settings" data-dashboard-tab-panel="settings">
+        <div class="dashboard-gate-card">
           <div class="dashboard-gate-head">
             <div>
               <h2>Profile Settings</h2>
@@ -171,155 +141,91 @@
           <div id="dashboard-settings-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
         </div>
       </section>
+    </div>
+
+    <button type="button" id="dashboard-support-button" class="support-fab" hidden aria-label="Open support chat">
+      Support
+      <span id="support-unread-badge" class="support-unread-badge" hidden>0</span>
+    </button>
+
+    <div id="dashboard-support-panel" class="support-panel" hidden>
+
+      <!-- AI Chat view (shown first) -->
+      <div id="support-ai-view">
+        <div class="support-panel-head">
+          <h3>&#129302; Osian AI Support</h3>
+          <button type="button" id="dashboard-support-close" class="btn btn-ghost">Close</button>
+        </div>
+        <div id="support-ai-messages" class="support-messages"></div>
+        <div id="support-ai-resolved-bar" class="support-resolved-bar" hidden>
+          <p>&#10003; Glad I could help! Chat closed. Feel free to reopen support anytime.</p>
+        </div>
+        <div class="support-compose" id="support-ai-compose">
+          <textarea id="support-ai-input" rows="3" placeholder="Describe your issue..."></textarea>
+          <button type="button" id="support-ai-send" class="btn btn-primary">Send</button>
+        </div>
+      </div>
+
+      <!-- Admin Chat view (shown after escalation) -->
+      <div id="support-admin-view" hidden>
+        <div class="support-panel-head">
+          <h3>Admin Support</h3>
+          <button type="button" id="support-admin-back" class="btn btn-ghost">&#8592; AI Chat</button>
+          <button type="button" id="support-admin-close" class="btn btn-ghost">Close</button>
+        </div>
+        <div id="dashboard-support-chat-list" class="support-chat-list"></div>
+        <div id="dashboard-support-messages" class="support-messages">Start or open a chat request to message admin.</div>
+        <div class="support-compose">
+          <textarea id="dashboard-support-message-input" rows="3" placeholder="Type your message"></textarea>
+          <input id="dashboard-support-image-input" type="file" accept="image/png,image/jpeg,image/jpg,image/gif,image/webp" />
+          <button type="button" id="dashboard-support-send" class="btn btn-primary">Send</button>
+        </div>
+        <form id="dashboard-support-feedback-form" class="support-feedback-form" hidden>
+          <label for="dashboard-support-feedback-rating">Rate this support chat (1-5)</label>
+          <input id="dashboard-support-feedback-rating" type="number" min="1" max="5" required />
+          <label for="dashboard-support-feedback-comment">Feedback (optional)</label>
+          <textarea id="dashboard-support-feedback-comment" rows="2" placeholder="Write your feedback"></textarea>
+          <button type="submit" class="btn btn-primary">Submit Feedback</button>
+        </form>
+        <div id="dashboard-support-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
+      </div>
 
     </div>
-  </section>
 
-  <%/* ── Support FAB & Activation Modal ───────────────────────────────────────────── */%>
-  <div id="dashboard-activation-modal" class="activation-modal scroll-section" data-scroll-section hidden data-animate="fade-up">
-    <div class="activation-backdrop" id="dashboard-activation-close-backdrop"></div>
-    <div class="activation-card">
-      <div class="support-panel-head">
-        <h3 id="dashboard-activation-title">Activate Course</h3>
-        <button type="button" id="dashboard-activation-close" class="btn btn-ghost">Close</button>
+    <div id="dashboard-activation-modal" class="activation-modal" hidden>
+      <div class="activation-backdrop" id="dashboard-activation-close-backdrop"></div>
+      <div class="activation-card">
+        <div class="support-panel-head">
+          <h3 id="dashboard-activation-title">Activate Course</h3>
+          <button type="button" id="dashboard-activation-close" class="btn btn-ghost">Close</button>
+        </div>
+
+        <div class="form-group">
+          <label for="dashboard-activation-instructor">Choose Instructor</label>
+          <select id="dashboard-activation-instructor"></select>
+        </div>
+
+        <div class="form-group">
+          <label for="dashboard-activation-timezone">Your Timezone (set on first activation)</label>
+          <select id="dashboard-activation-timezone"></select>
+        </div>
+
+        <div class="form-group">
+          <label for="dashboard-activation-timeslot">Choose 1-hour class slot</label>
+          <select id="dashboard-activation-timeslot"></select>
+        </div>
+
+        <div class="support-panel-actions">
+          <button type="button" id="dashboard-activation-save" class="btn btn-primary">Save Activation</button>
+          <button type="button" id="dashboard-activation-no-good-btn" class="btn btn-ghost">No good timeslots</button>
+        </div>
+
+        <div id="dashboard-activation-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
       </div>
-
-      <div class="form-group">
-        <label for="dashboard-activation-instructor">Choose Instructor</label>
-        <select id="dashboard-activation-instructor"></select>
-      </div>
-
-      <div class="form-group">
-        <label for="dashboard-activation-timezone">Your Timezone (set on first activation)</label>
-        <select id="dashboard-activation-timezone"></select>
-      </div>
-
-      <div class="form-group">
-        <label for="dashboard-activation-timeslot">Choose 1-hour class slot</label>
-        <select id="dashboard-activation-timeslot"></select>
-      </div>
-
-      <div class="support-panel-actions">
-        <button type="button" id="dashboard-activation-save" class="btn btn-primary">Save Activation</button>
-        <button type="button" id="dashboard-activation-no-good-btn" class="btn btn-ghost">No good timeslots</button>
-      </div>
-
-      <div id="dashboard-activation-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
     </div>
+
   </div>
-
-  <%/* ── Support Panel ───────────────────────────────────────────────── */%>
-  <button type="button" id="dashboard-support-button" class="support-fab" hidden aria-label="Open support chat">
-    Support
-    <span id="support-unread-badge" class="support-unread-badge" hidden>0</span>
-  </button>
-
-  <div id="dashboard-support-panel" class="support-panel scroll-section" data-scroll-section hidden data-animate="fade-left">
-    <!-- AI Chat view (shown first) -->
-    <div id="support-ai-view" data-animate="fade-up">
-      <div class="support-panel-head">
-        <h3>🤖 Osian AI Support</h3>
-        <button type="button" id="dashboard-support-close" class="btn btn-ghost">Close</button>
-      </div>
-      <div id="support-ai-messages" class="support-messages"></div>
-      <div id="support-ai-resolved-bar" class="support-resolved-bar" hidden>
-        <p>✓ Glad I could help! Chat closed. Feel free to reopen support anytime.</p>
-      </div>
-      <div class="support-compose" id="support-ai-compose">
-        <textarea id="support-ai-input" rows="3" placeholder="Describe your issue..."></textarea>
-        <button type="button" id="support-ai-send" class="btn btn-primary">Send</button>
-      </div>
-    </div>
-
-    <!-- Admin Chat view (shown after escalation) -->
-    <div id="support-admin-view" hidden data-animate="fade-up">
-      <div class="support-panel-head">
-        <h3>Admin Support</h3>
-        <button type="button" id="support-admin-back" class="btn btn-ghost">← AI Chat</button>
-        <button type="button" id="support-admin-close" class="btn btn-ghost">Close</button>
-      </div>
-      <div id="dashboard-support-chat-list" class="support-chat-list"></div>
-      <div id="dashboard-support-messages" class="support-messages">Start or open a chat request to message admin.</div>
-      <div class="support-compose">
-        <textarea id="dashboard-support-message-input" rows="3" placeholder="Type your message"></textarea>
-        <input id="dashboard-support-image-input" type="file" accept="image/png,image/jpeg,image/jpg,image/gif,image/webp" />
-        <button type="button" id="dashboard-support-send" class="btn btn-primary">Send</button>
-      </div>
-      <form id="dashboard-support-feedback-form" class="support-feedback-form" hidden>
-        <label for="dashboard-support-feedback-rating">Rate this support chat (1-5)</label>
-        <input id="dashboard-support-feedback-rating" type="number" min="1" max="5" required />
-        <label for="dashboard-support-feedback-comment">Feedback (optional)</label>
-        <textarea id="dashboard-support-feedback-comment" rows="2" placeholder="Write your feedback"></textarea>
-        <button type="submit" class="btn btn-primary">Submit Feedback</button>
-      </form>
-      <div id="dashboard-support-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
-    </div>
-  </div>
-
-  <!-- Footer Section -->
-  <%- include('partials/footer') %>
-
-</div>
-
-<!-- Scroll Progress Indicator -->
-<div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
-
-<!-- Scroll Hint -->
-<div class="scroll-hint" aria-hidden="true">
-  <span>Scroll to explore</span>
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 5v14M19 12l-7 7-7-7"/>
-  </svg>
-</div>
+</section>
 
 <script type="module" src="/js/dashboard.js?v=<%= assetVersion %>"></script>
-
 <%- include('partials/footer') %>
-
-<script>
-// Scroll progress indicator
-(function() {
-  const container = document.querySelector('.scroll-container');
-  const progress = document.getElementById('scroll-progress');
-  const hint = document.querySelector('.scroll-hint');
-  
-  if (!container || !progress) return;
-  
-  function updateProgress() {
-    const scrollTop = container.scrollTop;
-    const scrollHeight = container.scrollHeight - container.clientHeight;
-    const progressPercent = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
-    progress.style.transform = `scaleX(${progressPercent})`;
-    
-    // Hide hint after scrolling
-    if (scrollTop > 100) {
-      hint.style.opacity = '0';
-      hint.style.pointerEvents = 'none';
-    } else {
-      hint.style.opacity = '0.6';
-    }
-  }
-  
-  container.addEventListener('scroll', updateProgress, { passive: true });
-  updateProgress();
-})();
-
-// Intersection Observer for scroll animations
-(function() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in-view');
-      }
-    });
-  }, {
-    root: document.querySelector('.scroll-container') || null,
-    rootMargin: '0px 0px -10% 0px',
-    threshold: 0.1
-  });
-  
-  document.querySelectorAll('[data-animate]').forEach(el => {
-    observer.observe(el);
-  });
-})();
-</script>

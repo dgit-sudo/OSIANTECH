@@ -96,479 +96,418 @@
 .cd-activity-text { font-size: .88rem; font-weight: 500; color: var(--text-secondary); line-height: 1.5; }
 
 /* Tools pills */
-.cd-tools-grid { display: flex; flex-wrap: wrap; gap: .5rem; }
-.cd-tool-pill { display: inline-block; padding: .4rem .85rem; background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--r-full); font-size: .8rem; font-weight: 600; color: var(--text-secondary); transition: all 0s; }
-.cd-tool-pill:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-muted); }
+.cd-tools-grid { display: flex; flex-wrap: wrap; gap: .6rem; }
+.cd-tool-pill { background: var(--bg-2); color: var(--text-primary); font-size: .8rem; font-weight: 600; padding: .4rem 1rem; border-radius: 50px; letter-spacing: .02em; border: 1px solid var(--border); }
 
-/* Instructor */
-.cd-instructor-card { display: flex; gap: 1rem; align-items: flex-start; }
-.cd-instructor-avatar { font-size: 3rem; flex-shrink: 0; }
-.cd-instructor-info h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: .25rem; }
-.cd-instructor-role { font-size: .85rem; color: var(--blue); font-weight: 600; margin-bottom: .5rem; }
+/* Instructor section */
+.cd-instructor-card { background: var(--bg-2); border: 1.5px solid var(--border); border-radius: 10px; padding: 1.5rem; display: flex; gap: 1.5rem; align-items: flex-start; }
+.cd-instructor-avatar { width: 100px; height: 100px; border-radius: 8px; background: var(--blue-muted); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; flex-shrink: 0; }
+.cd-instructor-info h3 { font-family: 'Poppins', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin: 0 0 .25rem; }
+.cd-instructor-role { font-size: .85rem; color: var(--orange); font-weight: 600; margin-bottom: .5rem; }
 .cd-instructor-bio { font-size: .88rem; color: var(--text-secondary); line-height: 1.6; }
 
-/* Career Roadmap */
-.cd-roadmap { position: relative; padding-left: 2rem; }
-.cd-roadmap-line { position: absolute; left: 10px; top: 0; bottom: 0; width: 2px; background: var(--border); }
-.cd-roadmap-step { position: relative; padding-bottom: 2rem; }
-.cd-rm-circle { position: absolute; left: -2rem; top: 0; width: 24px; height: 24px; border-radius: 50%; background: var(--blue); color: #fff; font-size: .75rem; font-weight: 700; display: flex; align-items: center; justify-content: center; z-index: 1; border: 3px solid var(--bg); }
-.cd-rm-phase { font-size: .9rem; font-weight: 700; color: var(--text-primary); margin-bottom: .25rem; }
-.cd-rm-desc { font-size: .85rem; color: var(--text-secondary); line-height: 1.5; }
+/* Roadmap */
+.cd-roadmap { display: flex; gap: 0; position: relative; overflow-x: auto; padding-bottom: .5rem; }
+.cd-roadmap-line { position: absolute; top: 2.25rem; left: 2.25rem; right: 2.25rem; height: 2px; background: var(--border); z-index: 0; }
+.cd-roadmap-step { flex: 1; min-width: 140px; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; z-index: 1; padding: 0 .5rem; }
+.cd-rm-circle { width: 2.75rem; height: 2.75rem; border-radius: 50%; background: var(--bg-2); border: 3px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700; color: var(--text-secondary); margin-bottom: .75rem; position: relative; z-index: 2; transition: all 0s; }
+.cd-roadmap-step:hover .cd-rm-circle { background: var(--orange); border-color: var(--orange); color: #fff; }
+.cd-rm-phase { font-family: 'Poppins', sans-serif; font-size: .9rem; font-weight: 600; color: var(--text-primary); margin-bottom: .4rem; }
+.cd-rm-desc { font-size: .78rem; color: var(--text-secondary); line-height: 1.5; }
+@media (max-width: 640px) { .cd-roadmap { flex-direction: column; } .cd-roadmap-line { display: none; } .cd-roadmap-step { flex-direction: row; text-align: left; align-items: flex-start; gap: 1rem; padding: .75rem 0; border-bottom: 1px solid var(--border); } .cd-rm-circle { flex-shrink: 0; } }
 
-/* Job Opportunities */
-.cd-jobs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
-.cd-job-card { background: var(--bg-2); border: 1.5px solid var(--border); border-radius: 10px; padding: 1.25rem; transition: border-color 0s; }
-.cd-job-card:hover { border-color: var(--orange); }
-.cd-job-title { font-size: .95rem; font-weight: 700; color: var(--text-primary); margin-bottom: .25rem; }
-.cd-job-salary { font-size: .85rem; color: var(--orange); font-weight: 700; margin-bottom: .5rem; }
-.cd-job-desc { font-size: .83rem; color: var(--text-secondary); line-height: 1.5; }
+/* Jobs */
+.cd-jobs-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+@media (max-width: 768px) { .cd-jobs-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 480px) { .cd-jobs-grid { grid-template-columns: 1fr; } }
+.cd-job-card { background: var(--bg-2); border: 1.5px solid var(--border); border-top: 4px solid var(--orange); border-radius: 10px; padding: 1.25rem; transition: border-color 0s, box-shadow 0s; }
+.cd-job-card:hover { border-color: var(--orange); box-shadow: var(--shadow); }
+.cd-job-title { font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700; color: var(--text-primary); margin-bottom: .35rem; }
+.cd-job-salary { font-size: .85rem; font-weight: 700; color: var(--orange); margin-bottom: .5rem; }
+.cd-job-desc { font-size: .82rem; color: var(--text-secondary); line-height: 1.5; }
 
 /* Who Should Enroll */
-.cd-who-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .5rem; }
-.cd-who-item { display: flex; align-items: flex-start; gap: .75rem; font-size: .9rem; color: var(--text-secondary); line-height: 1.6; }
-.cd-who-check { color: var(--green); font-weight: 700; flex-shrink: 0; margin-top: .1rem; }
+.cd-who-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .65rem; }
+.cd-who-item { display: flex; align-items: flex-start; gap: .75rem; font-size: .92rem; color: var(--text-secondary); line-height: 1.55; }
+.cd-who-check { color: var(--orange); font-weight: 900; flex-shrink: 0; margin-top: .1rem; font-size: 1rem; }
 
-/* Prerequisites & Certification */
-.cd-keypoints-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+/* Prerequisites & Cert */
+.cd-keypoints-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
 @media (max-width: 640px) { .cd-keypoints-grid { grid-template-columns: 1fr; } }
 .cd-kp-block { background: var(--bg-2); border: 1.5px solid var(--border); border-radius: 10px; padding: 1.25rem; }
-.cd-kp-block h4 { font-size: .9rem; font-weight: 700; color: var(--text-primary); margin-bottom: .75rem; }
-.cd-kp-block ul { padding-left: 1.25rem; margin: 0; }
-.cd-kp-block li { font-size: .85rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: .4rem; }
-.cd-kp-block li.empty-state { color: var(--text-muted); font-style: italic; }
+.cd-kp-block h4 { font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700; color: var(--text-primary); margin: 0 0 .85rem; display: flex; align-items: center; gap: .5rem; }
+.cd-kp-block ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .4rem; }
+.cd-kp-block ul li { font-size: .85rem; color: var(--text-secondary); line-height: 1.5; padding-left: 1.2rem; position: relative; }
+.cd-kp-block ul li::before { content: '›'; position: absolute; left: 0; color: var(--orange); font-weight: 700; }
+.cd-kp-block ul li.empty-state { color: var(--text-muted); font-style: italic; }
 
-/* FAQs */
+/* FAQ accordion */
 .cd-faq { display: flex; flex-direction: column; gap: .5rem; }
 .cd-faq-item { border: 1.5px solid var(--border); border-radius: 8px; overflow: hidden; }
-.cd-faq-toggle { width: 100%; background: var(--bg-card); border: none; cursor: pointer; padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; text-align: left; gap: 1rem; font-size: .9rem; font-weight: 600; color: var(--text-primary); font-family: 'Inter', sans-serif; transition: background 0s; }
+.cd-faq-toggle { width: 100%; background: transparent; border: none; cursor: pointer; padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; text-align: left; font-size: .92rem; font-weight: 600; color: var(--text-primary); transition: background 0s; }
 .cd-faq-toggle:hover { background: var(--blue-muted); }
-.cd-faq-arrow { font-size: .7rem; color: var(--orange); font-weight: 700; transition: transform 0s; }
+.cd-faq-toggle[aria-expanded="true"] { background: var(--blue-muted); color: var(--orange); }
+.cd-faq-arrow { font-size: .75rem; color: var(--orange); transition: transform 0s; }
 .cd-faq-toggle[aria-expanded="true"] .cd-faq-arrow { transform: rotate(180deg); }
 .cd-faq-body { display: none; padding: 0 1.25rem 1rem; }
 .cd-faq-toggle[aria-expanded="true"] + .cd-faq-body { display: block; }
 .cd-faq-body p { font-size: .88rem; color: var(--text-secondary); line-height: 1.7; margin: 0; }
-
-/* Scroll-snap specific styles for course detail */
-.page-hero-slim.scroll-section {
-  min-height: auto;
-  padding-top: 100px;
-  padding-bottom: 40px;
-}
-
-.cd-banner.scroll-section {
-  min-height: auto;
-  margin-bottom: 0;
-}
-
-.cd-snapshot.scroll-section {
-  min-height: auto;
-  margin-bottom: 2rem;
-}
-
-.cd-section.scroll-section {
-  min-height: auto;
-  margin-bottom: 2.5rem;
-}
-
-.cd-section:last-child.scroll-section {
-  margin-bottom: 0;
-}
-
-/* Sidebar scroll section */
-.cd-sidebar.scroll-section {
-  min-height: auto;
-  position: sticky;
-  top: 100px;
-}
-
-/* Staggered animation delays */
-[data-animate="fade-up"] {
-  transition-delay: calc(var(--delay, 0) * 80ms);
-}
-
-.stagger-1 { --delay: 1; }
-.stagger-2 { --delay: 2; }
-.stagger-3 { --delay: 3; }
-.stagger-4 { --delay: 4; }
-.stagger-5 { --delay: 5; }
-.stagger-6 { --delay: 6; }
-.stagger-7 { --delay: 7; }
-.stagger-8 { --delay: 8; }
 </style>
 
 <%- include('partials/head') %>
 <%- include('partials/navbar') %>
 
-<!-- Scroll Snap Container -->
-<div class="scroll-container page-scroll" data-scroll-container>
+<%/* ── Section 1: Slim Page Hero ───────────────────────────────────── */%>
+<section class="page-hero page-hero-slim">
+  <div class="container">
+    <div class="page-hero-content" data-animate="fade-up">
+      <div class="section-tag">Course Detail</div>
+    </div>
+  </div>
+</section>
 
-  <%/* ── Section 1: Slim Page Hero ───────────────────────────────────── */%>
-  <section class="page-hero page-hero-slim scroll-section" data-scroll-section data-animate="fade-up">
-    <div class="container">
-      <div class="page-hero-content" data-animate="fade-up">
-        <div class="section-tag">Course Detail</div>
+<section class="section" style="padding-top: 1.5rem;">
+  <div class="container">
+
+    <%/* ── Section 2: Course Banner + Snapshot Bar ─────────────────── */%>
+    <div class="cd-banner course-img course-img-<%= (course.id % 9) + 1 %> <%= course.image ? 'has-course-image' : '' %>"
+      <% if (course.image) { %> style="--course-image: url('<%= course.image %>');"<% } %>>
+      <div class="cd-banner-gradient"></div>
+      <div class="cd-banner-body">
+        <div class="cd-banner-cat"><%= course.category || 'General' %></div>
+        <h1 class="cd-banner-title"><%= course.title %></h1>
       </div>
     </div>
-  </section>
 
-  <section class="section scroll-section" data-scroll-section style="padding-top: 1.5rem;">
-    <div class="container">
-
-      <%/* ── Section 2: Course Banner + Snapshot Bar ─────────────────── */%>
-      <div class="cd-banner course-img course-img-<%= (course.id % 9) + 1 %> <%= course.image ? 'has-course-image' : '' %>" data-animate="fade-up"
-        <% if (course.image) { %> style="--course-image: url('<%= course.image %>');"<% } %>>
-        <div class="cd-banner-gradient"></div>
-        <div class="cd-banner-body">
-          <div class="cd-banner-cat"><%= course.category || 'General' %></div>
-          <h1 class="cd-banner-title"><%= course.title %></h1>
-        </div>
+    <div class="cd-snapshot">
+      <div class="cd-snapshot-item">
+        <span class="cd-snapshot-label">Duration</span>
+        <span class="cd-snapshot-value"><%= course.duration || 'Flexible' %></span>
       </div>
-
-      <div class="cd-snapshot scroll-section" data-scroll-section data-animate="fade-up" style="--delay: 1;">
-        <div class="cd-snapshot-item">
-          <span class="cd-snapshot-label">Duration</span>
-          <span class="cd-snapshot-value"><%= course.duration || 'Flexible' %></span>
-        </div>
-        <div class="cd-snapshot-item">
-          <span class="cd-snapshot-label">Mode</span>
-          <span class="cd-snapshot-value accent"><%= course.snapshot.mode %></span>
-        </div>
-        <div class="cd-snapshot-item">
-          <span class="cd-snapshot-label">Level</span>
-          <span class="cd-snapshot-value"><%= course.level || 'All Levels' %></span>
-        </div>
-        <div class="cd-snapshot-item">
-          <span class="cd-snapshot-label">Fee (Non-Metro)</span>
-          <span class="cd-snapshot-value">INR <%= Number(course.nonMetroFee || course.displayFee || 0).toLocaleString('en-IN') %></span>
-        </div>
+      <div class="cd-snapshot-item">
+        <span class="cd-snapshot-label">Mode</span>
+        <span class="cd-snapshot-value accent"><%= course.snapshot.mode %></span>
       </div>
+      <div class="cd-snapshot-item">
+        <span class="cd-snapshot-label">Level</span>
+        <span class="cd-snapshot-value"><%= course.level || 'All Levels' %></span>
+      </div>
+      <div class="cd-snapshot-item">
+        <span class="cd-snapshot-label">Fee (Non-Metro)</span>
+        <span class="cd-snapshot-value">INR <%= Number(course.nonMetroFee || course.displayFee || 0).toLocaleString('en-IN') %></span>
+      </div>
+    </div>
 
-      <%/* ── Two-column layout ──────────────────────────────────────────── */%>
-      <div class="cd-layout">
+    <%/* ── Two-column layout ──────────────────────────────────────────── */%>
+    <div class="cd-layout">
 
-        <%/* ── Main column ──────────────────────────────────────────────── */%>
-        <div class="cd-main" data-animate="fade-right">
+      <%/* ── Main column ──────────────────────────────────────────────── */%>
+      <div class="cd-main" data-animate="fade-right">
 
-          <%/* ── Section 3: About This Course ────────────────────────── */%>
-          <div class="cd-section scroll-section" data-scroll-section data-animate="fade-up">
-            <h2 class="cd-section-heading">About This Course</h2>
-            <p class="cd-description"><%= course.description %></p>
-            <% if (Array.isArray(course.detailParagraphs) && course.detailParagraphs.length > 1) { %>
-              <% course.detailParagraphs.slice(1).forEach(function(p) { %>
-                <p class="cd-description"><%= p %></p>
-              <% }) %>
-            <% } %>
-            <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:.75rem;">
-              <span style="background:var(--orange-muted);color:var(--orange);font-size:.78rem;font-weight:700;padding:.35rem .85rem;border-radius:50px;"><%= course.snapshot.sessions %></span>
-              <span style="background:rgba(74,222,128,0.15);color:var(--green);font-size:.78rem;font-weight:700;padding:.35rem .85rem;border-radius:50px;"><%= course.snapshot.support %></span>
-              <span style="background:var(--blue-muted);color:var(--blue);font-size:.78rem;font-weight:700;padding:.35rem .85rem;border-radius:50px;"><%= course.snapshot.cert %></span>
-            </div>
-          </div>
-
-          <%/* ── Section 4: What You'll Learn ──────────────────────── */%>
-          <%
-            const allPoints = Array.isArray(course.keyPoints) ? course.keyPoints.filter(Boolean) : [];
-            const prereqPoints = allPoints.filter(function(point) { return /^pre[\s-]*requisite\s*:/i.test(point); });
-            const certPoints = allPoints.filter(function(point) { return /^certification\s*:/i.test(point); });
-            const learnPoints = allPoints.filter(function(point) { return !/^pre[\s-]*requisite\s*:/i.test(point) && !/^certification\s*:/i.test(point); });
-          %>
-          <% if (learnPoints.length) { %>
-          <div class="cd-section scroll-section" data-scroll-section data-animate="fade-up">
-            <h2 class="cd-section-heading">What You'll Learn</h2>
-            <div class="cd-learn-grid">
-              <% learnPoints.forEach(function(point, idx) { %>
-              <div class="cd-learn-item" data-animate="fade-up" style="--delay: <%= idx + 1 %>;">
-                <span class="cd-learn-icon">✓</span>
-                <span><%= point %></span>
-              </div>
-              <% }) %>
-            </div>
-          </div>
+        <%/* ── Section 3: About This Course ────────────────────────── */%>
+        <div class="cd-section">
+          <h2 class="cd-section-heading">About This Course</h2>
+          <p class="cd-description"><%= course.description %></p>
+          <% if (Array.isArray(course.detailParagraphs) && course.detailParagraphs.length > 1) { %>
+            <% course.detailParagraphs.slice(1).forEach(function(p) { %>
+              <p class="cd-description"><%= p %></p>
+            <% }) %>
           <% } %>
-
-          <%/* ── Section 5: Module Flowchart ──────────────────────── */%>
-          <% if (course.contentSections && course.contentSections.length) { %>
-          <div class="cd-section scroll-section" data-scroll-section data-animate="fade-up">
-            <h2 class="cd-section-heading">Course Module Flow</h2>
-            <div class="cd-modules-flowchart">
-              <div class="cd-modules-flow">
-                <% course.contentSections.forEach(function(section, idx) { %>
-                  <div class="cd-module-box <%= idx === Math.floor(course.contentSections.length / 2) ? 'highlight' : '' %>" data-animate="fade-up" style="--delay: <%= idx + 1 %>;">
-                    <span class="cd-module-num">Module <%= idx + 1 %></span>
-                    <span class="cd-module-title"><%= section.heading %></span>
-                  </div>
-                  <% if (idx < course.contentSections.length - 1) { %>
-                    <div class="cd-modules-arrow">→</div>
-                  <% } %>
-                <% }) %>
-              </div>
-            </div>
+          <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:.75rem;">
+            <span style="background:var(--orange-muted);color:var(--orange);font-size:.78rem;font-weight:700;padding:.35rem .85rem;border-radius:50px;"><%= course.snapshot.sessions %></span>
+            <span style="background:rgba(74,222,128,0.15);color:var(--green);font-size:.78rem;font-weight:700;padding:.35rem .85rem;border-radius:50px;"><%= course.snapshot.support %></span>
+            <span style="background:var(--blue-muted);color:var(--blue);font-size:.78rem;font-weight:700;padding:.35rem .85rem;border-radius:50px;"><%= course.snapshot.cert %></span>
           </div>
-          <% } %>
+        </div>
 
-          <%/* ── Section 6: Learning Outcomes ──────────────────────── */%>
-          <div class="cd-section scroll-section" data-scroll-section data-animate="fade-up">
-            <h2 class="cd-section-heading">Learning Outcomes</h2>
-            <div class="cd-outcomes-grid">
-              <div class="cd-outcome-card" data-animate="fade-up" style="--delay: 1;">
-                <div class="cd-outcome-icon">📚</div>
-                <div class="cd-outcome-title">Core Concepts</div>
-                <div class="cd-outcome-desc">Master fundamental principles and industry best practices through comprehensive lessons.</div>
-              </div>
-              <div class="cd-outcome-card" data-animate="fade-up" style="--delay: 2;">
-                <div class="cd-outcome-icon">🔨</div>
-                <div class="cd-outcome-title">Practical Skills</div>
-                <div class="cd-outcome-desc">Build real-world projects and gain hands-on experience with tools and technologies.</div>
-              </div>
-              <div class="cd-outcome-card" data-animate="fade-up" style="--delay: 3;">
-                <div class="cd-outcome-icon">🎓</div>
-                <div class="cd-outcome-title">Professional Certification</div>
-                <div class="cd-outcome-desc">Earn recognized credentials that showcase your expertise to employers.</div>
-              </div>
-              <div class="cd-outcome-card" data-animate="fade-up" style="--delay: 4;">
-                <div class="cd-outcome-icon">🚀</div>
-                <div class="cd-outcome-title">Career Ready</div>
-                <div class="cd-outcome-desc">Get equipped for job opportunities with guidance from industry experts.</div>
-              </div>
+        <%/* ── Section 4: What You'll Learn ──────────────────────── */%>
+        <%
+          const allPoints = Array.isArray(course.keyPoints) ? course.keyPoints.filter(Boolean) : [];
+          const prereqPoints = allPoints.filter(function(point) { return /^pre[\s-]*requisite\s*:/i.test(point); });
+          const certPoints = allPoints.filter(function(point) { return /^certification\s*:/i.test(point); });
+          const learnPoints = allPoints.filter(function(point) { return !/^pre[\s-]*requisite\s*:/i.test(point) && !/^certification\s*:/i.test(point); });
+        %>
+        <% if (learnPoints.length) { %>
+        <div class="cd-section">
+          <h2 class="cd-section-heading">What You'll Learn</h2>
+          <div class="cd-learn-grid">
+            <% learnPoints.forEach(function(point) { %>
+            <div class="cd-learn-item">
+              <span class="cd-learn-icon">✓</span>
+              <span><%= point %></span>
             </div>
+            <% }) %>
           </div>
+        </div>
+        <% } %>
 
-          <%/* ── Section 7: Course Curriculum ──────────────────────── */%>
-          <% if (course.contentSections && course.contentSections.length) { %>
-          <div class="cd-section scroll-section" data-scroll-section data-animate="fade-up">
-            <h2 class="cd-section-heading">Course Curriculum</h2>
-            <div class="cd-accordion" id="cd-curriculum">
+        <%/* ── Section 5: Module Flowchart ──────────────────────── */%>
+        <% if (course.contentSections && course.contentSections.length) { %>
+        <div class="cd-section">
+          <h2 class="cd-section-heading">Course Module Flow</h2>
+          <div class="cd-modules-flowchart">
+            <div class="cd-modules-flow">
               <% course.contentSections.forEach(function(section, idx) { %>
-              <div class="cd-accordion-item" data-animate="fade-up" style="--delay: <%= idx + 1 %>;">
-                <button class="cd-accordion-toggle" aria-expanded="<%= idx === 0 ? 'true' : 'false' %>" data-cd-toggle>
-                  <span class="cd-acc-num"><%= idx + 1 %></span>
-                  <span class="cd-acc-heading"><%= section.heading %></span>
-                  <span class="cd-acc-arrow">▼</span>
-                </button>
-                <div class="cd-accordion-body">
-                  <% if (section.paragraphs && section.paragraphs.length) { %>
-                    <% section.paragraphs.forEach(function(p) { %><p><%= p %></p><% }) %>
-                  <% } %>
-                  <% if (section.bullets && section.bullets.length) { %>
-                  <ul>
-                    <% section.bullets.forEach(function(b) { %><li><%= b %></li><% }) %>
-                  </ul>
-                  <% } %>
+                <div class="cd-module-box <%= idx === Math.floor(course.contentSections.length / 2) ? 'highlight' : '' %>">
+                  <span class="cd-module-num">Module <%= idx + 1 %></span>
+                  <span class="cd-module-title"><%= section.heading %></span>
                 </div>
-              </div>
+                <% if (idx < course.contentSections.length - 1) { %>
+                  <div class="cd-modules-arrow">→</div>
+                <% } %>
               <% }) %>
             </div>
           </div>
-          <% } %>
+        </div>
+        <% } %>
 
-          <%/* ── Section 8: Hands-on Activities ────────────────────── */%>
-          <div class="cd-section scroll-section" data-scroll-section data-animate="fade-up">
-            <h2 class="cd-section-heading">Hands-on Activities</h2>
-            <div class="cd-activities-grid">
-              <% const activityIcons = ['🛠️','🔬','🎯','🚀','🔍','🎨']; %>
-              <% course.activities.forEach(function(act, i) { %>
-              <div class="cd-activity-card" data-animate="fade-up" style="--delay: <%= i + 1 %>;">
-                <div class="cd-activity-icon"><%= activityIcons[i % activityIcons.length] %></div>
-                <div class="cd-activity-text"><%= act %></div>
-              </div>
-              <% }) %>
+        <%/* ── Section 6: Learning Outcomes ──────────────────────── */%>
+        <div class="cd-section">
+          <h2 class="cd-section-heading">Learning Outcomes</h2>
+          <div class="cd-outcomes-grid">
+            <div class="cd-outcome-card">
+              <div class="cd-outcome-icon">📚</div>
+              <div class="cd-outcome-title">Core Concepts</div>
+              <div class="cd-outcome-desc">Master fundamental principles and industry best practices through comprehensive lessons.</div>
             </div>
-          </div>
-
-          <%/* ── Section 9: Tools & Technologies ───────────────────── */%>
-          <div class="cd-section scroll-section" data-scroll-section data-animate="fade-up">
-            <h2 class="cd-section-heading">Tools & Technologies</h2>
-            <div class="cd-tools-grid">
-              <% course.toolsList.forEach(function(tool, i) { %>
-              <span class="cd-tool-pill" data-animate="fade-up" style="--delay: <%= i + 1 %>;"><%= tool %></span>
-              <% }) %>
+            <div class="cd-outcome-card">
+              <div class="cd-outcome-icon">🔨</div>
+              <div class="cd-outcome-title">Practical Skills</div>
+              <div class="cd-outcome-desc">Build real-world projects and gain hands-on experience with tools and technologies.</div>
             </div>
-          </div>
-
-          <%/* ── Section 10: Instructor ──────────────────────── */%>
-          <div class="cd-section scroll-section" data-scroll-section data-animate="fade-up">
-            <h2 class="cd-section-heading">Meet Your Instructor</h2>
-            <div class="cd-instructor-card" data-animate="fade-up" style="--delay: 1;">
-              <div class="cd-instructor-avatar">👨‍🏫</div>
-              <div class="cd-instructor-info">
-                <h3>Expert Instructor</h3>
-                <div class="cd-instructor-role">Industry Professional</div>
-                <div class="cd-instructor-bio">Learn from experienced professionals with years of industry expertise. Our instructors bring real-world knowledge and practical insights to help you succeed in your career.</div>
-              </div>
+            <div class="cd-outcome-card">
+              <div class="cd-outcome-icon">🎓</div>
+              <div class="cd-outcome-title">Professional Certification</div>
+              <div class="cd-outcome-desc">Earn recognized credentials that showcase your expertise to employers.</div>
             </div>
-          </div>
-
-          <%/* ── Section 11: Career Roadmap ──────────────────────────── */%>
-          <div class="cd-section scroll-section" data-scroll-section data-animate="fade-up">
-            <h2 class="cd-section-heading">Career Roadmap</h2>
-            <div class="cd-roadmap">
-              <div class="cd-roadmap-line"></div>
-              <% course.roadmap.forEach(function(rm, i) { %>
-              <div class="cd-roadmap-step" data-animate="fade-up" style="--delay: <%= i + 1 %>;">
-                <div class="cd-rm-circle"><%= rm.step %></div>
-                <div class="cd-rm-phase"><%= rm.phase %></div>
-                <div class="cd-rm-desc"><%= rm.desc %></div>
-              </div>
-              <% }) %>
-            </div>
-          </div>
-
-          <%/* ── Section 12: Job Opportunities ──────────────────────── */%>
-          <div class="cd-section scroll-section" data-scroll-section data-animate="fade-up">
-            <h2 class="cd-section-heading">Job Opportunities</h2>
-            <div class="cd-jobs-grid">
-              <% course.jobs.forEach(function(job, i) { %>
-              <div class="cd-job-card" data-animate="fade-up" style="--delay: <%= i + 1 %>;">
-                <div class="cd-job-title"><%= job.title %></div>
-                <div class="cd-job-salary"><%= job.salary %></div>
-                <div class="cd-job-desc"><%= job.desc || '' %></div>
-              </div>
-              <% }) %>
-            </div>
-          </div>
-
-          <%/* ── Section 13: Who Should Enroll ─────────────────────── */%>
-          <div class="cd-section scroll-section" data-scroll-section data-animate="fade-up">
-            <h2 class="cd-section-heading">Who Should Enroll</h2>
-            <ul class="cd-who-list">
-              <% course.whoShouldEnroll.forEach(function(item, i) { %>
-              <li class="cd-who-item" data-animate="fade-up" style="--delay: <%= i + 1 %>;"><span class="cd-who-check">✓</span><span><%= item %></span></li>
-              <% }) %>
-            </ul>
-          </div>
-
-          <%/* ── Section 14: Prerequisites & Certification ──────────── */%>
-          <div class="cd-section scroll-section" data-scroll-section data-animate="fade-up">
-            <h2 class="cd-section-heading">Prerequisites & Certification</h2>
-            <div class="cd-keypoints-grid">
-              <div class="cd-kp-block" data-animate="fade-up" style="--delay: 1;">
-                <h4>🎓 Prerequisites</h4>
-                <ul>
-                  <% if (prereqPoints.length) { %>
-                    <% prereqPoints.forEach(function(p, i) { %><li data-animate="fade-up" style="--delay: <%= i + 1 %>;"><%= p.replace(/^pre[\s-]*requisite\s*:\s*/i, '') %></li><% }) %>
-                  <% } else { %>
-                    <li class="empty-state">No specific prerequisites — open to all learners.</li>
-                  <% } %>
-                </ul>
-              </div>
-              <div class="cd-kp-block" data-animate="fade-up" style="--delay: 2;">
-                <h4>📜 Certification</h4>
-                <ul>
-                  <% if (certPoints.length) { %>
-                    <% certPoints.forEach(function(p, i) { %>
-                    <li data-animate="fade-up" style="--delay: <%= i + 1 %>;"><%= p.replace(/^certification\s*:\s*/i, '').replace(/\bsamyak\b/gi, 'Osian') %></li>
-                    <% }) %>
-                  <% } else { %>
-                    <li>Osian Academy completion certificate awarded on finishing the course.</li>
-                  <% } %>
-                  <li>Recognised by industry partners and placement networks.</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <%/* ── Section 15: FAQs ──────────────────────────────────── */%>
-          <div class="cd-section scroll-section" data-scroll-section data-animate="fade-up">
-            <h2 class="cd-section-heading">Frequently Asked Questions</h2>
-            <div class="cd-faq" id="cd-faq">
-              <% course.enrichedFaqs.forEach(function(faq, i) { %>
-              <div class="cd-faq-item" data-animate="fade-up" style="--delay: <%= i + 1 %>;">
-                <button class="cd-faq-toggle" aria-expanded="<%= i === 0 ? 'true' : 'false' %>" data-cd-faq-toggle>
-                  <%= faq.q %>
-                  <span class="cd-faq-arrow">▼</span>
-                </button>
-                <div class="cd-faq-body"><p><%= faq.a %></p></div>
-              </div>
-              <% }) %>
-            </div>
-          </div>
-
-        </div><%/* end .cd-main */%>
-
-        <%/* ── Sidebar ──────────────────────────────────────────────── */%>
-        <div class="cd-sidebar scroll-section" data-scroll-section data-animate="fade-left">
-          <div class="sidebar-card">
-            <div class="sidebar-price">
-              <span class="sidebar-price-label">Fee</span>
-              <span
-                class="sidebar-price-value"
-                id="course-fee-display"
-                data-fee="<%= Number(course.displayFee || course.nonMetroFee || course.metroFee || 0) %>"
-              >
-                INR <%= Number(course.displayFee || course.nonMetroFee || course.metroFee || 0).toLocaleString('en-IN') %>
-              </span>
-            </div>
-            <button type="button" class="btn btn-primary btn-block" data-enroll-toggle>Enroll Now</button>
-            <div class="course-enroll-actions" data-enroll-actions hidden>
-              <a
-                href="https://wa.me/919624284999"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="btn btn-ghost btn-block"
-              >Get More Information</a>
-              <a
-                href="/checkout/<%= course.id %>"
-                class="btn btn-primary btn-block"
-                data-buy-now-btn
-                data-course-id="<%= course.id %>"
-              >Buy Now</a>
-            </div>
-            <a href="/courses" class="btn btn-ghost btn-block">All Courses</a>
-            <ul class="sidebar-info">
-              <li>
-                <span class="sidebar-label">Duration</span>
-                <span class="sidebar-value"><%= course.duration || 'Flexible' %></span>
-              </li>
-              <li>
-                <span class="sidebar-label">Level</span>
-                <span class="sidebar-value"><%= course.level || 'All Levels' %></span>
-              </li>
-              <li>
-                <span class="sidebar-label">Mode</span>
-                <span class="sidebar-value"><%= course.snapshot.mode %></span>
-              </li>
-              <li>
-                <span class="sidebar-label">Sessions</span>
-                <span class="sidebar-value"><%= course.snapshot.sessions %></span>
-              </li>
-              <li>
-                <span class="sidebar-label">Support</span>
-                <span class="sidebar-value"><%= course.snapshot.support %></span>
-              </li>
-              <li>
-                <span class="sidebar-label">Certificate</span>
-                <span class="sidebar-value"><%= course.snapshot.cert %></span>
-              </li>
-              <li>
-                <span class="sidebar-label">Category</span>
-                <span class="sidebar-value"><%= course.category || 'General' %></span>
-              </li>
-            </ul>
-            <div class="sidebar-guarantee">
-              ℹ️ Live 1-on-1 sessions with flexible scheduling. Placement support and Osian certificate included.
+            <div class="cd-outcome-card">
+              <div class="cd-outcome-icon">🚀</div>
+              <div class="cd-outcome-title">Career Ready</div>
+              <div class="cd-outcome-desc">Get equipped for job opportunities with guidance from industry experts.</div>
             </div>
           </div>
         </div>
 
-      </div><%/* end .cd-layout */%>
-    </div>
-  </section>
+        <%/* ── Section 7: Course Curriculum ──────────────────────── */%>
+        <% if (course.contentSections && course.contentSections.length) { %>
+        <div class="cd-section">
+          <h2 class="cd-section-heading">Course Curriculum</h2>
+          <div class="cd-accordion" id="cd-curriculum">
+            <% course.contentSections.forEach(function(section, idx) { %>
+            <div class="cd-accordion-item">
+              <button class="cd-accordion-toggle" aria-expanded="<%= idx === 0 ? 'true' : 'false' %>" data-cd-toggle>
+                <span class="cd-acc-num"><%= idx + 1 %></span>
+                <span class="cd-acc-heading"><%= section.heading %></span>
+                <span class="cd-acc-arrow">▼</span>
+              </button>
+              <div class="cd-accordion-body">
+                <% if (section.paragraphs && section.paragraphs.length) { %>
+                  <% section.paragraphs.forEach(function(p) { %><p><%= p %></p><% }) %>
+                <% } %>
+                <% if (section.bullets && section.bullets.length) { %>
+                <ul>
+                  <% section.bullets.forEach(function(b) { %><li><%= b %></li><% }) %>
+                </ul>
+                <% } %>
+              </div>
+            </div>
+            <% }) %>
+          </div>
+        </div>
+        <% } %>
 
-  <!-- Footer Section -->
-  <%- include('partials/footer') %>
+        <%/* ── Section 8: Hands-on Activities ────────────────────── */%>
+        <div class="cd-section">
+          <h2 class="cd-section-heading">Hands-on Activities</h2>
+          <div class="cd-activities-grid">
+            <% const activityIcons = ['🛠️','🔬','🎯','🚀','🔍','🎨']; %>
+            <% course.activities.forEach(function(act, i) { %>
+            <div class="cd-activity-card">
+              <div class="cd-activity-icon"><%= activityIcons[i % activityIcons.length] %></div>
+              <div class="cd-activity-text"><%= act %></div>
+            </div>
+            <% }) %>
+          </div>
+        </div>
 
-</div>
+        <%/* ── Section 9: Tools & Technologies ───────────────────── */%>
+        <div class="cd-section">
+          <h2 class="cd-section-heading">Tools &amp; Technologies</h2>
+          <div class="cd-tools-grid">
+            <% course.toolsList.forEach(function(tool) { %>
+            <span class="cd-tool-pill"><%= tool %></span>
+            <% }) %>
+          </div>
+        </div>
 
-<!-- Scroll Progress Indicator -->
-<div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+        <%/* ── Section 10: Instructor ──────────────────────── */%>
+        <div class="cd-section">
+          <h2 class="cd-section-heading">Meet Your Instructor</h2>
+          <div class="cd-instructor-card">
+            <div class="cd-instructor-avatar">👨‍🏫</div>
+            <div class="cd-instructor-info">
+              <h3>Expert Instructor</h3>
+              <div class="cd-instructor-role">Industry Professional</div>
+              <div class="cd-instructor-bio">Learn from experienced professionals with years of industry expertise. Our instructors bring real-world knowledge and practical insights to help you succeed in your career.</div>
+            </div>
+          </div>
+        </div>
 
-<!-- Scroll Hint -->
-<div class="scroll-hint" aria-hidden="true">
-  <span>Scroll to explore</span>
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 5v14M19 12l-7 7-7-7"/>
-  </svg>
-</div>
+        <%/* ── Section 11: Career Roadmap ──────────────────────────── */%>
+        <div class="cd-section">
+          <h2 class="cd-section-heading">Career Roadmap</h2>
+          <div class="cd-roadmap">
+            <div class="cd-roadmap-line"></div>
+            <% course.roadmap.forEach(function(rm) { %>
+            <div class="cd-roadmap-step">
+              <div class="cd-rm-circle"><%= rm.step %></div>
+              <div class="cd-rm-phase"><%= rm.phase %></div>
+              <div class="cd-rm-desc"><%= rm.desc %></div>
+            </div>
+            <% }) %>
+          </div>
+        </div>
+
+        <%/* ── Section 12: Job Opportunities ──────────────────────── */%>
+        <div class="cd-section">
+          <h2 class="cd-section-heading">Job Opportunities</h2>
+          <div class="cd-jobs-grid">
+            <% course.jobs.forEach(function(job) { %>
+            <div class="cd-job-card">
+              <div class="cd-job-title"><%= job.title %></div>
+              <div class="cd-job-salary"><%= job.salary %></div>
+              <div class="cd-job-desc"><%= job.desc || '' %></div>
+            </div>
+            <% }) %>
+          </div>
+        </div>
+
+        <%/* ── Section 13: Who Should Enroll ─────────────────────── */%>
+        <div class="cd-section">
+          <h2 class="cd-section-heading">Who Should Enroll</h2>
+          <ul class="cd-who-list">
+            <% course.whoShouldEnroll.forEach(function(item) { %>
+            <li class="cd-who-item"><span class="cd-who-check">✓</span><span><%= item %></span></li>
+            <% }) %>
+          </ul>
+        </div>
+
+        <%/* ── Section 14: Prerequisites & Certification ──────────── */%>
+        <div class="cd-section">
+          <h2 class="cd-section-heading">Prerequisites &amp; Certification</h2>
+          <div class="cd-keypoints-grid">
+            <div class="cd-kp-block">
+              <h4>🎓 Prerequisites</h4>
+              <ul>
+                <% if (prereqPoints.length) { %>
+                  <% prereqPoints.forEach(function(p) { %><li><%= p.replace(/^pre[\s-]*requisite\s*:\s*/i, '') %></li><% }) %>
+                <% } else { %>
+                  <li class="empty-state">No specific prerequisites — open to all learners.</li>
+                <% } %>
+              </ul>
+            </div>
+            <div class="cd-kp-block">
+              <h4>📜 Certification</h4>
+              <ul>
+                <% if (certPoints.length) { %>
+                  <% certPoints.forEach(function(p) { %>
+                  <li><%= p.replace(/^certification\s*:\s*/i, '').replace(/\bsamyak\b/gi, 'Osian') %></li>
+                  <% }) %>
+                <% } else { %>
+                  <li>Osian Academy completion certificate awarded on finishing the course.</li>
+                <% } %>
+                <li>Recognised by industry partners and placement networks.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <%/* ── Section 15: FAQs ──────────────────────────────────── */%>
+        <div class="cd-section">
+          <h2 class="cd-section-heading">Frequently Asked Questions</h2>
+          <div class="cd-faq" id="cd-faq">
+            <% course.enrichedFaqs.forEach(function(faq, i) { %>
+            <div class="cd-faq-item">
+              <button class="cd-faq-toggle" aria-expanded="<%= i === 0 ? 'true' : 'false' %>" data-cd-faq-toggle>
+                <%= faq.q %>
+                <span class="cd-faq-arrow">▼</span>
+              </button>
+              <div class="cd-faq-body"><p><%= faq.a %></p></div>
+            </div>
+            <% }) %>
+          </div>
+        </div>
+
+      </div><%/* end .cd-main */%>
+
+      <%/* ── Sidebar ──────────────────────────────────────────────── */%>
+      <div class="cd-sidebar" data-animate="fade-left">
+        <div class="sidebar-card">
+          <div class="sidebar-price">
+            <span class="sidebar-price-label">Fee</span>
+            <span
+              class="sidebar-price-value"
+              id="course-fee-display"
+              data-fee="<%= Number(course.displayFee || course.nonMetroFee || course.metroFee || 0) %>"
+            >
+              INR <%= Number(course.displayFee || course.nonMetroFee || course.metroFee || 0).toLocaleString('en-IN') %>
+            </span>
+          </div>
+          <button type="button" class="btn btn-primary btn-block" data-enroll-toggle>Enroll Now</button>
+          <div class="course-enroll-actions" data-enroll-actions hidden>
+            <a
+              href="https://wa.me/919624284999"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn-ghost btn-block"
+            >Get More Information</a>
+            <a
+              href="/checkout/<%= course.id %>"
+              class="btn btn-primary btn-block"
+              data-buy-now-btn
+              data-course-id="<%= course.id %>"
+            >Buy Now</a>
+          </div>
+          <a href="/courses" class="btn btn-ghost btn-block">All Courses</a>
+          <ul class="sidebar-info">
+            <li>
+              <span class="sidebar-label">Duration</span>
+              <span class="sidebar-value"><%= course.duration || 'Flexible' %></span>
+            </li>
+            <li>
+              <span class="sidebar-label">Level</span>
+              <span class="sidebar-value"><%= course.level || 'All Levels' %></span>
+            </li>
+            <li>
+              <span class="sidebar-label">Mode</span>
+              <span class="sidebar-value"><%= course.snapshot.mode %></span>
+            </li>
+            <li>
+              <span class="sidebar-label">Sessions</span>
+              <span class="sidebar-value"><%= course.snapshot.sessions %></span>
+            </li>
+            <li>
+              <span class="sidebar-label">Support</span>
+              <span class="sidebar-value"><%= course.snapshot.support %></span>
+            </li>
+            <li>
+              <span class="sidebar-label">Certificate</span>
+              <span class="sidebar-value"><%= course.snapshot.cert %></span>
+            </li>
+            <li>
+              <span class="sidebar-label">Category</span>
+              <span class="sidebar-value"><%= course.category || 'General' %></span>
+            </li>
+          </ul>
+          <div class="sidebar-guarantee">
+            ℹ️ Live 1-on-1 sessions with flexible scheduling. Placement support and Osian certificate included.
+          </div>
+        </div>
+      </div>
+
+    </div><%/* end .cd-layout */%>
+  </div>
+</section>
 
 <script>
 (function () {
@@ -585,52 +524,6 @@
       const expanded = btn.getAttribute('aria-expanded') === 'true';
       btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
     });
-  });
-})();
-
-// Scroll progress indicator
-(function() {
-  const container = document.querySelector('.scroll-container');
-  const progress = document.getElementById('scroll-progress');
-  const hint = document.querySelector('.scroll-hint');
-  
-  if (!container || !progress) return;
-  
-  function updateProgress() {
-    const scrollTop = container.scrollTop;
-    const scrollHeight = container.scrollHeight - container.clientHeight;
-    const progressPercent = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
-    progress.style.transform = `scaleX(${progressPercent})`;
-    
-    // Hide hint after scrolling
-    if (scrollTop > 100) {
-      hint.style.opacity = '0';
-      hint.style.pointerEvents = 'none';
-    } else {
-      hint.style.opacity = '0.6';
-    }
-  }
-  
-  container.addEventListener('scroll', updateProgress, { passive: true });
-  updateProgress();
-})();
-
-// Intersection Observer for scroll animations
-(function() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in-view');
-      }
-    });
-  }, {
-    root: document.querySelector('.scroll-container') || null,
-    rootMargin: '0px 0px -10% 0px',
-    threshold: 0.1
-  });
-  
-  document.querySelectorAll('[data-animate]').forEach(el => {
-    observer.observe(el);
   });
 })();
 </script>
