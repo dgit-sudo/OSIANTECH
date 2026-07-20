@@ -2,73 +2,54 @@
 <%- include('partials/navbar') %>
 
 <!-- ===== HERO ===== -->
-<section class="s-hero">
+<section class="hero">
   <div class="container">
-    <div class="sh-grid">
+    <div class="hero-grid">
 
-      <div class="sh-left">
-        <h1 class="sh-headline">
-          INDIA'S NO.1<br>
-          ONLINE<br>
-          <span class="sh-hl">ACADEMY</span>
+      <div class="hero-left">
+        <p class="hero-label">India's Premier Online Academy</p>
+        <h1 class="hero-title">
+          Learn From<br>
+          Industry<br>
+          <span class="hero-accent">Experts</span>
         </h1>
-        <p class="sh-placement">100% Placement Assistance</p>
-        <div class="sh-pill-row">
-          <div class="sh-pill">
-            <span class="sh-pill-num">500+</span>
-            <span class="sh-pill-lbl">Students</span>
-          </div>
-          <div class="sh-pill">
-            <span class="sh-pill-num">25+</span>
-            <span class="sh-pill-lbl">Courses</span>
-          </div>
-          <div class="sh-pill">
-            <span class="sh-pill-num">10+</span>
-            <span class="sh-pill-lbl">Instructors</span>
-          </div>
-          <a href="/auth?mode=signup" class="sh-join" data-auth-guest>Join Now</a>
-          <a href="/dashboard" class="sh-join" data-auth-user hidden>Dashboard</a>
-        </div>
-        <div class="sh-tags">
-          <span>Programming</span>
-          <span>Cloud Computing</span>
-          <span>Digital Marketing</span>
-          <span>Artificial Intelligence</span>
-          <span>Data Science</span>
-          <span>Cybersecurity</span>
-          <span>Web Development</span>
-          <span>UI/UX Design</span>
-          <span>Networking</span>
-          <span>Finance</span>
-        </div>
-        <div class="sh-partner-row">
-          <div class="sh-partner">Microsoft</div>
-          <div class="sh-partner">SAP</div>
-          <div class="sh-partner-sep"></div>
-          <div class="sh-partner">PROMETEX</div>
-          <div class="sh-partner sh-partner-nasscom">NASSCOM</div>
+        <p class="hero-desc">Master in-demand skills with 1-on-1 live sessions from working professionals. Get certified, build real projects, and launch your career with placement support.</p>
+        <div class="hero-actions">
+          <a href="/auth?mode=signup" class="btn btn-primary btn-lg" data-auth-guest>Start Learning Free</a>
+          <a href="/courses" class="btn btn-outline-white btn-lg">Explore Courses</a>
         </div>
       </div>
 
-      <div class="sh-right">
-        <div class="sh-visual-card">
-          <div class="shvc-glow"></div>
-          <div class="shvc-headline">Osian Academy</div>
-          <p class="shvc-sub">India's Premier Online Education Platform</p>
-          <div class="shvc-feats">
-            <div class="shvc-feat">&#10003; 100% Live 1-on-1 Sessions</div>
-            <div class="shvc-feat">&#10003; Expert Industry Instructors</div>
-            <div class="shvc-feat">&#10003; Industry-Recognised Certification</div>
-            <div class="shvc-feat">&#10003; Career Placement Support</div>
-            <div class="shvc-feat">&#10003; Flexible Schedule</div>
+      <div class="hero-aside">
+        <div class="hero-feature-list">
+          <div class="hero-feature-item">
+            <div class="hero-feature-dot"></div>
+            <div>
+              <div class="hero-feature-title">100% Live 1-on-1 Sessions</div>
+              <div class="hero-feature-desc">Private sessions with dedicated instructors, not batch lectures</div>
+            </div>
           </div>
-          <div class="shvc-stats-row">
-            <div class="shvc-stat"><span>500+</span><small>Students</small></div>
-            <div class="shvc-stat"><span>25+</span><small>Programmes</small></div>
-            <div class="shvc-stat"><span>95%</span><small>Satisfaction</small></div>
+          <div class="hero-feature-item">
+            <div class="hero-feature-dot"></div>
+            <div>
+              <div class="hero-feature-title">Expert Industry Instructors</div>
+              <div class="hero-feature-desc">Learn from professionals with 5+ years of real-world experience</div>
+            </div>
           </div>
-          <a href="/auth?mode=signup" class="shvc-cta" data-auth-guest>Start Learning Free</a>
-          <a href="/dashboard" class="shvc-cta" data-auth-user hidden>Go to Dashboard</a>
+          <div class="hero-feature-item">
+            <div class="hero-feature-dot"></div>
+            <div>
+              <div class="hero-feature-title">Industry-Recognised Certification</div>
+              <div class="hero-feature-desc">Earn verifiable certificates accepted by 100+ hiring partners</div>
+            </div>
+          </div>
+          <div class="hero-feature-item">
+            <div class="hero-feature-dot"></div>
+            <div>
+              <div class="hero-feature-title">Career Placement Support</div>
+              <div class="hero-feature-desc">Resume review, mock interviews, and direct hiring partner access</div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -77,37 +58,36 @@
 </section>
 
 <!-- ===== HOW IT WORKS ===== -->
-<section class="s-howitworks section">
+<section class="section">
   <div class="container">
-    <div class="shiw-head">
-      <p class="section-label">Simple Process</p>
-      <h2 class="shiw-title">From Enrolment to Employment — 4 Steps</h2>
+    <div class="section-header-row">
+      <div>
+        <p class="section-label">Simple Process</p>
+        <h2 class="section-title">From Enrolment to Employment — 4 Steps</h2>
+      </div>
     </div>
     <div class="shiw-steps">
       <div class="shiw-step">
         <div class="shiw-num">01</div>
-        <div class="shiw-icon">&#128250;</div>
+        <div class="shiw-icon">🎯</div>
         <h3 class="shiw-step-title">Choose Your Programme</h3>
         <p class="shiw-step-desc">Browse 25+ industry-aligned courses. Filter by category, duration, or career goal. Pick the one that fits you.</p>
       </div>
-      <div class="shiw-arrow">&#8594;</div>
       <div class="shiw-step">
         <div class="shiw-num">02</div>
-        <div class="shiw-icon">&#128100;</div>
+        <div class="shiw-icon">🤝</div>
         <h3 class="shiw-step-title">Get Matched to an Expert</h3>
         <p class="shiw-step-desc">We pair you with a working professional in your field for live 1-on-1 sessions tailored to your pace and goals.</p>
       </div>
-      <div class="shiw-arrow">&#8594;</div>
       <div class="shiw-step">
         <div class="shiw-num">03</div>
-        <div class="shiw-icon">&#128187;</div>
+        <div class="shiw-icon">💻</div>
         <h3 class="shiw-step-title">Learn With Real Projects</h3>
         <p class="shiw-step-desc">Build hands-on projects, complete industry assignments, and earn a recognised certification upon completion.</p>
       </div>
-      <div class="shiw-arrow">&#8594;</div>
       <div class="shiw-step">
         <div class="shiw-num">04</div>
-        <div class="shiw-icon">&#128188;</div>
+        <div class="shiw-icon">🚀</div>
         <h3 class="shiw-step-title">Get Placed</h3>
         <p class="shiw-step-desc">Dedicated placement support: resume review, mock interviews, and access to 100+ hiring partners — until you land the job.</p>
       </div>
@@ -502,12 +482,10 @@
 </section>
 
 <!-- ===== STUDENTS ACROSS INDIA ===== -->
-<section class="s-offers section" style="background: #f59e0b; position: relative; overflow: hidden;">
-  <div style="position: absolute; top: -100px; right: -100px; width: 400px; height: 400px; background: rgba(255,255,255,.05); border-radius: 50%; z-index: 0;"></div>
-  <div style="position: absolute; bottom: -80px; left: -80px; width: 300px; height: 300px; background: rgba(255,255,255,.05); border-radius: 50%; z-index: 0;"></div>
-  <div class="container" style="position: relative; z-index: 1;">
+<section class="s-offers section">
+  <div class="container">
     <div class="soff-head">
-      <p class="section-label" style="color: rgba(255,255,255,.8);">What We Offer</p>
+      <p class="section-label">What We Offer</p>
       <h2 class="soff-title">Everything You Need to Succeed</h2>
       <p class="soff-sub">Beyond just courses — a complete ecosystem designed for your career transformation</p>
     </div>
