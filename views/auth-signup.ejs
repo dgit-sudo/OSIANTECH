@@ -1,53 +1,117 @@
 <%- include('partials/head') %>
 <%- include('partials/navbar') %>
 
-<section class="auth-shell section" data-auth-mode="signup">
-  <div class="container auth-container">
-    <div class="auth-hero" data-animate="fade-left">
-      <div class="section-tag">Join Osian</div>
-      <h1 class="auth-title">Start your learning journey today</h1>
-      <p class="auth-sub">Create your Osian Academy account to access high-impact courses, guided learning paths, and career-focused projects.</p>
-      <ul class="auth-points">
-        <li>Premium learning dashboard and course tracking</li>
-        <li>Structured pathways from beginner to expert</li>
-        <li>Community support and practical assignments</li>
-      </ul>
+<!-- Scroll Snap Container -->
+<div class="scroll-container page-scroll" data-scroll-container>
+
+  <section class="auth-shell section scroll-section" data-scroll-section data-auth-mode="signup">
+    <div class="container auth-container">
+      <div class="auth-hero" data-animate="fade-left">
+        <div class="section-tag">Join Osian</div>
+        <h1 class="auth-title">Start your learning journey today</h1>
+        <p class="auth-sub">Create your Osian Academy account to access high-impact courses, guided learning paths, and career-focused projects.</p>
+        <ul class="auth-points">
+          <li data-animate="fade-up" style="--delay: 1;">Premium learning dashboard and course tracking</li>
+          <li data-animate="fade-up" style="--delay: 2;">Structured pathways from beginner to expert</li>
+          <li data-animate="fade-up" style="--delay: 3;">Community support and practical assignments</li>
+        </ul>
+      </div>
+
+      <div class="auth-card" data-animate="fade-right">
+        <h2>Create Account</h2>
+        <p class="auth-card-sub">Sign up in seconds and start learning.</p>
+
+        <button type="button" id="google-signup-btn" class="auth-google-btn" aria-label="Sign up with Google">
+          <span class="google-icon">G</span>
+          <span>Sign up with Google</span>
+        </button>
+
+        <div class="auth-divider"><span>or continue with email</span></div>
+
+        <form class="auth-form" id="signup-form" action="#" method="post">
+          <div class="form-group" data-animate="fade-up" style="--delay: 1;">
+            <label for="signup-name">Full Name</label>
+            <input id="signup-name" name="name" type="text" placeholder="Enter your full name" required />
+          </div>
+          <div class="form-group" data-animate="fade-up" style="--delay: 2;">
+            <label for="signup-email">Email Address</label>
+            <input id="signup-email" name="email" type="email" placeholder="you@example.com" required />
+          </div>
+          <div class="form-group" data-animate="fade-up" style="--delay: 3;">
+            <label for="signup-password">Password</label>
+            <input id="signup-password" name="password" type="password" placeholder="Create a strong password" required />
+          </div>
+          <button type="submit" class="btn btn-primary btn-block" data-animate="fade-up" style="--delay: 4;">Create Account</button>
+        </form>
+
+        <div id="auth-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
+
+        <p class="auth-switch" data-animate="fade-up" style="--delay: 5;">Already have an account? <a href="/auth/signin">Sign In</a></p>
+      </div>
     </div>
+  </section>
 
-    <div class="auth-card" data-animate="fade-right">
-      <h2>Create Account</h2>
-      <p class="auth-card-sub">Sign up in seconds and start learning.</p>
+  <!-- Footer Section -->
+  <%- include('partials/footer') %>
 
-      <button type="button" id="google-signup-btn" class="auth-google-btn" aria-label="Sign up with Google">
-        <span class="google-icon">G</span>
-        <span>Sign up with Google</span>
-      </button>
+</div>
 
-      <div class="auth-divider"><span>or continue with email</span></div>
+<!-- Scroll Progress Indicator -->
+<div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 
-      <form class="auth-form" id="signup-form" action="#" method="post">
-        <div class="form-group">
-          <label for="signup-name">Full Name</label>
-          <input id="signup-name" name="name" type="text" placeholder="Enter your full name" required />
-        </div>
-        <div class="form-group">
-          <label for="signup-email">Email Address</label>
-          <input id="signup-email" name="email" type="email" placeholder="you@example.com" required />
-        </div>
-        <div class="form-group">
-          <label for="signup-password">Password</label>
-          <input id="signup-password" name="password" type="password" placeholder="Create a strong password" required />
-        </div>
-        <button type="submit" class="btn btn-primary btn-block">Create Account</button>
-      </form>
-
-      <div id="auth-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
-
-      <p class="auth-switch">Already have an account? <a href="/auth/signin">Sign In</a></p>
-    </div>
-  </div>
-</section>
+<!-- Scroll Hint -->
+<div class="scroll-hint" aria-hidden="true">
+  <span>Scroll to explore</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 5v14M19 12l-7 7-7-7"/>
+  </svg>
+</div>
 
 <script type="module" src="/js/firebase-auth.js?v=<%= assetVersion %>"></script>
 
-<%- include('partials/footer') %>
+<script>
+// Scroll progress indicator
+(function() {
+  const container = document.querySelector('.scroll-container');
+  const progress = document.getElementById('scroll-progress');
+  const hint = document.querySelector('.scroll-hint');
+  
+  if (!container || !progress) return;
+  
+  function updateProgress() {
+    const scrollTop = container.scrollTop;
+    const scrollHeight = container.scrollHeight - container.clientHeight;
+    const progressPercent = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
+    progress.style.transform = `scaleX(${progressPercent})`;
+    
+    if (scrollTop > 100) {
+      hint.style.opacity = '0';
+      hint.style.pointerEvents = 'none';
+    } else {
+      hint.style.opacity = '0.6';
+    }
+  }
+  
+  container.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+})();
+
+// Intersection Observer for scroll animations
+(function() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+      }
+    });
+  }, {
+    root: document.querySelector('.scroll-container') || null,
+    rootMargin: '0px 0px -10% 0px',
+    threshold: 0.1
+  });
+  
+  document.querySelectorAll('[data-animate]').forEach(el => {
+    observer.observe(el);
+  });
+})();
+</script>

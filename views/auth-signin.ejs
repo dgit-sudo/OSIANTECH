@@ -1,49 +1,113 @@
 <%- include('partials/head') %>
 <%- include('partials/navbar') %>
 
-<section class="auth-shell section" data-auth-mode="signin">
-  <div class="container auth-container">
-    <div class="auth-hero" data-animate="fade-left">
-      <div class="section-tag">Welcome Back</div>
-      <h1 class="auth-title">Sign in and continue building your skills</h1>
-      <p class="auth-sub">Access your enrolled courses, progress milestones, and project feedback in one place.</p>
-      <ul class="auth-points">
-        <li>Resume exactly where you paused</li>
-        <li>Track completion and certification progress</li>
-        <li>Explore new specialized programs</li>
-      </ul>
+<!-- Scroll Snap Container -->
+<div class="scroll-container page-scroll" data-scroll-container>
+
+  <section class="auth-shell section scroll-section" data-scroll-section data-auth-mode="signin">
+    <div class="container auth-container">
+      <div class="auth-hero" data-animate="fade-left">
+        <div class="section-tag">Welcome Back</div>
+        <h1 class="auth-title">Sign in and continue building your skills</h1>
+        <p class="auth-sub">Access your enrolled courses, progress milestones, and project feedback in one place.</p>
+        <ul class="auth-points">
+          <li data-animate="fade-up" style="--delay: 1;">Resume exactly where you paused</li>
+          <li data-animate="fade-up" style="--delay: 2;">Track completion and certification progress</li>
+          <li data-animate="fade-up" style="--delay: 3;">Explore new specialized programs</li>
+        </ul>
+      </div>
+
+      <div class="auth-card" data-animate="fade-right">
+        <h2>Sign In</h2>
+        <p class="auth-card-sub">Use your account credentials to continue.</p>
+
+        <button type="button" id="google-signin-btn" class="auth-google-btn" aria-label="Sign in with Google">
+          <span class="google-icon">G</span>
+          <span>Sign in with Google</span>
+        </button>
+
+        <div class="auth-divider"><span>or continue with email</span></div>
+
+        <form class="auth-form" id="signin-form" action="#" method="post">
+          <div class="form-group" data-animate="fade-up" style="--delay: 1;">
+            <label for="signin-email">Email Address</label>
+            <input id="signin-email" name="email" type="email" placeholder="you@example.com" required />
+          </div>
+          <div class="form-group" data-animate="fade-up" style="--delay: 2;">
+            <label for="signin-password">Password</label>
+            <input id="signin-password" name="password" type="password" placeholder="Enter your password" required />
+          </div>
+          <button type="submit" class="btn btn-primary btn-block" data-animate="fade-up" style="--delay: 3;">Sign In</button>
+        </form>
+
+        <div id="auth-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
+
+        <p class="auth-switch" data-animate="fade-up" style="--delay: 4;">New to Osian Academy? <a href="/auth/signup">Create Account</a></p>
+      </div>
     </div>
+  </section>
 
-    <div class="auth-card" data-animate="fade-right">
-      <h2>Sign In</h2>
-      <p class="auth-card-sub">Use your account credentials to continue.</p>
+  <!-- Footer Section -->
+  <%- include('partials/footer') %>
 
-      <button type="button" id="google-signin-btn" class="auth-google-btn" aria-label="Sign in with Google">
-        <span class="google-icon">G</span>
-        <span>Sign in with Google</span>
-      </button>
+</div>
 
-      <div class="auth-divider"><span>or continue with email</span></div>
+<!-- Scroll Progress Indicator -->
+<div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 
-      <form class="auth-form" id="signin-form" action="#" method="post">
-        <div class="form-group">
-          <label for="signin-email">Email Address</label>
-          <input id="signin-email" name="email" type="email" placeholder="you@example.com" required />
-        </div>
-        <div class="form-group">
-          <label for="signin-password">Password</label>
-          <input id="signin-password" name="password" type="password" placeholder="Enter your password" required />
-        </div>
-        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-      </form>
-
-      <div id="auth-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
-
-      <p class="auth-switch">New to Osian Academy? <a href="/auth/signup">Create Account</a></p>
-    </div>
-  </div>
-</section>
+<!-- Scroll Hint -->
+<div class="scroll-hint" aria-hidden="true">
+  <span>Scroll to explore</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 5v14M19 12l-7 7-7-7"/>
+  </svg>
+</div>
 
 <script type="module" src="/js/firebase-auth.js?v=<%= assetVersion %>"></script>
 
-<%- include('partials/footer') %>
+<script>
+// Scroll progress indicator
+(function() {
+  const container = document.querySelector('.scroll-container');
+  const progress = document.getElementById('scroll-progress');
+  const hint = document.querySelector('.scroll-hint');
+  
+  if (!container || !progress) return;
+  
+  function updateProgress() {
+    const scrollTop = container.scrollTop;
+    const scrollHeight = container.scrollHeight - container.clientHeight;
+    const progressPercent = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
+    progress.style.transform = `scaleX(${progressPercent})`;
+    
+    if (scrollTop > 100) {
+      hint.style.opacity = '0';
+      hint.style.pointerEvents = 'none';
+    } else {
+      hint.style.opacity = '0.6';
+    }
+  }
+  
+  container.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+})();
+
+// Intersection Observer for scroll animations
+(function() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+      }
+    });
+  }, {
+    root: document.querySelector('.scroll-container') || null,
+    rootMargin: '0px 0px -10% 0px',
+    threshold: 0.1
+  });
+  
+  document.querySelectorAll('[data-animate]').forEach(el => {
+    observer.observe(el);
+  });
+})();
+</script>
