@@ -2,265 +2,241 @@
 <%- include('partials/navbar') %>
 
 <!-- ===== HERO ===== -->
-<section class="s-hero scroll-section">
+<section class="s-hero">
   <div class="container">
-    <div class="hero-grid">
-      <div class="hero-content">
-        <span class="hero-badge">🚀 India's Premier Online Academy</span>
-        <h1 class="hero-title">
-          Transform Your Career with <span class="gradient-text">1-on-1</span> Learning
+    <div class="sh-grid">
+
+      <div class="sh-left">
+        <h1 class="sh-headline">
+          INDIA'S NO.1<br>
+          ONLINE<br>
+          <span class="sh-hl">ACADEMY</span>
         </h1>
-        <p class="hero-subtitle">
-          Experience personalized education with dedicated expert instructors. Live sessions, real projects, and guaranteed placement support — all tailored to your goals.
-        </p>
-        <div class="hero-cta-group">
-          <a href="/auth?mode=signup" class="btn btn-primary btn-lg" data-auth-guest>Start Learning Free</a>
-          <a href="/auth?mode=signin" class="btn btn-outline btn-lg" data-auth-guest>Sign In</a>
-          <a href="/dashboard" class="btn btn-primary btn-lg" data-auth-user hidden>Go to Dashboard</a>
+        <p class="sh-placement">100% Placement Assistance</p>
+        <div class="sh-pill-row">
+          <div class="sh-pill">
+            <span class="sh-pill-num">500+</span>
+            <span class="sh-pill-lbl">Students</span>
+          </div>
+          <div class="sh-pill">
+            <span class="sh-pill-num">25+</span>
+            <span class="sh-pill-lbl">Courses</span>
+          </div>
+          <div class="sh-pill">
+            <span class="sh-pill-num">10+</span>
+            <span class="sh-pill-lbl">Instructors</span>
+          </div>
+          <a href="/auth?mode=signup" class="sh-join" data-auth-guest>Join Now</a>
+          <a href="/dashboard" class="sh-join" data-auth-user hidden>Dashboard</a>
         </div>
-        <div class="hero-stats">
-          <div class="hero-stat">
-            <span class="hero-stat-num">500+</span>
-            <span class="hero-stat-label">Students</span>
-          </div>
-          <div class="hero-stat-divider"></div>
-          <div class="hero-stat">
-            <span class="hero-stat-num">25+</span>
-            <span class="hero-stat-label">Courses</span>
-          </div>
-          <div class="hero-stat-divider"></div>
-          <div class="hero-stat">
-            <span class="hero-stat-num">95%</span>
-            <span class="hero-stat-label">Placed</span>
-          </div>
-        </div>
-        <div class="hero-tags">
+        <div class="sh-tags">
           <span>Programming</span>
-          <span>AI & Data Science</span>
-          <span>Cloud & DevOps</span>
+          <span>Cloud Computing</span>
           <span>Digital Marketing</span>
-          <span>UI/UX Design</span>
+          <span>Artificial Intelligence</span>
+          <span>Data Science</span>
           <span>Cybersecurity</span>
+          <span>Web Development</span>
+          <span>UI/UX Design</span>
+          <span>Networking</span>
+          <span>Finance</span>
+        </div>
+        <div class="sh-partner-row">
+          <div class="sh-partner">Microsoft</div>
+          <div class="sh-partner">SAP</div>
+          <div class="sh-partner-sep"></div>
+          <div class="sh-partner">PROMETEX</div>
+          <div class="sh-partner sh-partner-nasscom">NASSCOM</div>
         </div>
       </div>
-      <div class="hero-visual">
-        <div class="hero-card">
-          <div class="hero-card-header">
-            <div class="hero-card-dots">
-              <span></span><span></span><span></span>
-            </div>
-            <span class="hero-card-title">Osian Academy</span>
+
+      <div class="sh-right">
+        <div class="sh-visual-card">
+          <div class="shvc-glow"></div>
+          <div class="shvc-headline">Osian Academy</div>
+          <p class="shvc-sub">India's Premier Online Education Platform</p>
+          <div class="shvc-feats">
+            <div class="shvc-feat">&#10003; 100% Live 1-on-1 Sessions</div>
+            <div class="shvc-feat">&#10003; Expert Industry Instructors</div>
+            <div class="shvc-feat">&#10003; Industry-Recognised Certification</div>
+            <div class="shvc-feat">&#10003; Career Placement Support</div>
+            <div class="shvc-feat">&#10003; Flexible Schedule</div>
           </div>
-          <div class="hero-card-body">
-            <div class="hero-card-feature">
-              <span class="hero-card-icon">🎯</span>
-              <div>
-                <strong>100% Live 1-on-1</strong>
-                <p>Private sessions with dedicated instructors</p>
-              </div>
-            </div>
-            <div class="hero-card-feature">
-              <span class="hero-card-icon">🏆</span>
-              <div>
-                <strong>Expert Instructors</strong>
-                <p>5+ years industry experience</p>
-              </div>
-            </div>
-            <div class="hero-card-feature">
-              <span class="hero-card-icon">💼</span>
-              <div>
-                <strong>Placement Support</strong>
-                <p>100+ hiring partners network</p>
-              </div>
-            </div>
-            <div class="hero-card-feature">
-              <span class="hero-card-icon">📜</span>
-              <div>
-                <strong>Certified Courses</strong>
-                <p>Industry-recognized credentials</p>
-              </div>
-            </div>
+          <div class="shvc-stats-row">
+            <div class="shvc-stat"><span>500+</span><small>Students</small></div>
+            <div class="shvc-stat"><span>25+</span><small>Programmes</small></div>
+            <div class="shvc-stat"><span>95%</span><small>Satisfaction</small></div>
           </div>
-          <div class="hero-card-footer">
-            <div class="hero-card-stat">
-              <span>4.9/5</span>
-              <small>Student Rating</small>
-            </div>
-            <div class="hero-card-stat">
-              <span>24/7</span>
-              <small>Support</small>
-            </div>
-          </div>
+          <a href="/auth?mode=signup" class="shvc-cta" data-auth-guest>Start Learning Free</a>
+          <a href="/dashboard" class="shvc-cta" data-auth-user hidden>Go to Dashboard</a>
         </div>
       </div>
+
     </div>
   </div>
 </section>
 
 <!-- ===== HOW IT WORKS ===== -->
-<section class="s-howitworks scroll-section">
+<section class="s-howitworks section">
   <div class="container">
-    <div class="section-header">
-      <span class="section-label">Simple Process</span>
-      <h2 class="section-title">From Enrollment to Employment — 4 Steps</h2>
-      <p class="section-sub">Your journey to a successful career, simplified</p>
+    <div class="shiw-head">
+      <p class="section-label">Simple Process</p>
+      <h2 class="shiw-title">From Enrolment to Employment — 4 Steps</h2>
     </div>
-    <div class="steps-grid">
-      <div class="step-card" data-animate="fade-up">
-        <div class="step-number">01</div>
-        <div class="step-icon">🎓</div>
-        <h3 class="step-title">Choose Your Programme</h3>
-        <p class="step-desc">Browse 25+ industry-aligned courses. Filter by category, duration, or career goal. Pick the one that fits you.</p>
+    <div class="shiw-steps">
+      <div class="shiw-step">
+        <div class="shiw-num">01</div>
+        <div class="shiw-icon">&#128250;</div>
+        <h3 class="shiw-step-title">Choose Your Programme</h3>
+        <p class="shiw-step-desc">Browse 25+ industry-aligned courses. Filter by category, duration, or career goal. Pick the one that fits you.</p>
       </div>
-      <div class="step-arrow">→</div>
-      <div class="step-card" data-animate="fade-up">
-        <div class="step-number">02</div>
-        <div class="step-icon">👨‍🏫</div>
-        <h3 class="step-title">Get Matched to an Expert</h3>
-        <p class="step-desc">We pair you with a working professional in your field for live 1-on-1 sessions tailored to your pace and goals.</p>
+      <div class="shiw-arrow">&#8594;</div>
+      <div class="shiw-step">
+        <div class="shiw-num">02</div>
+        <div class="shiw-icon">&#128100;</div>
+        <h3 class="shiw-step-title">Get Matched to an Expert</h3>
+        <p class="shiw-step-desc">We pair you with a working professional in your field for live 1-on-1 sessions tailored to your pace and goals.</p>
       </div>
-      <div class="step-arrow">→</div>
-      <div class="step-card" data-animate="fade-up">
-        <div class="step-number">03</div>
-        <div class="step-icon">💻</div>
-        <h3 class="step-title">Learn With Real Projects</h3>
-        <p class="step-desc">Build hands-on projects, complete industry assignments, and earn a recognised certification upon completion.</p>
+      <div class="shiw-arrow">&#8594;</div>
+      <div class="shiw-step">
+        <div class="shiw-num">03</div>
+        <div class="shiw-icon">&#128187;</div>
+        <h3 class="shiw-step-title">Learn With Real Projects</h3>
+        <p class="shiw-step-desc">Build hands-on projects, complete industry assignments, and earn a recognised certification upon completion.</p>
       </div>
-      <div class="step-arrow">→</div>
-      <div class="step-card" data-animate="fade-up">
-        <div class="step-number">04</div>
-        <div class="step-icon">💼</div>
-        <h3 class="step-title">Get Placed</h3>
-        <p class="step-desc">Dedicated placement support: resume review, mock interviews, and access to 100+ hiring partners — until you land the job.</p>
+      <div class="shiw-arrow">&#8594;</div>
+      <div class="shiw-step">
+        <div class="shiw-num">04</div>
+        <div class="shiw-icon">&#128188;</div>
+        <h3 class="shiw-step-title">Get Placed</h3>
+        <p class="shiw-step-desc">Dedicated placement support: resume review, mock interviews, and access to 100+ hiring partners — until you land the job.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ===== WHY OSIAN ===== -->
-<section class="s-whyosian scroll-section section-alt">
+<section class="s-whyosian section section-alt">
   <div class="container">
-    <div class="section-header">
-      <span class="section-label">Why Students Choose Us</span>
-      <h2 class="section-title">Built Different. Proven Results.</h2>
-      <p class="section-sub">What makes Osian Academy the preferred choice for career-focused learners</p>
+    <div class="swo-head">
+      <p class="section-label">Why Students Choose Us</p>
+      <h2 class="swo-title">Built Different. Proven Results.</h2>
     </div>
-    <div class="why-grid">
-      <div class="why-card" data-animate="fade-up">
-        <div class="why-card-icon">✨</div>
-        <h3 class="why-card-title">Live 1-on-1 Sessions</h3>
-        <p class="why-card-desc">Every class is a private session with your dedicated instructor — not a recorded lecture or crowded webinar. You get undivided attention, every time.</p>
-        <div class="why-card-stat">100% Live</div>
+    <div class="swo-grid">
+      <div class="swo-card">
+        <div class="swo-card-icon">&#127775;</div>
+        <h3 class="swo-card-title">Live 1-on-1 Sessions</h3>
+        <p class="swo-card-desc">Every class is a private session with your dedicated instructor — not a recorded lecture or crowded webinar. You get undivided attention, every time.</p>
+        <div class="swo-card-stat">100% Live</div>
       </div>
-      <div class="why-card why-card-featured" data-animate="fade-up">
-        <div class="why-card-icon">🏆</div>
-        <h3 class="why-card-title">Placement Guarantee</h3>
-        <p class="why-card-desc">We don't just train you — we get you hired. Our placement cell works with 100+ companies and has a 95% placement rate across all programmes.</p>
-        <div class="why-card-stat">95% Placed</div>
+      <div class="swo-card swo-card-featured">
+        <div class="swo-card-icon">&#127942;</div>
+        <h3 class="swo-card-title">Placement Guarantee</h3>
+        <p class="swo-card-desc">We don't just train you — we get you hired. Our placement cell works with 100+ companies and has a 95% placement rate across all programmes.</p>
+        <div class="swo-card-stat">95% Placed</div>
       </div>
-      <div class="why-card" data-animate="fade-up">
-        <div class="why-card-icon">📚</div>
-        <h3 class="why-card-title">Industry-Built Curriculum</h3>
-        <p class="why-card-desc">Courses are designed with input from hiring managers and updated every quarter. You learn exactly what companies look for — not outdated theory.</p>
-        <div class="why-card-stat">Updated Quarterly</div>
+      <div class="swo-card">
+        <div class="swo-card-icon">&#128218;</div>
+        <h3 class="swo-card-title">Industry-Built Curriculum</h3>
+        <p class="swo-card-desc">Courses are designed with input from hiring managers and updated every quarter. You learn exactly what companies look for — not outdated theory.</p>
+        <div class="swo-card-stat">Updated Quarterly</div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ===== EXPLORE PROGRAMMES ===== -->
-<section class="s-categories scroll-section">
+<section class="s-categories section">
   <div class="container">
-    <div class="section-header">
-      <span class="section-label">Explore Programmes</span>
-      <h2 class="section-title">Six Tracks. Endless Careers.</h2>
-      <p class="section-sub">Find the perfect programme to launch or advance your career</p>
+    <div class="scat-head">
+      <p class="section-label">Explore Programmes</p>
+      <h2 class="scat-title">Six Tracks. Endless Careers.</h2>
     </div>
-    <div class="categories-grid">
-      <a href="/courses?category=Programming+%26+Software" class="category-card" data-animate="fade-up">
-        <div class="category-icon">💻</div>
-        <h3 class="category-name">Programming & Software</h3>
-        <p class="category-sub">Web Dev · Python · Java · DSA</p>
-        <span class="category-arrow">→</span>
+    <div class="scat-grid">
+      <a href="/courses?category=Programming+%26+Software" class="scat-tile scat-tile-1">
+        <div class="scat-tile-icon">💻</div>
+        <h3 class="scat-tile-name">Programming & Software</h3>
+        <p class="scat-tile-sub">Web Dev · Python · Java · DSA</p>
+        <span class="scat-tile-arrow">→</span>
       </a>
-      <a href="/courses?category=Design+%26+Animation" class="category-card" data-animate="fade-up">
-        <div class="category-icon">🎨</div>
-        <h3 class="category-name">Design & Animation</h3>
-        <p class="category-sub">UI/UX · Graphic Design · 3D</p>
-        <span class="category-arrow">→</span>
+      <a href="/courses?category=Design+%26+Animation" class="scat-tile scat-tile-2">
+        <div class="scat-tile-icon">🎨</div>
+        <h3 class="scat-tile-name">Design & Animation</h3>
+        <p class="scat-tile-sub">UI/UX · Graphic Design · 3D</p>
+        <span class="scat-tile-arrow">→</span>
       </a>
-      <a href="/courses?category=Networking%2C+Hardware+%26+Engineering" class="category-card" data-animate="fade-up">
-        <div class="category-icon">📡</div>
-        <h3 class="category-name">Networking & Hardware</h3>
-        <p class="category-sub">CCNA · CompTIA · Cloud · DevOps</p>
-        <span class="category-arrow">→</span>
+      <a href="/courses?category=Networking%2C+Hardware+%26+Engineering" class="scat-tile scat-tile-3">
+        <div class="scat-tile-icon">📡</div>
+        <h3 class="scat-tile-name">Networking & Hardware</h3>
+        <p class="scat-tile-sub">CCNA · CompTIA · Cloud · DevOps</p>
+        <span class="scat-tile-arrow">→</span>
       </a>
-      <a href="/courses?category=Kids+Programs" class="category-card" data-animate="fade-up">
-        <div class="category-icon">🎓</div>
-        <h3 class="category-name">Kids Programs</h3>
-        <p class="category-sub">Scratch · Robotics · Coding Clubs</p>
-        <span class="category-arrow">→</span>
+      <a href="/courses?category=Kids+Programs" class="scat-tile scat-tile-4">
+        <div class="scat-tile-icon">🎓</div>
+        <h3 class="scat-tile-name">Kids Programs</h3>
+        <p class="scat-tile-sub">Scratch · Robotics · Coding Clubs</p>
+        <span class="scat-tile-arrow">→</span>
       </a>
-      <a href="/courses?category=Accounting%2C+Finance+%26+Office+Skills" class="category-card" data-animate="fade-up">
-        <div class="category-icon">📊</div>
-        <h3 class="category-name">Accounting & Finance</h3>
-        <p class="category-sub">Tally · GST · Excel · Busy</p>
-        <span class="category-arrow">→</span>
+      <a href="/courses?category=Accounting%2C+Finance+%26+Office+Skills" class="scat-tile scat-tile-5">
+        <div class="scat-tile-icon">📊</div>
+        <h3 class="scat-tile-name">Accounting & Finance</h3>
+        <p class="scat-tile-sub">Tally · GST · Excel · Busy</p>
+        <span class="scat-tile-arrow">→</span>
       </a>
-      <a href="/courses?category=Data%2C+AI+%26+Digital+Marketing" class="category-card" data-animate="fade-up">
-        <div class="category-icon">🤖</div>
-        <h3 class="category-name">Data, AI & Marketing</h3>
-        <p class="category-sub">ML · Data Science · SEO · Ads</p>
-        <span class="category-arrow">→</span>
+      <a href="/courses?category=Data%2C+AI+%26+Digital+Marketing" class="scat-tile scat-tile-6">
+        <div class="scat-tile-icon">🤖</div>
+        <h3 class="scat-tile-name">Data, AI & Marketing</h3>
+        <p class="scat-tile-sub">ML · Data Science · SEO · Ads</p>
+        <span class="scat-tile-arrow">→</span>
       </a>
     </div>
   </div>
 </section>
 
 <!-- ===== 6 FEATURE BOXES ===== -->
-<section class="s-features scroll-section section-alt">
+<section class="s-features section section-alt">
   <div class="container">
-    <div class="section-header">
-      <span class="section-label">Key Features</span>
-      <h2 class="section-title">What Makes Us Stand Out</h2>
-      <p class="section-sub">Six pillars that define excellence in online education</p>
+    <div class="sft-head">
+      <p class="section-label">Key Features</p>
+      <h2 class="sft-title">What Makes Us Stand Out</h2>
+      <p class="sft-sub">Six pillars that define excellence in online education</p>
     </div>
-    <div class="features-grid">
-      <div class="feature-card" data-animate="fade-up">
-        <div class="feature-icon">📹</div>
+    <div class="sft-grid">
+      <div class="sft-card sft-card-blue">
+        <div class="sft-icon">📹</div>
         <h3>Live Projects</h3>
         <p>Real projects help you apply your skills in professional life during the course itself, not after.</p>
-        <a href="/features/live-projects" class="feature-link">Know More →</a>
+        <a href="/features/live-projects" class="sft-link">Know More →</a>
       </div>
-      <div class="feature-card" data-animate="fade-up">
-        <div class="feature-icon">🎓</div>
+      <div class="sft-card sft-card-green">
+        <div class="sft-icon">🎓</div>
         <h3>Industry-Oriented Training</h3>
         <p>Training modules align with current industry and practical methods used in real-world environments.</p>
-        <a href="/features/industry-training" class="feature-link">Know More →</a>
+        <a href="/features/industry-training" class="sft-link">Know More →</a>
       </div>
-      <div class="feature-card" data-animate="fade-up">
-        <div class="feature-icon">📚</div>
+      <div class="sft-card sft-card-purple">
+        <div class="sft-icon">📚</div>
         <h3>Advanced Courses</h3>
         <p>Explore the latest topics in IT and learn the most in-demand tools used by top companies today.</p>
-        <a href="/features/advanced-courses" class="feature-link">Know More →</a>
+        <a href="/features/advanced-courses" class="sft-link">Know More →</a>
       </div>
-      <div class="feature-card" data-animate="fade-up">
-        <div class="feature-icon">🌐</div>
+      <div class="sft-card sft-card-sky">
+        <div class="sft-icon">🌐</div>
         <h3>100% Online</h3>
         <p>Learn from anywhere in India with our fully online platform — live, personal, flexible sessions daily.</p>
-        <a href="/features/online-learning" class="feature-link">Know More →</a>
+        <a href="/features/online-learning" class="sft-link">Know More →</a>
       </div>
-      <div class="feature-card" data-animate="fade-up">
-        <div class="feature-icon">📈</div>
+      <div class="sft-card sft-card-amber">
+        <div class="sft-icon">📈</div>
         <h3>Job Oriented</h3>
         <p>All courses aim to get you job-ready, with skills and live projects that employers are looking for.</p>
-        <a href="/features/job-oriented" class="feature-link">Know More →</a>
+        <a href="/features/job-oriented" class="sft-link">Know More →</a>
       </div>
-      <div class="feature-card" data-animate="fade-up">
-        <div class="feature-icon">💼</div>
+      <div class="sft-card sft-card-red">
+        <div class="sft-icon">💼</div>
         <h3>Placement Assistance</h3>
         <p>A dedicated career team guides you through interviews, resume building, and job placement after completing.</p>
-        <a href="/features/placement-assistance" class="feature-link">Know More →</a>
+        <a href="/features/placement-assistance" class="sft-link">Know More →</a>
       </div>
     </div>
   </div>
@@ -294,7 +270,7 @@
 </div>
 
 <!-- ===== FEATURED COURSES (live from db) ===== -->
-<section class="scroll-section section-alt" id="courses">
+<section class="section section-alt" id="courses">
   <div class="container">
     <div class="section-header-row">
       <div>
@@ -342,7 +318,7 @@
 </section>
 
 <!-- ===== WHAT MAKES US DIFFERENT (FAQ) ===== -->
-<section class="s-faq scroll-section" id="why">
+<section class="s-faq section" id="why">
   <div class="container">
     <div class="sfaq-head">
       <h2 class="sfaq-title">What Makes Us Different</h2>
@@ -465,7 +441,7 @@
 </section>
 
 <!-- ===== ONE PLATFORM SOLUTION ===== -->
-<section class="s-oneplatform scroll-section">
+<section class="s-oneplatform">
   <div class="container">
     <div class="sop-inner">
       <p class="sop-tagline">One Platform Solution for all IT needs.</p>
@@ -489,7 +465,7 @@
 </section>
 
 <!-- ===== MOST TRUSTED BRANDS ===== -->
-<section class="s-trusted scroll-section">
+<section class="s-trusted section">
   <div class="container">
     <div class="str-head">
       <h2 class="str-title">We are one of the top most trusted Platforms</h2>
@@ -526,7 +502,7 @@
 </section>
 
 <!-- ===== STUDENTS ACROSS INDIA ===== -->
-<section class="s-offers scroll-section" style="background: var(--orange); position: relative; overflow: hidden;">
+<section class="s-offers section" style="background: #f59e0b; position: relative; overflow: hidden;">
   <div style="position: absolute; top: -100px; right: -100px; width: 400px; height: 400px; background: rgba(255,255,255,.05); border-radius: 50%; z-index: 0;"></div>
   <div style="position: absolute; bottom: -80px; left: -80px; width: 300px; height: 300px; background: rgba(255,255,255,.05); border-radius: 50%; z-index: 0;"></div>
   <div class="container" style="position: relative; z-index: 1;">
@@ -571,7 +547,7 @@
 </section>
 
 <!-- ===== PLACEMENT PARTNERS ===== -->
-<section class="s-partners scroll-section section-alt" id="partners">
+<section class="s-partners section section-alt" id="partners">
   <div class="container">
     <div class="spart-head">
       <h2 class="spart-title">Placement Partners</h2>
@@ -607,7 +583,7 @@
 </div>
 
 <!-- ===== CTA ===== -->
-<section class="cta-section scroll-section" id="enroll">
+<section class="cta-section" id="enroll">
   <div class="container">
     <div class="cta-content">
       <p class="section-label cta-label">Get started today</p>
@@ -633,59 +609,6 @@ document.querySelectorAll('.sop-tab').forEach(btn => {
     if (target) target.classList.remove('hidden');
   });
 });
-
-/* Scroll Snap Animation */
-(function() {
-  const sections = document.querySelectorAll('.scroll-section');
-  const observerOptions = {
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.3
-  };
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in-view');
-      }
-    });
-  }, observerOptions);
-
-  sections.forEach(section => {
-    observer.observe(section);
-  });
-
-  /* Scroll Progress Indicator */
-  if (window.innerWidth > 768) {
-    const progressContainer = document.createElement('div');
-    progressContainer.className = 'scroll-progress';
-    
-    sections.forEach((section, index) => {
-      const dot = document.createElement('div');
-      dot.className = 'scroll-progress-dot' + (index === 0 ? ' active' : '');
-      dot.addEventListener('click', () => {
-        section.scrollIntoView({ behavior: 'smooth' });
-      });
-      progressContainer.appendChild(dot);
-    });
-    
-    document.body.appendChild(progressContainer);
-
-    /* Update active dot on scroll */
-    const scrollObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const index = Array.from(sections).indexOf(entry.target);
-          document.querySelectorAll('.scroll-progress-dot').forEach((dot, i) => {
-            dot.classList.toggle('active', i === index);
-          });
-        }
-      });
-    }, { threshold: 0.5 });
-
-    sections.forEach(section => scrollObserver.observe(section));
-  }
-})();
 </script>
 
 <%- include('partials/footer') %>
