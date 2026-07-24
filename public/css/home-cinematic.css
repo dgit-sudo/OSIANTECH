@@ -1,0 +1,289 @@
+/* ================================================================
+   OSIAN ACADEMY — HOME CINEMATIC LAYER
+   Additive, scoped to the redesigned home page only (body.page-home).
+   Restores smooth motion (the base design system ships with --t: 0s)
+   and layers in Apple / Google-style scroll storytelling.
+   ================================================================ */
+
+body.page-home {
+  --t: .45s;
+  --t-slow: .85s;
+}
+
+/* ---------------------------------------------------------------
+   0. Reduced-motion & performance safety
+--------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  body.page-home * {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------------------------------------------------------------
+   1. Navbar — glass morph on scroll
+--------------------------------------------------------------- */
+body.page-home .navbar {
+  transition: background .45s var(--ease), backdrop-filter .45s var(--ease), box-shadow .45s var(--ease);
+}
+body.page-home .navbar.scrolled {
+  background: rgba(9,12,20,.72);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  box-shadow: 0 8px 30px rgba(0,0,0,.35);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+/* ---------------------------------------------------------------
+   2. Reveal engine — fade / rise / blur-in on scroll
+--------------------------------------------------------------- */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(38px);
+  filter: blur(6px);
+  transition:
+    opacity 1s cubic-bezier(.16,1,.3,1),
+    transform 1s cubic-bezier(.16,1,.3,1),
+    filter 1s cubic-bezier(.16,1,.3,1);
+  transition-delay: calc(var(--reveal-delay, 0) * 90ms);
+  will-change: transform, opacity, filter;
+}
+[data-reveal="fade-down"]  { transform: translateY(-38px); }
+[data-reveal="fade-left"]  { transform: translateX(-42px); }
+[data-reveal="fade-right"] { transform: translateX(42px); }
+[data-reveal="zoom"]       { transform: scale(.86); filter: blur(4px); }
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+
+[data-reveal-stagger] > * {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1);
+  transition-delay: calc(var(--i, 0) * 80ms);
+}
+[data-reveal-stagger].is-visible > * {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------------------------------------------------------------
+   3. Hero — aurora background, kinetic type, glass CTAs
+--------------------------------------------------------------- */
+.hero-cinematic {
+  position: relative;
+  min-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 150px 0 70px;
+  margin-top: 64px;
+  background: radial-gradient(ellipse 120% 80% at 50% -10%, #16213e 0%, #0a0e1a 55%, #05070c 100%);
+}
+
+.hero-aurora { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.aurora-blob { position: absolute; border-radius: 50%; filter: blur(90px); opacity: .55; will-change: transform; }
+.aurora-blob-1 { width: 620px; height: 620px; top: -220px; left: -140px; background: radial-gradient(circle, rgba(88,166,255,.55), transparent 70%); animation: auroraDrift1 19s ease-in-out infinite; }
+.aurora-blob-2 { width: 520px; height: 520px; top: 40px; right: -180px; background: radial-gradient(circle, rgba(255,123,114,.42), transparent 70%); animation: auroraDrift2 23s ease-in-out infinite; }
+.aurora-blob-3 { width: 480px; height: 480px; bottom: -240px; left: 32%; background: radial-gradient(circle, rgba(124,58,237,.38), transparent 70%); animation: auroraDrift3 27s ease-in-out infinite; }
+
+@keyframes auroraDrift1 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(60px,40px) scale(1.12); } }
+@keyframes auroraDrift2 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-55px,50px) scale(1.08); } }
+@keyframes auroraDrift3 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(40px,-30px) scale(1.15); } }
+
+.hero-grid-overlay {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 30%, #000 30%, transparent 75%);
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 30%, #000 30%, transparent 75%);
+}
+
+.hero-inner {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; max-width: 920px; margin: 0 auto; padding: 0 24px;
+}
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 9px 18px; border-radius: 999px;
+  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14);
+  font-size: .8rem; font-weight: 600; color: var(--text-secondary);
+  backdrop-filter: blur(8px); margin-bottom: 28px; font-family: 'Inter', sans-serif;
+}
+.hero-badge-dot { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; flex-shrink: 0; animation: badgePulse 2s infinite; }
+@keyframes badgePulse {
+  0%   { box-shadow: 0 0 0 0 rgba(74,222,128,.55); }
+  70%  { box-shadow: 0 0 0 9px rgba(74,222,128,0); }
+  100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
+}
+
+.hero-headline {
+  font-family: 'Poppins', sans-serif; font-weight: 800; line-height: 1.03;
+  font-size: clamp(2.9rem, 8vw, 6.2rem); letter-spacing: -.02em; margin-bottom: 26px;
+}
+.hero-line { display: block; overflow: hidden; padding-bottom: 4px; }
+.hero-line .word {
+  display: inline-block; opacity: 0; transform: translateY(115%) rotate(3deg);
+  transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);
+}
+.hero-headline.is-visible .word { opacity: 1; transform: none; }
+.hero-line-accent {
+  background: linear-gradient(100deg, var(--blue) 10%, var(--orange) 55%, var(--blue) 100%);
+  background-size: 220% auto; -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: shineText 7s linear infinite;
+}
+@keyframes shineText { to { background-position: -220% 0; } }
+
+.hero-sub {
+  font-size: clamp(1.02rem, 1.6vw, 1.28rem); color: var(--text-secondary);
+  max-width: 640px; line-height: 1.7; margin-bottom: 36px; font-family: 'Inter', sans-serif;
+}
+
+.hero-actions { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-bottom: 54px; }
+.btn-cinematic {
+  position: relative; display: inline-flex; align-items: center; gap: 10px;
+  padding: 15px 30px; border-radius: 999px; font-weight: 700; font-size: .95rem;
+  text-decoration: none; font-family: 'Inter', sans-serif;
+  transition: transform .45s cubic-bezier(.16,1,.3,1), box-shadow .45s cubic-bezier(.16,1,.3,1), border-color .45s var(--ease), background .45s var(--ease);
+}
+.btn-cinematic-primary { background: linear-gradient(120deg, var(--blue), #79c0ff); color: #051022; box-shadow: 0 8px 30px rgba(88,166,255,.35); }
+.btn-cinematic-primary:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 14px 42px rgba(88,166,255,.5); }
+.btn-cinematic-ghost { background: rgba(255,255,255,.045); border: 1.5px solid rgba(255,255,255,.16); color: var(--text-primary); backdrop-filter: blur(8px); }
+.btn-cinematic-ghost:hover { border-color: var(--blue); background: rgba(88,166,255,.09); transform: translateY(-3px); }
+.btn-arrow { transition: transform .35s cubic-bezier(.34,1.56,.64,1); }
+.btn-cinematic:hover .btn-arrow { transform: translateX(4px); }
+
+.hero-stats { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+.hero-stat-pill {
+  padding: 16px 26px; border-radius: 18px; background: rgba(255,255,255,.045);
+  border: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(10px); text-align: center; min-width: 110px;
+  transition: transform .4s var(--ease), border-color .4s var(--ease), background .4s var(--ease);
+}
+.hero-stat-pill:hover { transform: translateY(-5px); border-color: var(--blue); background: rgba(88,166,255,.08); }
+.hero-stat-num { display: block; font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1.7rem; color: var(--text-primary); }
+.hero-stat-lbl { font-size: .76rem; color: var(--text-secondary); font-family: 'Inter', sans-serif; }
+
+.hero-scroll-cue {
+  position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 1;
+  color: var(--text-muted); font-size: .7rem; letter-spacing: .14em; text-transform: uppercase;
+  font-family: 'Inter', sans-serif;
+}
+.hero-scroll-line { width: 1px; height: 34px; background: linear-gradient(var(--text-muted), transparent); animation: scrollCue 1.9s ease-in-out infinite; }
+@keyframes scrollCue {
+  0%   { transform: scaleY(0); transform-origin: top; opacity: 0; }
+  40%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
+  60%  { transform: scaleY(1); transform-origin: bottom; opacity: 1; }
+  100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+}
+
+/* ---------------------------------------------------------------
+   4. Trusted-by strip (partners under hero)
+--------------------------------------------------------------- */
+.hero-trusted { padding: 26px 0; border-bottom: 1px solid var(--border); background: var(--bg-2); }
+.hero-trusted-inner { display: flex; align-items: center; gap: 26px; flex-wrap: wrap; justify-content: center; }
+.hero-trusted-label { font-size: .76rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: .1em; font-weight: 700; font-family: 'Inter', sans-serif; white-space: nowrap; }
+.hero-trusted-logos { display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; }
+.hero-trusted-logos span { font-family: 'Poppins', sans-serif; font-weight: 800; letter-spacing: .04em; color: var(--text-secondary); font-size: .95rem; opacity: .8; transition: opacity .35s var(--ease), color .35s var(--ease); }
+.hero-trusted-logos span:hover { opacity: 1; color: var(--blue); }
+
+/* ---------------------------------------------------------------
+   5. Skills marquee ticker
+--------------------------------------------------------------- */
+.skills-ticker { overflow: hidden; background: var(--bg); border-bottom: 1px solid var(--border); padding: 16px 0; }
+.skills-ticker-track { display: flex; gap: 30px; width: max-content; animation: tickerScroll 34s linear infinite; }
+.skills-ticker:hover .skills-ticker-track { animation-play-state: paused; }
+.skills-ticker-track span { font-family: 'Inter', sans-serif; font-size: .88rem; font-weight: 600; color: var(--text-secondary); white-space: nowrap; }
+.skills-ticker-track span.dot { color: var(--orange); }
+@keyframes tickerScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ---------------------------------------------------------------
+   6. Tilt cards & magnetic buttons
+--------------------------------------------------------------- */
+[data-tilt] { transform-style: preserve-3d; transition: transform .5s cubic-bezier(.16,1,.3,1), box-shadow .5s var(--ease); will-change: transform; }
+[data-magnetic] { transition: transform .35s cubic-bezier(.16,1,.3,1); }
+
+/* ---------------------------------------------------------------
+   7. How-it-works timeline connector
+--------------------------------------------------------------- */
+.shiw-steps { position: relative; }
+.shiw-line {
+  position: absolute; top: 74px; left: 10%; right: 10%; height: 2px; z-index: 0;
+  background: linear-gradient(90deg, transparent, var(--border) 10%, var(--border) 90%, transparent);
+  transform: scaleX(0); transform-origin: left; transition: transform 1.5s cubic-bezier(.16,1,.3,1);
+}
+.shiw-steps.is-visible .shiw-line { transform: scaleX(1); }
+.shiw-step { position: relative; z-index: 1; }
+
+/* ---------------------------------------------------------------
+   8. Category tiles — gradient glow border + icon float
+--------------------------------------------------------------- */
+.scat-tile { position: relative; }
+.scat-tile::after {
+  content: ''; position: absolute; inset: -1px; border-radius: inherit; padding: 1px;
+  background: linear-gradient(135deg, var(--blue), transparent 45%, var(--orange));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity: 0; transition: opacity .45s var(--ease); pointer-events: none;
+}
+.scat-tile:hover::after { opacity: 1; }
+.scat-tile-icon { transition: transform .45s cubic-bezier(.34,1.56,.64,1); }
+.scat-tile:hover .scat-tile-icon { transform: translateY(-4px) scale(1.12); }
+
+/* ---------------------------------------------------------------
+   9. Feature cards — icon bounce on hover
+--------------------------------------------------------------- */
+.sft-icon { transition: transform .45s cubic-bezier(.34,1.56,.64,1); }
+.sft-card:hover .sft-icon { transform: scale(1.15) rotate(-4deg); }
+
+/* ---------------------------------------------------------------
+   10. Partners logo marquee
+--------------------------------------------------------------- */
+.spart-marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.spart-marquee-track { display: flex; gap: 18px; width: max-content; animation: partnersScroll 32s linear infinite; }
+.spart-marquee:hover .spart-marquee-track { animation-play-state: paused; }
+.spart-marquee-track .spart-logo { flex-shrink: 0; width: 170px; }
+@keyframes partnersScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ---------------------------------------------------------------
+   11. One-Platform tab crossfade
+--------------------------------------------------------------- */
+.sop-tab-content:not(.hidden) { animation: sopFade .5s var(--ease); }
+@keyframes sopFade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* ---------------------------------------------------------------
+   12. CTA — slow rotating glow border
+--------------------------------------------------------------- */
+.cta-section { position: relative; overflow: hidden; }
+.cta-section::before {
+  content: ''; position: absolute; inset: -40%; z-index: 0;
+  background: conic-gradient(from 0deg, var(--blue), var(--orange), var(--blue));
+  opacity: .16; filter: blur(70px); animation: ctaSpin 16s linear infinite;
+}
+.cta-content { position: relative; z-index: 1; }
+@keyframes ctaSpin { to { transform: rotate(360deg); } }
+
+/* ---------------------------------------------------------------
+   13. Responsive
+--------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .hero-cinematic { padding: 120px 0 56px; min-height: auto; }
+  .hero-actions { flex-direction: column; width: 100%; }
+  .btn-cinematic { justify-content: center; }
+  .hero-scroll-cue { display: none; }
+  .hero-trusted-inner { flex-direction: column; gap: 14px; }
+}

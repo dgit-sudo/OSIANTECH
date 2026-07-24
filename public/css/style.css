@@ -1179,7 +1179,7 @@ h1,h2,h3,h4,h5,h6 {
 .sft-card-sky::before { background: #0ea5e9; }
 .sft-card-amber::before { background: #f59e0b; }
 .sft-card-red::before { background: #ef4444; }
-.sft-card:hover { transform: translateY(-12px) scale(1.02); box-shadow: 0 16px 48px rgba(0,0,0,.12); border-color: rgba(26,86,219,.1); }
+.sft-card:hover { box-shadow: 0 16px 48px rgba(0,0,0,.12); border-color: rgba(26,86,219,.1); }
 .sft-icon { font-size: 3rem; margin-bottom: 8px; }
 .sft-card h3 { font-family: 'Poppins', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--text-primary); line-height: 1.4; }
 .sft-card p { font-size: .92rem; color: var(--text-secondary); line-height: 1.7; flex: 1; }
@@ -1264,7 +1264,7 @@ h1,h2,h3,h4,h5,h6 {
 .str-sub { font-size: .9rem; color: var(--text-secondary); font-family: 'Inter', sans-serif; }
 .str-badges { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
 .str-badge { background: var(--bg-card); border: 1.5px solid var(--border); border-radius: 14px; padding: 24px 20px; text-align: center; width: 150px; transition: transform .2s, box-shadow .2s; }
-.str-badge:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,.08); }
+.str-badge:hover { box-shadow: 0 8px 24px rgba(0,0,0,.08); }
 .str-badge-icon { font-size: 2rem; margin-bottom: 10px; }
 .str-badge-name { font-size: .88rem; font-weight: 700; color: var(--text-primary); font-family: 'Inter', sans-serif; margin-bottom: 4px; }
 .str-badge-sub { font-size: .74rem; color: var(--text-secondary); font-family: 'Inter', sans-serif; }
@@ -1335,7 +1335,7 @@ h1,h2,h3,h4,h5,h6 {
 .swo-title { font-family: 'Poppins', sans-serif; font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 700; color: var(--text-primary); }
 .swo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .swo-card { background: var(--bg-card); border: 1.5px solid var(--border); border-radius: 16px; padding: 36px 28px; position: relative; transition: box-shadow .2s, transform .2s; }
-.swo-card:hover { box-shadow: 0 8px 32px rgba(249,115,22,.1); transform: translateY(-4px); }
+.swo-card:hover { box-shadow: 0 8px 32px rgba(249,115,22,.1); }
 .swo-card-featured { border-color: var(--orange); background: linear-gradient(135deg, #fff7ed 0%, #fff 100%); }
 .swo-card-featured .swo-card-title { color: #111827; }
 .swo-card-featured .swo-card-desc { color: #374151; }
@@ -1376,7 +1376,7 @@ h1,h2,h3,h4,h5,h6 {
 .soff-card { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.2); border-radius: 12px; padding: 36px 28px; text-align: center; transition: all .3s; position: relative; overflow: hidden; }
 .soff-card::before { display: none; }
 .soff-card:hover::before { display: none; }
-.soff-card:hover { background: rgba(255,255,255,.25); border-color: rgba(255,255,255,.4); transform: translateY(-8px); box-shadow: 0 8px 24px rgba(0,0,0,.15); }
+.soff-card:hover { background: rgba(255,255,255,.25); border-color: rgba(255,255,255,.4); box-shadow: 0 8px 24px rgba(0,0,0,.15); }
 .soff-icon { font-size: 3.2rem; margin-bottom: 20px; display: block; }
 .soff-card-title { font-family: 'Poppins', sans-serif; font-size: 1.2rem; font-weight: 700; color: #fff; margin-bottom: 12px; }
 .soff-card-desc { font-size: .95rem; color: rgba(255,255,255,.85); line-height: 1.7; }
