@@ -13,5 +13,8 @@
   <% if (page === 'home') { %>
   <link rel="stylesheet" href="/css/home-cinematic.css?v=<%= assetVersion %>" />
   <% } %>
+  <% if (page === 'courses') { %>
+  <link rel="stylesheet" href="/css/courses-cinematic.css?v=<%= assetVersion %>" />
+  <% } %>
 </head>
 <body class="page-<%= page || 'default' %>">
