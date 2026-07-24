@@ -263,12 +263,6 @@ function firstDefined(...values) {
   return undefined;
 }
 
-
-    if (value !== undefined && value !== null && value !== '') return value;
-  }
-  return null;
-}
-
 function toEpochSeconds(value) {
   const raw = asNumber(value);
   if (!raw) return null;
