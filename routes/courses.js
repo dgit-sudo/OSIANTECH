@@ -258,6 +258,12 @@ function asNumber(value) {
 
 function firstDefined(...values) {
   for (const value of values) {
+    if (value !== undefined && value !== null) return value;
+  }
+  return undefined;
+}
+
+
     if (value !== undefined && value !== null && value !== '') return value;
   }
   return null;
@@ -664,7 +670,7 @@ router.get('/:id', (req, res) => {
   const enriched = enrichCourse(course);
   res.render('course-detail', {
     title: `${course.title} – Osian Academy`,
-    page: 'courses',
+    page: 'course-detail',
     course: enriched,
   });
 });

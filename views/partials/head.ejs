@@ -16,5 +16,8 @@
   <% if (page === 'courses') { %>
   <link rel="stylesheet" href="/css/courses-cinematic.css?v=<%= assetVersion %>" />
   <% } %>
+  <% if (page === 'course-detail') { %>
+  <link rel="stylesheet" href="/css/course-detail.css?v=<%= assetVersion %>" />
+  <% } %>
 </head>
 <body class="page-<%= page || 'default' %>">

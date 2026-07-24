@@ -2,236 +2,231 @@
 <%- include('partials/navbar') %>
 
 <%
-const learnPoints = Array.isArray(course.keyPoints) ? course.keyPoints.filter(point => !/^pre[\s-]*requisite\s*:/i.test(point) && !/^certification\s*:/i.test(point)) : [];
-const prereqPoints = Array.isArray(course.keyPoints) ? course.keyPoints.filter(point => /^pre[\s-]*requisite\s*:/i.test(point)) : [];
-const certPoints = Array.isArray(course.keyPoints) ? course.keyPoints.filter(point => /^certification\s*:/i.test(point)) : [];
+const learnPoints = Array.isArray(course.keyPoints)
+  ? course.keyPoints.filter(point => !/^pre[\s-]*requisite\s*:/i.test(point) && !/^certification\s*:/i.test(point))
+  : [];
+const prereqPoints = Array.isArray(course.keyPoints)
+  ? course.keyPoints.filter(point => /^pre[\s-]*requisite\s*:/i.test(point))
+  : [];
+const certPoints = Array.isArray(course.keyPoints)
+  ? course.keyPoints.filter(point => /^certification\s*:/i.test(point))
+  : [];
 const descriptionParagraphs = Array.isArray(course.detailParagraphs) ? course.detailParagraphs : [course.description || ''];
+const heroBackground = course.image ? `background-image: linear-gradient(180deg, rgba(7, 10, 20, 0.88), rgba(7, 10, 20, 0.92)), url('${course.image}');` : '';
+const heroLabel = course.category || 'Course Detail';
 %>
 
-<section class="page-hero page-hero-slim" data-animate="fade-up">
-  <div class="container">
-    <div class="page-hero-content">
-      <div class="section-tag"><%= course.category || 'Course Detail' %></div>
-      <h1 class="page-hero-title"><%= course.title %></h1>
-      <p class="page-hero-sub">A live, one-on-one course crafted to deliver practical skills, professional confidence, and career-ready outcomes with instructor mentorship.</p>
-      <div class="course-hero-meta">
-        <span class="meta-badge"><%= course.level || 'Professional' %></span>
-        <span class="meta-badge"><%= course.duration || 'Flexible duration' %></span>
-        <span class="meta-badge">100% Online</span>
-        <span class="meta-badge">Placement Support</span>
-      </div>
+<section class="course-detail-hero" style="<%= heroBackground %>">
+  <div class="course-detail-hero-overlay"></div>
+  <div class="container course-detail-hero-inner" data-animate="fade-up">
+    <div class="course-detail-hero-label"><%= heroLabel %></div>
+    <h1 class="course-detail-hero-title"><%= course.title %></h1>
+    <p class="course-detail-hero-copy">A premium live one-on-one program designed to teach practical skills, build portfolio-ready projects, and get you career-ready faster.</p>
+
+    <div class="course-detail-hero-meta">
+      <span class="hero-chip"><strong><%= course.level || 'Professional' %></strong></span>
+      <span class="hero-chip"><strong><%= course.duration || 'Flexible' %></strong></span>
+      <span class="hero-chip"><strong>100% Online</strong></span>
+      <span class="hero-chip"><strong>Placement Support</strong></span>
+    </div>
+
+    <div class="course-detail-hero-actions">
+      <a href="/checkout/<%= course.id %>" class="btn btn-primary btn-lg" data-course-id="<%= course.id %>" id="course-buy-now">Enroll Now</a>
+      <a href="/courses" class="btn btn-ghost btn-lg">Back to Courses</a>
     </div>
   </div>
 </section>
 
-<section class="section page-courses" data-animate="fade-up">
+<section class="course-detail-body page-course-detail" data-animate="fade-up">
   <div class="container">
-    <div class="cd-layout">
+    <div class="course-detail-grid">
 
-      <div class="cd-main">
-        <div class="cd-section">
-          <h2 class="cd-section-heading">About this Course</h2>
+      <main class="course-detail-main">
+        <div class="detail-section detail-section-intro">
+          <div class="detail-section-head">
+            <span class="section-label">Course overview</span>
+            <h2 class="section-title">Why this course matters</h2>
+          </div>
           <% descriptionParagraphs.forEach(function(paragraph) { %>
-            <p class="cd-description"><%= paragraph %></p>
+          <p class="detail-copy"><%= paragraph %></p>
           <% }); %>
         </div>
 
         <% if (learnPoints.length) { %>
-        <div class="cd-section">
-          <h2 class="cd-section-heading">What You Will Learn</h2>
-          <div class="cd-learn-grid">
-            <% learnPoints.forEach(function(point) { %>
-            <div class="cd-learn-item">
-              <span class="cd-learn-icon">✓</span>
-              <span><%= point %></span>
+        <div class="detail-section detail-section-grid two-column-grid">
+          <div>
+            <h3>What you will learn</h3>
+            <div class="detail-feature-grid">
+              <% learnPoints.forEach(function(point) { %>
+              <div class="detail-feature-card">
+                <span class="feature-icon">✓</span>
+                <p><%= point %></p>
+              </div>
+              <% }); %>
             </div>
+          </div>
+          <div>
+            <h3>Course highlights</h3>
+            <ul class="detail-highlight-list">
+              <li>Live 1-on-1 mentorship</li>
+              <li>Hands-on projects and real deliverables</li>
+              <li>Certificate with placement assistance</li>
+              <li>Flexible schedule and career-focused support</li>
+            </ul>
+          </div>
+        </div>
+        <% } %>
+
+        <% if (course.contentSections && course.contentSections.length) { %>
+        <div class="detail-section">
+          <div class="detail-section-head">
+            <span class="section-label">Curriculum</span>
+            <h2 class="section-title">Structured learning path</h2>
+          </div>
+          <div class="detail-flowchart" data-animate="fade-up">
+            <% course.contentSections.forEach(function(section, idx) { %>
+            <div class="flow-step <%= idx === 0 ? 'flow-step-active' : '' %>">
+              <span class="flow-step-number"><%= idx + 1 %></span>
+              <strong><%= section.heading %></strong>
+              <% if (section.bullets && section.bullets.length) { %>
+              <ul>
+                <% section.bullets.slice(0, 3).forEach(function(item) { %>
+                <li><%= item %></li>
+                <% }); %>
+              </ul>
+              <% } %>
+            </div>
+            <% if (idx < course.contentSections.length - 1) { %>
+            <div class="flow-divider">→</div>
+            <% } %>
             <% }); %>
           </div>
         </div>
         <% } %>
 
-        <% if (course.contentSections && course.contentSections.length) { %>
-        <div class="cd-section">
-          <h2 class="cd-section-heading">Course Module Flow</h2>
-          <div class="cd-modules-flowchart">
-            <div class="cd-modules-flow">
-              <% course.contentSections.forEach(function(section, idx) { %>
-                <div class="cd-module-box <%= idx === 0 ? 'highlight' : '' %>">
-                  <span class="cd-module-num">Module <%= idx + 1 %></span>
-                  <span class="cd-module-title"><%= section.heading %></span>
-                </div>
-                <% if (idx < course.contentSections.length - 1) { %>
-                  <div class="cd-modules-arrow">→</div>
-                <% } %>
+        <div class="detail-section detail-section-grid two-column-grid">
+          <div>
+            <h3>Tools & technologies</h3>
+            <div class="detail-tools-grid">
+              <% course.toolsList.forEach(function(tool) { %>
+              <span class="tool-pill"><%= tool %></span>
+              <% }); %>
+            </div>
+          </div>
+          <div>
+            <h3>Career outcomes</h3>
+            <div class="detail-outcome-grid">
+              <% course.jobs.slice(0, 4).forEach(function(job) { %>
+              <div class="outcome-card">
+                <strong><%= job.title %></strong>
+                <span><%= job.salary %></span>
+                <p><%= job.desc %></p>
+              </div>
               <% }); %>
             </div>
           </div>
         </div>
-        <% } %>
 
-        <% if (course.contentSections && course.contentSections.length) { %>
-        <div class="cd-section">
-          <h2 class="cd-section-heading">Course Curriculum</h2>
-          <div class="cd-accordion" id="cd-curriculum">
-            <% course.contentSections.forEach(function(section, idx) { %>
-            <div class="cd-accordion-item">
-              <button class="cd-accordion-toggle" aria-expanded="<%= idx === 0 ? 'true' : 'false' %>" data-cd-toggle>
-                <span class="cd-acc-num"><%= idx + 1 %></span>
-                <span class="cd-acc-heading"><%= section.heading %></span>
-                <span class="cd-acc-arrow">▼</span>
-              </button>
-              <div class="cd-accordion-body">
-                <% if (section.paragraphs && section.paragraphs.length) { section.paragraphs.forEach(function(p) { %>
-                  <p><%= p %></p>
-                <% }); } %>
-                <% if (section.bullets && section.bullets.length) { %>
-                <ul>
-                  <% section.bullets.forEach(function(b) { %><li><%= b %></li><% }); %>
-                </ul>
-                <% } %>
+        <div class="detail-section">
+          <div class="detail-section-head">
+            <span class="section-label">Roadmap</span>
+            <h2 class="section-title">Skill progression map</h2>
+          </div>
+          <div class="detail-roadmap">
+            <% course.roadmap.forEach(function(step) { %>
+            <div class="roadmap-step">
+              <div class="roadmap-step-circle"><%= step.step %></div>
+              <div>
+                <strong><%= step.phase %></strong>
+                <p><%= step.desc %></p>
               </div>
             </div>
             <% }); %>
           </div>
         </div>
-        <% } %>
 
-        <div class="cd-section">
-          <h2 class="cd-section-heading">Tools & Technologies</h2>
-          <div class="cd-tools-grid">
-            <% course.toolsList.forEach(function(tool) { %>
-            <span class="cd-tool-pill"><%= tool %></span>
-            <% }); %>
+        <div class="detail-section detail-section-grid two-column-grid">
+          <div>
+            <h3>Who should enroll</h3>
+            <ul class="who-list">
+              <% course.whoShouldEnroll.forEach(function(item) { %>
+              <li><span>✓</span> <%= item %></li>
+              <% }); %>
+            </ul>
           </div>
-        </div>
-
-        <div class="cd-section">
-          <h2 class="cd-section-heading">Learning Outcomes</h2>
-          <div class="cd-outcomes-grid">
-            <div class="cd-outcome-card">
-              <div class="cd-outcome-icon">📚</div>
-              <div class="cd-outcome-title">Practical Skill Mastery</div>
-              <div class="cd-outcome-desc">Complete real-world exercises that show you how to apply concepts on the job.</div>
-            </div>
-            <div class="cd-outcome-card">
-              <div class="cd-outcome-icon">🔧</div>
-              <div class="cd-outcome-title">Project Portfolio</div>
-              <div class="cd-outcome-desc">Build deliverables you can present to employers and recruiters.</div>
-            </div>
-            <div class="cd-outcome-card">
-              <div class="cd-outcome-icon">🎯</div>
-              <div class="cd-outcome-title">Career Confidence</div>
-              <div class="cd-outcome-desc">Learn the tools, techniques and interview-ready mindset employers expect.</div>
-            </div>
-            <div class="cd-outcome-card">
-              <div class="cd-outcome-icon">🚀</div>
-              <div class="cd-outcome-title">Placement Support</div>
-              <div class="cd-outcome-desc">Receive dedicated career guidance and job support until you land the right role.</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="cd-section">
-          <h2 class="cd-section-heading">Career Roadmap</h2>
-          <div class="cd-roadmap">
-            <div class="cd-roadmap-line"></div>
-            <% course.roadmap.forEach(function(step) { %>
-            <div class="cd-roadmap-step">
-              <div class="cd-rm-circle"><%= step.step %></div>
-              <div class="cd-rm-phase"><%= step.phase %></div>
-              <div class="cd-rm-desc"><%= step.desc %></div>
-            </div>
-            <% }); %>
-          </div>
-        </div>
-
-        <div class="cd-section">
-          <h2 class="cd-section-heading">Job Roles You Can Target</h2>
-          <div class="cd-jobs-grid">
-            <% course.jobs.forEach(function(job) { %>
-            <div class="cd-job-card">
-              <div class="cd-job-title"><%= job.title %></div>
-              <div class="cd-job-salary"><%= job.salary %></div>
-              <div class="cd-job-desc"><%= job.desc %></div>
-            </div>
-            <% }); %>
-          </div>
-        </div>
-
-        <div class="cd-section">
-          <h2 class="cd-section-heading">Who Should Enroll</h2>
-          <ul class="cd-who-list">
-            <% course.whoShouldEnroll.forEach(function(item) { %>
-            <li class="cd-who-item"><span class="cd-who-check">✓</span><span><%= item %></span></li>
-            <% }); %>
-          </ul>
-        </div>
-
-        <div class="cd-section">
-          <h2 class="cd-section-heading">Prerequisites &amp; Certification</h2>
-          <div class="cd-keypoints-grid">
-            <div class="cd-kp-block">
-              <h4>🎓 Prerequisites</h4>
-              <ul>
-                <% if (prereqPoints.length) { prereqPoints.forEach(function(point) { %>
-                <li><%= point.replace(/^pre[\s-]*requisite\s*:\s*/i, '') %></li>
-                <% }); } else { %>
-                <li class="empty-state">No previous knowledge required to start this course.</li>
-                <% } %>
-              </ul>
-            </div>
-            <div class="cd-kp-block">
-              <h4>📜 Certification</h4>
-              <ul>
-                <% if (certPoints.length) { certPoints.forEach(function(point) { %>
-                <li><%= point.replace(/^certification\s*:\s*/i, '') %></li>
-                <% }); } else { %>
-                <li>Osian Academy completion certificate awarded on course completion.</li>
-                <% } %>
-                <li>Recognised by our placement partners and hiring networks.</li>
-              </ul>
+          <div>
+            <h3>Prerequisites & certification</h3>
+            <div class="detail-kp-grid">
+              <div class="kp-card">
+                <h4>Prerequisites</h4>
+                <ul>
+                  <% if (prereqPoints.length) { prereqPoints.forEach(function(point) { %>
+                  <li><%= point.replace(/^pre[\s-]*requisite\s*:\s*/i, '') %></li>
+                  <% }); } else { %>
+                  <li>No prior knowledge required.</li>
+                  <% } %>
+                </ul>
+              </div>
+              <div class="kp-card">
+                <h4>Certification</h4>
+                <ul>
+                  <% if (certPoints.length) { certPoints.forEach(function(point) { %>
+                  <li><%= point.replace(/^certification\s*:\s*/i, '') %></li>
+                  <% }); } else { %>
+                  <li>Osian Academy completion certificate included.</li>
+                  <% } %>
+                  <li>Recognised by our hiring partners.</li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="cd-section">
-          <h2 class="cd-section-heading">Frequently Asked Questions</h2>
-          <div class="cd-faq" id="cd-faq">
+        <div class="detail-section">
+          <div class="detail-section-head">
+            <span class="section-label">Support</span>
+            <h2 class="section-title">Frequently asked questions</h2>
+          </div>
+          <div class="detail-faq">
             <% course.enrichedFaqs.forEach(function(faq, idx) { %>
-            <div class="cd-faq-item">
-              <button class="cd-faq-toggle" aria-expanded="<%= idx === 0 ? 'true' : 'false' %>" data-cd-faq-toggle>
-                <%= faq.q %>
-                <span class="cd-faq-arrow">▼</span>
+            <div class="faq-item">
+              <button class="faq-toggle" aria-expanded="<%= idx === 0 ? 'true' : 'false' %>" data-faq-toggle>
+                <span><%= faq.q %></span>
+                <span>▼</span>
               </button>
-              <div class="cd-faq-body"><p><%= faq.a %></p></div>
+              <div class="faq-body"><p><%= faq.a %></p></div>
             </div>
             <% }); %>
           </div>
         </div>
-      </div>
+      </main>
 
-      <aside class="cd-sidebar" data-animate="fade-left">
-        <div class="sidebar-card">
-          <div class="sidebar-price">
-            <span class="sidebar-price-label">Course Fee</span>
-            <span class="sidebar-price-value" id="course-fee-display" data-fee="<%= Number(course.displayFee || course.nonMetroFee || course.metroFee || 0) %>">INR <%= Number(course.displayFee || course.nonMetroFee || course.metroFee || 0).toLocaleString('en-IN') %></span>
+      <aside class="course-detail-sidebar" data-animate="fade-left">
+        <div class="sidebar-panel">
+          <div class="sidebar-price-block">
+            <span class="sidebar-label">Course fee</span>
+            <strong class="sidebar-price" id="course-fee-display" data-fee="<%= Number(course.displayFee || course.nonMetroFee || course.metroFee || 0) %>">INR <%= Number(course.displayFee || course.nonMetroFee || course.metroFee || 0).toLocaleString('en-IN') %></strong>
+            <span class="sidebar-note">Live one-on-one price for non-metro students</span>
           </div>
-          <button type="button" class="btn btn-primary btn-block" data-enroll-toggle>Enroll Now</button>
-          <div class="course-enroll-actions" data-enroll-actions hidden>
-            <a href="https://wa.me/919624284999" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-block">Get More Information</a>
-            <a href="/checkout/<%= course.id %>" class="btn btn-primary btn-block" data-buy-now-btn data-course-id="<%= course.id %>">Buy Now</a>
+          <div class="sidebar-actions">
+            <a href="/checkout/<%= course.id %>" class="btn btn-primary btn-block">Buy now</a>
+            <a href="https://wa.me/919624284999" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-block">Ask an advisor</a>
           </div>
-          <a href="/courses" class="btn btn-ghost btn-block">All Courses</a>
-          <ul class="sidebar-info">
-            <li><span class="sidebar-label">Duration</span><span class="sidebar-value"><%= course.duration || 'Flexible' %></span></li>
-            <li><span class="sidebar-label">Level</span><span class="sidebar-value"><%= course.level || 'All Levels' %></span></li>
-            <li><span class="sidebar-label">Mode</span><span class="sidebar-value"><%= course.snapshot.mode %></span></li>
-            <li><span class="sidebar-label">Sessions</span><span class="sidebar-value"><%= course.snapshot.sessions %></span></li>
-            <li><span class="sidebar-label">Support</span><span class="sidebar-value"><%= course.snapshot.support %></span></li>
-            <li><span class="sidebar-label">Certificate</span><span class="sidebar-value"><%= course.snapshot.cert %></span></li>
-            <li><span class="sidebar-label">Category</span><span class="sidebar-value"><%= course.category || 'General' %></span></li>
-          </ul>
-          <div class="sidebar-guarantee">Live 1-on-1 sessions, personalised feedback and placement-aligned projects to help you secure your next role.</div>
+          <div class="sidebar-highlights">
+            <h4>Course details</h4>
+            <ul>
+              <li><strong>Duration:</strong> <%= course.duration || 'Flexible' %></li>
+              <li><strong>Level:</strong> <%= course.level || 'All levels' %></li>
+              <li><strong>Mode:</strong> <%= course.snapshot.mode %></li>
+              <li><strong>Sessions:</strong> <%= course.snapshot.sessions %></li>
+              <li><strong>Support:</strong> <%= course.snapshot.support %></li>
+              <li><strong>Certificate:</strong> <%= course.snapshot.cert %></li>
+            </ul>
+          </div>
+          <div class="sidebar-note-card">
+            <strong>Why choose this course?</strong>
+            <p>Designed for learners who want fast applied outcomes, live mentoring, and a portfolio-ready path into professional roles.</p>
+          </div>
         </div>
       </aside>
     </div>
@@ -240,14 +235,7 @@ const descriptionParagraphs = Array.isArray(course.detailParagraphs) ? course.de
 
 <script>
 (function () {
-  document.querySelectorAll('[data-cd-toggle]').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      const expanded = btn.getAttribute('aria-expanded') === 'true';
-      btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-    });
-  });
-
-  document.querySelectorAll('[data-cd-faq-toggle]').forEach(function (btn) {
+  document.querySelectorAll('[data-faq-toggle]').forEach(function (btn) {
     btn.addEventListener('click', function () {
       const expanded = btn.getAttribute('aria-expanded') === 'true';
       btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
