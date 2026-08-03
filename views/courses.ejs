@@ -5,35 +5,81 @@
 const safeSearchQuery = (typeof searchQuery !== 'undefined' && searchQuery) ? searchQuery : '';
 const safeActiveCategory = (typeof activeCategory !== 'undefined') ? activeCategory : 'All';
 const isFiltered = safeActiveCategory !== 'All' || safeSearchQuery;
+const allShownCourses = (typeof courses !== 'undefined' && Array.isArray(courses)) ? courses : [];
+const totalCourseCount = (typeof totalCourses !== 'undefined') ? totalCourses : allShownCourses.length;
 const catMeta = [
-  { name: 'Programming & Software', icon: '💻', desc: 'Master languages, frameworks and software engineering tools used by industry-ready developers.' },
-  { name: 'Design & Animation', icon: '🎨', desc: 'Build brand identities, motion graphics, UI/UX experiences and visual stories that stand out.' },
-  { name: 'Networking, Hardware & Engineering', icon: '🔌', desc: 'Learn the systems, security and infrastructure that power modern enterprise IT.' },
-  { name: 'Accounting, Finance & Office Skills', icon: '💼', desc: 'Gain practical finance, accounting and office automation skills for corporate careers.' },
-  { name: 'Data, AI & Digital Marketing', icon: '📊', desc: 'Turn data into decisions and launch digital campaigns that deliver measurable results.' },
-  { name: 'Kids Programs', icon: '⭐', desc: 'Spark early STEM learning with fun, practical coding, robotics and creative computing.' },
+  { name: 'Programming & Software', icon: '💻', accent: 'ct-1', tag: 'Build & Ship', desc: 'Master languages, frameworks and software engineering tools used by industry-ready developers.' },
+  { name: 'Data, AI & Digital Marketing', icon: '📊', accent: 'ct-2', tag: 'Analyse & Grow', desc: 'Turn data into decisions and launch digital campaigns that deliver measurable results.' },
+  { name: 'Design & Animation', icon: '🎨', accent: 'ct-3', tag: 'Create & Craft', desc: 'Build brand identities, motion graphics, UI/UX experiences and visual stories that stand out.' },
+  { name: 'Networking, Hardware & Engineering', icon: '🔌', accent: 'ct-4', tag: 'Secure & Scale', desc: 'Learn the systems, security and infrastructure that power modern enterprise IT.' },
+  { name: 'Accounting, Finance & Office Skills', icon: '💼', accent: 'ct-5', tag: 'Manage & Report', desc: 'Gain practical finance, accounting and office automation skills for corporate careers.' },
+  { name: 'Kids Programs', icon: '⭐', accent: 'ct-6', tag: 'Explore & Play', desc: 'Spark early STEM learning with fun, practical coding, robotics and creative computing.' },
 ];
 const catIconMap = {};
 catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; });
 %>
 
-<section class="courses-hero page-hero courses-hero" data-animate="fade-up">
-  <div class="container">
-    <div class="hero-copy">
-      <div class="section-tag">Course Catalogue</div>
-      <h1 class="page-hero-title">Browse the most complete<br><span>career-led IT course library</span></h1>
-      <p class="page-hero-sub">Live, instructor-led courses across programming, design, networking, finance, data and kids learning. Every course is built to help you learn with projects, get certified, and move toward better career outcomes.</p>
-      <div class="course-hero-meta">
-        <span class="meta-badge"><%= typeof totalCourses !== 'undefined' ? totalCourses : (Array.isArray(courses) ? courses.length : 0) %> Courses</span>
-        <span class="meta-badge">6 Career Tracks</span>
-        <span class="meta-badge">100% Live Sessions</span>
-        <span class="meta-badge">Placement Support</span>
+<!-- ===== CINEMATIC HERO ===== -->
+<section class="courses-hero-cinematic" id="courses-hero">
+  <div class="ch-aurora" aria-hidden="true">
+    <span class="ch-blob ch-blob-1"></span>
+    <span class="ch-blob ch-blob-2"></span>
+    <span class="ch-blob ch-blob-3"></span>
+  </div>
+  <div class="ch-grid-overlay" aria-hidden="true"></div>
+
+  <div class="container ch-inner">
+    <div class="hero-badge" data-reveal="fade-up">
+      <span class="hero-badge-dot"></span>
+      <%= totalCourseCount %>+ live, instructor-led courses
+    </div>
+
+    <h1 class="ch-headline" data-hero-headline>
+      <span class="hero-line">The most complete</span>
+      <span class="hero-line hero-line-accent">career-led course library</span>
+    </h1>
+
+    <p class="ch-sub" data-reveal="fade-up" data-reveal-delay="1">
+      Live 1-on-1 courses across programming, design, networking, finance, data and kids
+      learning. Every programme is built around real projects, recognised certification, and
+      100% placement support.
+    </p>
+
+    <div class="ch-stats" data-reveal="fade-up" data-reveal-delay="2" data-reveal-stagger>
+      <div class="ch-stat-pill">
+        <span class="ch-stat-num stat-value"><%= totalCourseCount %>+</span>
+        <span class="ch-stat-lbl">Courses</span>
+      </div>
+      <div class="ch-stat-pill">
+        <span class="ch-stat-num stat-value">6</span>
+        <span class="ch-stat-lbl">Career Tracks</span>
+      </div>
+      <div class="ch-stat-pill">
+        <span class="ch-stat-num stat-value">100%</span>
+        <span class="ch-stat-lbl">Live Sessions</span>
+      </div>
+      <div class="ch-stat-pill">
+        <span class="ch-stat-num stat-value">95%</span>
+        <span class="ch-stat-lbl">Placement</span>
       </div>
     </div>
   </div>
 </section>
 
-<section class="courses-toolbar page-courses" data-animate="fade-up">
+<!-- ===== SKILLS TICKER ===== -->
+<div class="courses-ticker" aria-hidden="true">
+  <div class="courses-ticker-track">
+    <% const skillTags = ['Full-Stack Development', 'Python', 'Data Science', 'UI/UX Design', 'Cloud & DevOps', 'Cybersecurity', 'Digital Marketing', 'Tally & GST', '3D & Animation', 'Machine Learning', 'Networking', 'Robotics for Kids']; %>
+    <% [1, 2].forEach(function () { %>
+      <% skillTags.forEach(function (tag) { %>
+        <span><%= tag %></span><span class="dot">&#9679;</span>
+      <% }); %>
+    <% }); %>
+  </div>
+</div>
+
+<!-- ===== TOOLBAR (sticky search + filters) ===== -->
+<section class="courses-toolbar">
   <div class="container">
     <div class="courses-toolbar-inner">
       <form class="courses-search-row" action="/courses" method="GET" data-courses-search-form>
@@ -41,7 +87,7 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; });
           <svg class="courses-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
           <input id="course-search" class="courses-search-input" type="search" name="q" value="<%= safeSearchQuery %>" placeholder="Search courses, topics or tools…" data-courses-search-input autocomplete="off" />
         </div>
-        <button type="submit" class="btn btn-primary">Search</button>
+        <button type="submit" class="btn btn-primary" data-magnetic>Search</button>
       </form>
       <div class="filter-bar">
         <a href="/courses" class="filter-btn <%= (!safeSearchQuery && safeActiveCategory === 'All') ? 'active' : '' %>">All Courses</a>
@@ -57,74 +103,56 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; });
 
 <% if (!isFiltered) { %>
 
-<section class="courses-job-section page-courses" data-animate="fade-up">
+<!-- ===== FEATURED CAREER TRACKS ===== -->
+<section class="courses-tracks-section section">
   <div class="container">
-    <div class="spr-head">
+    <div class="courses-section-head" data-reveal="fade-up">
       <p class="section-label">Featured Career Tracks</p>
-      <h2 class="spr-title">Explore the biggest skill paths employers are hiring for</h2>
-      <p class="spr-sub">Choose the learning path that fits your goal — from software engineering and data analytics to creative design, networking and finance.</p>
+      <h2 class="courses-section-title">Six tracks. Endless careers.</h2>
+      <p class="courses-section-sub">Choose the learning path that fits your goal — from software engineering and data analytics to creative design, networking and finance.</p>
     </div>
-    <div class="courses-job-grid">
-      <a href="/courses?category=Programming+%26+Software" class="spr-card">
-        <div class="spr-card-top"><div class="spr-icon">⚡</div><span class="spr-track-num">01</span></div>
-        <h3>Programming & Software</h3>
-        <p>From full-stack development to databases and system automation — build the applications powering modern businesses.</p>
-        <span class="spr-link">Browse track →</span>
+    <div class="courses-tracks-grid" data-reveal="fade-up" data-reveal-delay="1" data-reveal-stagger>
+      <% catMeta.forEach(function(cat, idx) { %>
+      <% const trackCount = allShownCourses.filter(function(c){ return c.category === cat.name; }).length; %>
+      <a href="/courses?category=<%= encodeURIComponent(cat.name) %>" class="track-card <%= cat.accent %>" data-tilt data-tilt-strength="5">
+        <div class="track-card-top">
+          <div class="track-icon"><%= cat.icon %></div>
+          <span class="track-num"><%= String(idx + 1).padStart(2, '0') %></span>
+        </div>
+        <h3 class="track-name"><%= cat.name %></h3>
+        <p class="track-desc"><%= cat.desc %></p>
+        <div class="track-foot">
+          <% if (trackCount) { %><span class="track-count"><%= trackCount %> course<%= trackCount === 1 ? '' : 's' %></span><% } else { %><span class="track-count"><%= cat.tag %></span><% } %>
+          <span class="track-link">Browse track →</span>
+        </div>
       </a>
-      <a href="/courses?category=Data%2C+AI+%26+Digital+Marketing" class="spr-card">
-        <div class="spr-card-top"><div class="spr-icon">📈</div><span class="spr-track-num">02</span></div>
-        <h3>Data, AI & Marketing</h3>
-        <p>Analyse data, build machine learning models and launch results-driven digital campaigns for business growth.</p>
-        <span class="spr-link">Browse track →</span>
-      </a>
-      <a href="/courses?category=Design+%26+Animation" class="spr-card">
-        <div class="spr-card-top"><div class="spr-icon">🎨</div><span class="spr-track-num">03</span></div>
-        <h3>Design & Animation</h3>
-        <p>Create high-impact brand experiences, animations and product interfaces using industry-standard creative tools.</p>
-        <span class="spr-link">Browse track →</span>
-      </a>
-      <a href="/courses?category=Networking%2C+Hardware+%26+Engineering" class="spr-card">
-        <div class="spr-card-top"><div class="spr-icon">🔌</div><span class="spr-track-num">04</span></div>
-        <h3>Networking & Engineering</h3>
-        <p>Learn networking, systems and hardware fundamentals that keep enterprise infrastructure secure and reliable.</p>
-        <span class="spr-link">Browse track →</span>
-      </a>
-      <a href="/courses?category=Accounting%2C+Finance+%26+Office+Skills" class="spr-card">
-        <div class="spr-card-top"><div class="spr-icon">💰</div><span class="spr-track-num">05</span></div>
-        <h3>Accounting & Finance</h3>
-        <p>Develop practical accounting, taxation and business software skills for finance teams and admin roles.</p>
-        <span class="spr-link">Browse track →</span>
-      </a>
-      <a href="/courses?category=Kids+Programs" class="spr-card">
-        <div class="spr-card-top"><div class="spr-icon">⭐</div><span class="spr-track-num">06</span></div>
-        <h3>Kids Programs</h3>
-        <p>Introduce young learners to STEM, coding and creative computing through fun, guided projects.</p>
-        <span class="spr-link">Browse track →</span>
-      </a>
+      <% }); %>
     </div>
   </div>
 </section>
 
+<!-- ===== PER-CATEGORY COURSE BLOCKS ===== -->
 <% catMeta.forEach(function(cat, catIdx) { %>
 <%
-  const catCourses = (typeof courses !== 'undefined' ? courses : []).filter(c => c.category === cat.name).slice(0, 8);
-  if (!catCourses.length) return;
+  const catCoursesAll = allShownCourses.filter(function(c){ return c.category === cat.name; });
+  if (!catCoursesAll.length) return;
+  const catCourses = catCoursesAll.slice(0, 6);
 %>
-<section class="section courses-category-section<%= catIdx % 2 !== 0 ? ' section-alt' : '' %> page-courses" data-animate="fade-up">
+<section class="courses-category-section section<%= catIdx % 2 !== 0 ? ' section-alt' : '' %>">
   <div class="container">
-    <div class="courses-cat-header">
-      <div class="courses-cat-icon-wrap"><span class="courses-cat-icon"><%= cat.icon %></span></div>
+    <div class="courses-cat-header" data-reveal="fade-up">
+      <div class="courses-cat-icon-wrap <%= cat.accent %>"><span class="courses-cat-icon"><%= cat.icon %></span></div>
       <div class="courses-cat-info">
-        <p class="section-label"><%= cat.name %></p>
-        <h2 class="section-title"><%= cat.name %></h2>
-        <p class="section-sub"><%= cat.desc %></p>
+        <p class="section-label"><%= cat.tag %> · <%= catCoursesAll.length %> course<%= catCoursesAll.length === 1 ? '' : 's' %></p>
+        <h2 class="courses-cat-title"><%= cat.name %></h2>
+        <p class="courses-cat-sub"><%= cat.desc %></p>
       </div>
-      <a href="/courses?category=<%= encodeURIComponent(cat.name) %>" class="btn btn-ghost courses-cat-view-all">View all →</a>
+      <a href="/courses?category=<%= encodeURIComponent(cat.name) %>" class="btn btn-ghost courses-cat-view-all" data-magnetic>View all →</a>
     </div>
-    <div class="courses-grid" data-courses-grid>
+    <div class="courses-grid" data-courses-grid data-reveal="fade-up" data-reveal-delay="1" data-reveal-stagger>
       <% catCourses.forEach(function(course) { %>
       <a href="/courses/<%= course.id %>" class="course-card-link" data-course-card data-course-title="<%= course.title %>">
-        <article class="course-card">
+        <article class="course-card" data-tilt data-tilt-strength="4">
           <div class="course-img course-img-<%= (course.id % 9) + 1 %> <%= course.image ? 'has-course-image' : '' %>"<% if (course.image) { %> style="--course-image: url('<%= course.image %>');"<% } %>>
             <div class="course-img-overlay">
               <div class="course-category-tag"><%= course.category || cat.name %></div>
@@ -139,7 +167,7 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; });
             <h3 class="course-title"><%= course.title %></h3>
             <p class="course-description"><%= course.description %></p>
             <div class="course-footer">
-              <span class="course-meta-pill">Training track</span>
+              <span class="course-meta-pill">Live 1-on-1</span>
               <span class="course-arrow">View Details →</span>
             </div>
           </div>
@@ -147,34 +175,54 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; });
       </a>
       <% }); %>
     </div>
-    <div class="courses-cat-footer">
-      <a href="/courses?category=<%= encodeURIComponent(cat.name) %>" class="btn btn-ghost">Browse all <%= cat.name %> courses →</a>
+    <% if (catCoursesAll.length > catCourses.length) { %>
+    <div class="courses-cat-footer" data-reveal="fade-up">
+      <a href="/courses?category=<%= encodeURIComponent(cat.name) %>" class="btn btn-ghost" data-magnetic>Browse all <%= catCoursesAll.length %> <%= cat.name %> courses →</a>
     </div>
+    <% } %>
   </div>
 </section>
 <% }); %>
 
+<!-- ===== CTA ===== -->
+<section class="courses-cta">
+  <div class="container">
+    <div class="courses-cta-inner" data-reveal="fade-up">
+      <p class="section-label courses-cta-label">Not sure where to start?</p>
+      <h2 class="courses-cta-title">Talk to a mentor and find your track</h2>
+      <p class="courses-cta-sub">Create a free account and our team will help you pick the right programme for your goals — then match you with a dedicated 1-on-1 instructor.</p>
+      <div class="courses-cta-actions">
+        <a href="/auth?mode=signup" class="btn btn-white btn-lg" data-magnetic data-auth-guest>Create Free Account</a>
+        <a href="/dashboard" class="btn btn-white btn-lg" data-magnetic data-auth-user hidden>Go to Dashboard</a>
+        <a href="/contact" class="btn btn-outline-white btn-lg" data-magnetic>Contact Us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <% } else { %>
 
-<section class="section courses-results-section page-courses" data-animate="fade-up">
+<!-- ===== FILTERED RESULTS ===== -->
+<section class="courses-results-section section">
   <div class="container">
-    <div class="courses-results-header">
+    <div class="courses-results-header" data-reveal="fade-up">
       <div class="courses-results-meta">
         <p class="section-label">Filtered Results</p>
-        <h2 class="section-title"><% if (safeSearchQuery) { %>Results for "<%= safeSearchQuery %>"<% } else { %><%= safeActiveCategory %><% } %></h2>
-        <p class="section-sub">Showing <strong><%= typeof shownCourses !== 'undefined' ? shownCourses : (Array.isArray(courses) ? courses.length : 0) %></strong> of <strong><%= typeof totalCourses !== 'undefined' ? totalCourses : (Array.isArray(courses) ? courses.length : 0) %></strong> courses<% if (safeActiveCategory !== 'All') { %> in <em><%= safeActiveCategory %></em><% } %></p>
+        <h2 class="courses-section-title"><% if (safeSearchQuery) { %>Results for "<%= safeSearchQuery %>"<% } else { %><%= safeActiveCategory %><% } %></h2>
+        <p class="courses-results-sub">Showing <strong><%= typeof shownCourses !== 'undefined' ? shownCourses : allShownCourses.length %></strong> of <strong><%= totalCourseCount %></strong> courses<% if (safeActiveCategory !== 'All') { %> in <em><%= safeActiveCategory %></em><% } %></p>
       </div>
-      <a href="/courses" class="btn btn-ghost">Clear filters ×</a>
+      <a href="/courses" class="btn btn-ghost" data-magnetic>Clear filters ×</a>
     </div>
 
-    <% if (typeof courses !== 'undefined' && courses.length) { %>
-    <div class="courses-grid" data-courses-grid>
-      <% courses.forEach(function(course) { %>
+    <% if (allShownCourses.length) { %>
+    <div class="courses-grid" data-courses-grid data-reveal="fade-up" data-reveal-delay="1" data-reveal-stagger>
+      <% allShownCourses.forEach(function(course) { %>
       <a href="/courses/<%= course.id %>" class="course-card-link" data-course-card data-course-title="<%= course.title %>">
-        <article class="course-card">
+        <article class="course-card" data-tilt data-tilt-strength="4">
           <div class="course-img course-img-<%= (course.id % 9) + 1 %> <%= course.image ? 'has-course-image' : '' %>"<% if (course.image) { %> style="--course-image: url('<%= course.image %>');"<% } %>>
             <div class="course-img-overlay">
               <div class="course-category-tag"><%= course.category || 'General' %></div>
+              <% if (!course.image && catIconMap[course.category]) { %><span class="course-img-cat-icon"><%= catIconMap[course.category] %></span><% } %>
             </div>
           </div>
           <div class="course-body">
@@ -185,7 +233,7 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; });
             <h3 class="course-title"><%= course.title %></h3>
             <p class="course-description"><%= course.description %></p>
             <div class="course-footer">
-              <span class="course-meta-pill">View course</span>
+              <span class="course-meta-pill">Live 1-on-1</span>
               <span class="course-arrow">View Details →</span>
             </div>
           </div>
@@ -195,17 +243,19 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; });
     </div>
     <div class="course-empty" data-courses-empty style="display:none;">
       <h3>No matching courses found</h3>
-      <p>Try a different keyword or <a href="/courses" style="color:#f97316">view all courses</a>.</p>
+      <p>Try a different keyword or <a href="/courses">view all courses</a>.</p>
     </div>
     <% } else { %>
     <div class="course-empty">
       <h3>No courses found</h3>
-      <p><a href="/courses" style="color:#f97316">Clear filters and view all courses →</a></p>
+      <p><a href="/courses">Clear filters and view all courses →</a></p>
     </div>
     <% } %>
   </div>
 </section>
 
 <% } %>
+
+<script src="/js/courses-cinematic.js?v=<%= assetVersion %>"></script>
 
 <%- include('partials/footer') %>
