@@ -8,15 +8,16 @@ const isFiltered = safeActiveCategory !== 'All' || safeSearchQuery;
 const allShownCourses = (typeof courses !== 'undefined' && Array.isArray(courses)) ? courses : [];
 const totalCourseCount = (typeof totalCourses !== 'undefined') ? totalCourses : allShownCourses.length;
 const catMeta = [
-  { name: 'Programming & Software', icon: '💻', accent: 'ct-1', tag: 'Build & Ship', desc: 'Master languages, frameworks and software engineering tools used by industry-ready developers.' },
-  { name: 'Data, AI & Digital Marketing', icon: '📊', accent: 'ct-2', tag: 'Analyse & Grow', desc: 'Turn data into decisions and launch digital campaigns that deliver measurable results.' },
-  { name: 'Design & Animation', icon: '🎨', accent: 'ct-3', tag: 'Create & Craft', desc: 'Build brand identities, motion graphics, UI/UX experiences and visual stories that stand out.' },
-  { name: 'Networking, Hardware & Engineering', icon: '🔌', accent: 'ct-4', tag: 'Secure & Scale', desc: 'Learn the systems, security and infrastructure that power modern enterprise IT.' },
-  { name: 'Accounting, Finance & Office Skills', icon: '💼', accent: 'ct-5', tag: 'Manage & Report', desc: 'Gain practical finance, accounting and office automation skills for corporate careers.' },
-  { name: 'Kids Programs', icon: '⭐', accent: 'ct-6', tag: 'Explore & Play', desc: 'Spark early STEM learning with fun, practical coding, robotics and creative computing.' },
+  { name: 'Programming & Software', short: 'Programming', icon: '💻', accent: 'ct-1', tag: 'Build & Ship', desc: 'Master languages, frameworks and software engineering tools used by industry-ready developers.' },
+  { name: 'Data, AI & Digital Marketing', short: 'Data & AI', icon: '📊', accent: 'ct-2', tag: 'Analyse & Grow', desc: 'Turn data into decisions and launch digital campaigns that deliver measurable results.' },
+  { name: 'Design & Animation', short: 'Design', icon: '🎨', accent: 'ct-3', tag: 'Create & Craft', desc: 'Build brand identities, motion graphics, UI/UX experiences and visual stories that stand out.' },
+  { name: 'Networking, Hardware & Engineering', short: 'Networking', icon: '🔌', accent: 'ct-4', tag: 'Secure & Scale', desc: 'Learn the systems, security and infrastructure that power modern enterprise IT.' },
+  { name: 'Accounting, Finance & Office Skills', short: 'Finance', icon: '💼', accent: 'ct-5', tag: 'Manage & Report', desc: 'Gain practical finance, accounting and office automation skills for corporate careers.' },
+  { name: 'Kids Programs', short: 'Kids', icon: '⭐', accent: 'ct-6', tag: 'Explore & Play', desc: 'Spark early STEM learning with fun, practical coding, robotics and creative computing.' },
 ];
 const catIconMap = {};
-catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; });
+const catShortMap = {};
+catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; catShortMap[c.name] = c.short; });
 %>
 
 <!-- ===== CINEMATIC HERO ===== -->
@@ -29,11 +30,6 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; });
   <div class="ch-grid-overlay" aria-hidden="true"></div>
 
   <div class="container ch-inner">
-    <div class="hero-badge" data-reveal="fade-up">
-      <span class="hero-badge-dot"></span>
-      <%= totalCourseCount %>+ live, instructor-led courses
-    </div>
-
     <h1 class="ch-headline" data-hero-headline>
       <span class="hero-line">The most complete</span>
       <span class="hero-line hero-line-accent">career-led course library</span>
@@ -78,8 +74,8 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; });
   </div>
 </div>
 
-<!-- ===== TOOLBAR (sticky search + filters) ===== -->
-<section class="courses-toolbar">
+<!-- ===== TOOLBAR (sticky search) ===== -->
+<section class="courses-toolbar" data-courses-toolbar>
   <div class="container">
     <div class="courses-toolbar-inner">
       <form class="courses-search-row" action="/courses" method="GET" data-courses-search-form>
@@ -87,16 +83,7 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; });
           <svg class="courses-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
           <input id="course-search" class="courses-search-input" type="search" name="q" value="<%= safeSearchQuery %>" placeholder="Search courses, topics or tools…" data-courses-search-input autocomplete="off" />
         </div>
-        <button type="submit" class="btn btn-primary" data-magnetic>Search</button>
       </form>
-      <div class="filter-bar">
-        <a href="/courses" class="filter-btn <%= (!safeSearchQuery && safeActiveCategory === 'All') ? 'active' : '' %>">All Courses</a>
-        <% if (typeof categories !== 'undefined') { categories.forEach(function(cat) { %>
-          <a href="/courses?category=<%= encodeURIComponent(cat) %>" class="filter-btn <%= (safeActiveCategory === cat) ? 'active' : '' %>">
-            <% if (catIconMap[cat]) { %><span class="filter-btn-icon"><%= catIconMap[cat] %></span><% } %><%= cat %>
-          </a>
-        <% }); } %>
-      </div>
     </div>
   </div>
 </section>

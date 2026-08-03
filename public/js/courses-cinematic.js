@@ -120,4 +120,23 @@
       btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
     });
   }
+
+  /* ---- Sticky toolbar condenses after the hero scrolls past ---- */
+  const toolbar = document.querySelector('[data-courses-toolbar]');
+  if (toolbar) {
+    const onScroll = () => {
+      toolbar.classList.toggle('is-stuck', window.scrollY > 260);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  /* ---- Keep the active filter pill in view within its scroll strip ----
+     Scroll only the strip (not the whole page) to avoid shifting layout. */
+  const filterStrip = document.querySelector('.filter-bar');
+  const activeFilter = filterStrip && filterStrip.querySelector('.filter-btn.active');
+  if (filterStrip && activeFilter) {
+    const target = activeFilter.offsetLeft - (filterStrip.clientWidth / 2) + (activeFilter.offsetWidth / 2);
+    filterStrip.scrollLeft = Math.max(0, target);
+  }
 })();
