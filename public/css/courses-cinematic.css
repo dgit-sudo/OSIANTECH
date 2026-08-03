@@ -369,9 +369,10 @@ body.page-courses {
 }
 .page-courses .course-img {
   position: relative;
-  min-height: 190px;
+  aspect-ratio: 16 / 10;
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   flex-shrink: 0;
 }
 .page-courses .course-img::after {
