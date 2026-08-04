@@ -1,0 +1,94 @@
+{
+  "22": {
+    "card": "Become a data analyst over a full year — Excel, SQL, Power BI and real-world data projects.",
+    "desc": "This year-long advanced diploma builds a complete, employable data-analytics skill set. You'll master Excel, SQL, and visualisation tools like Power BI, learn to clean and analyse real datasets, and build dashboards and reports that drive decisions. It's a thorough, project-heavy programme for a genuine analytics career."
+  },
+  "30": {
+    "card": "Master modern sales and marketing — a full diploma in selling, campaigns and customer growth.",
+    "desc": "This year-long diploma covers the full craft of sales and marketing. You'll learn selling techniques, marketing strategy, digital channels, and how to grow and keep customers, with practical, real-world application throughout. It's built for anyone wanting a strong career in sales, marketing or business development."
+  },
+  "31": {
+    "card": "Learn the stock market properly — a full year of analysis, strategy and disciplined investing.",
+    "desc": "This year-long programme is a serious education in stock market investing and trading. You'll learn how markets work, technical and fundamental analysis, building strategies, and above all managing risk. It's grounded and practical, using real market scenarios to build genuine competence rather than hype."
+  },
+  "35": {
+    "card": "Become a data scientist — Python, statistics, machine learning and real predictive projects over a year.",
+    "desc": "This advanced year-long programme takes you into full data science. You'll build the Python and statistics foundation, learn to work with data, and move into machine-learning models and real predictive projects. It's a deep, career-focused course for one of the highest-paid and most in-demand fields in tech."
+  },
+  "38": {
+    "card": "Earn passive income with affiliate marketing — build campaigns that convert clicks into commissions.",
+    "desc": "Affiliate marketing is one of the most accessible ways to earn online. This course teaches you how it works, choosing niches and products, building content and traffic, and running campaigns that actually convert. It's practical and results-focused, ideal for anyone wanting to build an online income stream."
+  },
+  "39": {
+    "card": "Understand and build AI — the concepts, tools and hands-on skills behind artificial intelligence.",
+    "desc": "Artificial intelligence is reshaping every industry, and this course demystifies it with real, hands-on work. You'll learn the core concepts, work with Python and AI libraries, and build a small AI project of your own so it's not just theory. It's an exciting, future-focused entry into the field everyone's talking about."
+  },
+  "50": {
+    "card": "Develop for Big Data with Hadoop — process massive datasets that ordinary tools can't handle.",
+    "desc": "Big Data is data at a scale where normal tools break, and Hadoop is how the industry handles it. This course teaches you the Hadoop ecosystem, writing jobs to process huge datasets, and the developer skills that data-heavy companies hire for. It's a strong, specialised skill in the growing data engineering field."
+  },
+  "53": {
+    "card": "Understand blockchain and build on it — the technology behind crypto, smart contracts and Web3.",
+    "desc": "Blockchain underpins cryptocurrency, smart contracts and the emerging Web3 world. This certification course explains how blockchain really works, covers smart contracts and decentralised apps, and gives you hands-on exposure to building on it. It's a forward-looking skill in a field that keeps creating new opportunities."
+  },
+  "76": {
+    "card": "Master Excel from basics to advanced in one focused combo — formulas, pivots and data analysis.",
+    "desc": "This combo takes you through Excel completely — starting with the essentials and moving into advanced formulas, lookups, pivot tables, dashboards and analysis. Excel is the single most-requested office skill, and this course makes you genuinely capable with it. Practical, hands-on and immediately useful at work."
+  },
+  "93": {
+    "card": "Become a fast, capable data and computer operator — office tools, data entry and workplace IT skills.",
+    "desc": "This course prepares you for data-entry and computer-operator roles that are in constant demand. You'll build speed and accuracy with office tools, data handling, typing, and the everyday IT tasks these jobs require. It's practical, job-focused training that leads directly to steady employment."
+  },
+  "105": {
+    "card": "Enter data analytics with a Microsoft Office-certified diploma — Excel, analysis and real reporting.",
+    "desc": "This four-month diploma blends data analysis with Microsoft Office certification. You'll master advanced Excel and data-analysis techniques, learn to clean and report on real data, and earn a recognised Microsoft credential. It's a practical, employable entry into the analytics field."
+  },
+  "106": {
+    "card": "Go advanced in data analytics with a longer Microsoft-certified diploma — deeper analysis and tools.",
+    "desc": "This extended diploma takes data analytics further, over six to eight months, with Microsoft Office certification. You'll go deep into advanced Excel, analysis techniques, and reporting, building serious, demonstrable analytics ability. It's for those who want a thorough, credentialed foundation in data work."
+  },
+  "107": {
+    "card": "Master MIS reporting and data analysis — the reporting skills every business runs on.",
+    "desc": "MIS (Management Information Systems) reporting keeps businesses informed and running, and skilled MIS analysts are always needed. This diploma teaches you advanced Excel, data analysis, dashboards and the reporting workflows companies depend on daily. It's a practical, in-demand skill across every industry."
+  },
+  "111": {
+    "card": "Master data structures and algorithms in C — the core skills behind coding interviews and efficient code.",
+    "desc": "Data structures and algorithms are the foundation of strong programming and the heart of technical interviews. Using C, this course teaches arrays, linked lists, stacks, queues, trees, sorting and searching — the tools that make code efficient. It's essential preparation for serious developers and interview success."
+  },
+  "113": {
+    "card": "Launch and grow an online store — the complete e-commerce skill set from setup to sales.",
+    "desc": "This certification course covers building and running a successful online business end to end. You'll learn store setup, product listing, payments, digital marketing basics, and the operations of e-commerce. It's practical and entrepreneurial, ideal for anyone wanting to sell online or work in the booming e-commerce sector."
+  },
+  "142": {
+    "card": "Master AI-powered digital marketing — Google-certified skills in SEO, ads, social and analytics.",
+    "desc": "This Google-certified programme trains you in modern, AI-assisted digital marketing. You'll cover SEO, Google and social ads, content, analytics, and how to use AI tools to work smarter, running real campaigns along the way. It's a comprehensive, career-focused course for one of the most hireable skill sets today."
+  },
+  "143": {
+    "card": "Become a complete digital marketer — Google-certified skills across WordPress, AI and every channel.",
+    "desc": "This extended Google-certified programme is a full digital-marketing education. You'll build websites in WordPress, master SEO, paid ads, social and analytics, and use AI tools throughout, applying it all to real campaigns. Over four to five months it makes you a well-rounded, genuinely employable marketer."
+  },
+  "167": {
+    "card": "Build and train machine learning models — the core skill behind modern AI, hands-on with Python.",
+    "desc": "Machine learning is how computers learn from data, and it's one of the most valuable skills in tech. This course covers the essential algorithms — regression, classification, clustering — using Python's ML libraries, and takes you through training and evaluating real models. Practical and focused, it gets you genuinely building ML."
+  },
+  "168": {
+    "card": "Master machine learning and AI from Python up — a full diploma from basics to real models.",
+    "desc": "This diploma builds you into an AI practitioner, starting from Python basics so no prior coding is assumed. You'll learn data handling, core machine-learning algorithms, model training and evaluation, and build a complete AI project. Over three to four months it takes you from beginner to genuinely capable in ML and AI."
+  },
+  "171": {
+    "card": "Become a digital marketing expert — a full year mastering every channel, tool and strategy.",
+    "desc": "This year-long master programme is the complete digital-marketing education. You'll go deep across SEO, paid advertising, social media, content, email, analytics and strategy, running real campaigns and building a strong portfolio. It's built to make you a well-rounded, senior-capable marketer ready for the industry."
+  },
+  "203": {
+    "card": "Build powerful business dashboards in Power BI — turn raw data into decisions leaders act on.",
+    "desc": "Power BI is Microsoft's leading tool for business intelligence, and it's widely requested. This course teaches you to connect and transform data, build interactive dashboards and reports, and tell clear stories with data. It's a practical, high-value skill for anyone in analytics, MIS or business roles."
+  },
+  "237": {
+    "card": "Create compelling data visualisations in Tableau — the tool that turns data into insight.",
+    "desc": "Tableau is a favourite for turning complex data into clear, interactive visuals. This course teaches you to connect data, build charts and dashboards, and design visualisations that reveal insight at a glance. It's a strong, in-demand skill for data analysts and anyone who presents data to decision-makers."
+  },
+  "246": {
+    "card": "Become a complete web professional — design, development and marketing in one advanced diploma.",
+    "desc": "This comprehensive diploma spans the whole web profession — from designing and building websites to marketing them. You'll cover advanced web design, front-end development, and digital marketing, tying it together with real projects over six to seven months. It's a broad, employable skill set for the modern web industry."
+  }
+}

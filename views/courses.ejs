@@ -152,7 +152,7 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; catShortMap[c.name] =
               <span class="meta-item"><%= course.duration || 'Flexible pace' %></span>
             </div>
             <h3 class="course-title"><%= course.title %></h3>
-            <p class="course-description"><%= course.description %></p>
+            <p class="course-description"><%= course.cardLine || course.description %></p>
             <div class="course-footer">
               <span class="course-meta-pill">Live 1-on-1</span>
               <span class="course-arrow">View Details →</span>
@@ -218,7 +218,7 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; catShortMap[c.name] =
               <span class="meta-item"><%= course.duration || 'Flexible pace' %></span>
             </div>
             <h3 class="course-title"><%= course.title %></h3>
-            <p class="course-description"><%= course.description %></p>
+            <p class="course-description"><%= course.cardLine || course.description %></p>
             <div class="course-footer">
               <span class="course-meta-pill">Live 1-on-1</span>
               <span class="course-arrow">View Details →</span>

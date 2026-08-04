@@ -260,7 +260,27 @@ const KB = [
     prereq: 'No marketing background needed.',
   },
   {
-    keys: ['data analyt', 'data scien', 'machine learning', 'power bi', 'tableau', 'big data', 'hadoop', 'mis and data', 'data visualization', 'r programming'],
+    keys: ['artificial intelligence', 'ai -', 'ai diploma', 'ai (', 'machine learning', 'ml)', 'deep learning', 'data scien'],
+    subject: 'AI & Machine Learning',
+    blurb: 'AI and machine learning are reshaping every industry, and people who can actually build and train models are among the most sought-after in tech.',
+    does: ['prepare and explore real datasets', 'train and evaluate machine-learning models', 'work with Python\u2019s ML libraries', 'build a small AI project end to end'],
+    modules: [
+      ['Python & Maths for AI', 'The Python, statistics and linear-algebra basics ML runs on.'],
+      ['Working with Data', 'Loading, cleaning and exploring datasets that models can learn from.'],
+      ['Core ML Algorithms', 'Regression, classification and clustering \u2014 how models actually learn.'],
+      ['Model Training & Evaluation', 'Training, testing and measuring whether a model is any good.'],
+      ['AI Project', 'A complete build, from raw data to a working, evaluated model.'],
+    ],
+    tools: ['Python', 'NumPy & pandas', 'scikit-learn', 'TensorFlow / Keras', 'Jupyter Notebook'],
+    roles: [
+      ['ML Engineer', '\u20b98\u201325 LPA', 'Design and deploy machine-learning models at scale.'],
+      ['Data Scientist', '\u20b97\u201322 LPA', 'Extract insight and build predictive models from data.'],
+      ['AI Developer', '\u20b96\u201318 LPA', 'Build AI-powered features into real products.'],
+    ],
+    prereq: 'Basic Python or programming logic helps; the maths is taught alongside.',
+  },
+  {
+    keys: ['data analyt', 'power bi', 'tableau', 'big data', 'hadoop', 'mis and data', 'data visualization', 'r programming'],
     subject: 'Data & Analytics',
     blurb: 'Organisations sit on more data than ever and pay well for people who can turn it into clear, actionable insight.',
     does: ['clean and analyse real datasets', 'build dashboards and reports', 'find patterns and communicate them', 'apply statistics and basic modelling'],
@@ -513,6 +533,11 @@ const GENERIC = {
 
 function matchKB(course) {
   const t = String(course.title).toLowerCase();
+  // Priority overrides: subjects that share keywords with earlier entries.
+  if (/machine learning|artificial intelligence|deep learning|\bai\b|\bml\b|data scien/.test(t)) {
+    const ai = KB.find((k) => k.subject === 'AI & Machine Learning');
+    if (ai) return ai;
+  }
   for (const entry of KB) {
     if (entry.keys.some((k) => t.includes(k))) return entry;
   }
@@ -547,8 +572,21 @@ function writeDescription(course, kb, rng) {
     `You finish with practical work you can show an employer, not just a certificate.`,
   ];
 
+  // Card one-liner — varied structure so a grid of cards never reads the same.
+  const d0 = kb.does[0];
+  const d1 = kb.does[1] || kb.does[0];
+  const d2 = kb.does[2] || kb.does[0];
+  const shortForms = [
+    `Learn to ${d0} and ${d1} across ${durWords} of live, one-on-one ${kb.subject.toLowerCase()}.`,
+    `A practical ${durPhrase} programme in ${kb.subject.toLowerCase()} \u2014 ${d0}, ${d1}, and build work worth showing.`,
+    `Go from beginner to ${d0} over ${durWords} of personal, mentor-led sessions.`,
+    `Hands-on ${title} taught 1-on-1: ${d0}, ${d2}, and finish job-ready.`,
+    `${durWords.charAt(0).toUpperCase() + durWords.slice(1)} of live ${kb.subject.toLowerCase()} where you actually ${d0} \u2014 no passive videos.`,
+    `Master the essentials of ${title} through real projects, not theory \u2014 ${d1} and more.`,
+  ];
+
   return {
-    short: `${title} \u2014 a live, one-on-one ${durPhrase} course where you ${kb.does[0]} and finish with real, show-able work.`,
+    short: pick(rng, shortForms),
     paragraphs: [pick(rng, openers), pick(rng, middles), pick(rng, closers)],
   };
 }

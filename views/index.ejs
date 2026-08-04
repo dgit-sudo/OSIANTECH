@@ -292,17 +292,23 @@
         <div class="catalog-track" data-carousel-track>
           <% featuredCourses.forEach(function(course) { %>
           <div class="catalog-slide">
-            <a href="/courses/<%= course.id %>" class="course-card-link">
+            <a href="/courses/<%= course.id %>" class="course-card-link" data-course-card data-course-title="<%= course.title %>">
               <article class="course-card" data-tilt data-tilt-strength="4">
                 <div class="course-img course-img-<%= (course.id % 9) + 1 %> <%= course.image ? 'has-course-image' : '' %>"<% if (course.image) { %> style="--course-image: url('<%= course.image %>');"<% } %>>
-                  <div class="course-category-tag"><%= course.category || 'General' %></div>
+                  <div class="course-img-overlay">
+                    <div class="course-category-tag"><%= course.category || 'General' %></div>
+                  </div>
                 </div>
                 <div class="course-body">
+                  <div class="course-meta">
+                    <span class="meta-item"><%= course.level || 'Professional' %></span>
+                    <span class="meta-item"><%= course.duration || 'Flexible pace' %></span>
+                  </div>
                   <h3 class="course-title"><%= course.title %></h3>
-                  <p class="course-description"><%= course.description %></p>
+                  <p class="course-description"><%= course.cardLine || course.description %></p>
                   <div class="course-footer">
-                    <span class="course-meta-pill">Professional Programme</span>
-                    <span class="course-arrow">&#8594;</span>
+                    <span class="course-meta-pill">Live 1-on-1</span>
+                    <span class="course-arrow">View Details &#8594;</span>
                   </div>
                 </div>
               </article>

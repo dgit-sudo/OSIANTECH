@@ -278,6 +278,75 @@ body.page-home .navbar.scrolled {
 @keyframes ctaSpin { to { transform: rotate(360deg); } }
 
 /* ---------------------------------------------------------------
+   12b. Featured course cards — match the courses-page treatment
+--------------------------------------------------------------- */
+body.page-home .course-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 400px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  transition: transform .5s var(--ease), border-color .45s var(--ease), box-shadow .45s var(--ease);
+}
+body.page-home .course-card-link { text-decoration: none; display: block; height: 100%; }
+body.page-home .course-card-link:hover .course-card {
+  border-color: var(--border-blue);
+  box-shadow: 0 22px 55px rgba(0,0,0,.34);
+}
+body.page-home .course-img {
+  position: relative;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  flex-shrink: 0;
+}
+body.page-home .course-img::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 25%, rgba(0,0,0,.62) 100%);
+}
+body.page-home .course-img-overlay { position: absolute; inset: 0; z-index: 1; display: flex; align-items: flex-start; justify-content: space-between; padding: 14px; }
+body.page-home .course-category-tag {
+  align-self: flex-start;
+  background: rgba(1,4,9,.7);
+  color: rgba(255,255,255,.92);
+  font-size: .68rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  padding: 6px 12px; border-radius: 999px; font-family: 'Inter', sans-serif;
+  border: 1px solid rgba(255,255,255,.14);
+  backdrop-filter: blur(6px);
+}
+body.page-home .course-body { display: flex; flex-direction: column; gap: 12px; padding: 22px; flex: 1; }
+body.page-home .course-meta { display: flex; flex-wrap: wrap; gap: 6px; }
+body.page-home .meta-item {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 11px; border-radius: 999px;
+  background: rgba(255,255,255,.04); border: 1px solid var(--border);
+  color: var(--text-secondary); font-size: .73rem; font-weight: 600; font-family: 'Inter', sans-serif;
+}
+body.page-home .course-title {
+  margin: 0; font-family: 'Poppins', sans-serif; font-size: 1.1rem; font-weight: 700;
+  line-height: 1.32; color: var(--text-primary); letter-spacing: -.01em; min-height: 0;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  transition: color var(--t);
+}
+body.page-home .course-card-link:hover .course-title { color: var(--blue-light); }
+body.page-home .course-description {
+  color: var(--text-secondary); line-height: 1.65; font-size: .87rem; flex: 1; font-family: 'Inter', sans-serif;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+body.page-home .course-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 14px; border-top: 1px solid var(--border); margin-top: auto; }
+body.page-home .course-meta-pill { font-size: .72rem; font-weight: 700; letter-spacing: .03em; color: var(--text-muted); font-family: 'Inter', sans-serif; text-transform: uppercase; }
+body.page-home .course-arrow { color: var(--orange); font-size: .84rem; font-weight: 700; font-family: 'Inter', sans-serif; transition: transform var(--t); }
+body.page-home .course-card-link:hover .course-arrow { transform: translateX(4px); }
+
+/* ---------------------------------------------------------------
    13. Responsive
 --------------------------------------------------------------- */
 @media (max-width: 640px) {

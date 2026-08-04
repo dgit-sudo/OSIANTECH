@@ -1,0 +1,134 @@
+{
+  "13": {
+    "card": "Build computer awareness the government-recognised way with NIELIT's ACC certification.",
+    "desc": "The NIELIT ACC course gives you foundational computer literacy with a government-recognised certificate. You'll learn how computers work, the office basics, internet use and everyday digital skills — a solid first credential for jobs and further study. It's beginner-friendly and taught at your own pace."
+  },
+  "20": {
+    "card": "Broaden your computing skills with a full Advanced Diploma in Computer Application over a year.",
+    "desc": "This year-long advanced diploma builds a well-rounded, employable computing profile. You'll master office and business applications, internet and productivity tools, and get into programming and databases, tied together with project work. It's a strong credential for office, admin and entry-level IT roles."
+  },
+  "23": {
+    "card": "Go deep into ethical hacking with a full year of offensive security and defence training.",
+    "desc": "This advanced diploma is a serious, year-long journey into ethical hacking and cyber security. You'll cover reconnaissance, exploitation, network and web security, and defensive hardening, all practised safely in labs. It's built to make you genuinely capable — and employable — in the fast-growing security field."
+  },
+  "25": {
+    "card": "Build real games with a full year of game development — design, engines, coding and playable projects.",
+    "desc": "This year-long diploma takes you deep into game development. You'll learn game design principles, work in a game engine, script gameplay, and build playable games as portfolio projects. It's an immersive, creative programme for anyone serious about breaking into the game industry."
+  },
+  "26": {
+    "card": "Launch an HR career with a full diploma — recruitment, payroll, HR software and workplace practice.",
+    "desc": "This year-long HR management diploma prepares you for a real human-resources career. You'll cover recruitment, employee management, payroll, labour basics and HR software, with practical, workplace-oriented training. It's ideal for anyone wanting to enter the people-and-operations side of business."
+  },
+  "29": {
+    "card": "Become a mobile app developer with a full year of hands-on Android and app-building skills.",
+    "desc": "This advanced diploma is a complete, year-long path into mobile app development. You'll learn app design, programming, working with data, and build real apps across the course as portfolio pieces. It's a thorough, project-driven programme for anyone wanting a genuine career building mobile apps."
+  },
+  "33": {
+    "card": "Turn Excel into a power tool — advanced formulas, pivot tables, dashboards and data analysis.",
+    "desc": "Advanced Excel is one of the most valuable office skills you can hold. This course covers advanced formulas and functions, lookups, pivot tables, dashboards and real data analysis — the skills that make you the go-to person for anything data-related at work. Practical and immediately useful, taught one-on-one."
+  },
+  "44": {
+    "card": "Crack campus placements — aptitude, logical reasoning and the test skills recruiters screen for.",
+    "desc": "Most campus placements start with an aptitude test, and this course makes sure you pass it. You'll master quantitative aptitude, logical reasoning and verbal ability, with plenty of timed practice and shortcuts. It's focused, practical preparation that gives job-seekers a real edge in recruitment drives."
+  },
+  "48": {
+    "card": "Start from zero and get comfortable with computers — the essential first course for everyday digital skills.",
+    "desc": "This basic computer course is built for genuine beginners. You'll learn how to use a computer confidently — the operating system, typing, the office basics, internet and email — everything needed for daily life and entry-level jobs. Patient, one-on-one teaching means no question is too small."
+  },
+  "49": {
+    "card": "Learn Excel from scratch — spreadsheets, formulas and the basics every office job expects.",
+    "desc": "Basic Excel is a must-have skill for almost any desk job, and this course builds it from the ground up. You'll learn to create spreadsheets, use essential formulas and functions, format data, and produce simple reports. It's a practical, confidence-building start with the world's most-used office tool."
+  },
+  "65": {
+    "card": "Earn NIELIT's CCC certificate — recognised computer literacy for jobs and government roles.",
+    "desc": "The CCC is a widely-recognised computer literacy certification, often required for government and office jobs. This course covers computer fundamentals, office applications, internet and digital services in line with the NIELIT syllabus. It's a practical, credential-focused course for job-seekers."
+  },
+  "66": {
+    "card": "Go beyond CCC with CCC Plus — deeper computer skills and a stronger NIELIT credential.",
+    "desc": "CCC Plus extends the standard computer-concepts course with additional depth and a more advanced NIELIT certificate. You'll strengthen your office, internet and digital skills further, making the credential more valuable for jobs. It's the natural step up for those wanting more than the basic certificate."
+  },
+  "82": {
+    "card": "Pass the Computer Proficiency Test with focused, exam-ready preparation.",
+    "desc": "The CPT is required for many government and recruitment processes, and this short, focused course prepares you to clear it confidently. You'll cover the computer skills the test checks — fundamentals, office applications and typing — with targeted practice. Efficient, exam-oriented coaching in just 24 hours."
+  },
+  "102": {
+    "card": "Master corporate finance and SAP FICO — a full accounting diploma for high-value finance roles.",
+    "desc": "This year-long diploma combines advanced finance and accounting with SAP FICO, the enterprise finance module. You'll master accounting, taxation and Tally, then move into SAP FICO for corporate-grade finance skills. It's built to place you into well-paid roles in company finance departments."
+  },
+  "103": {
+    "card": "Launch a banking and finance career — a practical diploma in banking operations and financial services.",
+    "desc": "This diploma prepares you for the banking and financial-services sector. You'll cover banking operations, financial products, customer service, and the practical skills banks and NBFCs hire for. It's a focused, career-oriented programme for anyone wanting into India's large finance job market."
+  },
+  "109": {
+    "card": "Master office automation and publishing — a complete diploma in IT and office management.",
+    "desc": "This six-month diploma makes you the complete office professional. You'll master the office suite, document and publishing tools, data handling, and IT-office management practices — everything a modern administrative role demands. It's a thorough, employable qualification for office and back-office careers."
+  },
+  "114": {
+    "card": "Become an expert computer user with NIELIT's ECC — a comprehensive 200-hour computing course.",
+    "desc": "The ECC is NIELIT's in-depth computer course, going well beyond the basics. Across 200 hours you'll cover office applications thoroughly, internet and digital services, and broader IT skills, earning a strong recognised credential. It's for those who want genuine, comprehensive computer competence."
+  },
+  "115": {
+    "card": "Build typing speed and accuracy — pass typing efficiency tests required for many government jobs.",
+    "desc": "Typing speed is a hard requirement for many government and office roles, and this course builds it systematically. You'll develop speed and accuracy through structured practice, preparing specifically for typing efficiency tests. It's focused, practical training toward a skill that directly unlocks jobs."
+  },
+  "121": {
+    "card": "Build fast, accurate English typing — a practical skill for jobs and government exams.",
+    "desc": "Good English typing is a genuine job skill, especially for data-entry and government roles. This course builds your speed and accuracy through structured, daily practice using proper technique. In a month you'll type confidently and be ready for typing tests that many jobs require."
+  },
+  "125": {
+    "card": "Automate Excel with VBA macros — make spreadsheets do your repetitive work for you.",
+    "desc": "Excel VBA lets you automate the boring, repetitive parts of spreadsheet work with custom macros. This course teaches you to record and write macros, build simple tools, and automate reports and tasks. It's a genuinely powerful skill that sets you apart in any data or finance role."
+  },
+  "132": {
+    "card": "Master Tally Prime with GST — complete, practical accounting from journal entries to GST returns.",
+    "desc": "This is the accounting course employers actually ask for. You'll master Tally Prime end-to-end — company setup, voucher entry, inventory and payroll — plus practical GST: invoicing, input credit and filing returns. Over 2.5 hands-on months it makes you genuinely job-ready as an accountant."
+  },
+  "148": {
+    "card": "Handle GST like a professional — practical filing, invoicing and compliance in one focused course.",
+    "desc": "GST touches every business, and people who can handle it properly are always needed. This practical course covers GST registration, invoicing, input tax credit, and filing returns on the actual portal. It's focused, hands-on training that makes you immediately useful for GST compliance work."
+  },
+  "151": {
+    "card": "Learn fast, accurate Hindi typing — an essential skill for many government and office jobs.",
+    "desc": "Hindi typing is required for numerous government positions and clerical roles. This course builds your Hindi typing speed and accuracy through structured practice with proper technique and keyboard layouts. It's practical, exam-focused training toward a skill that directly opens job doors."
+  },
+  "178": {
+    "card": "Get Microsoft-certified in MS Office — Word, Excel, PowerPoint and Outlook to a professional standard.",
+    "desc": "This course takes you to genuine, certifiable proficiency across the Microsoft Office suite. You'll master Word, Excel, PowerPoint and Outlook — the tools every office runs on — to a professional standard backed by certification. It's one of the most universally useful qualifications for any career."
+  },
+  "183": {
+    "card": "Earn the MS-CIT — Maharashtra's respected government computer-literacy certification.",
+    "desc": "MS-CIT is a widely-recognised computer literacy certificate valued across Maharashtra for jobs and admissions. This course covers computer fundamentals, office applications and internet skills in line with the official syllabus. It's a practical, credential-focused course for students and job-seekers."
+  },
+  "187": {
+    "card": "Reach graduate-level IT competence with the NIELIT A Level — a serious, recognised computing qualification.",
+    "desc": "The NIELIT A Level is equivalent to an advanced diploma in computer applications and is respected for IT careers. Over 1.5 years you'll cover programming, databases, systems and applications in real depth, earning a strong government-recognised credential. It's for those pursuing a genuine IT profession."
+  },
+  "188": {
+    "card": "Earn the NIELIT O Level — a foundation-level recognised qualification for IT careers.",
+    "desc": "The NIELIT O Level is a recognised foundation qualification in computer applications. Over a year you'll cover IT fundamentals, programming basics, and applications, building a solid, certified base for IT and office roles. It's a valued credential and a stepping stone toward the A Level and beyond."
+  },
+  "189": {
+    "card": "Get expert guidance for NIOS 10th and 12th admissions — clear advice through the open-schooling process.",
+    "desc": "NIOS open schooling is a flexible path to complete Class 10 or 12, but the process can be confusing. This guidance programme helps you navigate admissions, subject choices and requirements with expert support throughout the year. It's practical help that removes the guesswork from open schooling."
+  },
+  "197": {
+    "card": "Build confidence and presence — personality development for interviews, work and everyday life.",
+    "desc": "How you communicate and carry yourself shapes every opportunity. This course builds confidence, communication, body language and presence — the soft skills that make a real difference in interviews, workplaces and life. It's practical and personal, with a mentor helping you grow session by session."
+  },
+  "219": {
+    "card": "Earn the RS-CFA accounting certification — Rajasthan-recognised practical financial accounting.",
+    "desc": "RS-CFA is a Rajasthan government and VMOU-recognised financial accounting certification. This course covers practical accounting, Tally, GST and bookkeeping in line with the syllabus, making you genuinely capable of handling real accounts. It's a valued, job-focused credential for the state's finance roles."
+  },
+  "220": {
+    "card": "Earn the RS-CIT — Rajasthan's most popular government computer-literacy certificate.",
+    "desc": "RS-CIT is one of Rajasthan's most widely-held computer certifications, valued for jobs and admissions. This course covers computer fundamentals, office applications, internet and digital services per the official syllabus, preparing you fully for the exam. Practical, recognised and career-relevant."
+  },
+  "221": {
+    "card": "Prepare confidently for your RS-CIT re-exam with focused revision and practice.",
+    "desc": "If you're retaking the RS-CIT, this focused programme gets you exam-ready efficiently. It revises the computer fundamentals, office applications and digital skills the test covers, with targeted practice on your weaker areas. Personal coaching means your time goes exactly where it's needed most."
+  },
+  "222": {
+    "card": "Prepare for the RSMSSB Informatics Assistant computer paper with syllabus-focused coaching.",
+    "desc": "This course targets the computer paper (Paper 1) of the RSMSSB Informatics Assistant exam. You'll work through the required computer topics — fundamentals, applications and IT concepts — with structured, exam-oriented practice. It's focused preparation to help you clear a competitive, sought-after government exam."
+  }
+}

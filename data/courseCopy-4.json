@@ -1,0 +1,94 @@
+{
+  "9": {
+    "card": "Assemble, diagnose and repair computer hardware — the A+ diploma that starts every IT career.",
+    "desc": "The A+ hardware diploma is where hands-on IT careers begin. You'll learn to assemble PCs, identify and replace components, diagnose faults, and install operating systems — the practical skills every support and IT role assumes. It's completely hands-on, building real confidence with actual hardware."
+  },
+  "19": {
+    "card": "Build civil engineering expertise with a full diploma — design software, drawings and site-ready skills.",
+    "desc": "This year-long civil engineering diploma bridges classroom theory and the practical software the field runs on. You'll work with AutoCAD, structural analysis and estimation, producing real drawings and project work. It's built to make civil engineering graduates and aspirants genuinely employable on projects and sites."
+  },
+  "21": {
+    "card": "Master both hardware and networking — a full diploma covering PC repair, servers and network setup.",
+    "desc": "This advanced diploma combines computer hardware with networking into one complete IT skill set. You'll assemble and repair systems, configure networks, set up servers, and troubleshoot end to end. Over a year it makes you the versatile technician that offices and IT firms rely on."
+  },
+  "37": {
+    "card": "Build advanced robotics projects — hands-on robotics for engineers and serious enthusiasts.",
+    "desc": "This course takes robotics beyond the basics for engineers and committed learners. You'll work with microcontrollers, sensors and actuators, program robotic behaviour, and build genuinely advanced projects. It's practical and challenging, ideal for engineering students and professionals wanting real robotics capability."
+  },
+  "60": {
+    "card": "Master AutoCAD across disciplines — 2D drafting and 3D for electrical, civil, mechanical and interior design.",
+    "desc": "This comprehensive CAD/CAM course covers advanced AutoCAD including 3D, applied across electrical, civil, mechanical and interior disciplines. You'll produce precise 2D drawings and 3D models to real industry standards, building a versatile drafting skill that works across engineering fields. Hands-on and portfolio-focused throughout."
+  },
+  "64": {
+    "card": "Design automobile components in CATIA — the CAD tool of the automotive and aerospace industries.",
+    "desc": "CATIA is the design software behind much of the automotive and aerospace world. This course focuses on automobile design, teaching surface and part modelling, assemblies and the workflows those industries use. It's a serious, specialised CAD skill for mechanical and automobile engineers aiming high."
+  },
+  "67": {
+    "card": "Configure real Cisco networks and earn CCNA readiness — routing, switching and the networking career-starter.",
+    "desc": "The CCNA is the world's most recognised entry networking certification, and this course prepares you for it properly. You'll learn IP addressing, configure routers and switches, understand routing and switching, and troubleshoot networks in hands-on labs. It's the launchpad for a well-paid networking career."
+  },
+  "68": {
+    "card": "Advance to professional-level networking with CCNP — deeper routing, switching and enterprise networks.",
+    "desc": "CCNP is the next step up for networking professionals, and this course takes you there. Building on CCNA, you'll go deeper into advanced routing, switching, and troubleshooting enterprise-scale networks through serious hands-on practice. It's for those committed to a senior networking career."
+  },
+  "69": {
+    "card": "Repair laptops and hardware at chip level — advanced, in-demand board-level repair skills.",
+    "desc": "Chip-level repair is a specialised, well-paid skill that goes far beyond swapping parts. This course teaches you to diagnose faults on the motherboard, work with components, and carry out board-level laptop and hardware repairs. It's entirely hands-on and turns you into a genuine repair specialist."
+  },
+  "71": {
+    "card": "Design roads, land and infrastructure in Civil 3D — Autodesk's tool for civil engineering projects.",
+    "desc": "Civil 3D is Autodesk's specialist software for civil infrastructure — roads, grading, land development and surveys. This course teaches you to model terrain, design alignments and produce the drawings civil projects require. It's a focused, employable skill for civil engineers entering infrastructure work."
+  },
+  "75": {
+    "card": "Learn CNC programming through simulation — write the code that drives automated machining.",
+    "desc": "CNC programming is the language that tells machines how to cut and shape parts. This simulation-based course teaches you G-code, machining operations and toolpaths, letting you learn and test programs safely on screen. It's a practical entry into modern manufacturing without needing machine time."
+  },
+  "116": {
+    "card": "Create electrical drawings and schematics in AutoCAD Electrical — wiring diagrams and control panels.",
+    "desc": "Electrical CAD is essential for anyone producing wiring diagrams, control panels and electrical schematics. This course teaches you AutoCAD focused on electrical drafting — symbols, circuits, panel layouts and standards. It's a practical, job-ready skill for electrical engineers and drafters."
+  },
+  "150": {
+    "card": "Become a certified hardware and networking engineer — a complete six-month diploma with real credentials.",
+    "desc": "The CHNE diploma is a thorough, six-month path to becoming a hardware and networking engineer. You'll master PC assembly and repair, network configuration, servers and troubleshooting, backed by recognised certification. It's built to make you fully job-ready for IT support and networking roles."
+  },
+  "175": {
+    "card": "Administer Windows Server 2012 with MCSA — manage the servers that run business networks.",
+    "desc": "This MCSA course teaches you to install, configure and manage Windows Server 2012 — the backbone of countless business networks. You'll cover Active Directory, users and permissions, networking services and server administration. It's a strong, recognised credential for system administration careers."
+  },
+  "177": {
+    "card": "Design building services with MEP — mechanical, electrical and plumbing systems for construction.",
+    "desc": "MEP design covers the essential systems that make a building work — mechanical, electrical and plumbing. This course teaches you the design principles and software for each, producing the coordinated drawings construction projects need. It's a valuable, in-demand skill in the building services industry."
+  },
+  "200": {
+    "card": "Program industrial automation with PLC and SCADA — the systems that run factories.",
+    "desc": "PLCs and SCADA systems control the machines and processes in modern industry. This certification course teaches you to program PLCs, build SCADA monitoring, and understand industrial automation. It's a practical, well-paid skill for electrical and instrumentation engineers entering the automation field."
+  },
+  "201": {
+    "card": "Master industrial automation with a full PLC/SCADA diploma — deep, hands-on factory-floor skills.",
+    "desc": "This diploma is a serious, multi-month grounding in industrial automation. You'll go deep into PLC programming, SCADA systems, HMI, and real automation scenarios that mirror factory environments. It's built to make you genuinely employable in the growing industrial automation sector."
+  },
+  "202": {
+    "card": "Start with PLC and SCADA basics — a beginner-friendly first step into industrial automation.",
+    "desc": "This beginner course opens the door to industrial automation gently. You'll learn what PLCs and SCADA systems do, basic programming, and how automated processes are controlled — the essential foundation before advancing further. It's perfect for those new to the automation field."
+  },
+  "216": {
+    "card": "Build robots and embedded systems — combine hardware, sensors and programming into working machines.",
+    "desc": "This course brings robotics and embedded systems together into hands-on project work. You'll program microcontrollers, integrate sensors and motors, and build robots that sense and respond to their environment. It's an exciting, practical course for engineers and enthusiasts who want to make hardware come alive."
+  },
+  "218": {
+    "card": "A short, fun robotics course for kids — build and program simple robots through hands-on play.",
+    "desc": "This compact robotics course introduces children to building and programming simple robots. Through guided, hands-on activities they'll assemble mechanisms, add sensors, and see their creations respond — sparking curiosity in STEM early. It's playful, encouraging and completely age-appropriate."
+  },
+  "232": {
+    "card": "Design complete solar power systems — PVSyst, SketchUp and AutoCAD for the renewable-energy boom.",
+    "desc": "Solar is one of the fastest-growing industries, and this diploma makes you job-ready for it. You'll design solar PV systems, simulate performance in PVSyst, and produce layouts using SketchUp and AutoCAD. It's a practical, in-demand skill set for the renewable-energy sector, taught hands-on across four months."
+  },
+  "233": {
+    "card": "Understand and design solar energy systems — the essentials of the renewable-energy field.",
+    "desc": "This focused course covers the fundamentals of solar energy and system design. You'll learn how solar PV works, sizing and components, and the basics of designing an installation. It's a solid entry point into the booming renewable-energy industry for engineers and career-switchers alike."
+  },
+  "235": {
+    "card": "Analyse and design structures in STAAD.Pro — the standard tool for structural engineering.",
+    "desc": "STAAD.Pro is a leading tool for analysing and designing steel and concrete structures. This course teaches you to model structures, apply loads, run analysis and design to codes — the real workflow of a structural engineer. It's a practical, career-focused skill for civil and structural engineering."
+  }
+}

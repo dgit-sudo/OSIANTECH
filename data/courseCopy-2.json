@@ -1,0 +1,334 @@
+{
+  "15": {
+    "card": "Create interactive animations and web content with Adobe Flash — vector art, motion and ActionScript basics.",
+    "desc": "Adobe Flash remains a hands-on way to learn vector animation and interactive content. This course covers the drawing tools, timeline animation, symbols and basic ActionScript, so you can build animated banners, simple games and interactive pieces. It's a practical, creative course that builds real motion-design instincts."
+  },
+  "92": {
+    "card": "Learn Dart — the modern language that powers Flutter and cross-platform app development.",
+    "desc": "Dart is the language behind Flutter, and getting fluent in it is the smart first step toward building apps for phones, web and desktop from one codebase. This course covers Dart's syntax, functions, classes and async programming, giving you the language foundation Flutter development is built on. Clear, hands-on, one-on-one."
+  },
+  "94": {
+    "card": "Become a software developer with this in-depth Computer Science diploma — programming, databases and real projects.",
+    "desc": "The DCS diploma is a proper grounding in software development, run over six to eight months. You'll learn programming fundamentals, data structures, databases, and web or application development, tying it together with real projects. It's designed for anyone who wants to enter the software industry with genuine, demonstrable skills rather than just a certificate."
+  },
+  "96": {
+    "card": "Automate software delivery with DevOps — Git, CI/CD, and shipping code reliably and fast.",
+    "desc": "DevOps is the practice that lets teams ship software quickly and safely, and DevOps engineers are among the best-paid people in tech. This course covers Linux essentials, Git workflows, building CI/CD pipelines, and automating deployments. It's hands-on throughout — you'll set up a real build-to-deploy pipeline yourself."
+  },
+  "97": {
+    "card": "Master DevOps on AWS — cloud infrastructure, automation and CI/CD in one career-focused diploma.",
+    "desc": "This diploma combines DevOps practice with Amazon Web Services, the world's leading cloud platform. You'll work with Linux, Git and CI/CD pipelines, then deploy and automate real infrastructure on AWS. Over four months it takes you to genuinely job-ready cloud-DevOps skills, with practical labs at every stage."
+  },
+  "104": {
+    "card": "Cover computing end-to-end with the DCA diploma — office tools, internet, and programming fundamentals.",
+    "desc": "The Diploma in Computer Application is a well-rounded six-month grounding in practical computing. You'll master the office suite, internet and productivity tools, and get a first taste of programming and databases. It's a strong, employable foundation for office and IT-support roles, taught one-on-one so nothing gets skipped."
+  },
+  "110": {
+    "card": "Build and edit websites visually with Dreamweaver — design, code and manage sites in one tool.",
+    "desc": "Dreamweaver lets you build websites with both a visual designer and direct code access, bridging design and development. This course covers laying out pages, working with HTML and CSS inside Dreamweaver, and managing a complete site. It's a practical entry point for anyone who wants to produce and maintain websites."
+  },
+  "117": {
+    "card": "Program microcontrollers and build embedded systems — the software inside real-world devices.",
+    "desc": "Embedded systems are the hidden computers inside appliances, cars and machines. This course teaches you to program microcontrollers in C, interface with sensors and hardware, and build firmware that runs on real devices. It's ideal for electronics and ECE students wanting the programming skills that make hardware come alive."
+  },
+  "120": {
+    "card": "Speak English with confidence — fluency, pronunciation and real conversation practice, one-on-one.",
+    "desc": "Spoken English is often the single skill that unlocks better jobs and confidence, and this course builds it through constant live practice. You'll work on fluency, pronunciation, everyday conversation and speaking under pressure, with a patient tutor correcting you in real time. The one-on-one format means you actually speak, every session."
+  },
+  "123": {
+    "card": "Analyse and design buildings in ETABS — structural engineering software used across construction.",
+    "desc": "ETABS is the go-to software for analysing and designing multi-storey buildings. This course teaches you to model structures, apply loads, run analysis, and interpret results for real structural design. It's a focused, practical course for civil and structural engineers who want a tool that construction firms genuinely use."
+  },
+  "124": {
+    "card": "Think like an attacker to defend systems — ethical hacking and cyber security to the CEH syllabus.",
+    "desc": "Ethical hacking is about finding weaknesses before the criminals do, and it's one of the fastest-growing careers in tech. Following the CEH syllabus, this course covers footprinting, scanning, exploitation techniques and hardening — all practised safely in labs. You'll learn to assess and secure systems, and to report findings the professional way."
+  },
+  "126": {
+    "card": "Turn creative flair into a fashion career — design, sketching, garment concepts and a real portfolio.",
+    "desc": "Fashion Designing takes your eye for style and gives it professional structure. You'll learn design principles, sketching and illustration, fabric and garment concepts, and develop a portfolio of your own work. It's a creative, hands-on course for anyone wanting to break into India's fast-growing fashion and apparel industry."
+  },
+  "127": {
+    "card": "Design beautiful app and web interfaces in Figma — the industry-standard UI/UX design tool.",
+    "desc": "Figma is where modern product design happens, and this advanced course makes you fluent in it. You'll design interfaces, build components and design systems, create interactive prototypes, and collaborate the way real product teams do. It's the practical toolkit for anyone moving into UI/UX design."
+  },
+  "128": {
+    "card": "Edit videos that look professional with Filmora — cuts, transitions, effects and audio.",
+    "desc": "Filmora makes polished video editing approachable, and this course gets you producing clean, engaging edits fast. You'll learn cutting and sequencing, transitions and effects, titles, colour and audio — everything needed to turn raw footage into finished videos. Great for content creators, marketers and anyone starting in video."
+  },
+  "129": {
+    "card": "Build beautiful cross-platform apps with Flutter — one codebase for Android and iOS.",
+    "desc": "Flutter lets you build gorgeous apps for both Android and iOS from a single codebase, and it's in high demand. This course covers Flutter's widgets, layouts, state and navigation, using Dart, and takes you to a working app you built yourself. It's the modern, efficient way into mobile app development."
+  },
+  "130": {
+    "card": "Reach French A2 level — hold real conversations and handle everyday situations with confidence.",
+    "desc": "This advanced-level (A2) French course builds on the basics toward genuine conversational ability. You'll expand vocabulary and grammar, practise speaking and listening, and learn to handle everyday and travel situations in French. Taught one-on-one, so you speak far more than you would in any group class."
+  },
+  "131": {
+    "card": "Start French from zero — pronunciation, essential grammar and your first real conversations.",
+    "desc": "This beginner (A1) French course takes you from your very first words to simple, confident conversation. You'll learn pronunciation, essential grammar, everyday vocabulary and how to introduce yourself, ask questions and get by. The personal, live format means your accent and confidence build from day one."
+  },
+  "133": {
+    "card": "Become a full-stack .NET developer — front-end, C# back-end, databases and a complete deployed project.",
+    "desc": "This full-stack track on the .NET platform makes you a complete developer. You'll build front-ends, write C# back-end logic, design and connect databases, and ship a full application end to end. Over five to six months it takes you from fundamentals to a portfolio project that proves you can build real software."
+  },
+  "134": {
+    "card": "Become a full-stack Java developer — front-end to Java back-end, databases and a real project.",
+    "desc": "This full-stack Java programme covers the entire application stack. You'll build interfaces, write Java back-end services, work with databases, and deliver a complete project you designed and coded. It's a career-focused course that turns Java knowledge into genuine, employable full-stack ability."
+  },
+  "139": {
+    "card": "Design products in Fusion 360 — cloud CAD, modelling and manufacturing in one modern tool.",
+    "desc": "Fusion 360 brings design, engineering and manufacturing into one modern, cloud-based tool. This course covers parametric modelling, assemblies, and preparing designs for manufacture, giving you a versatile CAD skill that startups and product teams love. Hands-on and portfolio-focused throughout."
+  },
+  "140": {
+    "card": "Reach German A2 level — converse comfortably and handle real-life situations in German.",
+    "desc": "This advanced (A2) German course moves you from basics toward real conversational fluency. You'll grow your vocabulary and grammar, sharpen listening and speaking, and learn to manage everyday and workplace situations in German — valuable for study and work in Germany. Taught personally, so you actually practise speaking."
+  },
+  "141": {
+    "card": "Begin German from scratch — pronunciation, core grammar and your first confident conversations.",
+    "desc": "This beginner (A1) German course starts at zero and gets you speaking. You'll learn pronunciation, essential grammar, everyday vocabulary, and how to introduce yourself and handle basic situations. With one-on-one sessions, your foundation and confidence in German build quickly."
+  },
+  "152": {
+    "card": "Build the structure of every website with HTML5 — the essential first skill of web development.",
+    "desc": "HTML5 is the backbone of every web page, and this short course gets you writing it properly. You'll learn document structure, text and media, forms, and the semantic elements modern sites are built on. It's the natural starting point for web development and pairs directly with CSS."
+  },
+  "153": {
+    "card": "Design heating, ventilation and air-conditioning systems — HVAC skills for building services careers.",
+    "desc": "HVAC is essential to every modern building, and trained HVAC designers are in steady demand. This course covers load calculations, duct and system design, equipment selection and the practical drawings the field requires. It's a focused, career-oriented course for mechanical engineers entering building services."
+  },
+  "154": {
+    "card": "Score your target band in IELTS — listening, reading, writing and speaking, with real exam practice.",
+    "desc": "IELTS scores open doors to universities and jobs abroad, and this course is built to get you the band you need. You'll work through all four modules — listening, reading, writing and speaking — with strategies, timed practice and detailed feedback on your writing and speaking. The one-on-one format targets exactly your weak areas."
+  },
+  "155": {
+    "card": "A focused three-month training programme with a personal mentor and hands-on practice.",
+    "desc": "This programme delivers structured, mentor-led training over three months, built around practical, hands-on work rather than passive lectures. Every session is live and one-on-one, so the content and pace adapt to your goals. You finish with real, demonstrable skills and an Osian Academy certificate."
+  },
+  "156": {
+    "card": "Ace job interviews with confidence — answers, body language, and mock interviews with real feedback.",
+    "desc": "Strong interview skills can be the difference between an offer and a rejection, and they can be learned. This short course covers answering common and tricky questions, body language, confidence, and salary conversations — reinforced with mock interviews and honest feedback. It's practical preparation that shows the moment you sit down across from a recruiter."
+  },
+  "157": {
+    "card": "Build cross-platform mobile apps with Ionic — one web-based codebase for Android and iOS.",
+    "desc": "Ionic lets web developers build real mobile apps using familiar web technologies. This course covers Ionic's components, building layouts and navigation, and packaging a hybrid app for Android and iOS. It's a fast route into app development for anyone who already knows some web basics."
+  },
+  "158": {
+    "card": "Connect the physical world to the internet — build IoT projects with Python and real sensors.",
+    "desc": "The Internet of Things links everyday devices to the internet, and this course teaches you to build that link with Python. You'll wire up sensors, read and process data, connect devices to the cloud, and build a working IoT project. It's hands-on and future-focused, perfect for anyone excited by smart devices."
+  },
+  "160": {
+    "card": "Make web pages interactive with JavaScript — the language that runs in every browser.",
+    "desc": "JavaScript brings web pages to life, handling everything from clicks to live updates. This course covers variables, functions, the DOM, events and basic logic, so you can add real interactivity to any website. It's an essential skill for web development and the gateway to frameworks like React and Angular."
+  },
+  "161": {
+    "card": "Load-test applications with JMeter — measure performance and find bottlenecks before users do.",
+    "desc": "JMeter is the standard open-source tool for testing how software holds up under load. This course teaches you to build test plans, simulate thousands of users, measure response times, and identify performance bottlenecks. It's a valuable, focused skill for QA and performance engineers."
+  },
+  "162": {
+    "card": "Launch a QA career with ISTQB-aligned software testing — manual, automation and real test practice.",
+    "desc": "This job-oriented course prepares you for a software testing career and the internationally-recognised ISTQB certification. You'll learn the testing lifecycle, writing and executing test cases, defect tracking, and an introduction to automation. It's built around employable, practical QA skills that get people hired."
+  },
+  "163": {
+    "card": "Learn Kotlin — the concise, modern language Google recommends for Android development.",
+    "desc": "Kotlin is a clean, modern language that's become the standard for Android and works well beyond it. This course covers Kotlin's syntax, functions, classes, null-safety and async features, giving you a strong language foundation. It's the ideal step before diving into Android app development."
+  },
+  "164": {
+    "card": "Build elegant PHP web applications with Laravel — the framework developers actually enjoy using.",
+    "desc": "Laravel is the most popular PHP framework, loved for making web development clean and fast. This course covers routing, controllers, the Eloquent database layer, authentication and building a real application. Assuming some PHP background, it takes you to modern, employable Laravel skills."
+  },
+  "165": {
+    "card": "Administer Linux and prepare for Red Hat certification — the OS that runs the server world.",
+    "desc": "Linux runs the majority of servers, and RHCE-level skills are a strong career asset. This course covers the command line, users and permissions, storage, networking and services, mapped toward Red Hat certification. It's the essential foundation for careers in system administration, cloud and DevOps."
+  },
+  "166": {
+    "card": "Create stunning architectural visualisations in Lumion — real-time rendering for design work.",
+    "desc": "Lumion turns 3D models into breathtaking renders and walkthroughs in real time. This course teaches you to import models, apply materials and lighting, build environments, and produce photorealistic images and videos. It's a fast, impressive skill for architects and interior designers who need to sell their vision."
+  },
+  "169": {
+    "card": "Build custom online stores with Magento — the powerful platform behind serious e-commerce.",
+    "desc": "Magento powers large, feature-rich online stores, and Magento developers are in demand. This course covers setting up and configuring stores, managing products and catalogues, customising the platform, and the essentials of Magento development. It's a focused route into professional e-commerce work."
+  },
+  "170": {
+    "card": "Start a testing career with manual software testing — test cases, defect tracking and the QA mindset.",
+    "desc": "Manual testing is where every QA career begins, and it's a genuine entry point into tech without heavy coding. This course teaches the testing lifecycle, writing and running test cases, logging defects, and thinking critically about software quality. It's practical and job-focused from the first session."
+  },
+  "172": {
+    "card": "Model and simulate systems in MATLAB Simulink — the engineer's tool for control and signal work.",
+    "desc": "MATLAB and Simulink are staples of engineering analysis and simulation. This course covers MATLAB programming basics and building block-diagram models in Simulink to simulate control systems, signals and dynamic behaviour. It's ideal for engineering students and professionals who need serious modelling skills."
+  },
+  "176": {
+    "card": "Become a MEAN/MERN full-stack developer — JavaScript from database to browser in one stack.",
+    "desc": "The MEAN and MERN stacks let you build complete applications entirely in JavaScript, and they're among the most sought-after skills in web development. This in-depth course covers MongoDB, Express, Angular or React, and Node.js, tying them into full applications with a real project. It's the modern full-stack path, end to end."
+  },
+  "179": {
+    "card": "Repair smartphones professionally — diagnose faults, replace parts and run a mobile-repair service.",
+    "desc": "Mobile repairing is a practical, always-in-demand skill you can turn into a job or your own business. This course covers phone hardware, diagnosing common faults, replacing screens and components, and software troubleshooting. It's entirely hands-on, so you build genuine repair confidence on real devices."
+  },
+  "180": {
+    "card": "Work with MongoDB — the flexible NoSQL database powering modern applications.",
+    "desc": "MongoDB stores data in flexible documents instead of rigid tables, and it's a core skill for modern web and app development. This course covers documents and collections, CRUD operations, queries, indexing and data modelling the NoSQL way. It pairs perfectly with Node.js and the MERN stack."
+  },
+  "181": {
+    "card": "Build and manage databases in MS Access — tables, queries, forms and reports without heavy coding.",
+    "desc": "MS Access lets you build real, working databases with a friendly visual interface. This course covers designing tables and relationships, building queries, and creating forms and reports for data entry and analysis. It's a genuinely useful office skill for managing business data without needing to be a programmer."
+  },
+  "182": {
+    "card": "Plan and track projects like a pro in MS Project — schedules, resources and Gantt charts.",
+    "desc": "MS Project is the standard tool for planning and managing projects of any size. This course teaches you to build schedules, assign resources, track progress with Gantt charts, and manage timelines and costs. It's a valuable skill for anyone moving toward project coordination or management roles."
+  },
+  "184": {
+    "card": "Design roads and highways in MX Road — civil engineering software for infrastructure projects.",
+    "desc": "MX Road is specialist software for designing roads and highways. This course covers modelling terrain, aligning roads, cross-sections and the drawings that infrastructure projects require. It's a focused, career-oriented skill for civil engineers heading into the roads and highways sector."
+  },
+  "185": {
+    "card": "Master highway and road design in MxRoad — a deeper, project-focused civil engineering track.",
+    "desc": "This extended MxRoad programme goes deep into road and highway design for serious infrastructure work. You'll model terrain, design alignments and cross-sections, and produce complete drawing sets across substantial projects. It's built for civil engineers who want genuine, employable expertise in road design."
+  },
+  "186": {
+    "card": "Learn networking fundamentals with N+ — how data moves, IP addressing and the basics every IT role needs.",
+    "desc": "Networking basics underpin almost every IT job, and N+ gives you that foundation. This course covers how networks work, the OSI model, IP addressing, cables and devices, and basic troubleshooting. It's the essential grounding before CCNA or any networking career, taught clearly and one-on-one."
+  },
+  "190": {
+    "card": "Build fast, scalable back-ends with Node.js — JavaScript on the server for real applications.",
+    "desc": "Node.js lets you build server-side applications in JavaScript, and it's central to the modern web. This course covers Node's runtime, building APIs with Express, working with databases, and handling asynchronous code. It's a key skill for full-stack developers and pairs directly with the MERN stack."
+  },
+  "191": {
+    "card": "Pass the Oracle Java certification (OCJP) with focused, exam-mapped Java preparation.",
+    "desc": "The OCJP is a globally-respected proof of Java skill, and this course prepares you to pass it. You'll reinforce core Java thoroughly — OOP, collections, exceptions, generics — with a focus on the exam's tricky areas and plenty of practice questions. It's targeted preparation that turns Java knowledge into a recognised credential."
+  },
+  "192": {
+    "card": "Prepare for the OET medical English exam — English skills tailored for healthcare professionals.",
+    "desc": "The OET is the English test built specifically for doctors, nurses and healthcare workers going abroad. This course covers all four skills with healthcare context — patient communication, case notes, medical reading and listening — plus exam strategy and practice. Personal coaching targets exactly where you need to improve."
+  },
+  "193": {
+    "card": "Deploy and manage cloud infrastructure across AWS, Azure and OpenStack.",
+    "desc": "This course spans the major cloud platforms — AWS, Azure and OpenStack — teaching you to provision, deploy and manage cloud infrastructure. You'll work with compute, storage and networking services hands-on, building the practical cloud skills that employers across the industry are hiring for. A strong base for a cloud career."
+  },
+  "194": {
+    "card": "Reach OCP-level Oracle DBA expertise — advanced administration, tuning and recovery.",
+    "desc": "The OCP is a senior Oracle DBA credential, and this course takes you there. You'll go deep into advanced administration, performance tuning, backup and recovery, and the real-world scenarios the certification tests. It's for those serious about a well-paid, specialised database career, taught through hands-on practice."
+  },
+  "195": {
+    "card": "Start your Oracle DBA journey at OCA level — core administration skills and certification prep.",
+    "desc": "The OCA is the entry credential for Oracle database administrators, and this course builds toward it. You'll learn to install and configure Oracle, manage users and storage, and handle core administration tasks — the foundation every DBA career stands on. Practical and certification-focused throughout."
+  },
+  "196": {
+    "card": "Design printed circuit boards from schematic to layout — the foundation of every electronic product.",
+    "desc": "Every electronic device starts as a PCB, and PCB designers are essential to hardware development. This course covers drawing schematics, laying out boards, routing traces, and preparing designs for manufacture. It's a practical, in-demand skill for electronics and ECE students heading into hardware work."
+  },
+  "198": {
+    "card": "Earn your PGDCA — a full postgraduate computer-application diploma with real, employable IT skills.",
+    "desc": "The PGDCA is a recognised postgraduate diploma that broadens your computing skills for professional roles. Over a year you'll cover programming, databases, office and business applications, and project work, building a well-rounded, employable IT profile. It's a solid credential for graduates entering the IT and office sectors."
+  },
+  "204": {
+    "card": "Plan and control projects in Primavera — the scheduling tool used across construction and engineering.",
+    "desc": "Primavera P6 is the industry standard for managing large, complex projects. This course teaches you to build schedules, allocate resources, track progress and manage costs on real project structures. It's a valuable, well-paid skill for anyone in construction, engineering or project management."
+  },
+  "206": {
+    "card": "Build real Android apps through project-based learning — you code a complete app, start to finish.",
+    "desc": "This project-oriented course teaches Android development by building an actual app rather than studying features in isolation. You'll work through interfaces, data, navigation and integration as part of a real project, learning the way developers actually work. You leave with a portfolio app and genuine confidence."
+  },
+  "207": {
+    "card": "Hit your target PTE score — computer-based English testing with strategy and real practice.",
+    "desc": "The PTE is a widely-accepted, computer-based English test for study and migration. This course covers all its task types across speaking, writing, reading and listening, with the strategies and timed practice that lift scores. Personal coaching means feedback is specific to your performance, not generic."
+  },
+  "208": {
+    "card": "Learn Python — the most in-demand language in India, from first program to a real project.",
+    "desc": "Python is the language everyone recommends starting with, and for good reason — it's readable, powerful and everywhere, from web to data to automation. This course takes you from variables and loops to functions, data structures, files and a real project. No prior coding needed, and every session is live and personal."
+  },
+  "209": {
+    "card": "Automate testing with QTP/UFT — record, script and run automated tests like a professional.",
+    "desc": "QTP (now UFT) is a long-standing automation testing tool used across enterprises. This advanced course covers recording and scripting tests, working with objects, data-driving tests, and building maintainable automation. It's a focused skill for QA engineers wanting to move from manual into automated testing."
+  },
+  "210": {
+    "card": "Manage business accounts in QuickBooks — invoicing, expenses and reports for modern bookkeeping.",
+    "desc": "QuickBooks is a favourite accounting tool for small and medium businesses worldwide. This course covers setting up company accounts, invoicing, tracking expenses, reconciliation and reporting. It's a practical, job-ready bookkeeping skill, especially valuable for remote and international accounting work."
+  },
+  "211": {
+    "card": "Analyse data and build statistics with R — the language built for serious data work.",
+    "desc": "R is purpose-built for statistics and data analysis, and it's a core tool in research and analytics. This course covers R programming, working with data frames, statistical analysis and creating visualisations. It's ideal for anyone heading into data analysis, research or academic work that needs real statistical power."
+  },
+  "212": {
+    "card": "Build smart projects on Raspberry Pi with Python — a real computer for hands-on electronics.",
+    "desc": "The Raspberry Pi is a full tiny computer that's perfect for learning physical computing. This course pairs Python basics with the Pi, teaching you to control hardware, read sensors, and build real projects that interact with the world. It's a fun, hands-on entry into IoT and embedded thinking."
+  },
+  "213": {
+    "card": "Build cross-platform mobile apps with React Native — one JavaScript codebase for Android and iOS.",
+    "desc": "React Native lets you build genuinely native apps for both platforms using JavaScript and React. This course covers components, navigation, state and connecting to data, taking you to a working app you built yourself. It's a highly in-demand skill and a strong bridge from web into mobile development."
+  },
+  "214": {
+    "card": "Design buildings in Revit Architecture — BIM modelling that's now standard across the industry.",
+    "desc": "Revit and BIM have become the standard in architecture and construction, and Revit skills are widely required. This course teaches you to model buildings, work with walls, floors, roofs and families, and produce coordinated drawings and schedules. It's a practical, career-focused skill for architects and designers."
+  },
+  "223": {
+    "card": "Configure SAP FICO — the finance and controlling module at the heart of enterprise accounting.",
+    "desc": "SAP FICO handles finance and controlling for a huge share of large companies, and certified consultants are very well paid. This course covers configuring the module, master data, core financial processes and how FICO integrates across SAP. It's a strong step into high-value SAP consulting, taught hands-on."
+  },
+  "224": {
+    "card": "Master SAP HCM — the human-capital module that runs HR and payroll in big organisations.",
+    "desc": "SAP HCM manages HR and payroll for large enterprises, and skilled HCM consultants are in demand. This course covers the module's structure, personnel administration, organisational management and core HR processes in SAP. It's a focused route into enterprise HR-tech consulting."
+  },
+  "225": {
+    "card": "Configure SAP MM — materials management and procurement in the world's leading ERP.",
+    "desc": "SAP MM runs procurement and inventory for enterprises worldwide, making it a valuable consulting specialisation. This course covers the module's master data, purchasing processes, inventory management and integration with other SAP areas. It's practical, scenario-based training toward a well-paid SAP career."
+  },
+  "226": {
+    "card": "Configure SAP PP — production planning that runs manufacturing in large enterprises.",
+    "desc": "SAP PP manages production planning and manufacturing processes in big organisations. This course covers master data, planning processes, production orders and how PP integrates with the wider SAP system. It's a focused specialisation for those targeting manufacturing-sector SAP consulting roles."
+  },
+  "227": {
+    "card": "Master SAP SD — sales and distribution, the module that drives order-to-cash in enterprises.",
+    "desc": "SAP SD manages sales, distribution and the order-to-cash cycle for large companies. This course covers master data, the sales process, pricing, deliveries and billing, plus how SD connects across SAP. It's a valuable, in-demand consulting specialisation, taught through real business scenarios."
+  },
+  "228": {
+    "card": "Learn SAP Production Planning hands-on — configure and run manufacturing processes in SAP.",
+    "desc": "This SAP PP course focuses on the practical configuration and running of production planning in SAP. You'll work with master data, planning and production orders, and manufacturing scenarios that mirror real enterprise use. It's targeted training for a specialised, well-paid SAP consulting path."
+  },
+  "229": {
+    "card": "Automate web testing with Selenium and Java — build robust test suites like a pro.",
+    "desc": "Selenium is the leading tool for automating web-application testing, and Selenium-with-Java is a top-requested QA skill. This advanced course covers locating elements, writing test scripts in Java, building frameworks and reporting. It takes you from manual testing into genuine, employable automation."
+  },
+  "230": {
+    "card": "Build team sites and workflows in SharePoint — Microsoft's collaboration and document platform.",
+    "desc": "SharePoint runs document management and collaboration across countless organisations. This course covers building sites, managing documents and permissions, creating lists and libraries, and basic workflows. It's a practical skill for IT and office roles in Microsoft-based workplaces."
+  },
+  "231": {
+    "card": "Launch and run online stores on Shopify — build a real e-commerce business, no coding required.",
+    "desc": "Shopify is the easiest way to build a professional online store, and it's booming. This course covers setting up a store, adding products, themes and design, payments, and the essentials of running an e-commerce business. It's ideal for entrepreneurs and anyone wanting practical, in-demand e-commerce skills."
+  },
+  "234": {
+    "card": "Design mechanical parts and assemblies in SolidWorks — the CAD standard for product engineering.",
+    "desc": "SolidWorks is one of the most widely-used CAD tools in mechanical and product design. This course covers part modelling, assemblies, drawings and design intent, building skills that manufacturing and engineering firms genuinely require. It's hands-on and portfolio-focused throughout."
+  },
+  "236": {
+    "card": "Trade the stock market with real strategy — technical analysis, risk management and disciplined trading.",
+    "desc": "This advanced trading course goes beyond the basics into genuine strategy. You'll learn technical and chart analysis, building and testing strategies, and above all managing risk — the discipline that separates traders who last from those who don't. It's practical and grounded, using real market scenarios."
+  },
+  "238": {
+    "card": "Reach your target TOEFL score — academic English testing with strategy and real practice.",
+    "desc": "The TOEFL is widely required for study in English-speaking universities. This course covers all four sections with academic focus, plus the strategies and timed practice that lift scores. The one-on-one format means feedback on your speaking and writing is specific and immediately useful."
+  },
+  "239": {
+    "card": "Design intuitive digital experiences with UI-UX — research, wireframes, prototypes and real projects.",
+    "desc": "UI/UX design is one of the most in-demand creative-tech careers, and this course covers it properly. You'll learn user research, wireframing, visual design, prototyping and usability — the full process of designing products people love to use. You finish with portfolio projects that prove your design thinking."
+  },
+  "240": {
+    "card": "Design complex products in Unigraphics NX — advanced CAD/CAM for serious engineering.",
+    "desc": "Unigraphics NX is high-end CAD/CAM software used in automotive, aerospace and heavy engineering. This course covers advanced modelling, assemblies and manufacturing preparation, giving you skills that top engineering firms value. It's a serious, career-oriented CAD course for mechanical engineers."
+  },
+  "241": {
+    "card": "Build real games in Unity with C# — the engine behind a huge share of the games you play.",
+    "desc": "Unity powers an enormous portion of mobile and indie games, and C# is how you bring them to life. This course covers the Unity editor, scripting gameplay in C#, physics, UI and building a playable game. It's a hands-on, creative course for anyone dreaming of a career in game development."
+  },
+  "244": {
+    "card": "Design digital chips with VLSI and VHDL — the skills behind the semiconductor industry.",
+    "desc": "VLSI design is the engineering behind the chips inside every device, and it's a specialised, well-paid field. This course covers digital design concepts and VHDL, teaching you to describe and simulate hardware at the register level. It's aimed at ECE students and engineers targeting the semiconductor sector."
+  },
+  "247": {
+    "card": "Build and manage websites with WordPress — the CMS behind a huge share of the web, no code needed.",
+    "desc": "WordPress powers a massive share of all websites, and knowing it is genuinely marketable. This course covers building sites, themes and plugins, managing content, and customising WordPress to do what you need. It's perfect for freelancers, small businesses and anyone who wants to build sites without heavy coding."
+  },
+  "248": {
+    "card": "Sculpt highly-detailed 3D models in ZBrush — the tool behind film, game and product art.",
+    "desc": "ZBrush is the industry's premier digital sculpting tool, used to create the detailed characters and assets you see in films and games. This course covers sculpting techniques, detailing, texturing and preparing models for production. It's a creative, high-skill course for anyone serious about 3D art."
+  }
+}
