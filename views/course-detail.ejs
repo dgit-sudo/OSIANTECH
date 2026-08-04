@@ -2,234 +2,194 @@
 <%- include('partials/navbar') %>
 
 <%
-const learnPoints = Array.isArray(course.keyPoints)
-  ? course.keyPoints.filter(point => !/^pre[\s-]*requisite\s*:/i.test(point) && !/^certification\s*:/i.test(point))
-  : [];
-const prereqPoints = Array.isArray(course.keyPoints)
-  ? course.keyPoints.filter(point => /^pre[\s-]*requisite\s*:/i.test(point))
-  : [];
-const certPoints = Array.isArray(course.keyPoints)
-  ? course.keyPoints.filter(point => /^certification\s*:/i.test(point))
-  : [];
-const descriptionParagraphs = Array.isArray(course.detailParagraphs) ? course.detailParagraphs : [course.description || ''];
-const heroBackground = course.image ? `background-image: linear-gradient(180deg, rgba(7, 10, 20, 0.88), rgba(7, 10, 20, 0.92)), url('${course.image}');` : '';
-const heroLabel = course.category || 'Course Detail';
+const paragraphs = Array.isArray(course.detailParagraphs) && course.detailParagraphs.length
+  ? course.detailParagraphs
+  : [course.description || ''];
+const outcomes = Array.isArray(course.outcomes) ? course.outcomes : [];
+const syllabus = Array.isArray(course.syllabus) ? course.syllabus : [];
+const toolsUsed = Array.isArray(course.toolsUsed) ? course.toolsUsed : [];
+const careerRoles = Array.isArray(course.careerRoles) ? course.careerRoles : [];
+const audience = Array.isArray(course.audience) ? course.audience : [];
+const faqs = Array.isArray(course.faqs) ? course.faqs : [];
+const feeValue = Number(course.displayFee || course.nonMetroFee || course.metroFee || 0);
 %>
 
-<section class="course-detail-hero" style="<%= heroBackground %>">
-  <div class="course-detail-hero-overlay"></div>
-  <div class="container course-detail-hero-inner" data-animate="fade-up">
-    <div class="course-detail-hero-label"><%= heroLabel %></div>
-    <h1 class="course-detail-hero-title"><%= course.title %></h1>
-    <p class="course-detail-hero-copy">A premium live one-on-one program designed to teach practical skills, build portfolio-ready projects, and get you career-ready faster.</p>
+<!-- ===== HERO ===== -->
+<section class="cd-hero">
+  <div class="cd-hero-glow" aria-hidden="true"></div>
+  <div class="container cd-hero-inner">
+    <nav class="cd-breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a><span>/</span>
+      <a href="/courses">Courses</a><span>/</span>
+      <a href="/courses?category=<%= encodeURIComponent(course.category || '') %>"><%= course.category || 'Course' %></a>
+    </nav>
 
-    <div class="course-detail-hero-meta">
-      <span class="hero-chip"><strong><%= course.level || 'Professional' %></strong></span>
-      <span class="hero-chip"><strong><%= course.duration || 'Flexible' %></strong></span>
-      <span class="hero-chip"><strong>100% Online</strong></span>
-      <span class="hero-chip"><strong>Placement Support</strong></span>
+    <span class="cd-hero-kicker"><%= course.subject || course.category || 'Live Programme' %></span>
+    <h1 class="cd-hero-title"><%= course.title %></h1>
+    <p class="cd-hero-lede"><%= course.description %></p>
+
+    <div class="cd-hero-facts">
+      <div class="cd-fact"><span class="cd-fact-k">Duration</span><span class="cd-fact-v"><%= course.duration || 'Flexible' %></span></div>
+      <div class="cd-fact"><span class="cd-fact-k">Format</span><span class="cd-fact-v">Live 1-on-1</span></div>
+      <div class="cd-fact"><span class="cd-fact-k">Level</span><span class="cd-fact-v"><%= course.level || 'All levels' %></span></div>
+      <div class="cd-fact"><span class="cd-fact-k">Certificate</span><span class="cd-fact-v"><%= course.certification || 'Osian Academy' %></span></div>
     </div>
 
-    <div class="course-detail-hero-actions">
-      <a href="/checkout/<%= course.id %>" class="btn btn-primary btn-lg" data-course-id="<%= course.id %>" id="course-buy-now">Enroll Now</a>
-      <a href="/courses" class="btn btn-ghost btn-lg">Back to Courses</a>
+    <div class="cd-hero-actions">
+      <a href="/checkout/<%= course.id %>" class="btn btn-primary btn-lg" id="course-buy-now" data-course-id="<%= course.id %>">Enroll now</a>
+      <a href="https://wa.me/919624284999" target="_blank" rel="noopener noreferrer" class="btn btn-outline-white btn-lg">Talk to an advisor</a>
     </div>
   </div>
 </section>
 
-<section class="course-detail-body page-course-detail" data-animate="fade-up">
-  <div class="container">
-    <div class="course-detail-grid">
+<!-- ===== BODY ===== -->
+<section class="cd-body">
+  <div class="container cd-layout">
 
-      <main class="course-detail-main">
-        <div class="detail-section detail-section-intro">
-          <div class="detail-section-head">
-            <span class="section-label">Course overview</span>
-            <h2 class="section-title">Why this course matters</h2>
+    <main class="cd-main">
+
+      <!-- Overview -->
+      <article class="cd-block" id="overview">
+        <header class="cd-block-head">
+          <span class="cd-eyebrow">Overview</span>
+          <h2 class="cd-h2">What this course is about</h2>
+        </header>
+        <% paragraphs.forEach(function(p) { %>
+        <p class="cd-prose"><%= p %></p>
+        <% }); %>
+      </article>
+
+      <!-- What you'll be able to do -->
+      <% if (outcomes.length) { %>
+      <article class="cd-block" id="outcomes">
+        <header class="cd-block-head">
+          <span class="cd-eyebrow">By the end</span>
+          <h2 class="cd-h2">What you&rsquo;ll be able to do</h2>
+        </header>
+        <ul class="cd-outcomes">
+          <% outcomes.forEach(function(o) { %>
+          <li><span class="cd-tick" aria-hidden="true">&#10003;</span><%= o %></li>
+          <% }); %>
+        </ul>
+      </article>
+      <% } %>
+
+      <!-- Syllabus flowchart -->
+      <% if (syllabus.length) { %>
+      <article class="cd-block" id="syllabus">
+        <header class="cd-block-head">
+          <span class="cd-eyebrow">Syllabus</span>
+          <h2 class="cd-h2">How the course flows</h2>
+        </header>
+        <ol class="cd-flow">
+          <% syllabus.forEach(function(m, i) { %>
+          <li class="cd-flow-step">
+            <div class="cd-flow-marker">
+              <span class="cd-flow-num"><%= m.step || (i + 1) %></span>
+              <% if (i < syllabus.length - 1) { %><span class="cd-flow-rail" aria-hidden="true"></span><% } %>
+            </div>
+            <div class="cd-flow-card">
+              <div class="cd-flow-top">
+                <h3 class="cd-flow-name"><%= m.name %></h3>
+                <% if (m.when) { %><span class="cd-flow-when"><%= m.when %></span><% } %>
+              </div>
+              <p class="cd-flow-focus"><%= m.focus %></p>
+            </div>
+          </li>
+          <% }); %>
+        </ol>
+      </article>
+      <% } %>
+
+      <!-- Tools + Careers -->
+      <div class="cd-split">
+        <% if (toolsUsed.length) { %>
+        <article class="cd-block cd-block-sm">
+          <header class="cd-block-head"><span class="cd-eyebrow">Toolkit</span><h2 class="cd-h2">Tools you&rsquo;ll use</h2></header>
+          <div class="cd-tools">
+            <% toolsUsed.forEach(function(t) { %><span class="cd-tool"><%= t %></span><% }); %>
           </div>
-          <% descriptionParagraphs.forEach(function(paragraph) { %>
-          <p class="detail-copy"><%= paragraph %></p>
+        </article>
+        <% } %>
+
+        <% if (audience.length) { %>
+        <article class="cd-block cd-block-sm">
+          <header class="cd-block-head"><span class="cd-eyebrow">Fit</span><h2 class="cd-h2">Who it&rsquo;s for</h2></header>
+          <ul class="cd-who">
+            <% audience.forEach(function(a) { %><li><%= a %></li><% }); %>
+          </ul>
+        </article>
+        <% } %>
+      </div>
+
+      <!-- Career outcomes -->
+      <% if (careerRoles.length) { %>
+      <article class="cd-block" id="careers">
+        <header class="cd-block-head">
+          <span class="cd-eyebrow">Where it leads</span>
+          <h2 class="cd-h2">Roles this opens up</h2>
+        </header>
+        <div class="cd-roles">
+          <% careerRoles.forEach(function(r) { %>
+          <div class="cd-role">
+            <h3 class="cd-role-title"><%= r.title %></h3>
+            <span class="cd-role-pay"><%= r.salary %></span>
+            <p class="cd-role-desc"><%= r.desc %></p>
+          </div>
           <% }); %>
         </div>
+      </article>
+      <% } %>
 
-        <% if (learnPoints.length) { %>
-        <div class="detail-section detail-section-grid two-column-grid">
-          <div>
-            <h3>What you will learn</h3>
-            <div class="detail-feature-grid">
-              <% learnPoints.forEach(function(point) { %>
-              <div class="detail-feature-card">
-                <span class="feature-icon">✓</span>
-                <p><%= point %></p>
-              </div>
-              <% }); %>
-            </div>
+      <!-- FAQ -->
+      <% if (faqs.length) { %>
+      <article class="cd-block" id="faq">
+        <header class="cd-block-head">
+          <span class="cd-eyebrow">Questions</span>
+          <h2 class="cd-h2">Before you enroll</h2>
+        </header>
+        <div class="cd-faq">
+          <% faqs.forEach(function(f, i) { %>
+          <div class="cd-faq-item">
+            <button class="cd-faq-q" aria-expanded="<%= i === 0 ? 'true' : 'false' %>" data-faq-toggle>
+              <span><%= f.q %></span>
+              <span class="cd-faq-chevron" aria-hidden="true">+</span>
+            </button>
+            <div class="cd-faq-a"><p><%= f.a %></p></div>
           </div>
-          <div>
-            <h3>Course highlights</h3>
-            <ul class="detail-highlight-list">
-              <li>Live 1-on-1 mentorship</li>
-              <li>Hands-on projects and real deliverables</li>
-              <li>Certificate with placement assistance</li>
-              <li>Flexible schedule and career-focused support</li>
-            </ul>
-          </div>
+          <% }); %>
         </div>
-        <% } %>
+      </article>
+      <% } %>
+    </main>
 
-        <% if (course.contentSections && course.contentSections.length) { %>
-        <div class="detail-section">
-          <div class="detail-section-head">
-            <span class="section-label">Curriculum</span>
-            <h2 class="section-title">Structured learning path</h2>
-          </div>
-          <div class="detail-flowchart" data-animate="fade-up">
-            <% course.contentSections.forEach(function(section, idx) { %>
-            <div class="flow-step <%= idx === 0 ? 'flow-step-active' : '' %>">
-              <span class="flow-step-number"><%= idx + 1 %></span>
-              <strong><%= section.heading %></strong>
-              <% if (section.bullets && section.bullets.length) { %>
-              <ul>
-                <% section.bullets.slice(0, 3).forEach(function(item) { %>
-                <li><%= item %></li>
-                <% }); %>
-              </ul>
-              <% } %>
-            </div>
-            <% if (idx < course.contentSections.length - 1) { %>
-            <div class="flow-divider">→</div>
-            <% } %>
-            <% }); %>
-          </div>
+    <!-- Sticky sidebar -->
+    <aside class="cd-aside">
+      <div class="cd-card">
+        <div class="cd-price-row">
+          <span class="cd-price-label">Course fee</span>
+          <strong class="cd-price" id="course-fee-display" data-fee="<%= feeValue %>">INR <%= feeValue.toLocaleString('en-IN') %></strong>
+          <span class="cd-price-note">Live one-on-one price for non-metro students</span>
         </div>
-        <% } %>
+        <div class="cd-card-actions">
+          <a href="/checkout/<%= course.id %>" class="btn btn-primary btn-block">Buy now</a>
+          <a href="https://wa.me/919624284999" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-block">Ask an advisor</a>
+        </div>
+        <ul class="cd-card-specs">
+          <li><span>Duration</span><strong><%= course.duration || 'Flexible' %></strong></li>
+          <li><span>Level</span><strong><%= course.level || 'All levels' %></strong></li>
+          <li><span>Mode</span><strong>100% online, live</strong></li>
+          <li><span>Sessions</span><strong>1-on-1 with a mentor</strong></li>
+          <li><span>Prerequisite</span><strong><%= course.prerequisite || 'None' %></strong></li>
+          <li><span>Certificate</span><strong><%= course.certification || 'Osian Academy' %></strong></li>
+        </ul>
+        <div class="cd-card-guarantee">
+          <strong>Placement support included</strong>
+          <p>Resume help, mock interviews and referrals through our hiring-partner network.</p>
+        </div>
+      </div>
+    </aside>
 
-        <div class="detail-section detail-section-grid two-column-grid">
-          <div>
-            <h3>Tools & technologies</h3>
-            <div class="detail-tools-grid">
-              <% course.toolsList.forEach(function(tool) { %>
-              <span class="tool-pill"><%= tool %></span>
-              <% }); %>
-            </div>
-          </div>
-          <div>
-            <h3>Career outcomes</h3>
-            <div class="detail-outcome-grid">
-              <% course.jobs.slice(0, 4).forEach(function(job) { %>
-              <div class="outcome-card">
-                <strong><%= job.title %></strong>
-                <span><%= job.salary %></span>
-                <p><%= job.desc %></p>
-              </div>
-              <% }); %>
-            </div>
-          </div>
-        </div>
-
-        <div class="detail-section">
-          <div class="detail-section-head">
-            <span class="section-label">Roadmap</span>
-            <h2 class="section-title">Skill progression map</h2>
-          </div>
-          <div class="detail-roadmap">
-            <% course.roadmap.forEach(function(step) { %>
-            <div class="roadmap-step">
-              <div class="roadmap-step-circle"><%= step.step %></div>
-              <div>
-                <strong><%= step.phase %></strong>
-                <p><%= step.desc %></p>
-              </div>
-            </div>
-            <% }); %>
-          </div>
-        </div>
-
-        <div class="detail-section detail-section-grid two-column-grid">
-          <div>
-            <h3>Who should enroll</h3>
-            <ul class="who-list">
-              <% course.whoShouldEnroll.forEach(function(item) { %>
-              <li><span>✓</span> <%= item %></li>
-              <% }); %>
-            </ul>
-          </div>
-          <div>
-            <h3>Prerequisites & certification</h3>
-            <div class="detail-kp-grid">
-              <div class="kp-card">
-                <h4>Prerequisites</h4>
-                <ul>
-                  <% if (prereqPoints.length) { prereqPoints.forEach(function(point) { %>
-                  <li><%= point.replace(/^pre[\s-]*requisite\s*:\s*/i, '') %></li>
-                  <% }); } else { %>
-                  <li>No prior knowledge required.</li>
-                  <% } %>
-                </ul>
-              </div>
-              <div class="kp-card">
-                <h4>Certification</h4>
-                <ul>
-                  <% if (certPoints.length) { certPoints.forEach(function(point) { %>
-                  <li><%= point.replace(/^certification\s*:\s*/i, '') %></li>
-                  <% }); } else { %>
-                  <li>Osian Academy completion certificate included.</li>
-                  <% } %>
-                  <li>Recognised by our hiring partners.</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="detail-section">
-          <div class="detail-section-head">
-            <span class="section-label">Support</span>
-            <h2 class="section-title">Frequently asked questions</h2>
-          </div>
-          <div class="detail-faq">
-            <% course.enrichedFaqs.forEach(function(faq, idx) { %>
-            <div class="faq-item">
-              <button class="faq-toggle" aria-expanded="<%= idx === 0 ? 'true' : 'false' %>" data-faq-toggle>
-                <span><%= faq.q %></span>
-                <span>▼</span>
-              </button>
-              <div class="faq-body"><p><%= faq.a %></p></div>
-            </div>
-            <% }); %>
-          </div>
-        </div>
-      </main>
-
-      <aside class="course-detail-sidebar" data-animate="fade-left">
-        <div class="sidebar-panel">
-          <div class="sidebar-price-block">
-            <span class="sidebar-label">Course fee</span>
-            <strong class="sidebar-price" id="course-fee-display" data-fee="<%= Number(course.displayFee || course.nonMetroFee || course.metroFee || 0) %>">INR <%= Number(course.displayFee || course.nonMetroFee || course.metroFee || 0).toLocaleString('en-IN') %></strong>
-            <span class="sidebar-note">Live one-on-one price for non-metro students</span>
-          </div>
-          <div class="sidebar-actions">
-            <a href="/checkout/<%= course.id %>" class="btn btn-primary btn-block">Buy now</a>
-            <a href="https://wa.me/919624284999" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-block">Ask an advisor</a>
-          </div>
-          <div class="sidebar-highlights">
-            <h4>Course details</h4>
-            <ul>
-              <li><strong>Duration:</strong> <%= course.duration || 'Flexible' %></li>
-              <li><strong>Level:</strong> <%= course.level || 'All levels' %></li>
-              <li><strong>Mode:</strong> <%= course.snapshot.mode %></li>
-              <li><strong>Sessions:</strong> <%= course.snapshot.sessions %></li>
-              <li><strong>Support:</strong> <%= course.snapshot.support %></li>
-              <li><strong>Certificate:</strong> <%= course.snapshot.cert %></li>
-            </ul>
-          </div>
-          <div class="sidebar-note-card">
-            <strong>Why choose this course?</strong>
-            <p>Designed for learners who want fast applied outcomes, live mentoring, and a portfolio-ready path into professional roles.</p>
-          </div>
-        </div>
-      </aside>
-    </div>
   </div>
 </section>
 
@@ -237,7 +197,7 @@ const heroLabel = course.category || 'Course Detail';
 (function () {
   document.querySelectorAll('[data-faq-toggle]').forEach(function (btn) {
     btn.addEventListener('click', function () {
-      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      var expanded = btn.getAttribute('aria-expanded') === 'true';
       btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
     });
   });
