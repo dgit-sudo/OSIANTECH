@@ -1,5 +1,4 @@
 const express = require('express');
-const crypto = require('crypto');
 const { Pool } = require('pg');
 
 const router = express.Router();
@@ -17,21 +16,6 @@ const usersTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_USERS_TA
 const purchasesTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_PURCHASES_TABLE || '')
   ? process.env.SUPABASE_PURCHASES_TABLE
   : 'user_purchases';
-const activationTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_ACTIVATIONS_TABLE || '')
-  ? process.env.SUPABASE_ACTIVATIONS_TABLE
-  : 'course_activations';
-const classScheduleTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_CLASS_SCHEDULE_TABLE || '')
-  ? process.env.SUPABASE_CLASS_SCHEDULE_TABLE
-  : 'course_class_schedules';
-const liveSessionsTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_LIVE_SESSIONS_TABLE || '')
-  ? process.env.SUPABASE_LIVE_SESSIONS_TABLE
-  : 'live_sessions';
-const instructorTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_INSTRUCTORS_TABLE || '')
-  ? process.env.SUPABASE_INSTRUCTORS_TABLE
-  : 'instructor_accounts';
-const instructorSlotsTable = /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(process.env.SUPABASE_INSTRUCTOR_SLOTS_TABLE || '')
-  ? process.env.SUPABASE_INSTRUCTOR_SLOTS_TABLE
-  : 'instructor_availability_slots';
 
 const dbReady = Boolean(connectionString);
 const pool = dbReady
@@ -43,8 +27,6 @@ const pool = dbReady
       connectionTimeoutMillis: 3000,
     })
   : null;
-
-let instructorTablesReady = false;
 
 function ensureDatabaseConfigured(res) {
   if (dbReady) return true;
@@ -65,97 +47,6 @@ function normalizeEmail(value = '') {
 function isValidEmail(value = '') {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizeEmail(value));
 }
-
-function asSafeDisplayName(value = '') {
-  return String(value || '').trim().slice(0, 120);
-}
-
-function makeInstructorUid() {
-  return `inst_${crypto.randomBytes(8).toString('hex')}`;
-}
-
-async function hashInstructorPassword(password) {
-  const normalized = String(password || '');
-  const salt = crypto.randomBytes(16).toString('hex');
-  const key = await new Promise((resolve, reject) => {
-    crypto.scrypt(normalized, salt, 64, (err, derivedKey) => {
-      if (err) reject(err);
-      else resolve(derivedKey.toString('hex'));
-    });
-  });
-  return `scrypt$${salt}$${key}`;
-}
-
-async function ensureInstructorTables() {
-  if (!pool || instructorTablesReady) return;
-
-  await pool.query(`
-    create table if not exists ${instructorTable} (
-      id serial primary key,
-      instructor_uid varchar(128) not null unique,
-      email text not null unique,
-      display_name text not null,
-      password_hash text not null,
-      is_active boolean not null default true,
-      created_by_uid varchar(128) null,
-      created_at timestamp not null default current_timestamp,
-      updated_at timestamp not null default current_timestamp
-    )
-  `);
-
-  await pool.query(`
-    create table if not exists ${instructorSlotsTable} (
-      id serial primary key,
-      instructor_uid varchar(128) not null,
-      slot_date date null,
-      weekday smallint not null,
-      start_time varchar(5) not null,
-      end_time varchar(5) not null,
-      timezone varchar(80) not null default 'Asia/Kolkata',
-      is_active boolean not null default true,
-      created_at timestamp not null default current_timestamp,
-      updated_at timestamp not null default current_timestamp,
-      unique(instructor_uid, weekday, start_time, end_time),
-      constraint valid_weekday check (weekday between 0 and 6)
-    )
-  `);
-
-  await pool.query(`alter table ${instructorSlotsTable} add column if not exists slot_date date null`);
-  await pool.query(`alter table ${instructorSlotsTable} add column if not exists timezone varchar(80) not null default 'Asia/Kolkata'`);
-
-  await pool.query(`create index if not exists idx_${instructorTable}_email on ${instructorTable}(email)`);
-  await pool.query(`create index if not exists idx_${instructorSlotsTable}_uid on ${instructorSlotsTable}(instructor_uid)`);
-  await pool.query(`create index if not exists idx_${instructorSlotsTable}_weekday on ${instructorSlotsTable}(weekday)`);
-  await pool.query(`create index if not exists idx_${instructorSlotsTable}_slot_date on ${instructorSlotsTable}(slot_date)`);
-  await pool.query(`
-    create unique index if not exists uq_${instructorSlotsTable}_date_time
-    on ${instructorSlotsTable}(instructor_uid, slot_date, start_time, end_time)
-    where slot_date is not null
-  `);
-
-  instructorTablesReady = true;
-}
-
-async function syncInstructorSlotActivity() {
-  if (!pool) return;
-  await ensureInstructorTables();
-  await pool.query(
-    `
-      update ${instructorSlotsTable}
-      set is_active = (
-        ((slot_date + end_time::time) at time zone coalesce(nullif(timezone, ''), 'Asia/Kolkata')) > current_timestamp
-      ),
-      updated_at = case
-        when is_active is distinct from (
-          ((slot_date + end_time::time) at time zone coalesce(nullif(timezone, ''), 'Asia/Kolkata')) > current_timestamp
-        ) then current_timestamp
-        else updated_at
-      end
-      where slot_date is not null
-    `,
-  );
-}
-
 
 async function lookupExistingFirebaseUids(uids = []) {
   const normalized = [...new Set((uids || []).map((uid) => String(uid || '').trim()).filter(isValidUid))];
@@ -246,15 +137,6 @@ function dedupeUsersByIdentity(users = []) {
   });
   return [...byKey.values()];
 }
-
-function weekdayFromDate(slotDate) {
-  const parsed = /^\d{4}-\d{2}-\d{2}$/.test(String(slotDate || ''))
-    ? new Date(`${slotDate}T00:00:00+05:30`)
-    : null;
-  if (!parsed || Number.isNaN(parsed.getTime())) return null;
-  return parsed.getUTCDay();
-}
-
 
 async function requireAdminAuth(req, res, next) {
   const authHeader = req.headers.authorization || '';
@@ -455,9 +337,6 @@ router.post('/api/transfer-courses', requireAdminAuth, async (req, res) => {
   const client = await pool.connect();
   let transferSummary = {
     transferredCourses: 0,
-    transferredActivationRows: 0,
-    transferredScheduleRows: 0,
-    transferredLiveSessionRows: 0,
   };
 
   try {
@@ -539,59 +418,12 @@ router.post('/api/transfer-courses', requireAdminAuth, async (req, res) => {
 
     transferSummary.transferredCourses = transferResult.rowCount || 0;
 
-    const activationTransferResult = await client.query(
-      `
-        update ${activationTable}
-        set uid = $1, updated_at = current_timestamp
-        where uid = $2
-      `,
-      [targetUid, sourceUid],
-    );
-    transferSummary.transferredActivationRows = activationTransferResult.rowCount || 0;
-
-    await client.query(
-      `
-        delete from ${classScheduleTable}
-        where uid = $1
-          and exists (
-            select 1
-            from ${classScheduleTable} t
-            where t.uid = $2
-              and t.course_id = ${classScheduleTable}.course_id
-              and t.class_no = ${classScheduleTable}.class_no
-          )
-      `,
-      [targetUid, sourceUid],
-    );
-
-    const scheduleTransferResult = await client.query(
-      `
-        update ${classScheduleTable}
-        set uid = $1, updated_at = current_timestamp
-        where uid = $2
-      `,
-      [targetUid, sourceUid],
-    );
-    transferSummary.transferredScheduleRows = scheduleTransferResult.rowCount || 0;
-
-    const liveSessionTransferResult = await client.query(
-      `
-        update ${liveSessionsTable}
-        set
-          learner_uid = $1,
-          learner_email = $2
-        where learner_uid = $3 and ended_at is null
-      `,
-      [targetUid, targetEmail || null, sourceUid],
-    );
-    transferSummary.transferredLiveSessionRows = liveSessionTransferResult.rowCount || 0;
-
     await client.query(`delete from ${purchasesTable} where uid = $1`, [sourceUid]);
     await client.query(`delete from ${profileTable} where uid = $1`, [sourceUid]);
     await client.query(`delete from ${usersTable} where uid = $1`, [sourceUid]);
 
     const scopedTables = await getUidScopedTables(client);
-    const preservedTables = new Set([purchasesTable, profileTable, usersTable, activationTable, classScheduleTable]);
+    const preservedTables = new Set([purchasesTable, profileTable, usersTable]);
     for (const table of scopedTables) {
       if (preservedTables.has(table)) continue;
       await client.query(`delete from ${table} where uid = $1`, [sourceUid]);
@@ -602,9 +434,6 @@ router.post('/api/transfer-courses', requireAdminAuth, async (req, res) => {
     return res.json({
       ok: true,
       transferredCourses: transferSummary.transferredCourses,
-      transferredActivationRows: transferSummary.transferredActivationRows,
-      transferredScheduleRows: transferSummary.transferredScheduleRows,
-      transferredLiveSessionRows: transferSummary.transferredLiveSessionRows,
       sourceUid,
       targetUid,
       sourceEmail,
@@ -615,329 +444,6 @@ router.post('/api/transfer-courses', requireAdminAuth, async (req, res) => {
     return res.status(500).json({ error: 'Failed to transfer courses.' });
   } finally {
     client.release();
-  }
-});
-
-router.get('/api/instructors', requireAdminAuth, async (_req, res) => {
-  if (!ensureDatabaseConfigured(res)) return;
-
-  try {
-    await ensureInstructorTables();
-    const rows = await pool.query(
-      `
-        select
-          i.instructor_uid,
-          i.email,
-          i.display_name,
-          i.is_active,
-          i.created_at,
-          i.updated_at,
-          coalesce(slot_counts.total_slots, 0) as total_slots
-        from ${instructorTable} i
-        left join (
-          select instructor_uid, count(*)::int as total_slots
-          from ${instructorSlotsTable}
-          where is_active = true
-          group by instructor_uid
-        ) slot_counts on slot_counts.instructor_uid = i.instructor_uid
-        order by i.created_at desc
-      `,
-    );
-
-    return res.json({
-      instructors: rows.rows.map((row) => ({
-        instructorUid: row.instructor_uid,
-        email: row.email,
-        displayName: row.display_name,
-        isActive: Boolean(row.is_active),
-        totalSlots: Number(row.total_slots || 0),
-        createdAt: row.created_at,
-        updatedAt: row.updated_at,
-      })),
-    });
-  } catch {
-    return res.status(500).json({ error: 'Failed to load instructors.' });
-  }
-});
-
-router.post('/api/instructors', requireAdminAuth, async (req, res) => {
-  if (!ensureDatabaseConfigured(res)) return;
-
-  const email = normalizeEmail(req.body?.email || '');
-  const password = String(req.body?.password || '');
-  const displayName = asSafeDisplayName(req.body?.displayName || '');
-
-  if (!isValidEmail(email)) {
-    return res.status(400).json({ error: 'Valid email is required.' });
-  }
-
-  if (password.length < 8) {
-    return res.status(400).json({ error: 'Password must be at least 8 characters.' });
-  }
-
-  if (!displayName) {
-    return res.status(400).json({ error: 'Display name is required.' });
-  }
-
-  try {
-    await ensureInstructorTables();
-
-    const existingUser = await pool.query(
-      `select uid from ${usersTable} where lower(email) = $1 limit 1`,
-      [email],
-    );
-    if (existingUser.rows[0]) {
-      return res.status(400).json({
-        error: 'This email already exists as a learner account. Instructor cannot be created with it.',
-      });
-    }
-
-    const existingInstructor = await pool.query(
-      `select instructor_uid from ${instructorTable} where lower(email) = $1 limit 1`,
-      [email],
-    );
-    if (existingInstructor.rows[0]) {
-      return res.status(400).json({ error: 'Instructor account with this email already exists.' });
-    }
-
-    const passwordHash = await hashInstructorPassword(password);
-    const instructorUid = makeInstructorUid();
-
-    await pool.query(
-      `
-        insert into ${instructorTable}
-          (instructor_uid, email, display_name, password_hash, is_active, created_by_uid, updated_at)
-        values
-          ($1, $2, $3, $4, true, $5, current_timestamp)
-      `,
-      [instructorUid, email, displayName, passwordHash, req.admin.uid || null],
-    );
-
-    return res.json({ ok: true, instructorUid });
-  } catch {
-    return res.status(500).json({ error: 'Failed to create instructor.' });
-  }
-});
-
-router.patch('/api/instructors/:instructorUid', requireAdminAuth, async (req, res) => {
-  if (!ensureDatabaseConfigured(res)) return;
-
-  const instructorUid = String(req.params.instructorUid || '').trim();
-  if (!/^inst_[a-zA-Z0-9]+$/.test(instructorUid)) {
-    return res.status(400).json({ error: 'Invalid instructor id.' });
-  }
-
-  const nextEmail = normalizeEmail(req.body?.email || '');
-  const nextPassword = String(req.body?.password || '');
-  const nextDisplayName = asSafeDisplayName(req.body?.displayName || '');
-  const updates = [];
-  const values = [];
-
-  try {
-    await ensureInstructorTables();
-
-    if (nextEmail) {
-      if (!isValidEmail(nextEmail)) {
-        return res.status(400).json({ error: 'Invalid email format.' });
-      }
-
-      const existingUser = await pool.query(
-        `select uid from ${usersTable} where lower(email) = $1 limit 1`,
-        [nextEmail],
-      );
-      if (existingUser.rows[0]) {
-        return res.status(400).json({
-          error: 'This email already exists as a learner account. Instructor email reset blocked.',
-        });
-      }
-
-      const dupInstructor = await pool.query(
-        `
-          select instructor_uid
-          from ${instructorTable}
-          where lower(email) = $1 and instructor_uid <> $2
-          limit 1
-        `,
-        [nextEmail, instructorUid],
-      );
-      if (dupInstructor.rows[0]) {
-        return res.status(400).json({ error: 'Another instructor already uses this email.' });
-      }
-
-      updates.push('email = $' + (values.length + 1));
-      values.push(nextEmail);
-    }
-
-    if (nextDisplayName) {
-      updates.push('display_name = $' + (values.length + 1));
-      values.push(nextDisplayName);
-    }
-
-    if (nextPassword) {
-      if (nextPassword.length < 8) {
-        return res.status(400).json({ error: 'Password must be at least 8 characters.' });
-      }
-      const passwordHash = await hashInstructorPassword(nextPassword);
-      updates.push('password_hash = $' + (values.length + 1));
-      values.push(passwordHash);
-    }
-
-    if (!updates.length) {
-      return res.status(400).json({ error: 'No updates provided.' });
-    }
-
-    updates.push('updated_at = current_timestamp');
-    values.push(instructorUid);
-
-    const result = await pool.query(
-      `
-        update ${instructorTable}
-        set ${updates.join(', ')}
-        where instructor_uid = $${values.length}
-        returning instructor_uid
-      `,
-      values,
-    );
-
-    if (!result.rows[0]) {
-      return res.status(404).json({ error: 'Instructor not found.' });
-    }
-
-    return res.json({ ok: true });
-  } catch {
-    return res.status(500).json({ error: 'Failed to update instructor.' });
-  }
-});
-
-router.get('/api/instructors/:instructorUid/slots', requireAdminAuth, async (req, res) => {
-  if (!ensureDatabaseConfigured(res)) return;
-
-  const instructorUid = String(req.params.instructorUid || '').trim();
-  if (!/^inst_[a-zA-Z0-9]+$/.test(instructorUid)) {
-    return res.status(400).json({ error: 'Invalid instructor id.' });
-  }
-
-  try {
-    await ensureInstructorTables();
-    await syncInstructorSlotActivity();
-    const rows = await pool.query(
-      `
-        select id, slot_date, weekday, start_time, end_time, timezone, is_active
-        from ${instructorSlotsTable}
-        where instructor_uid = $1 and is_active = true
-        order by slot_date asc nulls last, weekday asc, start_time asc
-      `,
-      [instructorUid],
-    );
-
-    return res.json({
-      slots: rows.rows.map((row) => ({
-        id: Number(row.id),
-        slotDate: row.slot_date || null,
-        weekday: Number(row.weekday),
-        startTime: row.start_time,
-        endTime: row.end_time,
-        timezone: row.timezone || 'Asia/Kolkata',
-        isActive: Boolean(row.is_active),
-      })),
-    });
-  } catch {
-    return res.status(500).json({ error: 'Failed to load instructor slots.' });
-  }
-});
-
-router.post('/api/instructors/:instructorUid/slots', requireAdminAuth, async (req, res) => {
-  if (!ensureDatabaseConfigured(res)) return;
-
-  const instructorUid = String(req.params.instructorUid || '').trim();
-  const slotDate = String(req.body?.slotDate || '').trim();
-  const startTime = String(req.body?.startTime || '').trim();
-  const endTime = String(req.body?.endTime || '').trim();
-  const timezone = 'Asia/Kolkata';
-  const weekday = weekdayFromDate(slotDate);
-
-  if (!/^inst_[a-zA-Z0-9]+$/.test(instructorUid)) {
-    return res.status(400).json({ error: 'Invalid instructor id.' });
-  }
-
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(slotDate) || weekday === null) {
-    return res.status(400).json({ error: 'Please choose a valid slot date.' });
-  }
-
-  if (!/^\d{2}:\d{2}$/.test(startTime) || !/^\d{2}:\d{2}$/.test(endTime) || startTime >= endTime) {
-    return res.status(400).json({ error: 'Invalid start/end time.' });
-  }
-
-  const validHourRange = /^\d{2}:00$/.test(startTime) && /^\d{2}:00$/.test(endTime);
-  if (!validHourRange) {
-    return res.status(400).json({ error: 'Use full-hour values like 13:00 to 15:00.' });
-  }
-
-  try {
-    await ensureInstructorTables();
-    const exists = await pool.query(
-      `select instructor_uid from ${instructorTable} where instructor_uid = $1 limit 1`,
-      [instructorUid],
-    );
-    if (!exists.rows[0]) {
-      return res.status(404).json({ error: 'Instructor not found.' });
-    }
-
-    const existing = await pool.query(
-      `
-        select id
-        from ${instructorSlotsTable}
-        where instructor_uid = $1 and slot_date = $2 and start_time = $3 and end_time = $4
-        limit 1
-      `,
-      [instructorUid, slotDate, startTime, endTime],
-    );
-
-    if (existing.rows[0]) {
-      await pool.query(
-        `
-          update ${instructorSlotsTable}
-          set is_active = true, weekday = $1, timezone = $2, updated_at = current_timestamp
-          where id = $3
-        `,
-        [weekday, timezone, Number(existing.rows[0].id)],
-      );
-    } else {
-      await pool.query(
-        `
-          insert into ${instructorSlotsTable}
-            (instructor_uid, slot_date, weekday, start_time, end_time, timezone, is_active, updated_at)
-          values ($1, $2, $3, $4, $5, $6, true, current_timestamp)
-        `,
-        [instructorUid, slotDate, weekday, startTime, endTime, timezone],
-      );
-    }
-
-    return res.json({ ok: true });
-  } catch {
-    return res.status(500).json({ error: 'Failed to save slot.' });
-  }
-});
-
-router.delete('/api/instructors/:instructorUid/slots/:slotId', requireAdminAuth, async (req, res) => {
-  if (!ensureDatabaseConfigured(res)) return;
-
-  const instructorUid = String(req.params.instructorUid || '').trim();
-  const slotId = Number.parseInt(String(req.params.slotId || ''), 10);
-
-  if (!/^inst_[a-zA-Z0-9]+$/.test(instructorUid) || !Number.isFinite(slotId) || slotId <= 0) {
-    return res.status(400).json({ error: 'Invalid parameters.' });
-  }
-
-  try {
-    await ensureInstructorTables();
-    await pool.query(
-      `delete from ${instructorSlotsTable} where id = $1 and instructor_uid = $2`,
-      [slotId, instructorUid],
-    );
-    return res.json({ ok: true });
-  } catch {
-    return res.status(500).json({ error: 'Failed to delete slot.' });
   }
 });
 

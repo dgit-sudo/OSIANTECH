@@ -21,7 +21,6 @@
       <div class="dashboard-tabs" role="tablist" aria-label="Admin user tabs">
         <button type="button" class="dashboard-tab-btn active" data-admin-tab-btn="purchased" aria-selected="true">Purchased</button>
         <button type="button" class="dashboard-tab-btn" data-admin-tab-btn="not-purchased" aria-selected="false">Not Purchased</button>
-        <button type="button" class="dashboard-tab-btn" data-admin-tab-btn="instructors" aria-selected="false">Instructors</button>
         <button type="button" class="dashboard-tab-btn" data-admin-tab-btn="support" aria-selected="false">Support Chats</button>
       </div>
 
@@ -38,95 +37,6 @@
           <h2>Activated Users With No Purchases</h2>
           <div id="admin-users-not-purchased" class="admin-user-list"></div>
           <p id="admin-users-not-purchased-empty" class="dashboard-course-cat" hidden>No activated users without purchases.</p>
-        </div>
-      </section>
-
-      <section class="dashboard-panel" data-admin-tab-panel="instructors">
-        <div class="dashboard-gate-card">
-          <h2>Instructor Accounts</h2>
-          <form id="admin-instructor-create-form" class="profile-setup-form" action="#" method="post">
-            <div class="form-row">
-              <div class="form-group">
-                <label for="admin-instructor-name">Display Name</label>
-                <input id="admin-instructor-name" type="text" required />
-              </div>
-              <div class="form-group">
-                <label for="admin-instructor-email">Instructor Email</label>
-                <input id="admin-instructor-email" type="email" required />
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="admin-instructor-password">Initial Password</label>
-                <input id="admin-instructor-password" type="password" minlength="8" required />
-              </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Create Instructor</button>
-          </form>
-          <div id="admin-instructor-create-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
-
-          <div class="dashboard-gate-card" style="margin-top:12px;">
-            <h3>Instructor List</h3>
-            <div id="admin-instructor-list" class="admin-user-list"></div>
-            <p id="admin-instructor-empty" class="dashboard-course-cat" hidden>No instructors yet.</p>
-          </div>
-
-          <div class="dashboard-gate-card" style="margin-top:12px;">
-            <h3>Reset Instructor Email / Password</h3>
-            <form id="admin-instructor-reset-form" class="profile-setup-form" action="#" method="post">
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="admin-instructor-select">Instructor</label>
-                  <select id="admin-instructor-select" required></select>
-                </div>
-                <div class="form-group">
-                  <label for="admin-instructor-new-email">New Email (optional)</label>
-                  <input id="admin-instructor-new-email" type="email" />
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="admin-instructor-new-password">New Password (optional)</label>
-                  <input id="admin-instructor-new-password" type="password" minlength="8" />
-                </div>
-                <div class="form-group">
-                  <label for="admin-instructor-new-name">New Display Name (optional)</label>
-                  <input id="admin-instructor-new-name" type="text" />
-                </div>
-              </div>
-              <button type="submit" class="btn btn-primary">Apply Reset</button>
-            </form>
-            <div id="admin-instructor-reset-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
-          </div>
-
-          <div class="dashboard-gate-card" style="margin-top:12px;">
-            <h3>Instructor Availability (Date-wise, IST)</h3>
-            <form id="admin-instructor-slot-form" class="profile-setup-form" action="#" method="post">
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="admin-slot-instructor">Instructor</label>
-                  <select id="admin-slot-instructor" required></select>
-                </div>
-                <div class="form-group">
-                  <label for="admin-slot-date">Date (IST)</label>
-                  <input id="admin-slot-date" type="date" required />
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="admin-slot-start">Start Time</label>
-                  <input id="admin-slot-start" type="time" required />
-                </div>
-                <div class="form-group">
-                  <label for="admin-slot-end">End Time</label>
-                  <input id="admin-slot-end" type="time" required />
-                </div>
-              </div>
-              <button type="submit" class="btn btn-primary">Add Availability Slot</button>
-            </form>
-            <div id="admin-slot-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
-            <div id="admin-slot-list" class="admin-user-list" style="margin-top:8px;"></div>
-          </div>
         </div>
       </section>
 
@@ -152,12 +62,6 @@
                 </div>
               </div>
               <div id="admin-support-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
-
-              <div class="dashboard-gate-card" style="margin-top:12px;">
-                <h3>Ongoing Live Sessions</h3>
-                <div id="admin-live-meetings" class="admin-user-list"></div>
-                <p id="admin-live-meetings-empty" class="dashboard-course-cat" hidden>No active live sessions.</p>
-              </div>
             </div>
           </div>
         </div>

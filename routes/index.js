@@ -1,7 +1,12 @@
 const express = require('express');
+const { Pool } = require('pg');
 const router = express.Router();
 const allCourses = require('../data/coursesCatalog.json');
-const { pool } = require('../lib/session-core');
+
+const connectionString = process.env.SUPABASE_DB_URL || process.env.DATABASE_URL || '';
+const pool = connectionString
+  ? new Pool({ connectionString, ssl: { rejectUnauthorized: false }, max: 2, connectionTimeoutMillis: 3000 })
+  : null;
 
 function getGeneratedCourseImage(courseId) {
   const id = Number.parseInt(String(courseId || ''), 10);

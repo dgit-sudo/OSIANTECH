@@ -30,29 +30,6 @@ if (!root) {
   const transferTargetEl = document.getElementById('admin-transfer-target');
   const transferFeedbackEl = document.getElementById('admin-transfer-feedback');
 
-  const instructorCreateForm = document.getElementById('admin-instructor-create-form');
-  const instructorNameInput = document.getElementById('admin-instructor-name');
-  const instructorEmailInput = document.getElementById('admin-instructor-email');
-  const instructorPasswordInput = document.getElementById('admin-instructor-password');
-  const instructorCreateFeedbackEl = document.getElementById('admin-instructor-create-feedback');
-  const instructorListEl = document.getElementById('admin-instructor-list');
-  const instructorEmptyEl = document.getElementById('admin-instructor-empty');
-
-  const instructorResetForm = document.getElementById('admin-instructor-reset-form');
-  const instructorSelectEl = document.getElementById('admin-instructor-select');
-  const instructorNewEmailInput = document.getElementById('admin-instructor-new-email');
-  const instructorNewPasswordInput = document.getElementById('admin-instructor-new-password');
-  const instructorNewNameInput = document.getElementById('admin-instructor-new-name');
-  const instructorResetFeedbackEl = document.getElementById('admin-instructor-reset-feedback');
-
-  const slotForm = document.getElementById('admin-instructor-slot-form');
-  const slotInstructorEl = document.getElementById('admin-slot-instructor');
-  const slotDateEl = document.getElementById('admin-slot-date');
-  const slotStartEl = document.getElementById('admin-slot-start');
-  const slotEndEl = document.getElementById('admin-slot-end');
-  const slotFeedbackEl = document.getElementById('admin-slot-feedback');
-  const slotListEl = document.getElementById('admin-slot-list');
-
   const supportChatListEl = document.getElementById('admin-support-chat-list');
   const supportChatEmptyEl = document.getElementById('admin-support-chat-empty');
   const supportChatMetaEl = document.getElementById('admin-support-chat-meta');
@@ -62,18 +39,14 @@ if (!root) {
   const supportSendBtn = document.getElementById('admin-support-send');
   const supportEndBtn = document.getElementById('admin-support-end');
   const supportFeedbackEl = document.getElementById('admin-support-feedback');
-  const liveMeetingsEl = document.getElementById('admin-live-meetings');
-  const liveMeetingsEmptyEl = document.getElementById('admin-live-meetings-empty');
 
   let currentUser = null;
   let currentToken = '';
   let usersWithPurchases = [];
   let usersWithoutPurchases = [];
   let supportChats = [];
-  let liveMeetings = [];
   let activeSupportChatId = 0;
   let supportPollTimer = null;
-  let instructors = [];
 
   function setFeedback(el, message = '', type = 'info') {
     if (!el) return;
@@ -87,7 +60,7 @@ if (!root) {
   }
 
   function setActiveTab(tabName) {
-    const activeTab = ['purchased', 'not-purchased', 'instructors', 'support'].includes(tabName) ? tabName : 'purchased';
+    const activeTab = ['purchased', 'not-purchased', 'support'].includes(tabName) ? tabName : 'purchased';
     tabButtons.forEach((btn) => {
       const isActive = btn.getAttribute('data-admin-tab-btn') === activeTab;
       btn.classList.toggle('active', isActive);
@@ -102,15 +75,9 @@ if (!root) {
       loadSupportChats().catch((error) => {
         setFeedback(supportFeedbackEl, error?.message || 'Could not load support chats.', 'error');
       });
-      loadLiveMeetings().catch(() => {
-        // Silent live meeting load errors.
-      });
       if (!supportPollTimer) {
         supportPollTimer = setInterval(() => {
           loadSupportChats().catch(() => {
-            // Silent polling errors.
-          });
-          loadLiveMeetings().catch(() => {
             // Silent polling errors.
           });
           if (activeSupportChatId) {
@@ -124,24 +91,6 @@ if (!root) {
       clearInterval(supportPollTimer);
       supportPollTimer = null;
     }
-
-    if (activeTab === 'instructors') {
-      loadInstructors().catch((error) => {
-        setFeedback(instructorCreateFeedbackEl, error?.message || 'Could not load instructors.', 'error');
-      });
-    }
-  }
-
-  function formatSlotDate(dateValue) {
-    if (!dateValue) return 'Unknown date';
-    const date = new Date(`${dateValue}T00:00:00+05:30`);
-    if (Number.isNaN(date.getTime())) return dateValue;
-    return date.toLocaleDateString('en-IN', {
-      weekday: 'short',
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-    });
   }
 
   function showAuthorizedState() {
@@ -383,203 +332,6 @@ if (!root) {
     setFeedback(feedbackEl, 'Admin data loaded.', 'success');
   }
 
-  function renderInstructorOptions() {
-    const targets = [instructorSelectEl, slotInstructorEl];
-    targets.forEach((select) => {
-      if (!select) return;
-      select.innerHTML = '';
-      instructors.forEach((instructor) => {
-        const option = document.createElement('option');
-        option.value = instructor.instructorUid;
-        option.textContent = `${instructor.displayName} (${instructor.email})`;
-        select.appendChild(option);
-      });
-    });
-  }
-
-  function renderInstructorList() {
-    if (!instructorListEl) return;
-    instructorListEl.innerHTML = '';
-
-    instructors.forEach((item) => {
-      const row = document.createElement('div');
-      row.className = 'admin-user-item';
-      row.textContent = `${item.displayName} (${item.email}) - ${item.totalSlots || 0} slots`;
-      instructorListEl.appendChild(row);
-    });
-
-    if (instructorEmptyEl) instructorEmptyEl.hidden = instructors.length > 0;
-  }
-
-  async function loadSlotsForSelectedInstructor() {
-    if (!currentToken || !slotInstructorEl || !slotListEl) return;
-    const instructorUid = String(slotInstructorEl.value || '').trim();
-    if (!instructorUid) {
-      slotListEl.textContent = 'No instructor selected.';
-      return;
-    }
-
-    const response = await fetch(`/admin/api/instructors/${encodeURIComponent(instructorUid)}/slots`, {
-      headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${currentToken}`,
-      },
-    });
-    const payload = await response.json().catch(() => ({}));
-    if (!response.ok) {
-      throw new Error(payload?.error || 'Could not load slots.');
-    }
-
-    const slots = Array.isArray(payload.slots) ? payload.slots : [];
-    slotListEl.innerHTML = '';
-    if (!slots.length) {
-      slotListEl.textContent = 'No slots configured for this instructor yet.';
-      return;
-    }
-
-    slots.forEach((slot) => {
-      const row = document.createElement('div');
-      row.className = 'admin-user-item';
-      const dateLabel = formatSlotDate(slot.slotDate);
-      row.textContent = `${dateLabel} ${slot.startTime}-${slot.endTime} IST`;
-
-      const remove = document.createElement('button');
-      remove.type = 'button';
-      remove.className = 'dashboard-course-action-btn';
-      remove.textContent = 'Remove';
-      remove.addEventListener('click', () => {
-        removeInstructorSlot(instructorUid, slot.id).catch((error) => {
-          setFeedback(slotFeedbackEl, error?.message || 'Could not remove slot.', 'error');
-        });
-      });
-
-      row.appendChild(remove);
-      slotListEl.appendChild(row);
-    });
-  }
-
-  async function loadInstructors() {
-    if (!currentToken) return;
-    const response = await fetch('/admin/api/instructors', {
-      headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${currentToken}`,
-      },
-    });
-    const payload = await response.json().catch(() => ({}));
-    if (!response.ok) {
-      throw new Error(payload?.error || 'Could not load instructors.');
-    }
-
-    instructors = Array.isArray(payload.instructors) ? payload.instructors : [];
-    renderInstructorList();
-    renderInstructorOptions();
-    await loadSlotsForSelectedInstructor();
-  }
-
-  async function createInstructor(event) {
-    event.preventDefault();
-    if (!currentToken) return;
-
-    const displayName = String(instructorNameInput?.value || '').trim();
-    const email = String(instructorEmailInput?.value || '').trim();
-    const password = String(instructorPasswordInput?.value || '');
-
-    const response = await fetch('/admin/api/instructors', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: `Bearer ${currentToken}`,
-      },
-      body: JSON.stringify({ displayName, email, password }),
-    });
-    const payload = await response.json().catch(() => ({}));
-    if (!response.ok || !payload?.ok) {
-      throw new Error(payload?.error || 'Could not create instructor.');
-    }
-
-    if (instructorCreateForm) instructorCreateForm.reset();
-    await loadInstructors();
-    setFeedback(instructorCreateFeedbackEl, 'Instructor account created.', 'success');
-  }
-
-  async function resetInstructorAccount(event) {
-    event.preventDefault();
-    if (!currentToken || !instructorSelectEl) return;
-
-    const instructorUid = String(instructorSelectEl.value || '').trim();
-    const email = String(instructorNewEmailInput?.value || '').trim();
-    const password = String(instructorNewPasswordInput?.value || '');
-    const displayName = String(instructorNewNameInput?.value || '').trim();
-
-    const response = await fetch(`/admin/api/instructors/${encodeURIComponent(instructorUid)}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: `Bearer ${currentToken}`,
-      },
-      body: JSON.stringify({ email, password, displayName }),
-    });
-    const payload = await response.json().catch(() => ({}));
-    if (!response.ok || !payload?.ok) {
-      throw new Error(payload?.error || 'Could not update instructor account.');
-    }
-
-    if (instructorResetForm) instructorResetForm.reset();
-    await loadInstructors();
-    setFeedback(instructorResetFeedbackEl, 'Instructor account updated.', 'success');
-  }
-
-  async function addInstructorSlot(event) {
-    event.preventDefault();
-    if (!currentToken || !slotInstructorEl) return;
-
-    const instructorUid = String(slotInstructorEl.value || '').trim();
-    const slotDate = String(slotDateEl?.value || '').trim();
-    const startTime = String(slotStartEl?.value || '').trim();
-    const endTime = String(slotEndEl?.value || '').trim();
-
-    const response = await fetch(`/admin/api/instructors/${encodeURIComponent(instructorUid)}/slots`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: `Bearer ${currentToken}`,
-      },
-      body: JSON.stringify({ slotDate, startTime, endTime }),
-    });
-    const payload = await response.json().catch(() => ({}));
-    if (!response.ok || !payload?.ok) {
-      throw new Error(payload?.error || 'Could not save slot.');
-    }
-
-    await loadInstructors();
-    setFeedback(slotFeedbackEl, 'Availability slot saved.', 'success');
-  }
-
-  async function removeInstructorSlot(instructorUid, slotId) {
-    if (!currentToken) return;
-    const response = await fetch(
-      `/admin/api/instructors/${encodeURIComponent(instructorUid)}/slots/${encodeURIComponent(String(slotId))}`,
-      {
-        method: 'DELETE',
-        headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${currentToken}`,
-        },
-      },
-    );
-    const payload = await response.json().catch(() => ({}));
-    if (!response.ok || !payload?.ok) {
-      throw new Error(payload?.error || 'Could not delete slot.');
-    }
-
-    await loadInstructors();
-    setFeedback(slotFeedbackEl, 'Availability slot removed.', 'success');
-  }
-
   function renderSupportMessages(messages = []) {
     if (!supportChatMessagesEl) return;
     supportChatMessagesEl.innerHTML = '';
@@ -794,117 +546,6 @@ if (!root) {
     setFeedback(supportFeedbackEl, 'Chat ended and feedback request saved.', 'success');
   }
 
-  function renderLiveMeetings() {
-    if (!liveMeetingsEl) return;
-    liveMeetingsEl.innerHTML = '';
-
-    if (!Array.isArray(liveMeetings) || liveMeetings.length === 0) {
-      if (liveMeetingsEmptyEl) liveMeetingsEmptyEl.hidden = false;
-      return;
-    }
-
-    if (liveMeetingsEmptyEl) liveMeetingsEmptyEl.hidden = true;
-
-    liveMeetings.forEach((meeting) => {
-      const row = document.createElement('div');
-      row.className = 'admin-user-item';
-
-      const startsAt = meeting?.startsAt ? new Date(meeting.startsAt) : null;
-      const timing = startsAt && !Number.isNaN(startsAt.getTime())
-        ? startsAt.toLocaleString()
-        : '-';
-      const support = meeting?.supportRequested
-        ? 'Support Requested'
-        : 'No Support Flag';
-      row.textContent = `Class ${meeting?.classNo || 1} • Course #${meeting?.courseId || '-'} • ${meeting?.learnerEmail || meeting?.learnerUid || '-'} • ${timing} • ${support}`;
-
-      const joinBtn = document.createElement('button');
-      joinBtn.type = 'button';
-      joinBtn.className = 'dashboard-course-action-btn';
-      joinBtn.textContent = 'Join Meeting';
-      joinBtn.addEventListener('click', () => {
-        joinBtn.disabled = true;
-        joinLiveMeetingAsAdmin(meeting.meetingId)
-          .catch((error) => {
-            setFeedback(supportFeedbackEl, error?.message || 'Could not join meeting.', 'error');
-            joinBtn.disabled = false;
-          });
-      });
-
-      const endBtn = document.createElement('button');
-      endBtn.type = 'button';
-      endBtn.className = 'dashboard-course-action-btn';
-      endBtn.style.cssText = 'background:var(--color-error,#e53e3e);color:#fff;margin-left:8px;';
-      endBtn.textContent = 'End Class';
-      endBtn.addEventListener('click', () => {
-        if (!window.confirm(`End Class ${meeting?.classNo || 1} for ${meeting?.learnerEmail || meeting?.learnerUid || 'this learner'}? This will remove the meeting and disconnect all participants.`)) return;
-        endBtn.disabled = true;
-        joinBtn.disabled = true;
-        fetch(`/api/session/${encodeURIComponent(meeting.meetingId)}/force-end`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-            Authorization: `Bearer ${currentToken}`,
-          },
-        })
-          .then((r) => r.json().then((p) => ({ ok: r.ok, payload: p })))
-          .then(({ ok, payload }) => {
-            if (!ok) throw new Error(payload?.error || 'Could not end class.');
-            setFeedback(supportFeedbackEl, 'Class ended and meeting deleted.', 'success');
-            loadLiveMeetings();
-          })
-          .catch((error) => {
-            setFeedback(supportFeedbackEl, error?.message || 'Could not end class.', 'error');
-            endBtn.disabled = false;
-            joinBtn.disabled = false;
-          });
-      });
-
-      row.appendChild(joinBtn);
-      row.appendChild(endBtn);
-      liveMeetingsEl.appendChild(row);
-    });
-  }
-
-  async function loadLiveMeetings() {
-    if (!currentToken) return;
-    const response = await fetch('/api/session/admin/ongoing', {
-      headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${currentToken}`,
-      },
-    });
-
-    const payload = await response.json().catch(() => ({}));
-    if (!response.ok || !payload?.ok) {
-      throw new Error(payload?.error || 'Could not load live meetings.');
-    }
-
-    liveMeetings = Array.isArray(payload.meetings) ? payload.meetings : [];
-    renderLiveMeetings();
-  }
-
-  async function joinLiveMeetingAsAdmin(meetingId) {
-    if (!currentToken || !meetingId) throw new Error('Missing meeting context.');
-    const response = await fetch('/api/session/admin/join-link', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: `Bearer ${currentToken}`,
-      },
-      body: JSON.stringify({ meetingId }),
-    });
-
-    const payload = await response.json().catch(() => ({}));
-    if (!response.ok || !payload?.ok || !payload?.joinUrl) {
-      throw new Error(payload?.error || 'Could not open meeting.');
-    }
-
-    window.open(payload.joinUrl, '_blank', 'noopener');
-  }
-
   async function handleTransfer(event) {
     event.preventDefault();
     if (!currentToken) {
@@ -945,7 +586,7 @@ if (!root) {
 
     setFeedback(
       transferFeedbackEl,
-      `Transfer complete. ${payload.transferredCourses} courses moved, ${payload.transferredActivationRows || 0} activations migrated, ${payload.transferredScheduleRows || 0} class schedules migrated, ${payload.transferredLiveSessionRows || 0} live sessions reassigned. Delete source Firebase account manually if needed.`,
+      `Transfer complete. ${payload.transferredCourses} courses moved. Delete source Firebase account manually if needed.`,
       'success',
     );
 
@@ -990,38 +631,6 @@ if (!root) {
     transferForm.addEventListener('submit', (event) => {
       handleTransfer(event).catch((error) => {
         setFeedback(transferFeedbackEl, error?.message || 'Transfer failed.', 'error');
-      });
-    });
-  }
-
-  if (instructorCreateForm) {
-    instructorCreateForm.addEventListener('submit', (event) => {
-      createInstructor(event).catch((error) => {
-        setFeedback(instructorCreateFeedbackEl, error?.message || 'Could not create instructor.', 'error');
-      });
-    });
-  }
-
-  if (instructorResetForm) {
-    instructorResetForm.addEventListener('submit', (event) => {
-      resetInstructorAccount(event).catch((error) => {
-        setFeedback(instructorResetFeedbackEl, error?.message || 'Could not update instructor.', 'error');
-      });
-    });
-  }
-
-  if (slotForm) {
-    slotForm.addEventListener('submit', (event) => {
-      addInstructorSlot(event).catch((error) => {
-        setFeedback(slotFeedbackEl, error?.message || 'Could not save slot.', 'error');
-      });
-    });
-  }
-
-  if (slotInstructorEl) {
-    slotInstructorEl.addEventListener('change', () => {
-      loadSlotsForSelectedInstructor().catch((error) => {
-        setFeedback(slotFeedbackEl, error?.message || 'Could not load slots.', 'error');
       });
     });
   }
@@ -1071,7 +680,6 @@ if (!root) {
       currentToken = await currentUser.getIdToken(true);
       showAuthorizedState();
       await loadUsers();
-      await loadInstructors();
       await loadSupportChats();
     } catch {
       showUnauthorizedState('Could not validate admin session. Please sign in again.');

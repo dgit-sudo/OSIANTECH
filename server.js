@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require('path');
 const http = require('http');
-const { Server } = require('socket.io');
 require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,10 +11,6 @@ const assetVersion = String(
   || process.env.GITHUB_SHA
   || Date.now(),
 );
-const io = new Server(server, {
-  cors: { origin: true, credentials: true },
-});
-require('./lib/io-instance').setIo(io);
 
 // View engine setup
 app.set('view engine', 'ejs');
@@ -61,15 +56,7 @@ const dashboardRouter = require('./routes/dashboard');
 const profileRouter = require('./routes/profile');
 const adminRouter = require('./routes/admin');
 const supportRouter = require('./routes/support');
-const instructorRouter = require('./routes/instructor');
-const sessionRouter = require('./routes/session');
 const chatRouter = require('./routes/chat');
-const {
-  getMeetingById,
-  verifySessionAccessToken,
-  markMeetingSupportRequested,
-  endMeeting,
-} = require('./lib/session-core');
 
 app.use('/', indexRouter);
 app.use('/courses', coursesRouter);
@@ -79,223 +66,6 @@ app.use('/api/profile', profileRouter);
 app.use('/admin', adminRouter);
 app.use('/api/support', supportRouter);
 app.use('/chat', chatRouter);
-app.use('/instructor', instructorRouter);
-app.use('/', sessionRouter);
-
-const roomParticipants = new Map();
-const roomStates = new Map();
-
-function getDefaultRoomState() {
-  return {
-    allowLearnerScreenShare: false,
-    activeScreenSharerSocketId: '',
-    activeScreenSharerRole: '',
-  };
-}
-
-function getRoomState(roomKey) {
-  if (!roomStates.has(roomKey)) {
-    roomStates.set(roomKey, getDefaultRoomState());
-  }
-  return roomStates.get(roomKey);
-}
-
-function emitRoomState(roomKey) {
-  const state = getRoomState(roomKey);
-  io.to(roomKey).emit('session:room-state', {
-    allowLearnerScreenShare: Boolean(state.allowLearnerScreenShare),
-    activeScreenSharerSocketId: String(state.activeScreenSharerSocketId || ''),
-    activeScreenSharerRole: String(state.activeScreenSharerRole || ''),
-  });
-}
-
-function participantNameFromRole(role, identity) {
-  if (role === 'instructor') return 'Instructor';
-  if (role === 'admin') return 'Support/Admin';
-  if (role === 'learner') return 'Learner';
-  return identity || 'Participant';
-}
-
-io.use(async (socket, next) => {
-  try {
-    const token = String(socket.handshake?.auth?.token || '').trim();
-    const payload = verifySessionAccessToken(token);
-    if (!payload?.mid || !payload?.role) {
-      return next(new Error('Unauthorized.'));
-    }
-
-    const meeting = await getMeetingById(payload.mid);
-    if (!meeting || meeting.endedAt) {
-      return next(new Error('Meeting not active.'));
-    }
-
-    socket.data.meetingId = meeting.meetingId;
-    socket.data.role = payload.role;
-    socket.data.identity = String(payload.identity || '');
-    socket.data.participant = {
-      socketId: socket.id,
-      role: payload.role,
-      name: participantNameFromRole(payload.role, payload.identity),
-    };
-    return next();
-  } catch {
-    return next(new Error('Unauthorized.'));
-  }
-});
-
-io.on('connection', (socket) => {
-  const meetingId = socket.data.meetingId;
-  const participant = socket.data.participant;
-  const roomKey = `session:${meetingId}`;
-
-  socket.on('session:join', () => {
-    socket.join(roomKey);
-    const current = roomParticipants.get(roomKey) || new Map();
-    current.set(socket.id, participant);
-    roomParticipants.set(roomKey, current);
-    getRoomState(roomKey);
-
-    const others = [...current.values()].filter((p) => p.socketId !== socket.id);
-    socket.emit('session:participants', others);
-    socket.emit('session:room-state', getRoomState(roomKey));
-    socket.to(roomKey).emit('session:participant-joined', participant);
-  });
-
-  socket.on('session:toggle-learner-share', (payload = {}) => {
-    if (socket.data.role !== 'instructor') return;
-    const state = getRoomState(roomKey);
-    state.allowLearnerScreenShare = Boolean(payload.enabled);
-
-    // If learners are now allowed to share, instructor screen share must stop immediately.
-    if (state.allowLearnerScreenShare && state.activeScreenSharerRole === 'instructor' && state.activeScreenSharerSocketId) {
-      io.to(state.activeScreenSharerSocketId).emit('session:force-stop-share', {
-        reason: 'Instructor sharing stopped because learner share permission was enabled.',
-      });
-      state.activeScreenSharerSocketId = '';
-      state.activeScreenSharerRole = '';
-    }
-
-    emitRoomState(roomKey);
-  });
-
-  socket.on('session:screen-share-state', (payload = {}) => {
-    const state = getRoomState(roomKey);
-    const wantsActive = Boolean(payload.active);
-    const role = socket.data.role;
-
-    if (!wantsActive) {
-      if (state.activeScreenSharerSocketId === socket.id) {
-        state.activeScreenSharerSocketId = '';
-        state.activeScreenSharerRole = '';
-        emitRoomState(roomKey);
-      }
-      return;
-    }
-
-    const canShareAsInstructor = role === 'instructor' && !state.allowLearnerScreenShare;
-    const canShareAsLearner = role === 'learner' && state.allowLearnerScreenShare;
-    if (!canShareAsInstructor && !canShareAsLearner) {
-      socket.emit('session:screen-share-denied', {
-        reason: 'You do not currently have permission to share screen.',
-      });
-      return;
-    }
-
-    if (state.activeScreenSharerSocketId && state.activeScreenSharerSocketId !== socket.id) {
-      socket.emit('session:screen-share-denied', {
-        reason: 'Another participant is already sharing screen.',
-      });
-      return;
-    }
-
-    state.activeScreenSharerSocketId = socket.id;
-    state.activeScreenSharerRole = role;
-    emitRoomState(roomKey);
-  });
-
-  socket.on('session:signal', (payload = {}) => {
-    const to = String(payload.to || '').trim();
-    if (!to) return;
-    io.to(to).emit('session:signal', {
-      from: socket.id,
-      type: payload.type,
-      sdp: payload.sdp || null,
-      candidate: payload.candidate || null,
-      participant,
-    });
-  });
-
-  socket.on('session:chat', (payload = {}) => {
-    const message = String(payload.message || '').trim().slice(0, 500);
-    if (!message) return;
-    io.to(roomKey).emit('session:chat', {
-      sender: participant.name,
-      role: participant.role,
-      message,
-      at: new Date().toISOString(),
-    });
-  });
-
-  socket.on('session:whiteboard', (payload = {}) => {
-    if (socket.data.role !== 'instructor') return;
-    io.to(roomKey).emit('session:whiteboard', payload);
-  });
-
-  socket.on('session:support-request', async () => {
-    try {
-      await markMeetingSupportRequested(meetingId, socket.data.role);
-      io.to(roomKey).emit('session:chat', {
-        sender: 'System',
-        role: 'system',
-        message: 'Technical support was requested. Admin has been notified.',
-        at: new Date().toISOString(),
-      });
-    } catch {
-      // Ignore support notification errors.
-    }
-  });
-
-  socket.on('session:end-class', async () => {
-    if (socket.data.role !== 'instructor') return;
-    try {
-      await endMeeting(meetingId, {
-        role: 'instructor',
-        instructorUid: socket.data.identity,
-      });
-      io.to(roomKey).emit('session:ended', { by: 'instructor', at: new Date().toISOString() });
-      setTimeout(() => {
-        io.in(roomKey).disconnectSockets(true);
-        roomParticipants.delete(roomKey);
-      }, 1000);
-    } catch {
-      socket.emit('session:chat', {
-        sender: 'System',
-        role: 'system',
-        message: 'Class cannot be ended before scheduled end time.',
-        at: new Date().toISOString(),
-      });
-    }
-  });
-
-  socket.on('disconnect', () => {
-    const current = roomParticipants.get(roomKey);
-    if (!current) return;
-    const state = roomStates.get(roomKey);
-    if (state && state.activeScreenSharerSocketId === socket.id) {
-      state.activeScreenSharerSocketId = '';
-      state.activeScreenSharerRole = '';
-      emitRoomState(roomKey);
-    }
-    current.delete(socket.id);
-    if (current.size === 0) {
-      roomParticipants.delete(roomKey);
-      roomStates.delete(roomKey);
-      return;
-    }
-    roomParticipants.set(roomKey, current);
-    socket.to(roomKey).emit('session:participant-left', { socketId: socket.id });
-  });
-});
 
 // Compatibility redirects for legacy auth links.
 app.get('/enroll', (_req, res) => res.redirect('/auth?mode=signup'));
