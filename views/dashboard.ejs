@@ -75,8 +75,12 @@
       <section class="dashboard-panel active" id="dashboard-tab-overview" data-dashboard-tab-panel="overview">
         <div class="dashboard-gate-card">
           <h2>Dashboard Ready</h2>
-          <p>Your profile is complete. Use the Settings tab to review and update your details anytime.</p>
-          <a href="/courses" class="btn btn-primary">Browse Courses</a>
+          <p>Your profile is complete. Continue to your learning platform, or use the Settings tab to review and update your details anytime.</p>
+          <div class="dashboard-overview-actions">
+            <button type="button" class="btn btn-primary" id="dashboard-lms-btn">Go to LMS &#8594;</button>
+            <a href="/courses" class="btn btn-ghost">Browse Courses</a>
+          </div>
+          <div id="dashboard-lms-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
         </div>
       </section>
 

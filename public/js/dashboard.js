@@ -16,6 +16,9 @@ const nameEl = document.getElementById('dashboard-user-name');
 const gateCopyEl = document.getElementById('dashboard-gate-copy');
 const gatePillEl = document.getElementById('dashboard-required-pill');
 const saveProfileBtn = document.getElementById('profile-save-btn');
+const lmsBtn = document.getElementById('dashboard-lms-btn');
+const lmsFeedbackEl = document.getElementById('dashboard-lms-feedback');
+const LMS_SSO_URL = 'https://learn.osian.tech/sso_verify.php';
 const supportFabBtn = document.getElementById('dashboard-support-button');
 const supportPanelEl = document.getElementById('dashboard-support-panel');
 const supportCloseBtn = document.getElementById('dashboard-support-close');
@@ -976,6 +979,26 @@ async function hydrateDashboardForUser(user) {
 }
 
 
+async function goToLms() {
+  const user = auth.currentUser;
+  if (!user) {
+    window.location.href = '/auth?mode=signin';
+    return;
+  }
+
+  if (lmsBtn) lmsBtn.disabled = true;
+  setFeedback(lmsFeedbackEl, 'Opening your learning platform...', 'info');
+
+  try {
+    const token = await user.getIdToken();
+    const target = `${LMS_SSO_URL}?token=${encodeURIComponent(token)}`;
+    window.location.assign(target);
+  } catch (_error) {
+    if (lmsBtn) lmsBtn.disabled = false;
+    setFeedback(lmsFeedbackEl, 'Could not open the LMS. Please try again.', 'error');
+  }
+}
+
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     clearUnauthRedirectTimer();
@@ -1068,6 +1091,15 @@ if (signoutBtn) {
     if (uid) { try { sessionStorage.removeItem(DASH_CACHE_KEY_PREFIX + uid); } catch { /* ignore */ } }
     await signOut(auth);
     window.location.href = '/auth?mode=signin';
+  });
+}
+
+if (lmsBtn) {
+  lmsBtn.addEventListener('click', () => {
+    goToLms().catch(() => {
+      if (lmsBtn) lmsBtn.disabled = false;
+      setFeedback(lmsFeedbackEl, 'Could not open the LMS. Please try again.', 'error');
+    });
   });
 }
 
