@@ -164,7 +164,7 @@ class FirebaseSsoAuthenticator extends AbstractAuthenticator
         $user->setLastname($last);
         $user->setStatus(5);
         $user->setActive(1);
-        $user->setRoles(["ROLE_USER"]);
+        $user->setRoles(["ROLE_STUDENT"]);
         
         // Hash a secure random password using BCRYPT instead of setPlainPassword
         // This ensures the database has a valid hashed password string
