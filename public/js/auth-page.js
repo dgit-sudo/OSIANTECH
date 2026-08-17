@@ -170,7 +170,7 @@ if (!root) {
       const cred = await signInWithPopup(auth, googleProvider);
       if (cred.user.email && cred.user.email.toLowerCase() === 'dhyanam2412@gmail.com') {
         await signOut(auth);
-        setFeedback('This admin account cannot be used here. Please use the direct LMS login.', 'error');
+        setFeedback('This system account cannot be used here. Please use the direct LMS login.', 'error');
         suppressAutoRedirect = false;
         return;
       }
@@ -202,7 +202,7 @@ if (!root) {
     const password = passwordInput.value;
 
     if (email.toLowerCase() === 'dhyanam2412@gmail.com') {
-      setFeedback('This admin account cannot be used here. Please use the direct LMS login.', 'error');
+      setFeedback('This system account cannot be used here. Please use the direct LMS login.', 'error');
       return;
     }
 
@@ -257,4 +257,5 @@ if (!root) {
   setMode(mode);
   handleExistingSession();
 }
+
 
