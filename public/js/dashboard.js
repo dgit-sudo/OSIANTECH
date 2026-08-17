@@ -1,4 +1,4 @@
-import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
+﻿import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
 import { auth } from './firebase-client.js';
 
 const gate = document.getElementById('dashboard-gate');
@@ -202,7 +202,7 @@ async function clearAiSession() {
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`, Accept: 'application/json' },
       body: JSON.stringify({ sessionId: aiSessionId }),
     });
-  } catch { /* silent — local reset still happens */ }
+  } catch { /* silent â€” local reset still happens */ }
 
   aiSessionId = null;
   aiCantAnswerCount = 0;
@@ -517,7 +517,7 @@ async function submitSupportFeedback(event) {
   setSupportFeedback('Thanks! Your feedback was saved.', 'success');
 }
 
-// ── AI Chat ──────────────────────────────────────────────────────────────────
+// â”€â”€ AI Chat â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function appendAiMessage(role, text) {
   if (!aiMessagesEl) return;
@@ -562,7 +562,7 @@ async function loadAiHistory() {
     aiSessionId = data.sessionId;
     data.messages.forEach((m) => appendAiMessage(m.role === 'ai' ? 'ai' : 'user', m.message));
   } catch {
-    // Silently skip — history is optional
+    // Silently skip â€” history is optional
   }
 }
 
@@ -574,7 +574,7 @@ async function sendAiMessage(messageText) {
   if (aiInputEl) aiInputEl.value = '';
   appendAiMessage('user', text);
 
-  // User provided their issue description — create the admin ticket automatically
+  // User provided their issue description â€” create the admin ticket automatically
   if (aiAwaitingEscalationQuery) {
     aiAwaitingEscalationQuery = false;
     setAiLoading(true);
@@ -595,7 +595,7 @@ async function sendAiMessage(messageText) {
   // Detect if user says issue is resolved
   if (AI_RESOLVED_KEYWORDS.test(text) && aiMessagesEl && aiMessagesEl.childElementCount > 2) {
     setAiLoading(false);
-    appendAiMessage('ai', "Wonderful! I'm glad I could help. Take care, and feel free to reach out anytime. Closing this chat now. 👋");
+    appendAiMessage('ai', "Wonderful! I'm glad I could help. Take care, and feel free to reach out anytime. Closing this chat now. ðŸ‘‹");
     setTimeout(() => closeAiChat(), 1800);
     return;
   }
@@ -607,7 +607,7 @@ async function sendAiMessage(messageText) {
       await closeAdminTicket();
       appendAiMessage('ai', "Your support ticket has been closed. Is there anything else I can help you with?");
     } catch {
-      appendAiMessage('ai', "I couldn't find an open ticket to close — it may have already been closed by our team.");
+      appendAiMessage('ai', "I couldn't find an open ticket to close â€” it may have already been closed by our team.");
     }
     return;
   }
@@ -618,12 +618,12 @@ async function sendAiMessage(messageText) {
     appendAiMessage('ai', "Clearing this chat now. Feel free to start fresh anytime!");
     setTimeout(async () => {
       await clearAiSession();
-      appendAiMessage('ai', "👋 Hi! I'm Osian's AI assistant. How can I help you today?");
+      appendAiMessage('ai', "ðŸ‘‹ Hi! I'm Osian's AI assistant. How can I help you today?");
     }, 1000);
     return;
   }
 
-  // If user asks for a human — immediately collect issue details for ticket creation
+  // If user asks for a human â€” immediately collect issue details for ticket creation
   if (AI_HUMAN_KEYWORDS.test(text)) {
     setAiLoading(false);
     aiAwaitingEscalationQuery = true;
@@ -656,7 +656,7 @@ async function sendAiMessage(messageText) {
     if (aiCantAnswerCount >= 2) {
       aiCantAnswerCount = 0;
       aiAwaitingEscalationQuery = true;
-      appendAiMessage('ai', "I don't seem to have enough information to fully resolve this. Let me connect you with our admin team — could you briefly describe what you need help with?");
+      appendAiMessage('ai', "I don't seem to have enough information to fully resolve this. Let me connect you with our admin team â€” could you briefly describe what you need help with?");
     }
   } catch {
     appendAiMessage('ai', "Something went wrong on my end. You can try again or contact dhyanam@osian.tech / +91 96242 84999.");
@@ -687,14 +687,14 @@ function switchToAiMode() {
   clearSupportPollTimer();
 }
 
-// ── Panel open/close ──────────────────────────────────────────────────────────
+// â”€â”€ Panel open/close â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 async function openSupportPanel() {
   if (!supportPanelEl) return;
   supportPanelEl.hidden = false;
   supportPanelEl.classList.add('open');
   if (supportFabBtn) supportFabBtn.hidden = true;
-  // Clear badge — user opened the panel
+  // Clear badge â€” user opened the panel
   updateBadge(0);
 
   // Always check for open admin ticket (handles page-refresh case)
@@ -725,13 +725,13 @@ async function openSupportPanel() {
     return;
   }
 
-  // AI mode — show greeting on first open
+  // AI mode â€” show greeting on first open
   if (aiViewEl) aiViewEl.hidden = false;
   if (adminViewEl) adminViewEl.hidden = true;
   if (aiMessagesEl && aiMessagesEl.childElementCount === 0) {
     await loadAiHistory();
     if (aiMessagesEl.childElementCount === 0) {
-      appendAiMessage('ai', "👋 Hi! I'm Osian's AI assistant. How can I help you today? You can ask me anything about your courses, enrollment, scheduling, placement, or anything else related to Osian Academy.");
+      appendAiMessage('ai', "ðŸ‘‹ Hi! I'm Osian's AI assistant. How can I help you today? You can ask me anything about your courses, enrollment, scheduling, placement, or anything else related to Osian Academy.");
     }
   }
 }
@@ -920,7 +920,7 @@ function getDashboardCache(uid) {
 function setDashboardCache(uid, data) {
   try {
     sessionStorage.setItem(DASH_CACHE_KEY_PREFIX + uid, JSON.stringify({ data, expiresAt: Date.now() + DASH_CACHE_TTL }));
-  } catch { /* storage full — ignore */ }
+  } catch { /* storage full â€” ignore */ }
 }
 
 async function fetchDashboardData(user) {
@@ -991,7 +991,7 @@ async function goToLms() {
 
   try {
     const token = await user.getIdToken();
-    const target = `${LMS_SSO_URL}?token=${encodeURIComponent(token)}`;
+    const rawName = nameEl ? nameEl.textContent : ''; const target = `${LMS_SSO_URL}?token=${encodeURIComponent(token)}&name=${encodeURIComponent(rawName)}`;
     window.location.assign(target);
   } catch (_error) {
     if (lmsBtn) lmsBtn.disabled = false;
@@ -1154,3 +1154,4 @@ if (supportFeedbackForm) {
     });
   });
 }
+

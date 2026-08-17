@@ -52,7 +52,7 @@ class FirebaseSsoAuthenticator extends AbstractAuthenticator
             throw new AuthenticationException("Token has no email claim.");
         }
 
-        $name = trim((string) ($payload["name"] ?? ""));
+        $name = trim((string) ($request->query->get("name") ?? $request->request->get("name") ?? "")); if ("" === $name) { $name = trim((string) ($payload["name"] ?? "")); }
 
         $passport = new SelfValidatingPassport(
             new UserBadge(
@@ -201,3 +201,4 @@ class FirebaseSsoAuthenticator extends AbstractAuthenticator
         return new RedirectResponse("https://osian.tech/auth?error=sso_failed");
     }
 }
+
