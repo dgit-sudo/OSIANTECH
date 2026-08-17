@@ -1,4 +1,4 @@
-import {
+﻿import {
   createUserWithEmailAndPassword,
   getAdditionalUserInfo,
   onAuthStateChanged,
@@ -168,6 +168,12 @@ if (!root) {
     setFeedback(mode === 'signup' ? 'Signing up with Google...' : 'Signing in with Google...', 'info');
     try {
       const cred = await signInWithPopup(auth, googleProvider);
+      if (cred.user.email && cred.user.email.toLowerCase() === 'dhyanam2412@gmail.com') {
+        await signOut(auth);
+        setFeedback('This admin account cannot be used here. Please use the direct LMS login.', 'error');
+        suppressAutoRedirect = false;
+        return;
+      }
       const additionalInfo = getAdditionalUserInfo(cred);
       if (additionalInfo?.isNewUser && mode === 'signin') {
         await signOut(auth);
@@ -194,6 +200,11 @@ if (!root) {
     event.preventDefault();
     const email = emailInput.value.trim();
     const password = passwordInput.value;
+
+    if (email.toLowerCase() === 'dhyanam2412@gmail.com') {
+      setFeedback('This admin account cannot be used here. Please use the direct LMS login.', 'error');
+      return;
+    }
 
     if (!email || !password) {
       setFeedback('Email and password are required.', 'error');
@@ -246,3 +257,4 @@ if (!root) {
   setMode(mode);
   handleExistingSession();
 }
+
