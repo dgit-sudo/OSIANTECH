@@ -1,0 +1,14 @@
+﻿# ─────────────────────────────────────────────────────────────
+# Add the following to:
+#   src/CoreBundle/Resources/config/listeners.yml
+#
+# Place it alongside the existing listener registrations
+# (e.g. UserAuthSourceListener, LoginFailureSubscriber).
+# ─────────────────────────────────────────────────────────────
+
+# --- EXISTING listeners stay unchanged ---
+
+# --- ADD THIS BLOCK ---
+  Chamilo\CoreBundle\EventListener\BlockPasswordLoginListener:
+    tags:
+      - { name: kernel.event_subscriber }
