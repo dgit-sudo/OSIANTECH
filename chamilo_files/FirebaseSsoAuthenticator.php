@@ -52,7 +52,30 @@ class FirebaseSsoAuthenticator extends AbstractAuthenticator
             throw new AuthenticationException("Token has no email claim.");
         }
 
-        $name = trim((string) ($request->query->get("name") ?? $request->request->get("name") ?? "")); if ("" === $name) { $name = trim((string) ($payload["name"] ?? "")); }
+                $uid = $payload["user_id"] ?? $payload["sub"];
+        $ctx = stream_context_create([
+            "http" => [
+                "header" => "Authorization: Bearer " . $token,
+                "timeout" => 5
+            ]
+        ]);
+        $apiUrl = rtrim(getenv('NODE_API_URL') ?: 'https://osian.tech', '/');
+        $res = @file_get_contents($apiUrl . "/api/profile/" . $uid . "/dashboard", false, $ctx);
+        
+        if (false === $res) {
+            throw new AuthenticationException("Could not verify profile status with main site.");
+        }
+        
+        $dashboardData = json_decode($res, true);
+        if (!is_array($dashboardData) || empty($dashboardData['profile'])) {
+            throw new AuthenticationException("Profile not found on main site.");
+        }
+        
+        if (empty($dashboardData['profile']['completedProfile'])) {
+            throw new AuthenticationException("Profile must be completed before accessing LMS.");
+        }
+        
+        $name = trim((string) ($dashboardData['profile']['name'] ?? $payload["name"] ?? ""));
 
         $passport = new SelfValidatingPassport(
             new UserBadge(
