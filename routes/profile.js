@@ -1,4 +1,4 @@
-const express = require('express');
+﻿const express = require('express');
 const { Pool } = require('pg');
 const { verifyFirebaseToken } = require('../lib/firebase-auth');
 const apiCache = require('../lib/api-cache');
@@ -229,7 +229,7 @@ router.post('/sync-user', async (req, res) => {
   }
 });
 
-// Combined dashboard endpoint — profile + purchases in one request, both cached
+// Combined dashboard endpoint â€” profile + purchases in one request, both cached
 router.get('/:uid/dashboard', async (req, res) => {
   if (!ensureDatabaseConfigured(res)) return;
 
@@ -372,7 +372,7 @@ router.put('/:uid', async (req, res) => {
         uid, name, age, nationality, phone_number, gender, city, education, email, completed_profile, created_at, updated_at
       ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
       on conflict (uid) do update set
-        name = excluded.name,
+        name = coalesce(nullif(${profileTable}.name, ''), excluded.name),
         age = excluded.age,
         nationality = excluded.nationality,
         phone_number = excluded.phone_number,
@@ -586,3 +586,4 @@ router.post('/:uid/purchases', async (req, res) => {
 });
 
 module.exports = router;
+
