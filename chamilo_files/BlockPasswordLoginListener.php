@@ -25,6 +25,8 @@ use Chamilo\CoreBundle\Entity\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Http\Event\CheckPassportEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class BlockPasswordLoginListener implements EventSubscriberInterface
 {
@@ -37,7 +39,23 @@ class BlockPasswordLoginListener implements EventSubscriberInterface
     {
         return [
             CheckPassportEvent::class => ['onCheckPassport', -64],
+            RequestEvent::class => ['onKernelRequest', 0],
         ];
+    }
+
+    public function onKernelRequest(RequestEvent $event): void
+    {
+        if (!$event->isMainRequest()) {
+            return;
+        }
+
+        $request = $event->getRequest();
+        $path = $request->getPathInfo();
+
+        if (str_contains($path, '/main/auth/inscription.php')) {
+            // SECURITY FIX (#5): Native registration is disabled. Redirect to OSIANTECH dashboard.
+            $event->setResponse(new RedirectResponse('https://osian.tech/auth?mode=signup'));
+        }
     }
 
     public function onCheckPassport(CheckPassportEvent $event): void
