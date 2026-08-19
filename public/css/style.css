@@ -1791,6 +1791,7 @@ h1,h2,h3,h4,h5,h6 {
   }
 }
 
+
 /* ================================================================
    SUPPORT FAB & PANEL STYLING (White & Kesari Theme)
    ================================================================ */
@@ -1837,7 +1838,7 @@ h1,h2,h3,h4,h5,h6 {
   position: fixed;
   bottom: 96px;
   right: 30px;
-  width: 390px;
+  width: 400px;
   max-width: calc(100vw - 40px);
   max-height: 600px;
   background: #ffffff;
@@ -1873,19 +1874,87 @@ h1,h2,h3,h4,h5,h6 {
   font-size: 0.82rem;
   border-radius: 9999px;
 }
+
+/* Chat Messages Stream */
 .support-messages {
   flex: 1;
-  padding: 18px 20px;
+  padding: 20px 18px;
   overflow-y: auto;
-  max-height: 340px;
+  max-height: 350px;
   min-height: 220px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  background: #ffffff;
-  font-size: 0.9rem;
-  color: #0f172a;
+  background: #fffdfa;
+  box-sizing: border-box;
 }
+
+/* Message Item & Chat Bubbles */
+.support-msg {
+  display: flex;
+  flex-direction: column;
+  max-width: 84%;
+  word-break: break-word;
+  animation: supportMsgFadeIn 0.25s ease;
+}
+@keyframes supportMsgFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* User Message Bubble (Right-aligned Kesari Pill) */
+.support-msg-user {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+.support-msg-user .support-msg-text {
+  background: linear-gradient(135deg, #ff7a00 0%, #ea580c 100%);
+  color: #ffffff !important;
+  border-radius: 18px 18px 4px 18px;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.5;
+  box-shadow: 0 4px 14px rgba(255, 122, 0, 0.28);
+}
+.support-msg-user .support-msg-time {
+  color: #94a3b8;
+  font-size: 0.7rem;
+  margin-top: 3px;
+  padding-right: 4px;
+}
+
+/* AI / Admin Message Bubble (Left-aligned White Card) */
+.support-msg-admin {
+  align-self: flex-start;
+  align-items: flex-start;
+}
+.support-msg-admin .support-msg-text {
+  background: #ffffff;
+  color: #0f172a !important;
+  border: 1.5px solid #fed7aa;
+  border-radius: 18px 18px 18px 4px;
+  padding: 11px 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.55;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+.support-msg-admin .support-msg-time {
+  color: #94a3b8;
+  font-size: 0.7rem;
+  margin-top: 3px;
+  padding-left: 4px;
+}
+
+.support-msg-image {
+  max-width: 100%;
+  border-radius: 12px;
+  margin-top: 6px;
+  border: 1px solid #fed7aa;
+}
+
+/* Compose Box */
 .support-compose {
   padding: 16px 18px;
   background: #fffaf5;
