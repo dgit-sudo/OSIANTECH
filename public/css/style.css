@@ -1833,19 +1833,21 @@ h1,h2,h3,h4,h5,h6 {
   margin-left: 4px;
 }
 
-/* Support Panel Modal */
+
+/* Support Panel Modal (Positioned Comfortably in View) */
 .support-panel {
   position: fixed;
-  bottom: 96px;
-  right: 30px;
+  bottom: 24px;
+  right: 24px;
   width: 400px;
-  max-width: calc(100vw - 40px);
-  max-height: 600px;
+  max-width: calc(100vw - 32px);
+  height: 520px;
+  max-height: calc(100vh - 100px);
   background: #ffffff;
   border: 1.5px solid #fed7aa;
   border-radius: 24px;
-  box-shadow: 0 20px 50px -10px rgba(255, 122, 0, 0.2), 0 4px 16px rgba(0, 0, 0, 0.08);
-  z-index: 1501;
+  box-shadow: 0 20px 50px -10px rgba(255, 122, 0, 0.22), 0 4px 16px rgba(0, 0, 0, 0.1);
+  z-index: 1600;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -1854,13 +1856,17 @@ h1,h2,h3,h4,h5,h6 {
   display: none !important;
 }
 .support-panel-head {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
+  padding: 14px 18px;
   background: #fffaf5;
   border-bottom: 1.5px solid #fed7aa;
   gap: 10px;
+  flex-shrink: 0;
 }
 .support-panel-head h3 {
   font-family: var(--font-display);
@@ -1873,8 +1879,18 @@ h1,h2,h3,h4,h5,h6 {
   padding: 6px 14px;
   font-size: 0.82rem;
   border-radius: 9999px;
+  background: #ffffff;
+  border: 1.5px solid #fed7aa;
+  color: #0f172a;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
-
+.support-panel-head .btn:hover {
+  background: #fff7ed;
+  border-color: #ff7a00;
+  color: #ff7a00;
+}
 /* Chat Messages Stream */
 .support-messages {
   flex: 1;
