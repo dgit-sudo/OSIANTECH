@@ -883,22 +883,22 @@ router.get('/ai/history', requireUserAuth, async (req, res) => {
 });
 
 router.post('/ai/message', requireUserAuth, async (req, res) => {
-  if (!ensureDatabaseConfigured(res)) return;
-  const uid = req.authUser.uid;
+  const uid = req.authUser?.uid;
   if (!isValidUid(uid)) return res.status(400).json({ error: 'Invalid uid.' });
 
   const message = toSafeText(req.body?.message || '', 1000);
-  const sessionId = toSafeText(req.body?.sessionId || '', 128);
+  let sessionId = toSafeText(req.body?.sessionId || '', 128);
   if (!message) return res.status(400).json({ error: 'message is required.' });
 
-  try {
-    await ensureAiTables();
+  if (!sessionId) {
+    sessionId = require('crypto').randomUUID();
+  }
 
-    // Build conversation history for the AI from DB
-    let history = [];
-    let activeSessionId = sessionId;
-
-    if (sessionId) {
+  // 1. Build conversation history if DB is ready (non-blocking)
+  let history = [];
+  if (pool) {
+    try {
+      await ensureAiTables();
       const histRows = await pool.query(
         'select role, message from ai_chat_messages where uid = $1 and session_id = $2 order by created_at asc, id asc',
         [uid, sessionId],
@@ -907,34 +907,39 @@ router.post('/ai/message', requireUserAuth, async (req, res) => {
         role: r.role === 'ai' ? 'assistant' : 'user',
         content: r.message,
       }));
+    } catch (e) {
+      console.warn('[AI History Non-fatal]', e.message);
     }
-
-    // Call AI
-    const { answer } = require('../src/rag.cjs');
-    const reply = await answer(message, history);
-
-    // Generate a new session ID if none provided
-    if (!activeSessionId) {
-      activeSessionId = require('crypto').randomUUID();
-    }
-
-    // Persist both messages
-    await pool.query(
-      'insert into ai_chat_messages (uid, session_id, role, message) values ($1, $2, $3, $4)',
-      [uid, activeSessionId, 'user', message],
-    );
-    await pool.query(
-      'insert into ai_chat_messages (uid, session_id, role, message) values ($1, $2, $3, $4)',
-      [uid, activeSessionId, 'ai', reply],
-    );
-
-    return res.json({ ok: true, reply, sessionId: activeSessionId });
-  } catch (err) {
-    console.error('[AI Chat Error]', err.message);
-    return res.status(500).json({
-      error: 'Something went wrong. Please contact info@osian.tech or call +919624284999.',
-    });
   }
+
+  // 2. Call AI answer engine
+  let reply = '';
+  try {
+    const { answer } = require('../src/rag.cjs');
+    reply = await answer(message, history);
+  } catch (err) {
+    console.error('[AI Engine Error]', err.message);
+    reply = "I'd be glad to help with that! At Osian Academy, all our courses are conducted as live 1-on-1 private sessions with industry mentors. Explore our full course catalog at https://osian.tech/courses or reach out directly to info@osian.tech / +919624284999.";
+  }
+
+  // 3. Persist both messages to DB if pool is available (non-blocking)
+  if (pool) {
+    try {
+      await ensureAiTables();
+      await pool.query(
+        'insert into ai_chat_messages (uid, session_id, role, message) values ($1, $2, $3, $4)',
+        [uid, sessionId, 'user', message],
+      );
+      await pool.query(
+        'insert into ai_chat_messages (uid, session_id, role, message) values ($1, $2, $3, $4)',
+        [uid, sessionId, 'ai', reply],
+      );
+    } catch (e) {
+      console.warn('[AI Save Non-fatal]', e.message);
+    }
+  }
+
+  return res.json({ ok: true, reply, sessionId });
 });
 
 module.exports = router;

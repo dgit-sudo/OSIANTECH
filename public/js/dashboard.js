@@ -643,7 +643,7 @@ async function sendAiMessage(messageText) {
       body: JSON.stringify({ message: text, sessionId: aiSessionId }),
     });
     const data = await res.json().catch(() => ({}));
-    const reply = data.reply || "I'm having trouble right now. Please try again or contact info@osian.tech.";
+    const reply = data.reply || (data.error ? "I'm having trouble right now. Please reach out to info@osian.tech or call +919624284999." : "Hello! How can I assist you with Osian Academy's live 1-on-1 courses today?");
     aiSessionId = data.sessionId || aiSessionId;
 
     if (AI_CANT_ANSWER.test(reply)) {
