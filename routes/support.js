@@ -932,7 +932,7 @@ router.post('/ai/message', requireUserAuth, async (req, res) => {
   } catch (err) {
     console.error('[AI Chat Error]', err.message);
     return res.status(500).json({
-      error: 'Something went wrong. Please contact support@osianacademy.com or call +91 96242 84999.',
+      error: 'Something went wrong. Please contact info@osian.tech or call +919624284999.',
     });
   }
 });

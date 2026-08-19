@@ -583,7 +583,7 @@ async function sendAiMessage(messageText) {
       appendAiMessage('ai', "Your support ticket has been created! Our admin team will get back to you shortly. Connecting you now...");
       setTimeout(() => switchToAdminMode(), 1400);
     } catch {
-      appendAiMessage('ai', "Sorry, I couldn't create the ticket right now. Please email dhyanam@osian.tech or call +91 96242 84999.");
+      appendAiMessage('ai', "Sorry, I couldn't create the ticket right now. Please email info@osian.tech or call +919624284999.");
     } finally {
       setAiLoading(false);
     }
@@ -643,7 +643,7 @@ async function sendAiMessage(messageText) {
       body: JSON.stringify({ message: text, sessionId: aiSessionId }),
     });
     const data = await res.json().catch(() => ({}));
-    const reply = data.reply || "I'm having trouble right now. Please try again or contact dhyanam@osian.tech.";
+    const reply = data.reply || "I'm having trouble right now. Please try again or contact info@osian.tech.";
     aiSessionId = data.sessionId || aiSessionId;
 
     if (AI_CANT_ANSWER.test(reply)) {
@@ -659,7 +659,7 @@ async function sendAiMessage(messageText) {
       appendAiMessage('ai', "I don't seem to have enough information to fully resolve this. Let me connect you with our admin team â€” could you briefly describe what you need help with?");
     }
   } catch {
-    appendAiMessage('ai', "Something went wrong on my end. You can try again or contact dhyanam@osian.tech / +91 96242 84999.");
+    appendAiMessage('ai', "Something went wrong on my end. You can try again or contact info@osian.tech / +919624284999.");
   } finally {
     setAiLoading(false);
   }
