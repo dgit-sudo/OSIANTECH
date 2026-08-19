@@ -1842,7 +1842,7 @@ h1,h2,h3,h4,h5,h6 {
   width: 400px;
   max-width: calc(100vw - 32px);
   height: 520px;
-  max-height: calc(100vh - 100px);
+  max-height: calc(100vh - 80px);
   background: #ffffff;
   border: 1.5px solid #fed7aa;
   border-radius: 24px;
@@ -1855,14 +1855,23 @@ h1,h2,h3,h4,h5,h6 {
 .support-panel[hidden] {
   display: none !important;
 }
+
+/* AI & Admin Views inside Support Panel (Full Flex Height) */
+#support-ai-view,
+#support-admin-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
 .support-panel-head {
-  position: sticky;
-  top: 0;
-  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 18px;
+  padding: 12px 18px;
   background: #fffaf5;
   border-bottom: 1.5px solid #fed7aa;
   gap: 10px;
@@ -1891,18 +1900,18 @@ h1,h2,h3,h4,h5,h6 {
   border-color: #ff7a00;
   color: #ff7a00;
 }
-/* Chat Messages Stream */
+
+/* Chat Messages Stream (Scrollable Middle Area) */
 .support-messages {
-  flex: 1;
-  padding: 20px 18px;
+  flex: 1 1 auto;
+  padding: 16px;
   overflow-y: auto;
-  max-height: 350px;
-  min-height: 220px;
   display: flex;
   flex-direction: column;
   gap: 12px;
   background: #fffdfa;
   box-sizing: border-box;
+  min-height: 0; /* Ensures flex child scrolls without overflow */
 }
 
 /* Message Item & Chat Bubbles */
@@ -1970,19 +1979,24 @@ h1,h2,h3,h4,h5,h6 {
   border: 1px solid #fed7aa;
 }
 
-/* Compose Box */
+/* Compose Box (Always Anchored at the Bottom) */
 .support-compose {
-  padding: 16px 18px;
+  flex-shrink: 0;
+  padding: 12px 16px 14px;
   background: #fffaf5;
   border-top: 1.5px solid #fed7aa;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
+  box-sizing: border-box;
 }
 .support-compose textarea {
   width: 100%;
-  padding: 10px 14px;
-  border-radius: 12px;
+  height: 56px;
+  min-height: 50px;
+  max-height: 70px;
+  padding: 8px 12px;
+  border-radius: 10px;
   border: 1.5px solid #fed7aa;
   background: #ffffff;
   color: #0f172a;
@@ -1997,6 +2011,13 @@ h1,h2,h3,h4,h5,h6 {
   border-color: #ff7a00;
   box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.15);
 }
+.support-compose .btn-primary {
+  width: 100%;
+  padding: 9px 16px;
+  font-size: 0.9rem;
+  border-radius: 10px;
+  font-weight: 800;
+}
 .support-compose input[type="file"] {
   font-size: 0.78rem;
   color: #64748b;
@@ -2009,6 +2030,7 @@ h1,h2,h3,h4,h5,h6 {
   font-weight: 700;
   font-size: 0.84rem;
   text-align: center;
+  flex-shrink: 0;
 }
 .support-chat-list {
   display: flex;
@@ -2017,6 +2039,7 @@ h1,h2,h3,h4,h5,h6 {
   padding: 10px 20px;
   background: #fffaf5;
   border-bottom: 1px solid #fed7aa;
+  flex-shrink: 0;
 }
 .support-feedback-form {
   padding: 16px 20px;
@@ -2025,6 +2048,7 @@ h1,h2,h3,h4,h5,h6 {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  flex-shrink: 0;
 }
 .support-feedback-form label {
   font-size: 0.82rem;
