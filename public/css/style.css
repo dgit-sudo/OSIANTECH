@@ -1240,24 +1240,28 @@ h1,h2,h3,h4,h5,h6 {
   .footer-container { grid-template-columns: 1fr; gap: 32px; }
 }
 
+
 /* ================================================================
-   AUTH PAGES STYLING (White & Kesari Theme)
+   AUTH PAGES STYLING (Compact Fit-to-Screen White & Kesari Theme)
    ================================================================ */
 .auth-shell {
   min-height: calc(100vh - 68px);
   display: flex;
   align-items: center;
-  padding: 120px 0 80px;
+  justify-content: center;
+  padding: 80px 0 24px;
   background: #fffaf5;
   border-bottom: 1px solid #fed7aa;
+  box-sizing: border-box;
 }
 .auth-container {
   display: grid;
-  grid-template-columns: 1fr 1.15fr;
-  gap: 64px;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 44px;
   align-items: center;
-  max-width: 1100px;
+  max-width: 1020px;
   margin: 0 auto;
+  width: 100%;
 }
 .auth-hero {
   display: flex;
@@ -1266,18 +1270,18 @@ h1,h2,h3,h4,h5,h6 {
 }
 .auth-title {
   font-family: var(--font-display);
-  font-size: clamp(2.2rem, 3.8vw, 3.2rem);
+  font-size: clamp(1.8rem, 2.8vw, 2.5rem);
   font-weight: 900;
-  line-height: 1.12;
+  line-height: 1.15;
   color: #0f172a;
-  margin-bottom: 18px;
+  margin-bottom: 12px;
   letter-spacing: -0.035em;
 }
 .auth-sub {
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   color: var(--text-secondary);
-  line-height: 1.7;
-  margin-bottom: 28px;
+  line-height: 1.6;
+  margin-bottom: 18px;
   font-weight: 500;
 }
 .auth-points {
@@ -1286,12 +1290,12 @@ h1,h2,h3,h4,h5,h6 {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
 }
 .auth-points li {
   position: relative;
-  padding-left: 28px;
-  font-size: 0.95rem;
+  padding-left: 24px;
+  font-size: 0.88rem;
   font-weight: 700;
   color: #0f172a;
 }
@@ -1302,31 +1306,33 @@ h1,h2,h3,h4,h5,h6 {
   top: 0;
   color: #ff7a00;
   font-weight: 900;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
-/* Auth Card */
+/* Compact Auth Card */
 .auth-card {
   background: #ffffff;
   border: 1.5px solid #fed7aa;
-  border-radius: 24px;
-  padding: 44px 40px;
-  box-shadow: 0 12px 36px -4px rgba(255, 122, 0, 0.1);
-  max-width: 520px;
+  border-radius: 20px;
+  padding: 26px 30px;
+  box-shadow: 0 10px 30px -4px rgba(255, 122, 0, 0.08);
+  max-width: 450px;
   width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 .auth-card h2 {
   font-family: var(--font-display);
-  font-size: 1.8rem;
+  font-size: 1.45rem;
   font-weight: 900;
   color: #0f172a;
-  margin: 0 0 6px;
+  margin: 0 0 3px;
   letter-spacing: -0.03em;
 }
 .auth-card-sub {
-  font-size: 0.92rem;
+  font-size: 0.82rem;
   color: var(--text-secondary);
-  margin-bottom: 24px;
+  margin-bottom: 14px;
 }
 
 /* Mode Toggle */
@@ -1335,18 +1341,18 @@ h1,h2,h3,h4,h5,h6 {
   background: #fff7ed;
   border: 1.5px solid #fed7aa;
   border-radius: 9999px;
-  padding: 4px;
-  margin-bottom: 28px;
+  padding: 3px;
+  margin-bottom: 14px;
 }
 .auth-mode-btn {
   flex: 1;
-  padding: 9px 16px;
+  padding: 6px 12px;
   border: none;
   background: transparent;
   border-radius: 9999px;
   font-family: var(--font-body);
   font-weight: 800;
-  font-size: 0.9rem;
+  font-size: 0.84rem;
   color: #64748b;
   cursor: pointer;
   transition: all 0.25s ease;
@@ -1354,7 +1360,7 @@ h1,h2,h3,h4,h5,h6 {
 .auth-mode-btn.active {
   background: linear-gradient(135deg, #ff7a00, #ea580c);
   color: #ffffff;
-  box-shadow: 0 4px 14px rgba(255, 122, 0, 0.35);
+  box-shadow: 0 3px 10px rgba(255, 122, 0, 0.35);
 }
 
 /* Google Auth Button */
@@ -1363,28 +1369,27 @@ h1,h2,h3,h4,h5,h6 {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  padding: 13px 20px;
-  border-radius: 12px;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 10px;
   background: #ffffff;
   border: 1.5px solid #fed7aa;
   color: #0f172a;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   cursor: pointer;
   transition: all 0.25s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 .auth-google-btn:hover {
   border-color: #ff7a00;
   background: #fff7ed;
-  transform: translateY(-1px);
 }
 .google-icon {
   font-weight: 900;
   color: #ea580c;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 /* Divider */
@@ -1392,9 +1397,9 @@ h1,h2,h3,h4,h5,h6 {
   display: flex;
   align-items: center;
   text-align: center;
-  margin: 24px 0;
+  margin: 12px 0;
   color: #94a3b8;
-  font-size: 0.82rem;
+  font-size: 0.74rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -1406,7 +1411,7 @@ h1,h2,h3,h4,h5,h6 {
   border-bottom: 1px solid #fed7aa;
 }
 .auth-divider span {
-  padding: 0 14px;
+  padding: 0 10px;
 }
 
 /* Form inputs */
@@ -1415,25 +1420,25 @@ h1,h2,h3,h4,h5,h6 {
   flex-direction: column;
 }
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
   text-align: left;
 }
 .form-group label {
-  font-size: 0.86rem;
+  font-size: 0.8rem;
   font-weight: 800;
   color: #0f172a;
 }
 .form-group input {
   width: 100%;
-  padding: 12px 16px;
-  border-radius: 10px;
+  padding: 9px 14px;
+  border-radius: 9px;
   border: 1.5px solid #fed7aa;
   background: #ffffff;
   color: #0f172a;
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   font-family: var(--font-body);
   outline: none;
   box-sizing: border-box;
@@ -1445,16 +1450,17 @@ h1,h2,h3,h4,h5,h6 {
 }
 .btn-block {
   width: 100%;
-  padding: 14px;
-  margin-top: 8px;
-  font-size: 1rem;
+  padding: 10px 16px;
+  margin-top: 6px;
+  font-size: 0.92rem;
+  border-radius: 10px;
 }
 
 /* Switch */
 .auth-switch {
-  margin-top: 22px;
+  margin-top: 12px;
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   color: var(--text-secondary);
   font-weight: 500;
 }
@@ -1475,10 +1481,10 @@ h1,h2,h3,h4,h5,h6 {
 
 /* Feedback messages */
 .auth-feedback {
-  margin-top: 14px;
-  padding: 12px 16px;
-  border-radius: 10px;
-  font-size: 0.88rem;
+  margin-top: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.82rem;
   font-weight: 600;
   display: none;
 }
