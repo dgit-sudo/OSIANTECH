@@ -242,38 +242,26 @@ body.page-courses {
   to   { transform: translateX(-50%); }
 }
 
+
 /* ================================================================
-   3. STICKY TOOLBAR & SEARCH BAR
+   3. COMPACT HERO EMBEDDED SEARCH BAR
    ================================================================ */
-.page-courses .courses-toolbar {
-  background: #ffffff;
-  border-bottom: 1.5px solid #fed7aa;
-  padding: 14px 0;
-  position: sticky;
-  top: 68px;
-  z-index: 20;
-  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.05);
+.page-courses .hero-search-form {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto 36px;
+  z-index: 2;
+  position: relative;
 }
-.page-courses .courses-toolbar-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-}
-.page-courses .courses-search-row {
-  display: flex;
-  flex: 0 0 280px;
-  max-width: 280px;
-}
-.page-courses .courses-search-field {
+.page-courses .hero-search-field {
   position: relative;
   width: 100%;
   display: flex;
   align-items: center;
 }
-.page-courses .courses-search-icon {
+.page-courses .hero-search-icon {
   position: absolute;
-  left: 14px;
+  left: 18px;
   top: 50%;
   transform: translateY(-50%);
   color: #ff7a00;
@@ -281,65 +269,42 @@ body.page-courses {
 }
 .page-courses .courses-search-input {
   width: 100%;
-  padding: 9px 16px 9px 38px;
+  padding: 12px 105px 12px 46px;
   border-radius: 9999px;
   border: 1.5px solid #fed7aa;
   background: #ffffff !important;
   color: #0f172a !important;
-  font-size: .88rem;
+  font-size: .92rem;
   font-weight: 600;
   font-family: var(--font-body);
   outline: none;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.08);
   transition: border-color .25s, box-shadow .25s;
 }
 .page-courses .courses-search-input:focus {
   border-color: #ff7a00 !important;
-  box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.18) !important;
+  box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.18) !important;
 }
-
-.page-courses .filter-bar-wrap {
-  position: relative;
-  flex: 1;
-  min-width: 0;
-}
-.page-courses .courses-filter-bar {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  padding: 4px 0;
-}
-.page-courses .courses-filter-bar::-webkit-scrollbar {
-  display: none;
-}
-.page-courses .cat-pill {
+.page-courses .hero-search-btn {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(135deg, #ff7a00, #ea580c);
+  color: #ffffff;
+  border: none;
   padding: 8px 18px;
   border-radius: 9999px;
-  background: #ffffff;
-  border: 1.5px solid #fed7aa;
-  color: var(--text-secondary);
-  font-size: .84rem;
-  font-weight: 700;
   font-family: var(--font-body);
-  white-space: nowrap;
-  text-decoration: none;
-  transition: all .25s var(--ease);
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  font-size: .84rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(255, 122, 0, 0.35);
+  transition: transform .2s, box-shadow .2s;
 }
-.page-courses .cat-pill:hover {
-  border-color: #ff7a00;
-  color: #ff7a00;
-  transform: translateY(-2px);
-}
-.page-courses .cat-pill.active {
-  background: linear-gradient(135deg, #ff7a00, #ea580c);
-  color: #ffffff !important;
-  border-color: transparent;
-  box-shadow: 0 6px 16px -2px rgba(255, 122, 0, 0.38);
+.page-courses .hero-search-btn:hover {
+  transform: translateY(-50%) scale(1.02);
+  box-shadow: 0 4px 12px rgba(255, 122, 0, 0.45);
 }
 
 /* ================================================================

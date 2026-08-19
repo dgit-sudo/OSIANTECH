@@ -41,7 +41,16 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; catShortMap[c.name] =
       100% placement support.
     </p>
 
-    <div class="ch-stats" data-reveal="fade-up" data-reveal-delay="2" data-reveal-stagger>
+    <!-- Compact Embedded Search Bar -->
+    <form class="hero-search-form" action="/courses" method="GET" data-courses-search-form data-reveal="fade-up" data-reveal-delay="2">
+      <div class="hero-search-field">
+        <svg class="hero-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff7a00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input id="course-search" class="courses-search-input" type="search" name="q" value="<%= safeSearchQuery %>" placeholder="Search courses, topics or tools (e.g. Python, React, UI/UX)..." data-courses-search-input autocomplete="off" />
+        <button type="submit" class="hero-search-btn">Search</button>
+      </div>
+    </form>
+
+    <div class="ch-stats" data-reveal="fade-up" data-reveal-delay="3" data-reveal-stagger>
       <div class="ch-stat-pill">
         <span class="ch-stat-num stat-value"><%= totalCourseCount %>+</span>
         <span class="ch-stat-lbl">Courses</span>
@@ -73,31 +82,6 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; catShortMap[c.name] =
     <% }); %>
   </div>
 </div>
-
-<!-- ===== TOOLBAR (Sticky Search & Categories) ===== -->
-<section class="courses-toolbar" data-courses-toolbar>
-  <div class="container">
-    <div class="courses-toolbar-inner">
-      <form class="courses-search-row" action="/courses" method="GET" data-courses-search-form>
-        <div class="courses-search-field">
-          <svg class="courses-search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input id="course-search" class="courses-search-input" type="search" name="q" value="<%= safeSearchQuery %>" placeholder="Search courses, topics or tools..." data-courses-search-input autocomplete="off" />
-        </div>
-      </form>
-
-      <div class="filter-bar-wrap">
-        <div class="courses-filter-bar" role="tablist" aria-label="Course categories">
-          <a href="/courses" class="cat-pill <%= safeActiveCategory === 'All' && !safeSearchQuery ? 'active' : '' %>">All Courses</a>
-          <% catMeta.forEach(function(cat) { %>
-          <a href="/courses?category=<%= encodeURIComponent(cat.name) %>" class="cat-pill <%= safeActiveCategory === cat.name ? 'active' : '' %>">
-            <span><%= cat.short %></span>
-          </a>
-          <% }); %>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <% if (!isFiltered) { %>
 
