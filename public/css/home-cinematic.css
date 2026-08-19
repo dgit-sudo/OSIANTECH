@@ -1,54 +1,50 @@
 /* ================================================================
-   OSIAN ACADEMY — KESARI (SAFFRON) BRAND DESIGN SYSTEM
-   Inspired by samyakinfotech.com Kesari & Royal Accent Palette
+   OSIAN ACADEMY — SAMYAK KESARI & WHITE BRAND DESIGN SYSTEM
+   Pure Crisp White Surfaces + Radiant Kesari (Saffron) Accents
+   Bold, High-Impact Modern Typography (Plus Jakarta Sans)
    ================================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
   --font-display: 'Plus Jakarta Sans', -apple-system, sans-serif;
   --font-body: 'Inter', -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Surfaces */
+  /* Pure White & Kesari Surface Hierarchy */
   --bg:          #ffffff;
   --bg-surface:  #ffffff;
-  --bg-surface-1:#fff7ed;
-  --bg-surface-2:#ffedd5;
+  --bg-surface-1:#fffaf5;
+  --bg-surface-2:#fff7ed;
   --bg-card:     #ffffff;
 
-  /* Samyak Infotech Kesari Palette */
+  /* Samyak Kesari Palette */
   --brand-kesari:      #ff7a00;
   --brand-kesari-deep: #ea580c;
   --brand-kesari-dark: #c2410c;
   --brand-kesari-light:#ff9838;
   --brand-kesari-pale: #fff7ed;
-  --brand-kesari-muted:rgba(255, 122, 0, 0.12);
+  --brand-kesari-muted:rgba(255, 122, 0, 0.1);
 
-  /* Secondary Accents */
-  --accent-gold:   #f59e0b;
-  --accent-navy:   #0f2050;
-  --accent-emerald:#10b981;
-  --accent-cyan:   #06b6d4;
-
-  /* Text & Ink */
+  /* Clean High-Contrast Ink */
   --text-primary:   #0f172a;
   --text-secondary: #475569;
   --text-muted:     #94a3b8;
   --text-white:     #ffffff;
 
-  /* Borders & Dividers */
+  /* Kesari Borders */
   --border:       #fed7aa;
   --border-light: #ffedd5;
-  --border-brand: rgba(255, 122, 0, 0.35);
+  --border-subtle:#fff1e6;
+  --border-brand: rgba(255, 122, 0, 0.4);
 
-  /* Shadows */
+  /* Elevated Shadows */
   --shadow-xs:    0 1px 2px rgba(0, 0, 0, 0.04);
   --shadow-sm:    0 2px 8px -2px rgba(0, 0, 0, 0.06);
-  --shadow-md:    0 6px 20px -4px rgba(0, 0, 0, 0.07);
-  --shadow-lg:    0 12px 32px -6px rgba(0, 0, 0, 0.08);
-  --shadow-glow:  0 20px 60px rgba(255, 122, 0, 0.14), 0 4px 16px rgba(0, 0, 0, 0.04);
-  --shadow-brand: 0 10px 25px -4px rgba(255, 122, 0, 0.38);
+  --shadow-md:    0 6px 20px -4px rgba(255, 122, 0, 0.08);
+  --shadow-lg:    0 14px 36px -6px rgba(255, 122, 0, 0.12);
+  --shadow-glow:  0 20px 50px rgba(255, 122, 0, 0.16), 0 4px 16px rgba(0, 0, 0, 0.04);
+  --shadow-brand: 0 10px 25px -4px rgba(255, 122, 0, 0.42);
 
   /* Transitions */
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
@@ -65,24 +61,19 @@ body.page-home {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
-  letter-spacing: -0.03em;
+  letter-spacing: -0.035em;
+  font-weight: 800;
 }
 
-/* Gradient Text — Radiant Kesari Saffron */
+/* Radiant Kesari Gradient Text */
 .gradient-text {
-  background: linear-gradient(135deg, #ff7a00 0%, #ff5500 50%, #f59e0b 100%);
+  background: linear-gradient(135deg, #ff7a00 0%, #ff5500 40%, #e65100 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   animation: shimmerKesari 4s linear infinite;
-}
-
-.gradient-text-warm {
-  background: linear-gradient(135deg, #ff7a00 0%, #ea580c 50%, #d97706 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-weight: 900;
 }
 
 @keyframes shimmerKesari {
@@ -90,11 +81,26 @@ h1, h2, h3, h4, h5, h6 {
   100% { background-position: 200% center; }
 }
 
-/* Ambient Blobs & Grids */
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%      { transform: translateY(-8px); }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.5; }
+  50%      { opacity: 1; }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Kesari Micro-Grid & Ambient Lighting */
 .grid-bg {
   background-image:
-    linear-gradient(rgba(255, 122, 0, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 122, 0, 0.045) 1px, transparent 1px);
+    linear-gradient(rgba(255, 122, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 122, 0, 0.04) 1px, transparent 1px);
   background-size: 48px 48px;
 }
 
@@ -106,7 +112,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Sticky Navbar */
 body.page-home .navbar {
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
   border-bottom: 1px solid var(--border-light);
@@ -122,11 +128,11 @@ body.page-home .nav-link:hover {
 }
 
 /* ================================================================
-   1. HERO SECTION (Full-Width Centered Kesari Modern Hero)
+   1. HERO SECTION (2-Column Split with Kesari Previews)
    ================================================================ */
 .hero-attractive {
   position: relative;
-  min-height: 92vh;
+  min-height: 90vh;
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -144,38 +150,62 @@ body.page-home .nav-link:hover {
 .hero-container {
   position: relative;
   z-index: 10;
-  max-width: 960px;
+  max-width: 1240px;
   margin: 0 auto;
   padding: 0 24px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 56px;
   align-items: center;
+}
+
+/* Hero Left */
+.hero-badge-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 18px;
+  border-radius: 9999px;
+  background: #fff7ed;
+  border: 1.5px solid #fed7aa;
+  color: #c2410c;
+  font-size: 0.85rem;
+  font-weight: 800;
+  margin-bottom: 24px;
+  font-family: var(--font-body);
+}
+.hero-badge-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--brand-kesari);
+  box-shadow: 0 0 12px var(--brand-kesari);
+  animation: pulse-slow 2s infinite;
 }
 
 .hero-main-title {
   font-family: var(--font-display);
-  font-size: clamp(3rem, 5.8vw, 4.8rem);
-  font-weight: 800;
+  font-size: clamp(2.8rem, 4.8vw, 4.4rem);
+  font-weight: 900;
   line-height: 1.08;
   letter-spacing: -0.04em;
   color: var(--text-primary);
-  margin-bottom: 24px;
+  margin-bottom: 22px;
 }
 
 .hero-main-sub {
-  font-size: clamp(1.1rem, 1.8vw, 1.28rem);
+  font-size: clamp(1.05rem, 1.6vw, 1.22rem);
   color: var(--text-secondary);
-  line-height: 1.7;
-  margin-bottom: 38px;
-  max-width: 740px;
+  line-height: 1.65;
+  margin-bottom: 36px;
+  max-width: 580px;
+  font-weight: 500;
 }
 
 .hero-cta-group {
   display: flex;
   gap: 16px;
   align-items: center;
-  justify-content: center;
   flex-wrap: wrap;
   margin-bottom: 36px;
 }
@@ -184,11 +214,11 @@ body.page-home .nav-link:hover {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 14px 32px;
+  padding: 15px 32px;
   border-radius: 12px;
   background: linear-gradient(135deg, #ff7a00, #ea580c);
   color: #ffffff !important;
-  font-weight: 700;
+  font-weight: 800;
   font-size: 0.96rem;
   text-decoration: none;
   box-shadow: var(--shadow-brand);
@@ -206,40 +236,38 @@ body.page-home .nav-link:hover {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 14px 24px;
+  padding: 15px 24px;
   border-radius: 12px;
   background: #ffffff;
-  border: 1.5px solid var(--border);
+  border: 1.5px solid #fed7aa;
   color: var(--text-primary);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.95rem;
   text-decoration: none;
   box-shadow: var(--shadow-xs);
   transition: all var(--t) var(--ease);
 }
 .btn-brand-ghost:hover {
-  background: var(--brand-kesari-pale);
+  background: #fff7ed;
   border-color: var(--brand-kesari);
   color: var(--brand-kesari);
   transform: translateY(-2px);
 }
 
-/* Social Proof Rating */
+/* Social Proof */
 .hero-social-proof {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 16px;
-  margin-top: 10px;
-  padding-top: 10px;
+  padding-top: 8px;
 }
 .avatar-stack {
   display: flex;
   margin-left: 4px;
 }
 .avatar-pill {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   border: 2px solid #ffffff;
   display: flex;
@@ -247,7 +275,7 @@ body.page-home .nav-link:hover {
   justify-content: center;
   color: #ffffff;
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 900;
   margin-left: -8px;
   box-shadow: var(--shadow-xs);
 }
@@ -255,22 +283,163 @@ body.page-home .nav-link:hover {
   display: flex;
   align-items: center;
   gap: 3px;
-  color: #f59e0b;
+  color: #ff7a00;
   font-size: 13px;
+  margin-bottom: 2px;
 }
 .proof-rating-num {
-  font-weight: 800;
+  font-weight: 900;
   color: var(--text-primary);
   font-size: 14px;
   margin-left: 4px;
+}
+.proof-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* Hero Right: Course Card Stack */
+.hero-preview-stack {
+  position: relative;
+}
+.preview-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.preview-course-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  background: #ffffff;
+  border: 1.5px solid #fed7aa;
+  border-radius: 18px;
+  box-shadow: var(--shadow-md);
+  transition: all var(--t) var(--ease);
+}
+.preview-course-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-glow);
+  border-color: var(--brand-kesari);
+}
+.preview-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.preview-info {
+  flex: 1;
+  min-width: 0;
+}
+.preview-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.preview-title {
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.preview-tag {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.preview-sub {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.preview-action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: #fff7ed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--brand-kesari);
+  font-size: 14px;
+  font-weight: 900;
+  transition: background var(--t);
+}
+.preview-course-card:hover .preview-action-btn {
+  background: #ffedd5;
+}
+
+/* Floating Badges */
+.floating-badge-top {
+  position: absolute;
+  top: -24px;
+  right: -16px;
+  background: #ffffff;
+  border: 1.5px solid #fed7aa;
+  border-radius: 16px;
+  padding: 14px 20px;
+  box-shadow: var(--shadow-lg);
+  z-index: 5;
+}
+.floating-stat-num {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+.floating-stat-lbl {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.floating-badge-bottom {
+  position: absolute;
+  bottom: -20px;
+  left: -16px;
+  background: linear-gradient(135deg, #ff7a00, #ea580c);
+  color: #ffffff;
+  border-radius: 16px;
+  padding: 12px 18px;
+  box-shadow: var(--shadow-brand);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 5;
+}
+.floating-cert-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
 }
 
 /* ================================================================
    2. TRUSTED-BY STRIP & SKILLS TICKER
    ================================================================ */
 .hero-trusted-strip {
-  padding: 36px 0;
-  background: #fff7ed;
+  padding: 34px 0;
+  background: #fffaf5;
   border-top: 1px solid #fed7aa;
   border-bottom: 1px solid #fed7aa;
 }
@@ -283,7 +452,7 @@ body.page-home .nav-link:hover {
 }
 .hero-trusted-label {
   font-size: 0.82rem;
-  font-weight: 800;
+  font-weight: 900;
   color: #c2410c;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -297,7 +466,7 @@ body.page-home .nav-link:hover {
 .hero-trusted-logos span {
   font-family: var(--font-display);
   font-size: 1.15rem;
-  font-weight: 800;
+  font-weight: 900;
   color: var(--text-secondary);
   letter-spacing: 0.01em;
   transition: all var(--t);
@@ -308,8 +477,8 @@ body.page-home .nav-link:hover {
 }
 
 .skills-ticker-wrap {
-  background: #ffedd5;
-  padding: 16px 0;
+  background: #ffffff;
+  padding: 15px 0;
   overflow: hidden;
   border-bottom: 1px solid #fed7aa;
 }
@@ -325,8 +494,8 @@ body.page-home .nav-link:hover {
 }
 .skills-ticker-track span {
   font-size: 0.92rem;
-  font-weight: 700;
-  color: #7c2d12;
+  font-weight: 800;
+  color: var(--text-secondary);
   white-space: nowrap;
 }
 .skills-ticker-track span.dot {
@@ -339,11 +508,11 @@ body.page-home .nav-link:hover {
 }
 
 /* ================================================================
-   3. STATS BAR (4 Columns Kesari Sunset Gradient)
+   3. STATS BAR (4 Columns)
    ================================================================ */
 .s-stats-bar {
-  padding: 68px 0;
-  background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+  padding: 64px 0;
+  background: #fffaf5;
   border-bottom: 1px solid #fed7aa;
 }
 .stats-grid-4 {
@@ -368,7 +537,8 @@ body.page-home .nav-link:hover {
 }
 .stat-box-sub {
   font-size: 0.82rem;
-  color: var(--text-secondary);
+  color: var(--text-muted);
+  font-weight: 600;
 }
 
 /* ================================================================
@@ -376,8 +546,7 @@ body.page-home .nav-link:hover {
    ================================================================ */
 .s-process {
   padding: 100px 0;
-  background: #fff8f0;
-  border-bottom: 1px solid #fed7aa;
+  background: #ffffff;
 }
 .section-header-center {
   text-align: center;
@@ -387,7 +556,7 @@ body.page-home .nav-link:hover {
 .section-tag-pill {
   display: inline-block;
   font-size: 0.78rem;
-  font-weight: 800;
+  font-weight: 900;
   color: var(--brand-kesari-deep);
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -395,12 +564,12 @@ body.page-home .nav-link:hover {
   padding: 5px 16px;
   border-radius: 9999px;
   margin-bottom: 14px;
-  border: 1px solid #fed7aa;
+  border: 1.5px solid #fed7aa;
 }
 .section-title-large {
   font-family: var(--font-display);
   font-size: clamp(1.9rem, 3.4vw, 2.7rem);
-  font-weight: 800;
+  font-weight: 900;
   color: var(--text-primary);
   letter-spacing: -0.035em;
   line-height: 1.2;
@@ -416,7 +585,7 @@ body.page-home .nav-link:hover {
   border: 1.5px solid #fed7aa;
   border-radius: 20px;
   padding: 32px 24px;
-  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.06);
+  box-shadow: var(--shadow-sm);
   transition: all var(--t) var(--ease);
   text-align: center;
   display: flex;
@@ -435,7 +604,7 @@ body.page-home .nav-link:hover {
   background: linear-gradient(135deg, #ff7a00, #ea580c);
   color: #ffffff;
   font-family: var(--font-display);
-  font-weight: 800;
+  font-weight: 900;
   font-size: 1rem;
   display: flex;
   align-items: center;
@@ -449,13 +618,13 @@ body.page-home .nav-link:hover {
 }
 .process-card-title {
   font-family: var(--font-display);
-  font-size: 1.15rem;
-  font-weight: 700;
+  font-size: 1.18rem;
+  font-weight: 800;
   color: var(--text-primary);
   margin-bottom: 10px;
 }
 .process-card-desc {
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   color: var(--text-secondary);
   line-height: 1.6;
 }
@@ -465,9 +634,9 @@ body.page-home .nav-link:hover {
    ================================================================ */
 .s-tracks {
   padding: 100px 0;
-  background: #fefce8;
-  border-top: 1px solid #fef08a;
-  border-bottom: 1px solid #fef08a;
+  background: #fffaf5;
+  border-top: 1px solid #fed7aa;
+  border-bottom: 1px solid #fed7aa;
 }
 .tracks-grid {
   display: grid;
@@ -477,7 +646,7 @@ body.page-home .nav-link:hover {
 .track-card {
   position: relative;
   background: #ffffff;
-  border: 1.5px solid #fef08a;
+  border: 1.5px solid #fed7aa;
   border-radius: 20px;
   padding: 32px 26px;
   text-decoration: none;
@@ -492,7 +661,7 @@ body.page-home .nav-link:hover {
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #ff7a00, #f59e0b);
+  background: linear-gradient(90deg, #ff7a00, #ea580c);
   opacity: 0;
   transition: opacity var(--t);
 }
@@ -513,6 +682,9 @@ body.page-home .nav-link:hover {
   justify-content: center;
   font-size: 1.6rem;
   margin-bottom: 18px;
+  background: #fff7ed;
+  color: var(--brand-kesari);
+  border: 1px solid #fed7aa;
   transition: transform var(--t) var(--ease);
 }
 .track-card:hover .track-icon-container {
@@ -520,8 +692,8 @@ body.page-home .nav-link:hover {
 }
 .track-title {
   font-family: var(--font-display);
-  font-size: 1.2rem;
-  font-weight: 700;
+  font-size: 1.22rem;
+  font-weight: 800;
   color: var(--text-primary);
   margin-bottom: 8px;
 }
@@ -535,7 +707,7 @@ body.page-home .nav-link:hover {
   margin-top: auto;
   align-self: flex-start;
   font-size: 0.88rem;
-  font-weight: 800;
+  font-weight: 900;
   color: var(--brand-kesari);
   transition: transform var(--t);
 }
@@ -548,8 +720,7 @@ body.page-home .nav-link:hover {
    ================================================================ */
 .s-courses-catalog {
   padding: 100px 0;
-  background: #fff7ed;
-  border-bottom: 1px solid #fed7aa;
+  background: #ffffff;
 }
 .catalog-header-row {
   display: flex;
@@ -583,7 +754,7 @@ body.page-home .nav-link:hover {
   overflow: hidden;
   background: #ffffff;
   border: 1.5px solid #fed7aa;
-  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.05);
+  box-shadow: var(--shadow-sm);
   transition: all var(--t) var(--ease);
 }
 .modern-course-card-link {
@@ -602,7 +773,7 @@ body.page-home .nav-link:hover {
   background-size: cover !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
-  background-color: var(--bg-surface-2);
+  background-color: #ffedd5;
   overflow: hidden;
 }
 .modern-course-thumb.has-course-image {
@@ -629,7 +800,7 @@ body.page-home .nav-link:hover {
   background: rgba(255, 255, 255, 0.95);
   color: var(--text-primary);
   font-size: 0.72rem;
-  font-weight: 800;
+  font-weight: 900;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   padding: 4px 12px;
@@ -654,14 +825,14 @@ body.page-home .nav-link:hover {
   border-radius: 9999px;
   background: #fff7ed;
   border: 1px solid #fed7aa;
-  color: #9a3412;
+  color: #c2410c;
   font-size: 0.74rem;
-  font-weight: 700;
+  font-weight: 800;
 }
 .modern-course-title {
   font-family: var(--font-display);
-  font-size: 1.15rem;
-  font-weight: 700;
+  font-size: 1.18rem;
+  font-weight: 800;
   line-height: 1.35;
   color: var(--text-primary);
   display: -webkit-box;
@@ -694,14 +865,14 @@ body.page-home .nav-link:hover {
 }
 .modern-pill-live {
   font-size: 0.74rem;
-  font-weight: 800;
+  font-weight: 900;
   color: var(--brand-kesari-deep);
   text-transform: uppercase;
 }
 .modern-course-arrow {
   color: var(--brand-kesari);
   font-size: 0.88rem;
-  font-weight: 800;
+  font-weight: 900;
   transition: transform var(--t);
 }
 .modern-course-card-link:hover .modern-course-arrow {
@@ -738,7 +909,7 @@ body.page-home .nav-link:hover {
    ================================================================ */
 .s-why-us {
   padding: 100px 0;
-  background: #ffedd5;
+  background: #fffaf5;
   border-top: 1px solid #fed7aa;
   border-bottom: 1px solid #fed7aa;
 }
@@ -782,8 +953,8 @@ body.page-home .nav-link:hover {
 }
 .bento-card-title {
   font-family: var(--font-display);
-  font-size: 1.28rem;
-  font-weight: 700;
+  font-size: 1.3rem;
+  font-weight: 800;
   color: var(--text-primary);
   margin-bottom: 12px;
 }
@@ -798,7 +969,7 @@ body.page-home .nav-link:hover {
   display: inline-block;
   align-self: flex-start;
   font-size: 0.78rem;
-  font-weight: 800;
+  font-weight: 900;
   color: #c2410c;
   background: #fff7ed;
   padding: 6px 14px;
@@ -813,8 +984,7 @@ body.page-home .nav-link:hover {
    ================================================================ */
 .s-features-pillars {
   padding: 100px 0;
-  background: #fff8f0;
-  border-bottom: 1px solid #fed7aa;
+  background: #ffffff;
 }
 .pillars-grid-3 {
   display: grid;
@@ -851,8 +1021,8 @@ body.page-home .nav-link:hover {
 }
 .pillar-title {
   font-family: var(--font-display);
-  font-size: 1.15rem;
-  font-weight: 700;
+  font-size: 1.18rem;
+  font-weight: 800;
   color: var(--text-primary);
   margin-bottom: 10px;
 }
@@ -866,7 +1036,7 @@ body.page-home .nav-link:hover {
 .pillar-link {
   text-decoration: none;
   font-size: 0.86rem;
-  font-weight: 800;
+  font-weight: 900;
   color: var(--brand-kesari);
   transition: transform var(--t);
   align-self: flex-start;
@@ -880,7 +1050,7 @@ body.page-home .nav-link:hover {
    9. ONE PLATFORM SOLUTION (Interactive Tab Switcher)
    ================================================================ */
 .s-oneplatform {
-  background: #fff7ed;
+  background: #fffaf5;
   padding: 90px 0;
   text-align: center;
   border-top: 1px solid #fed7aa;
@@ -892,7 +1062,7 @@ body.page-home .nav-link:hover {
 }
 .sop-tagline {
   font-size: 1.65rem;
-  font-weight: 800;
+  font-weight: 900;
   color: var(--text-primary);
   font-family: var(--font-display);
   margin-bottom: 14px;
@@ -917,7 +1087,7 @@ body.page-home .nav-link:hover {
   border-radius: 9999px;
   padding: 10px 26px;
   font-size: 0.92rem;
-  font-weight: 700;
+  font-weight: 800;
   font-family: var(--font-body);
   color: var(--text-secondary);
   cursor: pointer;
@@ -940,7 +1110,7 @@ body.page-home .nav-link:hover {
   padding: 26px 36px;
   font-size: 1.02rem;
   color: var(--text-primary);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.6;
   box-shadow: var(--shadow-sm);
 }
@@ -952,7 +1122,6 @@ body.page-home .nav-link:hover {
 .s-trusted-certs {
   padding: 90px 0;
   background: #ffffff;
-  border-bottom: 1px solid #fed7aa;
 }
 .certs-badges-grid {
   display: flex;
@@ -961,7 +1130,7 @@ body.page-home .nav-link:hover {
   flex-wrap: wrap;
 }
 .cert-badge-box {
-  background: #fff7ed;
+  background: #ffffff;
   border: 1.5px solid #fed7aa;
   border-radius: 20px;
   padding: 28px 22px;
@@ -982,14 +1151,14 @@ body.page-home .nav-link:hover {
 .cert-badge-name {
   font-family: var(--font-display);
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text-primary);
   margin-bottom: 4px;
 }
 .cert-badge-sub {
   font-size: 0.8rem;
   color: var(--text-secondary);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 /* ================================================================
@@ -997,7 +1166,7 @@ body.page-home .nav-link:hover {
    ================================================================ */
 .s-partners-marquee {
   padding: 80px 0;
-  background: #fdf4e7;
+  background: #fffaf5;
   border-top: 1px solid #fed7aa;
   border-bottom: 1px solid #fed7aa;
 }
@@ -1022,7 +1191,7 @@ body.page-home .nav-link:hover {
   padding: 16px 28px;
   font-family: var(--font-display);
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text-secondary);
   box-shadow: var(--shadow-xs);
   transition: all var(--t);
@@ -1043,8 +1212,7 @@ body.page-home .nav-link:hover {
    ================================================================ */
 .s-faq-accordion {
   padding: 100px 0;
-  background: #fff7ed;
-  border-bottom: 1px solid #fed7aa;
+  background: #ffffff;
 }
 .faq-container-list {
   max-width: 840px;
@@ -1075,8 +1243,8 @@ body.page-home .nav-link:hover {
   justify-content: space-between;
   gap: 16px;
   font-family: var(--font-display);
-  font-size: 1.05rem;
-  font-weight: 700;
+  font-size: 1.06rem;
+  font-weight: 800;
   color: var(--text-primary);
   text-align: left;
   cursor: pointer;
@@ -1084,7 +1252,7 @@ body.page-home .nav-link:hover {
 .faq-indicator {
   font-size: 1.4rem;
   color: var(--brand-kesari);
-  font-weight: 700;
+  font-weight: 900;
   transition: transform var(--t);
 }
 .faq-accordion-item.open .faq-indicator {
@@ -1110,7 +1278,7 @@ body.page-home .nav-link:hover {
    13. NEWSLETTER & CTA SECTION
    ================================================================ */
 .s-newsletter-band {
-  background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+  background: #fffaf5;
   border-top: 1px solid #fed7aa;
   border-bottom: 1px solid #fed7aa;
   padding: 68px 0;
@@ -1124,8 +1292,8 @@ body.page-home .nav-link:hover {
 }
 .nl-headline {
   font-family: var(--font-display);
-  font-size: 1.28rem;
-  font-weight: 800;
+  font-size: 1.3rem;
+  font-weight: 900;
   color: var(--text-primary);
 }
 .nl-form-row {
@@ -1150,7 +1318,7 @@ body.page-home .nav-link:hover {
 .nl-submit-btn {
   background: linear-gradient(135deg, #ff7a00, #ea580c);
   color: #ffffff;
-  font-weight: 700;
+  font-weight: 800;
   font-size: 0.85rem;
   letter-spacing: 0.05em;
   font-family: var(--font-body);
@@ -1185,7 +1353,7 @@ body.page-home .nav-link:hover {
   border: 1px solid rgba(255, 255, 255, 0.35);
   color: #ffffff;
   font-size: 0.8rem;
-  font-weight: 800;
+  font-weight: 900;
   padding: 5px 16px;
   border-radius: 9999px;
   margin-bottom: 16px;
@@ -1216,7 +1384,7 @@ body.page-home .nav-link:hover {
 .btn-cta-white {
   background: #ffffff !important;
   color: #c2410c !important;
-  font-weight: 800;
+  font-weight: 900;
   font-size: 1rem;
   padding: 15px 36px;
   border-radius: 12px;
@@ -1233,7 +1401,7 @@ body.page-home .nav-link:hover {
   background: transparent !important;
   color: #ffffff !important;
   border: 1.5px solid rgba(255, 255, 255, 0.5) !important;
-  font-weight: 700;
+  font-weight: 800;
   font-size: 1rem;
   padding: 15px 32px;
   border-radius: 12px;
@@ -1247,10 +1415,10 @@ body.page-home .nav-link:hover {
 }
 
 /* ================================================================
-   14. FOOTER (Clean Light Sand / Slate Theme)
+   14. FOOTER (Clean White / Light Sand Theme)
    ================================================================ */
 .footer {
-  background: #fdfaf7;
+  background: #fffaf5;
   border-top: 1px solid #fed7aa;
   color: var(--text-primary);
   padding: 80px 0 0;
@@ -1270,7 +1438,7 @@ body.page-home .nav-link:hover {
   margin-bottom: 22px;
 }
 .footer-contact-card {
-  background: #fff7ed;
+  background: #ffffff;
   border: 1.5px solid #fed7aa;
   border-radius: 16px;
   padding: 16px 20px;
@@ -1278,7 +1446,7 @@ body.page-home .nav-link:hover {
 .footer-contact-card h4 {
   font-family: var(--font-display);
   font-size: 0.86rem;
-  font-weight: 800;
+  font-weight: 900;
   color: #c2410c;
   margin-bottom: 8px;
   text-transform: uppercase;
@@ -1292,7 +1460,7 @@ body.page-home .nav-link:hover {
 .footer-col h4 {
   font-family: var(--font-display);
   font-size: 0.84rem;
-  font-weight: 800;
+  font-weight: 900;
   color: var(--text-primary);
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -1308,6 +1476,7 @@ body.page-home .nav-link:hover {
   font-size: 0.9rem;
   color: var(--text-secondary);
   text-decoration: none;
+  font-weight: 600;
   transition: color var(--t);
 }
 .footer-col a:hover {
@@ -1327,6 +1496,11 @@ body.page-home .nav-link:hover {
    15. RESPONSIVE MEDIA QUERIES
    ================================================================ */
 @media (max-width: 1024px) {
+  .hero-container { grid-template-columns: 1fr; gap: 50px; text-align: center; }
+  .hero-main-sub { margin: 0 auto 36px; }
+  .hero-cta-group { justify-content: center; }
+  .hero-social-proof { justify-content: center; }
+  .hero-preview-stack { max-width: 500px; margin: 0 auto; }
   .stats-grid-4 { grid-template-columns: repeat(2, 1fr); gap: 32px; }
   .process-grid-4 { grid-template-columns: repeat(2, 1fr); }
   .tracks-grid, .bento-grid-3, .pillars-grid-3 { grid-template-columns: repeat(2, 1fr); }
