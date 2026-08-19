@@ -1145,3 +1145,94 @@ h1,h2,h3,h4,h5,h6 {
   .courses-cat-icon-wrap { width: 44px; height: 44px; }
   .courses-cat-icon { font-size: 1.3rem; }
 }
+
+/* ================================================================
+   GLOBAL FOOTER STYLING (White & Kesari Theme)
+   ================================================================ */
+.footer {
+  background: #fffaf5;
+  border-top: 1px solid #fed7aa;
+  color: var(--text-primary);
+  padding: 80px 0 0;
+}
+.footer-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px 60px;
+  display: grid;
+  grid-template-columns: 1.8fr 1fr 1fr 1fr;
+  gap: 48px;
+}
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.footer-tagline {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 22px;
+}
+.footer-contact-card {
+  background: #ffffff;
+  border: 1.5px solid #fed7aa;
+  border-radius: 16px;
+  padding: 16px 20px;
+}
+.footer-contact-card h4 {
+  font-family: var(--font-display);
+  font-size: 0.86rem;
+  font-weight: 900;
+  color: #c2410c;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.footer-contact-card p {
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+.footer-col h4 {
+  font-family: var(--font-display);
+  font-size: 0.84rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+.footer-col ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+}
+.footer-col a {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color var(--t);
+}
+.footer-col a:hover {
+  color: var(--blue);
+}
+.footer-bottom {
+  border-top: 1px solid #fed7aa;
+  padding: 24px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  max-width: 1240px;
+  margin: 0 auto;
+}
+@media (max-width: 1024px) {
+  .footer-container { grid-template-columns: 1fr 1fr; gap: 36px; }
+}
+@media (max-width: 640px) {
+  .footer-container { grid-template-columns: 1fr; gap: 32px; }
+}

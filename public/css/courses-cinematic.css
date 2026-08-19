@@ -64,29 +64,17 @@ body.page-courses {
   position: relative;
   overflow: hidden;
   margin-top: 68px;
-  padding: 72px 0 78px;
-  background: radial-gradient(ellipse 120% 80% at 50% -10%, #fffaf5 0%, #0a0e1a 55%, #05070c 100%);
-  color: #fff;
+  padding: 80px 0 70px;
+  background: #fffaf5;
+  border-bottom: 1px solid #fed7aa;
+  color: var(--text-primary);
 }
 
 .page-courses .ch-aurora { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
 .page-courses .ch-blob { position: absolute; border-radius: 50%; filter: blur(90px); opacity: .5; will-change: transform; }
-.page-courses .ch-blob-1 { width: 560px; height: 560px; top: -220px; left: -120px; background: radial-gradient(circle, rgba(88,166,255,.55), transparent 70%); animation: chDrift1 20s ease-in-out infinite; }
-.page-courses .ch-blob-2 { width: 500px; height: 500px; top: -60px; right: -160px; background: radial-gradient(circle, rgba(255,123,114,.42), transparent 70%); animation: chDrift2 24s ease-in-out infinite; }
-.page-courses .ch-blob-3 { width: 440px; height: 440px; bottom: -260px; left: 34%; background: radial-gradient(circle, rgba(124,58,237,.36), transparent 70%); animation: chDrift3 28s ease-in-out infinite; }
-
-@keyframes chDrift1 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(55px,38px) scale(1.12); } }
-@keyframes chDrift2 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-50px,46px) scale(1.08); } }
-@keyframes chDrift3 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(38px,-28px) scale(1.15); } }
-
-.page-courses .ch-grid-overlay {
-  position: absolute; inset: 0; z-index: 0; pointer-events: none;
-  background-image:
-    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
-  background-size: 60px 60px;
-  -webkit-mask-image: radial-gradient(ellipse 75% 75% at 50% 25%, #000 30%, transparent 78%);
-  mask-image: radial-gradient(ellipse 75% 75% at 50% 25%, #000 30%, transparent 78%);
+.page-courses .ch-blob-1 {
+  top: -100px; right: 10%; width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(255, 122, 0, 0.16) 0%, rgba(255, 152, 56, 0.05) 70%, transparent 100%);
 }
 
 .page-courses .ch-inner { position: relative; z-index: 1; max-width: 880px; }
@@ -106,8 +94,13 @@ body.page-courses {
 }
 
 .page-courses .ch-headline {
-  font-family: 'Poppins', sans-serif; font-weight: 800; line-height: 1.04;
-  font-size: clamp(2.6rem, 6vw, 4.8rem); letter-spacing: -.02em; margin: 0 0 24px;
+  font-family: var(--font-display);
+  font-weight: 900;
+  line-height: 1.06;
+  font-size: clamp(2.6rem, 5.5vw, 4.4rem);
+  letter-spacing: -0.035em;
+  margin: 0 0 22px;
+  color: var(--text-primary);
 }
 .page-courses .hero-line { display: block; overflow: hidden; padding-bottom: 4px; }
 .page-courses .hero-line .word {
@@ -123,43 +116,31 @@ body.page-courses {
 @keyframes chShine { to { background-position: -220% 0; } }
 
 .page-courses .ch-sub {
-  font-size: clamp(1rem, 1.5vw, 1.18rem); color: rgba(255,255,255,.72);
-  max-width: 660px; line-height: 1.75; margin: 0 0 38px; font-family: 'Inter', sans-serif;
+  font-size: 1.12rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  max-width: 680px;
+  margin: 0 0 34px;
 }
 
 .page-courses .ch-stats { display: flex; gap: 14px; flex-wrap: wrap; }
 .page-courses .ch-stat-pill {
-  padding: 16px 26px; border-radius: 18px; background: rgba(255,255,255,.045);
-  border: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(10px); text-align: center; min-width: 118px;
-  transition: transform .4s var(--ease), border-color .4s var(--ease), background .4s var(--ease);
+  padding: 16px 26px;
+  border-radius: 18px;
+  background: #ffffff;
+  border: 1.5px solid #fed7aa;
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.05);
+  text-align: center;
+  min-width: 118px;
+  transition: transform .4s var(--ease), border-color .4s var(--ease), box-shadow .4s var(--ease);
 }
 .page-courses .ch-stat-pill:hover { transform: translateY(-5px); border-color: var(--blue); background: rgba(88,166,255,.08); }
-.page-courses .ch-stat-num { display: block; font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1.7rem; color: #fff; }
-.page-courses .ch-stat-lbl { font-size: .76rem; color: rgba(255,255,255,.6); font-family: 'Inter', sans-serif; }
-
-/* ---------------------------------------------------------------
-   2. Skills ticker
---------------------------------------------------------------- */
-.page-courses .courses-ticker { overflow: hidden; background: var(--bg-2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 15px 0; }
-.page-courses .courses-ticker-track { display: flex; gap: 30px; width: max-content; animation: coursesTicker 36s linear infinite; }
-.page-courses .courses-ticker:hover .courses-ticker-track { animation-play-state: paused; }
-.page-courses .courses-ticker-track span { font-family: 'Inter', sans-serif; font-size: .88rem; font-weight: 600; color: var(--text-secondary); white-space: nowrap; }
-.page-courses .courses-ticker-track span.dot { color: var(--orange); }
-@keyframes coursesTicker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-/* ---------------------------------------------------------------
-   3. Sticky toolbar (search + filters) — compact single row
---------------------------------------------------------------- */
-.page-courses .courses-toolbar {
-  position: sticky;
-  top: 68px;
-  z-index: 100;
-  padding: 14px 0;
-  background: rgba(10, 13, 18, .92);
-  border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(20px) saturate(150%);
-  -webkit-backdrop-filter: blur(20px) saturate(150%);
-  transition: padding .35s var(--ease), box-shadow .35s var(--ease), background .35s var(--ease);
+.page-courses .ch-stat-num {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.7rem;
+  color: var(--brand-kesari);
 }
 .page-courses .courses-toolbar .container { overflow: hidden; }
 .page-courses .courses-toolbar.is-stuck {
@@ -174,18 +155,13 @@ body.page-courses {
 }
 .page-courses .courses-search-row { display: flex; flex: 1; width: 100%; }
 .page-courses .courses-search-field { position: relative; flex: 1; display: flex; align-items: center; }
-.page-courses .courses-search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
-.page-courses .courses-search-input {
-  width: 100%;
-  padding: 11px 18px 11px 42px;
-  border-radius: 999px;
-  border: 1.5px solid var(--border);
-  background: rgba(255, 255, 255, .04);
-  color: var(--text-primary);
-  font-size: .9rem;
-  outline: none;
-  font-family: 'Inter', sans-serif;
-  transition: border-color var(--t), box-shadow var(--t), background var(--t);
+.page-courses .courses-search-icon {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #ff7a00;
+  pointer-events: none;
 }
 .page-courses .courses-search-input::placeholder { color: var(--text-muted); }
 .page-courses .courses-search-input:focus { border-color: var(--blue); background: rgba(255, 255, 255, .06); box-shadow: 0 0 0 3px rgba(88, 166, 255, .15); }
@@ -669,23 +645,14 @@ body.page-courses {
 }
 @media (max-width: 760px) {
   .page-courses .courses-hero-cinematic { padding: 60px 0 56px; }
-  .page-courses .courses-toolbar { top: 60px; }
-  .page-courses .courses-toolbar-inner { flex-direction: column; gap: 10px; }
-  .page-courses .courses-search-row { width: 100%; }
-  .page-courses .filter-bar-wrap { width: 100%; }
-  .page-courses .ch-stats { gap: 10px; }
-  .page-courses .ch-stat-pill { min-width: calc(50% - 5px); flex: 1; }
-  .page-courses .courses-tracks-grid,
-  .page-courses .courses-grid { grid-template-columns: 1fr; }
-  .page-courses .courses-cat-header { grid-template-columns: auto 1fr; }
-  .page-courses .courses-cat-view-all { grid-column: 1 / -1; justify-self: start; }
-  .page-courses .course-card { min-height: auto; }
-  .page-courses .cd-snapshot { grid-template-columns: 1fr; }
-  .page-courses .cd-jobs-grid { grid-template-columns: 1fr; }
-  .page-courses .cd-learn-grid,
-  .page-courses .cd-outcomes-grid,
-  .page-courses .cd-activities-grid,
-  .page-courses .cd-keypoints-grid { grid-template-columns: 1fr; }
+  .page-courses .courses-toolbar {
+  background: #fffaf5;
+  border-bottom: 1px solid #fed7aa;
+  padding: 18px 0;
+  position: sticky;
+  top: 68px;
+  z-index: 20;
+  backdrop-filter: blur(12px);
 }
 
 /* Kesari Courses Overrides */
@@ -698,11 +665,17 @@ body.page-courses .courses-results-section {
   border-top: 1px solid #fed7aa;
 }
 body.page-courses .cat-pill {
+  padding: 9px 20px;
+  border-radius: 999px;
   background: #ffffff;
   border: 1.5px solid #fed7aa;
-  color: #475569;
+  color: var(--text-secondary);
+  font-size: .88rem;
   font-weight: 700;
-  transition: all 0.3s ease;
+  font-family: var(--font-body);
+  white-space: nowrap;
+  text-decoration: none;
+  transition: all .3s var(--ease);
 }
 body.page-courses .cat-pill:hover,
 body.page-courses .cat-pill.active {
