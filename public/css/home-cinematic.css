@@ -735,19 +735,23 @@ body.page-home .nav-link:hover {
 }
 .catalog-carousel-wrapper {
   position: relative;
+  padding: 0 8px;
 }
 .catalog-viewport {
   overflow: hidden;
-  padding: 12px 4px 24px;
+  padding: 16px 8px 30px;
+  width: 100%;
+  box-sizing: border-box;
 }
 .catalog-track {
   display: flex;
   gap: 24px;
-  transition: transform var(--t) var(--ease);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
 .catalog-slide {
   flex: 0 0 calc(33.333% - 16px);
-  min-width: 320px;
+  box-sizing: border-box;
 }
 .modern-course-card {
   display: flex;
@@ -884,28 +888,50 @@ body.page-home .nav-link:hover {
 
 .catalog-nav-btn {
   position: absolute;
-  top: -65px;
-  width: 42px;
-  height: 42px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: #ffffff;
   border: 1.5px solid #fed7aa;
-  color: var(--text-primary);
-  font-size: 1.4rem;
+  color: #0f172a;
+  font-size: 1.6rem;
+  font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: var(--shadow-sm);
-  transition: all var(--t);
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.15);
+  transition: all 0.25s ease;
+  z-index: 10;
+  user-select: none;
 }
 .catalog-nav-btn:hover {
-  background: #fff7ed;
-  color: var(--brand-kesari);
-  border-color: var(--brand-kesari);
+  background: linear-gradient(135deg, #ff7a00, #ea580c);
+  color: #ffffff;
+  border-color: transparent;
+  transform: translateY(-50%) scale(1.08);
+  box-shadow: 0 8px 24px rgba(255, 122, 0, 0.35);
 }
-.catalog-nav-prev { right: 54px; }
-.catalog-nav-next { right: 0; }
+.catalog-nav-prev {
+  left: -20px;
+}
+.catalog-nav-next {
+  right: -20px;
+}
+
+@media (max-width: 1024px) {
+  .catalog-slide { flex: 0 0 calc(50% - 12px); }
+  .catalog-nav-prev { left: -8px; }
+  .catalog-nav-next { right: -8px; }
+}
+
+@media (max-width: 640px) {
+  .catalog-slide { flex: 0 0 100%; }
+  .catalog-nav-prev { left: 4px; }
+  .catalog-nav-next { right: 4px; }
+}
 
 /* ================================================================
    7. WHY STUDENTS CHOOSE US (Bento Grid)
