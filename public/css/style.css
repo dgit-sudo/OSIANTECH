@@ -758,6 +758,8 @@ h1,h2,h3,h4,h5,h6 {
   padding: 40px;
   box-shadow: 0 10px 30px -4px rgba(255, 122, 0, 0.08);
 }
+}
+
 @media (max-width: 640px) {
   :root { --section-pad: 56px; }
   .container { padding: 0 16px; }
@@ -798,6 +800,7 @@ h1,h2,h3,h4,h5,h6 {
   padding: 40px;
   box-shadow: 0 10px 30px -4px rgba(255, 122, 0, 0.08);
   color: var(--text-primary);
+}
 }
 
 
