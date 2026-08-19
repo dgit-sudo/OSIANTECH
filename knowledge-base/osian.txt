@@ -129,7 +129,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Oracle Admin I
 - Duration: 1 month
-- Fee: INR 35,000 (Non-Metro)
+- Fee: INR 43,750 (Non-Metro)
 - Prerequisites: SQL knowledge required
 - Certification: Osian Academy (industry-recognized)
 - Tools: VS Code, Git/GitHub, MySQL/PostgreSQL, Node.js/Python, Postman, Docker basics, Linux CLI, AWS/GCP
@@ -138,7 +138,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Oracle Admin II
 - Duration: 1 month
-- Fee: INR 20,000 (Non-Metro)
+- Fee: INR 25,000 (Non-Metro)
 - Prerequisites: Oracle Admin I completion required
 - Certification: Osian Academy (industry-recognized)
 - Tools: VS Code, Git/GitHub, MySQL/PostgreSQL, Node.js/Python, Postman, Docker basics, Linux CLI, AWS/GCP
@@ -146,7 +146,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### SQL
 - Duration: 35–38 days
-- Fee: INR 8,500 (Non-Metro)
+- Fee: INR 10,625 (Non-Metro)
 - Prerequisites: None
 - Certification: Osian NSDC Certificate
 - Tools: VS Code, Git/GitHub, MySQL, PostgreSQL, Node.js, Python, Postman, Docker, Linux CLI, AWS, GCP
@@ -155,7 +155,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Net MVC
 - Duration: 1 month
-- Fee: INR 17,700 (Non-Metro)
+- Fee: INR 22,125 (Non-Metro)
 - Prerequisites: Basic C Programming
 - Certification: Osian NSDC
 - Tools: VS Code, Git/GitHub, MySQL/PostgreSQL, Node.js/Python, Postman, Docker basics, Linux CLI, AWS/GCP
@@ -163,7 +163,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### 11th / 12th CBSE Book IT
 - Duration: 3–4 months
-- Fee: INR 22,000 (Non-Metro)
+- Fee: INR 27,500 (Non-Metro)
 - Prerequisites: None
 - Certification: Osian Academy
 - Tools: VS Code, Git/GitHub, MySQL/PostgreSQL, Node.js/Python, Postman, Docker basics, Linux CLI, AWS/GCP
@@ -171,14 +171,14 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Adobe Flash
 - Duration: 1.5 months
-- Fee: INR 8,500 (Non-Metro)
+- Fee: INR 10,625 (Non-Metro)
 - Prerequisites: None
 - Certification: Osian Academy
 - Career roles: Software Developer (₹4–12 LPA), Backend Engineer (₹6–18 LPA), Full-Stack Developer (₹5–20 LPA)
 
 ### Advanced Java (J2EE)
 - Duration: 1.5 months
-- Fee: INR 10,700 (Non-Metro)
+- Fee: INR 13,375 (Non-Metro)
 - Prerequisites: Core Java required
 - Certification: Osian NSDC
 - Tools: VS Code, Git/GitHub, MySQL/PostgreSQL, Node.js/Python, Postman, Docker basics, Linux CLI, AWS/GCP
@@ -186,7 +186,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Advanced Python - Django Framework
 - Duration: 2 months
-- Fee: INR 17,500 (Non-Metro)
+- Fee: INR 21,875 (Non-Metro)
 - Prerequisites: Basic Python knowledge
 - Certification: Osian Academy Certificate
 - Tools: VS Code, Git/GitHub, MySQL/PostgreSQL, Python, Postman, Docker basics, Linux CLI, AWS/GCP
@@ -194,7 +194,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Angular JS
 - Duration: 1.5 months
-- Fee: INR 15,000 (Non-Metro)
+- Fee: INR 18,750 (Non-Metro)
 - Prerequisites: JavaScript + jQuery
 - Certification: Osian NSDC
 - Tools: VS Code, Git/GitHub, MySQL/PostgreSQL, Node.js/Python, Postman, Docker, Linux CLI, AWS/GCP
@@ -202,7 +202,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Ansys
 - Duration: 1 month
-- Fee: INR 35,000 (Non-Metro)
+- Fee: INR 43,750 (Non-Metro)
 - Prerequisites: None
 - Certification: Osian Academy Certificate
 - Career roles: Software Developer (₹4–12 LPA), Backend Engineer (₹6–18 LPA), Full-Stack Developer (₹5–20 LPA), DevOps Engineer (₹8–22 LPA), Database Admin (₹5–14 LPA), QA Engineer (₹3–10 LPA)
@@ -213,7 +213,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### 2D & 3D Animation
 - Duration: 3 months
-- Fee: INR 26,500 (Non-Metro)
+- Fee: INR 33,125 (Non-Metro)
 - Prerequisites: None
 - Certification: Osian Adobe Certification
 - Tools: Adobe Photoshop, Illustrator, After Effects, Figma, CorelDRAW, 3ds Max, Blender, Premiere Pro, AutoCAD, Canva Pro
@@ -222,7 +222,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### 3ds Max for Interior & Architectural Design
 - Duration: 1.5 months
-- Fee: INR 10,500 (Non-Metro)
+- Fee: INR 13,125 (Non-Metro)
 - Prerequisites: AutoCAD knowledge required
 - Certification: Osian NSDC
 - Tools: 3ds Max, Blender, AutoCAD, Adobe Photoshop, Illustrator, After Effects, Premiere Pro, Figma, CorelDRAW, Canva Pro
@@ -230,7 +230,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### 3Ds Max with V-Ray Combo
 - Duration: 2.5 months
-- Fee: INR 17,700 (Non-Metro)
+- Fee: INR 22,125 (Non-Metro)
 - Prerequisites: AutoCAD required
 - Certification: Osian NSDC
 - Tools: 3ds Max, V-Ray, Adobe Photoshop, Illustrator, After Effects, Premiere Pro, Figma, CorelDRAW, AutoCAD, Canva Pro
@@ -238,7 +238,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Adobe After Effects - Visual Effects
 - Duration: 2 months
-- Fee: INR 25,000 (Non-Metro)
+- Fee: INR 31,250 (Non-Metro)
 - Prerequisites: Illustrator proficiency required
 - Certification: Osian Adobe
 - Tools: Adobe Photoshop, Illustrator, After Effects, Figma, CorelDRAW, 3ds Max, Blender, Premiere Pro, AutoCAD, Canva Pro
@@ -246,7 +246,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Adobe Illustrator - Advanced
 - Duration: 1.5 months
-- Fee: INR 10,000 (Non-Metro)
+- Fee: INR 12,500 (Non-Metro)
 - Prerequisites: None
 - Certification: Osian NSDC
 - Tools: Adobe Photoshop, Illustrator, After Effects, Premiere Pro, Figma, CorelDRAW, 3ds Max, Blender, AutoCAD, Canva Pro
@@ -254,7 +254,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Adobe InDesign - Advanced
 - Duration: 1 month
-- Fee: INR 4,500 (Non-Metro)
+- Fee: INR 5,625 (Non-Metro)
 - Prerequisites: None
 - Certification: Osian Certified
 - Tools: Adobe Photoshop, Illustrator, After Effects, Figma, CorelDRAW, 3ds Max, Blender, Premiere Pro, AutoCAD, Canva Pro
@@ -262,7 +262,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Adobe Premiere Pro - Video Editing
 - Duration: 2 months
-- Fee: INR 25,000 (Non-Metro)
+- Fee: INR 31,250 (Non-Metro)
 - Prerequisites: Photoshop
 - Certification: Osian NSDC Adobe
 - Tools: Adobe Photoshop, Illustrator, After Effects, Premiere Pro, Figma, CorelDRAW, 3ds Max, Blender, AutoCAD, Canva Pro
@@ -270,7 +270,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Advanced Diploma In Fashion & Textile Design
 - Duration: 1 year
-- Fee: INR 1,20,000 (Non-Metro)
+- Fee: INR 1,50,000 (Non-Metro)
 - Prerequisites: Basic computer familiarity
 - Certification: Osian Academy, NSDC, Adobe
 - Tools: Adobe Photoshop, Illustrator, After Effects, Premiere Pro, Figma, CorelDRAW, 3ds Max, Blender, AutoCAD, Canva Pro
@@ -278,7 +278,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Advanced Diploma In Interior Design
 - Duration: 1 year
-- Fee: INR 1,20,000 (Non-Metro)
+- Fee: INR 1,50,000 (Non-Metro)
 - Prerequisites: Basic computer familiarity; no design background required
 - Certification: Osian Certificate, NSDC, Autodesk
 - Tools: Adobe Photoshop, Illustrator, After Effects, Figma, CorelDRAW, 3ds Max, Blender, Premiere Pro, AutoCAD, Canva Pro
@@ -286,7 +286,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Advanced Diploma In Jewellery Design
 - Duration: 1 year
-- Fee: INR 1,20,000 (Non-Metro)
+- Fee: INR 1,50,000 (Non-Metro)
 - Prerequisites: Basic computer familiarity
 - Certification: Osian Certificate, NSDC, Adobe
 - Tools: Adobe Photoshop, Illustrator, After Effects, Figma, CorelDRAW, 3ds Max, Blender, Premiere Pro, AutoCAD, Canva Pro
@@ -294,7 +294,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Advanced Diploma in Web Development and Design
 - Duration: 1 year
-- Fee: INR 1,00,000 (Non-Metro)
+- Fee: INR 1,25,000 (Non-Metro)
 - Prerequisites: Basic computer familiarity
 - Certification: Osian, NSDC, Adobe
 - Tools: Adobe Photoshop, Illustrator, After Effects, Figma, CorelDRAW, 3ds Max, Blender, Premiere Pro, AutoCAD, Canva Pro
@@ -306,7 +306,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### A+ - Hardware Diploma
 - Duration: 2–3 months
-- Fee: INR 11,500 (Non-Metro)
+- Fee: INR 14,375 (Non-Metro)
 - Prerequisites: None
 - Certification: Osian NSDC (aligned with CompTIA A+, Network+, and Cisco CCNA pathways)
 - Tools: Cisco Packet Tracer, Windows Server, Linux (Ubuntu), Wireshark, AutoCAD/SolidWorks, Arduino/Raspberry Pi, VMware/VirtualBox, TCP/IP protocols
@@ -315,7 +315,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Advanced Diploma In Civil Engineering
 - Duration: 1 year
-- Fee: INR 1,20,000 (Non-Metro)
+- Fee: INR 1,50,000 (Non-Metro)
 - Prerequisites: Basic computer familiarity
 - Certification: Osian, NSDC, Autodesk
 - Tools: Cisco Packet Tracer, Windows Server, Linux, Wireshark, AutoCAD/SolidWorks, Arduino/Raspberry Pi, VMware/VirtualBox, TCP/IP
@@ -323,7 +323,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Advanced Diploma in Computer Hardware and Networking
 - Duration: 1 year
-- Fee: INR 1,20,000 (Non-Metro)
+- Fee: INR 1,50,000 (Non-Metro)
 - Prerequisites: Basic computer familiarity
 - Certification: Osian Academy, NSDC (aligned with CompTIA A+, Network+, Cisco CCNA)
 - Tools: Cisco Packet Tracer, Windows Server, Linux (Ubuntu), Wireshark, AutoCAD/SolidWorks, Arduino/Raspberry Pi, VMware/VirtualBox, TCP/IP
@@ -331,7 +331,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Advanced Robotics for Seniors and Engineers
 - Duration: 1.5 months
-- Fee: INR 17,700 (Non-Metro)
+- Fee: INR 22,125 (Non-Metro)
 - Prerequisites: None
 - Certification: Osian Certified
 - Tools: Cisco Packet Tracer, Windows Server, Linux, Wireshark, AutoCAD/SolidWorks, Arduino/Raspberry Pi, VMware/VirtualBox, TCP/IP
@@ -359,7 +359,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### ACC (Awareness in Computer Concepts) - NIELIT
 - Duration: 1 month
-- Fee: INR 2,500 (Non-Metro)
+- Fee: INR 3,125 (Non-Metro)
 - Prerequisites: None; basic commerce awareness is beneficial
 - Certification: NIELIT + Osian Academy Certificate
 - Tools: Tally Prime, ERP9, SAP FICO, MS Excel (Advanced), QuickBooks, Busy Accounting, PowerPoint, Word, ZOHO Books, Google Sheets
@@ -368,7 +368,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Advanced Diploma in Computer Application
 - Duration: 1 year
-- Fee: INR 1,00,000 (Non-Metro)
+- Fee: INR 1,25,000 (Non-Metro)
 - Prerequisites: Basic computer familiarity
 - Certification: Osian Academy, NSDC
 - Tools: Tally Prime, ERP9, SAP FICO, MS Excel (Advanced), QuickBooks, Busy Accounting, PowerPoint, Word, ZOHO Books, Google Sheets
@@ -376,21 +376,21 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Advanced Diploma In Ethical Hacking
 - Duration: 1 year
-- Fee: INR 1,20,000 (Non-Metro)
+- Fee: INR 1,50,000 (Non-Metro)
 - Prerequisites: Basic computer familiarity
 - Certification: Osian Academy, NSDC
 - Career roles: Accountant/Jr. Accountant (₹3–8 LPA), Finance Analyst (₹5–14 LPA), Tax Consultant (₹4–12 LPA), SAP Consultant (₹6–20 LPA)
 
 ### Advanced Diploma In Game Development
 - Duration: 1 year
-- Fee: INR 1,20,000 (Non-Metro)
+- Fee: INR 1,50,000 (Non-Metro)
 - Prerequisites: Basic computer familiarity
 - Certification: Osian Academy, NSDC, Adobe
 - Tools: Tally Prime, ERP9, SAP FICO, MS Excel, QuickBooks, Busy, ZOHO Books, Google Sheets
 
 ### Advanced Diploma In Human Resource Management
 - Duration: 1 year
-- Fee: INR 1,00,000 (Non-Metro)
+- Fee: INR 1,25,000 (Non-Metro)
 - Prerequisites: Basic computer familiarity
 - Certification: Osian Academy, NSDC, Microsoft
 - Tools: Tally Prime, ERP9, SAP FICO, MS Excel (Advanced), QuickBooks, Busy Accounting, ZOHO Books, Google Sheets
@@ -399,14 +399,14 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Advanced Diploma In Mobile App
 - Duration: 1 year
-- Fee: INR 1,10,000 (Non-Metro)
+- Fee: INR 1,37,500 (Non-Metro)
 - Prerequisites: Basic computer familiarity
 - Certification: Osian Academy, NSDC
 - Career roles: Accountant (₹3–8 LPA), Finance Analyst (₹5–14 LPA), Tally Operator (₹2–5 LPA), Tax Consultant (₹4–12 LPA), SAP Consultant (₹6–20 LPA), Office Administrator (₹2–6 LPA)
 
 ### Advanced Excel
 - Duration: 1 month
-- Fee: INR 3,000 (Non-Metro)
+- Fee: INR 3,750 (Non-Metro)
 - Prerequisites: Basic Excel proficiency
 - Certification: Osian NSDC
 - Tools: Tally Prime, ERP9, SAP FICO, MS Excel (Advanced), QuickBooks, Busy Accounting, PowerPoint, Word, ZOHO Books, Google Sheets
@@ -423,7 +423,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Advanced Diploma in Data Analytics
 - Duration: 1 year
-- Fee: INR 1,20,000 (Non-Metro)
+- Fee: INR 1,50,000 (Non-Metro)
 - Prerequisites: Basic computer familiarity; no programming background required
 - Certification: Osian, NSDC, Microsoft
 - Tools: Python (Pandas, NumPy, Sklearn), Power BI, Tableau, Google Analytics 4, SQL, TensorFlow basics, Google Ads, Meta Ads, Jupyter Notebook, Semrush, Ahrefs
@@ -432,7 +432,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Advanced Diploma In Sales & Marketing Skills
 - Duration: 1 year
-- Fee: INR 1,00,000 (Non-Metro)
+- Fee: INR 1,25,000 (Non-Metro)
 - Prerequisites: Basic computer familiarity
 - Certification: Osian, NSDC, Microsoft
 - Tools: Python (Pandas, NumPy, Sklearn), Power BI, Tableau, Google Analytics 4, Google Ads, Meta Ads, Jupyter Notebook, SQL, TensorFlow basics, Semrush, Ahrefs
@@ -440,7 +440,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Advanced Diploma In Stock Marketing
 - Duration: 1 year
-- Fee: INR 1,00,000 (Non-Metro)
+- Fee: INR 1,25,000 (Non-Metro)
 - Prerequisites: Basic computer familiarity
 - Certification: Osian Academy, NSDC, Microsoft
 - Tools: Python (Pandas, NumPy, Sklearn), Power BI, Tableau, Google Analytics 4, Google/Meta Ads, SQL, TensorFlow basics, Jupyter Notebook, Semrush/Ahrefs
@@ -448,7 +448,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Advanced Programme in Data Science
 - Duration: 1 year
-- Fee: INR 1,20,000 (Non-Metro)
+- Fee: INR 1,50,000 (Non-Metro)
 - Prerequisites: Basic computer familiarity; no prior programming required
 - Certification: Osian Certified, NSDC
 - Tools: Python (Pandas, NumPy, Sklearn), Power BI, Tableau, Google Analytics 4, Google Ads, Meta Ads, Jupyter Notebook, SQL, TensorFlow basics, Semrush/Ahrefs
@@ -457,7 +457,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Affiliate Marketing
 - Duration: 1.5 months
-- Fee: INR 17,500 (Non-Metro)
+- Fee: INR 21,875 (Non-Metro)
 - Prerequisites: Basic computer familiarity
 - Certification: Osian Certified
 - Tools: Python (Pandas, NumPy, Sklearn), Power BI/Tableau, Google Analytics 4, Google Ads/Meta Ads, Jupyter Notebook, SQL, TensorFlow basics, Semrush/Ahrefs
@@ -465,7 +465,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### AI - Artificial Intelligence
 - Duration: 1.5 months
-- Fee: INR 17,700 (Non-Metro)
+- Fee: INR 22,125 (Non-Metro)
 - Prerequisites: Python Basics
 - Certification: Osian NSDC
 - Tools: Python (Pandas, NumPy, Sklearn), Power BI, Tableau, Google Analytics 4, Google Ads, Meta Ads, Jupyter Notebook, SQL, TensorFlow basics, Semrush/Ahrefs
@@ -485,7 +485,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Abacus Combo (L1 & L2)
 - Duration: 2 months
-- Fee: INR 10,000 (Non-Metro)
+- Fee: INR 12,500 (Non-Metro)
 - Prerequisites: Age 5–15 years; no prior tech knowledge
 - Certification: Osian Course Completion Certificate
 - Tools: Abacus, Scratch (MIT), Python basics, MS Paint, robot kits, simple electronics kits
@@ -493,21 +493,21 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Abacus L1
 - Duration: 1 month
-- Fee: INR 3,500 (Non-Metro)
+- Fee: INR 4,375 (Non-Metro)
 - Prerequisites: Age 6–16; age-appropriate curiosity and parent support
 - Certification: Osian Course Completion Certificate
 - Tools: Abacus, Scratch (MIT), Python basics, MS Paint, basic design tools, robot kits, electronics kits
 
 ### Abacus L2
 - Duration: 1 month
-- Fee: INR 3,500 (Non-Metro)
+- Fee: INR 4,375 (Non-Metro)
 - Prerequisites: Age 6–16; no prior knowledge needed
 - Certification: Osian Course Completion Certificate
 - Tools: Abacus, Scratch (MIT), Python basics, MS Paint, robot kits, simple electronics kits
 
 ### Kids All-Courses Combo
 - Duration: 2 months
-- Fee: INR 10,000 (Non-Metro)
+- Fee: INR 12,500 (Non-Metro)
 - Prerequisites: Children aged 5–15; no tech knowledge required
 - Certification: Osian Course Completion Certificate
 - Tools: Abacus, Scratch (MIT), Python basics, MS Paint, robot kits, electronics kits
