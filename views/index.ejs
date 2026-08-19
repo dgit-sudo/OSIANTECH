@@ -1,128 +1,57 @@
 <%- include('partials/head') %>
 <%- include('partials/navbar') %>
 
-<!-- ===== 1. HERO SECTION (2-Column Split + Floating Interactive Preview) ===== -->
+<!-- ===== 1. HERO SECTION (Full-Width Centered Modern Hero) ===== -->
 <section class="hero-attractive" id="hero">
   <div class="hero-attractive-bg" aria-hidden="true">
-    <div class="blob absolute -top-40 -right-40 w-[600px] h-[600px] bg-violet-100 opacity-60 animate-float" style="position: absolute; top: -100px; right: -100px; width: 550px; height: 550px; background: radial-gradient(circle, rgba(124, 58, 237, 0.18) 0%, rgba(99, 102, 241, 0.08) 70%, transparent 100%);"></div>
-    <div class="blob absolute bottom-0 -left-20 w-[400px] h-[400px] bg-indigo-100 opacity-50 animate-float" style="position: absolute; bottom: 0; left: -80px; width: 420px; height: 420px; background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(6, 182, 212, 0.08) 70%, transparent 100%); animation-delay: -3s;"></div>
-    <div class="grid-bg absolute inset-0" style="position: absolute; inset: 0; opacity: 0.6;"></div>
-    <div style="position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 60% 50%, transparent 20%, #ffffff 90%); pointer-events: none;"></div>
+    <div class="blob" style="position: absolute; top: -120px; right: 15%; width: 550px; height: 550px; background: radial-gradient(circle, rgba(124, 58, 237, 0.16) 0%, rgba(99, 102, 241, 0.06) 70%, transparent 100%);"></div>
+    <div class="blob" style="position: absolute; bottom: -60px; left: 15%; width: 480px; height: 480px; background: radial-gradient(circle, rgba(99, 102, 241, 0.14) 0%, rgba(6, 182, 212, 0.06) 70%, transparent 100%);"></div>
+    <div class="grid-bg" style="position: absolute; inset: 0; opacity: 0.5;"></div>
+    <div style="position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 50% 50%, transparent 20%, #ffffff 90%); pointer-events: none;"></div>
   </div>
 
-  <div class="hero-container">
-    <!-- Left Column -->
-    <div class="hero-content-col" data-reveal="fade-up">
-      
+  <div class="hero-container" data-reveal="fade-up">
+    <h1 class="hero-main-title">
+      Learn tech skills<br />
+      that <span class="gradient-text">get you hired.</span>
+    </h1>
 
-      <h1 class="hero-main-title">
-        Learn tech skills<br />
-        that <span class="gradient-text">get you hired.</span>
-      </h1>
+    <p class="hero-main-sub">
+      Live 1-on-1 sessions with industry leaders, production-grade projects, and globally recognized
+      certification &mdash; backed by 100% dedicated placement assistance, 100% online.
+    </p>
 
-      <p class="hero-main-sub">
-        Live 1-on-1 sessions with industry leaders, production-grade projects, and globally recognized
-        certification &mdash; backed by 100% dedicated placement assistance, 100% online.
-      </p>
-
-      <div class="hero-cta-group">
-        <a href="/auth?mode=signup" class="btn-brand-primary" data-magnetic data-auth-guest>
-          <span>Start Learning Free</span>
-          <span style="transition: transform 0.3s ease;">&rarr;</span>
-        </a>
-        <a href="/dashboard" class="btn-brand-primary" data-magnetic data-auth-user hidden>
-          <span>Go to Dashboard</span>
-          <span style="transition: transform 0.3s ease;">&rarr;</span>
-        </a>
-        <a href="#courses" class="btn-brand-ghost" data-magnetic>
-          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" style="display: inline-block;">
-            <circle cx="7.5" cy="7.5" r="6.5" stroke="#475569" stroke-width="1.2"/>
-            <path d="M6 5.5L10 7.5L6 9.5V5.5Z" fill="#475569"/>
-          </svg>
-          <span>Explore Courses</span>
-        </a>
-      </div>
-
-      <!-- Social Proof Strip -->
-      <div class="hero-social-proof">
-        <div class="avatar-stack">
-          <div class="avatar-pill" style="background: #7c3aed;">EK</div>
-          <div class="avatar-pill" style="background: #6366f1;">JM</div>
-          <div class="avatar-pill" style="background: #0ea5e9;">SP</div>
-          <div class="avatar-pill" style="background: #10b981;">RN</div>
-          <div class="avatar-pill" style="background: #f59e0b;">AL</div>
-        </div>
-        <div>
-          <div class="proof-stars">
-            <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
-            <span class="proof-rating-num">4.9</span>
-          </div>
-          
-        </div>
-      </div>
+    <div class="hero-cta-group">
+      <a href="/auth?mode=signup" class="btn-brand-primary" data-magnetic data-auth-guest>
+        <span>Start Learning Free</span>
+        <span style="transition: transform 0.3s ease;">&rarr;</span>
+      </a>
+      <a href="/dashboard" class="btn-brand-primary" data-magnetic data-auth-user hidden>
+        <span>Go to Dashboard</span>
+        <span style="transition: transform 0.3s ease;">&rarr;</span>
+      </a>
+      <a href="#courses" class="btn-brand-ghost" data-magnetic>
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" style="display: inline-block;">
+          <circle cx="7.5" cy="7.5" r="6.5" stroke="#475569" stroke-width="1.2"/>
+          <path d="M6 5.5L10 7.5L6 9.5V5.5Z" fill="#475569"/>
+        </svg>
+        <span>Explore Courses</span>
+      </a>
     </div>
 
-    <!-- Right Column: Interactive Course Preview Stack -->
-    <div class="hero-preview-stack" data-reveal="fade-left" data-reveal-delay="1">
-      <div class="preview-card-list">
-        <!-- Card 1 -->
-        <div class="preview-course-card" style="margin-left: 0;">
-          <div class="preview-icon-box" style="background: linear-gradient(135deg, #7c3aed, #6366f1);">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-          </div>
-          <div class="preview-info">
-            <div class="preview-title-row">
-              <span class="preview-title">Full-Stack Web Dev</span>
-              <span class="preview-tag" style="background: #f5f3ff; color: #7c3aed;">Bestseller</span>
-            </div>
-            <p class="preview-sub">React &bull; Node.js &bull; Express &bull; MongoDB</p>
-          </div>
-          <div class="preview-action-btn">&rarr;</div>
-        </div>
-
-        <!-- Card 2 -->
-        <div class="preview-course-card" style="margin-left: 2rem;">
-          <div class="preview-icon-box" style="background: linear-gradient(135deg, #0ea5e9, #06b6d4);">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 14a4 4 0 1 1 4-4 4 4 0 0 1-4 4z"/></svg>
-          </div>
-          <div class="preview-info">
-            <div class="preview-title-row">
-              <span class="preview-title">AI &amp; Machine Learning</span>
-              <span class="preview-tag" style="background: #ecfeff; color: #0891b2;">Trending</span>
-            </div>
-            <p class="preview-sub">Python &bull; PyTorch &bull; Neural Networks</p>
-          </div>
-          <div class="preview-action-btn">&rarr;</div>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="preview-course-card" style="margin-left: 1rem;">
-          <div class="preview-icon-box" style="background: linear-gradient(135deg, #f43f5e, #f97316);">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
-          </div>
-          <div class="preview-info">
-            <div class="preview-title-row">
-              <span class="preview-title">Cloud &amp; DevOps Engineering</span>
-              <span class="preview-tag" style="background: #fff7ed; color: #ea580c;">High Demand</span>
-            </div>
-            <p class="preview-sub">AWS &bull; Docker &bull; Kubernetes &bull; CI/CD</p>
-          </div>
-          <div class="preview-action-btn">&rarr;</div>
-        </div>
+    <!-- Social Proof Rating -->
+    <div class="hero-social-proof">
+      <div class="avatar-stack">
+        <div class="avatar-pill" style="background: #7c3aed;">EK</div>
+        <div class="avatar-pill" style="background: #6366f1;">JM</div>
+        <div class="avatar-pill" style="background: #0ea5e9;">SP</div>
+        <div class="avatar-pill" style="background: #10b981;">RN</div>
+        <div class="avatar-pill" style="background: #f59e0b;">AL</div>
       </div>
-
-      <!-- Floating Placement Badge -->
-      <div class="floating-badge-top" style="animation-duration: 5s;">
-        <div class="floating-stat-num gradient-text">95%</div>
-        <div class="floating-stat-lbl">Job Placement Rate</div>
-      </div>
-
-      <!-- Floating Certificate Badge -->
-      <div class="floating-badge-bottom" style="animation-duration: 7s; animation-delay: -3s;">
-        <div class="floating-cert-icon">🏆</div>
-        <div>
-          <div style="font-size: 0.82rem; font-weight: 700;">ISO &amp; NASSCOM</div>
-          <div style="font-size: 0.72rem; opacity: 0.85;">Certified On Completion</div>
+      <div>
+        <div class="proof-stars">
+          <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
+          <span class="proof-rating-num">4.9</span>
         </div>
       </div>
     </div>

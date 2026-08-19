@@ -161,12 +161,12 @@ body.page-home .navbar.scrolled {
 .hero-container {
   position: relative;
   z-index: 10;
-  max-width: 1240px;
+  max-width: 960px;
   margin: 0 auto;
   padding: 0 24px;
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 60px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
@@ -196,28 +196,29 @@ body.page-home .navbar.scrolled {
 
 .hero-main-title {
   font-family: var(--font-display);
-  font-size: clamp(2.8rem, 5vw, 4.4rem);
+  font-size: clamp(3rem, 5.8vw, 4.8rem);
   font-weight: 800;
   line-height: 1.08;
   letter-spacing: -0.04em;
   color: var(--text-primary);
-  margin-bottom: 22px;
+  margin-bottom: 24px;
 }
 
 .hero-main-sub {
-  font-size: clamp(1.05rem, 1.6vw, 1.22rem);
+  font-size: clamp(1.1rem, 1.8vw, 1.28rem);
   color: var(--text-secondary);
-  line-height: 1.65;
-  margin-bottom: 36px;
-  max-width: 580px;
+  line-height: 1.7;
+  margin-bottom: 38px;
+  max-width: 740px;
 }
 
 .hero-cta-group {
   display: flex;
   gap: 16px;
   align-items: center;
+  justify-content: center;
   flex-wrap: wrap;
-  margin-bottom: 38px;
+  margin-bottom: 36px;
 }
 
 .btn-brand-primary {
@@ -268,8 +269,9 @@ body.page-home .navbar.scrolled {
 .hero-social-proof {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 16px;
-  margin-top: 14px;
+  margin-top: 10px;
   padding-top: 10px;
 }
 .avatar-stack {
