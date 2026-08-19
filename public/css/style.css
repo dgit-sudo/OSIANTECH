@@ -1265,15 +1265,16 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 
+
 /* ================================================================
-   AUTH PAGES STYLING (Compact Fit-to-Screen White & Kesari Theme)
+   AUTH PAGES STYLING (Stable Zero-Jump White & Kesari Theme)
    ================================================================ */
 .auth-shell {
   min-height: calc(100vh - 68px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 80px 0 24px;
+  padding: 60px 0 30px;
   background: #fffaf5;
   border-bottom: 1px solid #fed7aa;
   box-sizing: border-box;
@@ -1281,7 +1282,7 @@ h1,h2,h3,h4,h5,h6 {
 .auth-container {
   display: grid;
   grid-template-columns: 1fr 1.1fr;
-  gap: 44px;
+  gap: 48px;
   align-items: center;
   max-width: 1020px;
   margin: 0 auto;
@@ -1333,17 +1334,22 @@ h1,h2,h3,h4,h5,h6 {
   font-size: 1rem;
 }
 
-/* Compact Auth Card */
+/* Stable Auth Card with Fixed Min-Height */
 .auth-card {
   background: #ffffff;
   border: 1.5px solid #fed7aa;
   border-radius: 20px;
-  padding: 26px 30px;
+  padding: 28px 32px;
   box-shadow: 0 10px 30px -4px rgba(255, 122, 0, 0.08);
   max-width: 450px;
+  min-height: 485px;
   width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  transition: box-shadow 0.25s ease;
 }
 .auth-card h2 {
   font-family: var(--font-display);
@@ -1357,6 +1363,7 @@ h1,h2,h3,h4,h5,h6 {
   font-size: 0.82rem;
   color: var(--text-secondary);
   margin-bottom: 14px;
+  min-height: 1.25rem;
 }
 
 /* Mode Toggle */
@@ -1482,7 +1489,8 @@ h1,h2,h3,h4,h5,h6 {
 
 /* Switch */
 .auth-switch {
-  margin-top: 12px;
+  margin-top: auto;
+  padding-top: 14px;
   text-align: center;
   font-size: 0.82rem;
   color: var(--text-secondary);
@@ -1505,7 +1513,7 @@ h1,h2,h3,h4,h5,h6 {
 
 /* Feedback messages */
 .auth-feedback {
-  margin-top: 10px;
+  margin-top: 8px;
   padding: 8px 12px;
   border-radius: 8px;
   font-size: 0.82rem;
