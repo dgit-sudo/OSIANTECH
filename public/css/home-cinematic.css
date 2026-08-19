@@ -450,10 +450,10 @@ body.page-home .navbar.scrolled {
    2. TRUSTED LOGOS STRIP & SKILLS TICKER
    ================================================================ */
 .hero-trusted-strip {
-  padding: 34px 0;
-  background: #fcfaff;
-  border-top: 1px solid #ede9fe;
-  border-bottom: 1px solid #ede9fe;
+  padding: 36px 0;
+  background: #ede9fe;
+  border-top: 1px solid #ddd6fe;
+  border-bottom: 1px solid #ddd6fe;
 }
 .hero-trusted-inner {
   display: flex;
@@ -489,10 +489,10 @@ body.page-home .navbar.scrolled {
 }
 
 .skills-ticker-wrap {
-  background: #f8fafc;
-  padding: 14px 0;
+  background: #e2e8f0;
+  padding: 16px 0;
   overflow: hidden;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid #cbd5e1;
 }
 .skills-ticker-track {
   display: flex;
@@ -523,9 +523,9 @@ body.page-home .navbar.scrolled {
    3. STATS BAR (4 Columns)
    ================================================================ */
 .s-stats-bar {
-  padding: 64px 0;
-  background: linear-gradient(180deg, #f0f7ff 0%, #e8f4fe 100%);
-  border-bottom: 1px solid #dbeafe;
+  padding: 68px 0;
+  background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+  border-bottom: 1px solid #7dd3fc;
 }
 .stats-grid-4 {
   display: grid;
@@ -557,8 +557,8 @@ body.page-home .navbar.scrolled {
    ================================================================ */
 .s-process {
   padding: 100px 0;
-  background: #faf8ff;
-  border-bottom: 1px solid #f1effa;
+  background: #f3e8ff;
+  border-bottom: 1px solid #e9d5ff;
 }
 .section-header-center {
   text-align: center;
@@ -647,9 +647,9 @@ body.page-home .navbar.scrolled {
    ================================================================ */
 .s-tracks {
   padding: 100px 0;
-  background: #f0fdf9;
-  border-top: 1px solid #ccfbf1;
-  border-bottom: 1px solid #ccfbf1;
+  background: #ccfbf1;
+  border-top: 1px solid #99f6e4;
+  border-bottom: 1px solid #99f6e4;
 }
 .tracks-grid {
   display: grid;
@@ -730,8 +730,8 @@ body.page-home .navbar.scrolled {
    ================================================================ */
 .s-courses-catalog {
   padding: 100px 0;
-  background: #f8fafc;
-  border-bottom: 1px solid var(--border);
+  background: #e2e8f0;
+  border-bottom: 1px solid #cbd5e1;
 }
 .catalog-header-row {
   display: flex;
@@ -915,9 +915,9 @@ body.page-home .navbar.scrolled {
    ================================================================ */
 .s-why-us {
   padding: 100px 0;
-  background: #fffbf5;
-  border-top: 1px solid #fef3c7;
-  border-bottom: 1px solid #fef3c7;
+  background: #fef3c7;
+  border-top: 1px solid #fde68a;
+  border-bottom: 1px solid #fde68a;
 }
 .bento-grid-3 {
   display: grid;
@@ -989,8 +989,8 @@ body.page-home .navbar.scrolled {
    ================================================================ */
 .s-features-pillars {
   padding: 100px 0;
-  background: #f5f3ff;
-  border-bottom: 1px solid #ede9fe;
+  background: #ede9fe;
+  border-bottom: 1px solid #ddd6fe;
 }
 .pillars-grid-3 {
   display: grid;
@@ -1055,11 +1055,11 @@ body.page-home .navbar.scrolled {
    9. ONE PLATFORM SOLUTION (Interactive Tab Switcher)
    ================================================================ */
 .s-oneplatform {
-  background: #f0f9ff;
+  background: #e0f2fe;
   padding: 90px 0;
   text-align: center;
-  border-top: 1px solid #e0f2fe;
-  border-bottom: 1px solid #e0f2fe;
+  border-top: 1px solid #bae6fd;
+  border-bottom: 1px solid #bae6fd;
 }
 .sop-inner {
   max-width: 720px;
@@ -1126,8 +1126,8 @@ body.page-home .navbar.scrolled {
    ================================================================ */
 .s-trusted-certs {
   padding: 90px 0;
-  background: #ffffff;
-  border-bottom: 1px solid var(--border);
+  background: #f1f5f9;
+  border-bottom: 1px solid #cbd5e1;
 }
 .certs-badges-grid {
   display: flex;
@@ -1172,9 +1172,9 @@ body.page-home .navbar.scrolled {
    ================================================================ */
 .s-partners-marquee {
   padding: 80px 0;
-  background: #fdfaf7;
-  border-top: 1px solid #f5ede6;
-  border-bottom: 1px solid #f5ede6;
+  background: #ffedd5;
+  border-top: 1px solid #fed7aa;
+  border-bottom: 1px solid #fed7aa;
 }
 .partners-marquee-wrap {
   overflow: hidden;
@@ -1218,8 +1218,8 @@ body.page-home .navbar.scrolled {
    ================================================================ */
 .s-faq-accordion {
   padding: 100px 0;
-  background: #f6f8fc;
-  border-bottom: 1px solid #e2e8f0;
+  background: #e0e7ff;
+  border-bottom: 1px solid #c7d2fe;
 }
 .faq-container-list {
   max-width: 840px;
@@ -1285,10 +1285,10 @@ body.page-home .navbar.scrolled {
    13. NEWSLETTER & CTA SECTION
    ================================================================ */
 .s-newsletter-band {
-  background: linear-gradient(135deg, #f5f3ff 0%, #eff6ff 100%);
-  border-top: 1px solid #e0e7ff;
-  border-bottom: 1px solid #e0e7ff;
-  padding: 64px 0;
+  background: linear-gradient(135deg, #ede9fe 0%, #e0f2fe 100%);
+  border-top: 1px solid #c7d2fe;
+  border-bottom: 1px solid #c7d2fe;
+  padding: 68px 0;
 }
 .nl-inner-row {
   display: flex;
@@ -1425,8 +1425,8 @@ body.page-home .navbar.scrolled {
    14. FOOTER (Clean White / Slate Theme)
    ================================================================ */
 .footer {
-  background: #f8fafc;
-  border-top: 1px solid var(--border);
+  background: #f1f5f9;
+  border-top: 1px solid #cbd5e1;
   color: var(--text-primary);
   padding: 80px 0 0;
 }
