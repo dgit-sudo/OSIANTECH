@@ -126,4 +126,47 @@
       });
     });
   }
+
+  /* ---- Kinetic Hero Typewriter Effect ---- */
+  const typewriterEl = document.querySelector('[data-typewriter]');
+  if (typewriterEl && !prefersReducedMotion) {
+    const phrases = [
+      'get you hired.',
+      'build your career.',
+      'scale your income.',
+      'future-proof your skills.'
+    ];
+    let phraseIndex = 0;
+    let charIndex = phrases[0].length;
+    let isDeleting = false;
+    let typingSpeed = 75;
+
+    const type = () => {
+      const currentPhrase = phrases[phraseIndex];
+
+      if (isDeleting) {
+        charIndex--;
+        typewriterEl.textContent = currentPhrase.substring(0, charIndex);
+        typingSpeed = 35;
+      } else {
+        charIndex++;
+        typewriterEl.textContent = currentPhrase.substring(0, charIndex);
+        typingSpeed = 70;
+      }
+
+      if (!isDeleting && charIndex === currentPhrase.length) {
+        typingSpeed = 2200; // Pause on completed phrase
+        isDeleting = true;
+      } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        phraseIndex = (phraseIndex + 1) % phrases.length;
+        typingSpeed = 400; // Pause before typing next phrase
+      }
+
+      setTimeout(type, typingSpeed);
+    };
+
+    setTimeout(type, 2200);
+  }
+
 })();

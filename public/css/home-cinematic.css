@@ -1550,3 +1550,26 @@ body.page-home .nav-link:hover {
   .nl-submit-btn { border-radius: 9999px; width: 100%; }
   .footer-container { grid-template-columns: 1fr; gap: 32px; }
 }
+
+/* Typewriter Effect Styles */
+.hero-typewriter {
+  display: inline;
+  background: linear-gradient(135deg, #ff7a00 0%, #ff5500 45%, #ea580c 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 900;
+}
+.hero-typewriter-cursor {
+  display: inline-block;
+  font-weight: 300;
+  color: #ff7a00;
+  margin-left: 2px;
+  animation: heroCursorBlink 0.9s infinite;
+  vertical-align: baseline;
+}
+@keyframes heroCursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
