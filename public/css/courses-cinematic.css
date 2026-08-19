@@ -65,7 +65,7 @@ body.page-courses {
   overflow: hidden;
   margin-top: 68px;
   padding: 72px 0 78px;
-  background: radial-gradient(ellipse 120% 80% at 50% -10%, #16213e 0%, #0a0e1a 55%, #05070c 100%);
+  background: radial-gradient(ellipse 120% 80% at 50% -10%, #fffaf5 0%, #0a0e1a 55%, #05070c 100%);
   color: #fff;
 }
 
@@ -686,4 +686,47 @@ body.page-courses {
   .page-courses .cd-outcomes-grid,
   .page-courses .cd-activities-grid,
   .page-courses .cd-keypoints-grid { grid-template-columns: 1fr; }
+}
+
+/* Kesari Courses Overrides */
+body.page-courses {
+  background: #ffffff;
+  color: #0f172a;
+}
+body.page-courses .courses-results-section {
+  background: #fffaf5;
+  border-top: 1px solid #fed7aa;
+}
+body.page-courses .cat-pill {
+  background: #ffffff;
+  border: 1.5px solid #fed7aa;
+  color: #475569;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+body.page-courses .cat-pill:hover,
+body.page-courses .cat-pill.active {
+  background: linear-gradient(135deg, #ff7a00, #ea580c);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 6px 16px -2px rgba(255, 122, 0, 0.35);
+}
+body.page-courses .course-card {
+  background: #ffffff;
+  border: 1.5px solid #fed7aa;
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.05);
+}
+body.page-courses .course-card:hover {
+  border-color: #ff7a00;
+  box-shadow: 0 14px 36px rgba(255, 122, 0, 0.15);
+}
+body.page-courses .search-input {
+  background: #ffffff;
+  border: 1.5px solid #fed7aa;
+  color: #0f172a;
+}
+body.page-courses .search-input:focus {
+  border-color: #ff7a00;
+  box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.15);
 }

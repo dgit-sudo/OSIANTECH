@@ -26,7 +26,7 @@ body.page-course-detail {
   overflow: hidden;
   margin-top: 68px;
   padding: 56px 0 60px;
-  background: radial-gradient(ellipse 120% 90% at 20% -10%, #16213e 0%, #0a0e1a 60%, #05070c 100%);
+  background: radial-gradient(ellipse 120% 90% at 20% -10%, #fffaf5 0%, #fffaf5 60%, #fffaf5 100%);
 }
 .page-course-detail .cd-hero-glow {
   position: absolute; inset: 0; z-index: 0; pointer-events: none;
@@ -227,4 +227,49 @@ body.page-course-detail {
   .page-course-detail .cd-split { grid-template-columns: 1fr; }
   .page-course-detail .cd-roles { grid-template-columns: 1fr; }
   .page-course-detail .cd-hero-actions .btn { flex: 1; min-width: 0; }
+}
+
+/* Kesari Course Detail Overrides */
+body.page-course-detail {
+  background: #ffffff;
+  color: #0f172a;
+}
+body.page-course-detail .cd-hero {
+  background: #fffaf5 !important;
+  border-bottom: 1px solid #fed7aa;
+}
+body.page-course-detail .cd-hero-title {
+  color: #0f172a !important;
+  font-family: var(--font-display) !important;
+  font-weight: 900 !important;
+}
+body.page-course-detail .cd-hero-lede {
+  color: #475569 !important;
+}
+body.page-course-detail .cd-hero-kicker {
+  background: #fff7ed !important;
+  border: 1.5px solid #fed7aa !important;
+  color: #c2410c !important;
+}
+body.page-course-detail .cd-card,
+body.page-course-detail .cd-enroll-box,
+body.page-course-detail .cd-instructor-card,
+body.page-course-detail .cd-faq-item,
+body.page-course-detail .cd-sidebar-sticky {
+  background: #ffffff !important;
+  border: 1.5px solid #fed7aa !important;
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.06) !important;
+  color: #0f172a !important;
+}
+body.page-course-detail .cd-curriculum-module {
+  background: #ffffff !important;
+  border: 1.5px solid #fed7aa !important;
+}
+body.page-course-detail .cd-curriculum-header {
+  color: #0f172a !important;
+  font-weight: 800 !important;
+}
+body.page-course-detail .cd-check-icon,
+body.page-course-detail .cd-feature-icon {
+  color: #ff7a00 !important;
 }
