@@ -73,7 +73,7 @@ function generateFallbackAnswer(userMessage, contextChunks = []) {
     return `Here are the details for **${matchedCourse.title}**:\n\n` +
       `- **Category**: ${matchedCourse.category || 'Professional'}\n` +
       `- **Duration**: ${matchedCourse.duration || 'Flexible'}\n` +
-      `- **Fee**: ${feeStr}${metroFeeStr}\n` +
+      `- **Fee**: ${feeStr}\n` +
       `- **Format**: Live 1-on-1 private sessions with an industry mentor\n` +
       `- **Overview**: ${matchedCourse.cardLine || matchedCourse.description}\n\n` +
       `👉 [Click here to view full curriculum & enroll](https://osian.tech/courses/${matchedCourse.id})`;
