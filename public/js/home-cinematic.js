@@ -134,7 +134,7 @@
       'get you hired.',
       'launch your career.',
       'scale your income.',
-      'future-proof your skills.'
+      'level up fast.'
     ];
     let phraseIndex = 0;
     let charIndex = phrases[0].length;
