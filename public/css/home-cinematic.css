@@ -1551,6 +1551,10 @@ body.page-home .nav-link:hover {
   .footer-container { grid-template-columns: 1fr; gap: 32px; }
 }
 
+
+  50% { opacity: 0; }
+}
+
 /* Typewriter Effect Styles */
 .hero-typewriter {
   display: inline;
@@ -1560,14 +1564,16 @@ body.page-home .nav-link:hover {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   font-weight: 900;
+  min-height: 1.2em;
 }
 .hero-typewriter-cursor {
   display: inline-block;
-  font-weight: 300;
+  font-weight: 400;
   color: #ff7a00;
   margin-left: 2px;
-  animation: heroCursorBlink 0.9s infinite;
+  animation: heroCursorBlink 0.8s infinite;
   vertical-align: baseline;
+  font-family: monospace;
 }
 @keyframes heroCursorBlink {
   0%, 100% { opacity: 1; }

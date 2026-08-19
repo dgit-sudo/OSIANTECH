@@ -169,4 +169,47 @@
     setTimeout(type, 2200);
   }
 
+
+  /* ---- Kinetic Hero Typewriter Effect ---- */
+  const typewriterEl = document.querySelector('[data-typewriter]');
+  if (typewriterEl) {
+    const phrases = [
+      'get you hired.',
+      'launch your career.',
+      'scale your income.',
+      'future-proof your skills.'
+    ];
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+
+    const tick = () => {
+      const currentPhrase = phrases[phraseIndex];
+
+      if (isDeleting) {
+        charIndex--;
+        typewriterEl.textContent = currentPhrase.substring(0, charIndex);
+      } else {
+        charIndex++;
+        typewriterEl.textContent = currentPhrase.substring(0, charIndex);
+      }
+
+      let delta = isDeleting ? 38 : 75;
+
+      if (!isDeleting && charIndex === currentPhrase.length) {
+        delta = 1800; // Hold full phrase for 1.8s
+        isDeleting = true;
+      } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        phraseIndex = (phraseIndex + 1) % phrases.length;
+        delta = 350; // Pause before typing next phrase
+      }
+
+      setTimeout(tick, delta);
+    };
+
+    // Start typing immediately after 250ms
+    setTimeout(tick, 250);
+  }
+
 })();
