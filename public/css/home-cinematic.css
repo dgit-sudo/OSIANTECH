@@ -1,6 +1,6 @@
 /* ================================================================
-   OSIAN ACADEMY — ATTRACTIVE PROFESSIONAL WHITE CINEMATIC THEME
-   Inspired by modern developer platforms (Figma, Vercel, Supabase)
+   OSIAN ACADEMY — KESARI (SAFFRON) BRAND DESIGN SYSTEM
+   Inspired by samyakinfotech.com Kesari & Royal Accent Palette
    ================================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
@@ -10,27 +10,26 @@
   --font-body: 'Inter', -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Clean White Surfaces */
+  /* Surfaces */
   --bg:          #ffffff;
   --bg-surface:  #ffffff;
-  --bg-surface-1:#f8fafc;
-  --bg-surface-2:#f1f5f9;
+  --bg-surface-1:#fff7ed;
+  --bg-surface-2:#ffedd5;
   --bg-card:     #ffffff;
 
-  /* Violet & Indigo Brand Gradient */
-  --brand-violet:#7c3aed;
-  --brand-indigo:#6366f1;
-  --brand-purple:#9333ea;
-  --brand-blue:  #4f46e5;
-  --brand-pale:  #f5f3ff;
-  --brand-muted: rgba(99, 102, 241, 0.08);
+  /* Samyak Infotech Kesari Palette */
+  --brand-kesari:      #ff7a00;
+  --brand-kesari-deep: #ea580c;
+  --brand-kesari-dark: #c2410c;
+  --brand-kesari-light:#ff9838;
+  --brand-kesari-pale: #fff7ed;
+  --brand-kesari-muted:rgba(255, 122, 0, 0.12);
 
-  /* Accents */
-  --accent-sky:  #0ea5e9;
-  --accent-cyan: #06b6d4;
-  --accent-rose: #f43f5e;
-  --accent-amber:#f59e0b;
+  /* Secondary Accents */
+  --accent-gold:   #f59e0b;
+  --accent-navy:   #0f2050;
   --accent-emerald:#10b981;
+  --accent-cyan:   #06b6d4;
 
   /* Text & Ink */
   --text-primary:   #0f172a;
@@ -39,17 +38,17 @@
   --text-white:     #ffffff;
 
   /* Borders & Dividers */
-  --border:       #e2e8f0;
-  --border-light: #f1f5f9;
-  --border-brand: rgba(99, 102, 241, 0.2);
+  --border:       #fed7aa;
+  --border-light: #ffedd5;
+  --border-brand: rgba(255, 122, 0, 0.35);
 
   /* Shadows */
   --shadow-xs:    0 1px 2px rgba(0, 0, 0, 0.04);
   --shadow-sm:    0 2px 8px -2px rgba(0, 0, 0, 0.06);
   --shadow-md:    0 6px 20px -4px rgba(0, 0, 0, 0.07);
   --shadow-lg:    0 12px 32px -6px rgba(0, 0, 0, 0.08);
-  --shadow-glow:  0 20px 60px rgba(99, 102, 241, 0.12), 0 4px 16px rgba(0, 0, 0, 0.04);
-  --shadow-brand: 0 10px 25px -4px rgba(99, 102, 241, 0.35);
+  --shadow-glow:  0 20px 60px rgba(255, 122, 0, 0.14), 0 4px 16px rgba(0, 0, 0, 0.04);
+  --shadow-brand: 0 10px 25px -4px rgba(255, 122, 0, 0.38);
 
   /* Transitions */
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
@@ -69,53 +68,33 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.03em;
 }
 
-/* Gradient Text */
+/* Gradient Text — Radiant Kesari Saffron */
 .gradient-text {
-  background: linear-gradient(135deg, #7c3aed 0%, #6366f1 50%, #7c3aed 100%);
+  background: linear-gradient(135deg, #ff7a00 0%, #ff5500 50%, #f59e0b 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: shimmer 4s linear infinite;
+  animation: shimmerKesari 4s linear infinite;
 }
 
 .gradient-text-warm {
-  background: linear-gradient(135deg, #7c3aed 0%, #0ea5e9 50%, #f97316 100%);
+  background: linear-gradient(135deg, #ff7a00 0%, #ea580c 50%, #d97706 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-@keyframes shimmer {
+@keyframes shimmerKesari {
   0%   { background-position: 0% center; }
   100% { background-position: 200% center; }
-}
-
-/* Animations */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50%      { transform: translateY(-10px); }
-}
-
-@keyframes pulse-slow {
-  0%, 100% { opacity: 0.4; }
-  50%      { opacity: 0.8; }
-}
-
-@keyframes slide-up {
-  from { opacity: 0; transform: translateY(28px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
 }
 
 /* Ambient Blobs & Grids */
 .grid-bg {
   background-image:
-    linear-gradient(rgba(99, 102, 241, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(99, 102, 241, 0.04) 1px, transparent 1px);
+    linear-gradient(rgba(255, 122, 0, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 122, 0, 0.045) 1px, transparent 1px);
   background-size: 48px 48px;
 }
 
@@ -127,19 +106,23 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Sticky Navbar */
 body.page-home .navbar {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--border-light);
   transition: all var(--t) var(--ease);
 }
 body.page-home .navbar.scrolled {
   background: rgba(255, 255, 255, 0.98);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 20px -2px rgba(255, 122, 0, 0.08);
+}
+body.page-home .nav-link.active,
+body.page-home .nav-link:hover {
+  color: var(--brand-kesari);
 }
 
 /* ================================================================
-   1. HERO SECTION (2-Column Split + Floating Preview Cards)
+   1. HERO SECTION (Full-Width Centered Kesari Modern Hero)
    ================================================================ */
 .hero-attractive {
   position: relative;
@@ -168,30 +151,6 @@ body.page-home .navbar.scrolled {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-/* Hero Left */
-.hero-badge-live {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 16px;
-  border-radius: 9999px;
-  background: #f5f3ff;
-  border: 1px solid #ede9fe;
-  color: var(--brand-violet);
-  font-size: 0.84rem;
-  font-weight: 600;
-  margin-bottom: 24px;
-  font-family: var(--font-body);
-}
-.hero-badge-pulse {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--brand-indigo);
-  box-shadow: 0 0 10px var(--brand-indigo);
-  animation: pulse-slow 2s infinite;
 }
 
 .hero-main-title {
@@ -225,12 +184,12 @@ body.page-home .navbar.scrolled {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 14px 30px;
+  padding: 14px 32px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #7c3aed, #6366f1);
+  background: linear-gradient(135deg, #ff7a00, #ea580c);
   color: #ffffff !important;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 0.96rem;
   text-decoration: none;
   box-shadow: var(--shadow-brand);
   transition: all var(--t) var(--ease);
@@ -239,8 +198,8 @@ body.page-home .navbar.scrolled {
 }
 .btn-brand-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 16px 36px -4px rgba(99, 102, 241, 0.45);
-  background: linear-gradient(135deg, #6d28d9, #4f46e5);
+  box-shadow: 0 16px 36px -4px rgba(255, 122, 0, 0.48);
+  background: linear-gradient(135deg, #ea580c, #c2410c);
 }
 
 .btn-brand-ghost {
@@ -250,7 +209,7 @@ body.page-home .navbar.scrolled {
   padding: 14px 24px;
   border-radius: 12px;
   background: #ffffff;
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   color: var(--text-primary);
   font-weight: 600;
   font-size: 0.95rem;
@@ -259,13 +218,13 @@ body.page-home .navbar.scrolled {
   transition: all var(--t) var(--ease);
 }
 .btn-brand-ghost:hover {
-  background: var(--bg-surface-1);
-  border-color: var(--border-brand);
-  color: var(--brand-indigo);
+  background: var(--brand-kesari-pale);
+  border-color: var(--brand-kesari);
+  color: var(--brand-kesari);
   transform: translateY(-2px);
 }
 
-/* Trust Row / Social Proof */
+/* Social Proof Rating */
 .hero-social-proof {
   display: flex;
   align-items: center;
@@ -297,163 +256,23 @@ body.page-home .navbar.scrolled {
   align-items: center;
   gap: 3px;
   color: #f59e0b;
-  font-size: 12px;
-  margin-bottom: 2px;
+  font-size: 13px;
 }
 .proof-rating-num {
-  font-weight: 700;
-  color: var(--text-primary);
-  font-size: 13px;
-  margin-left: 4px;
-}
-.proof-sub {
-  font-size: 12px;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-
-/* Hero Right: Course Card Stack */
-.hero-preview-stack {
-  position: relative;
-}
-.preview-card-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-.preview-course-card {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 18px 20px;
-  background: #ffffff;
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  box-shadow: var(--shadow-md);
-  transition: all var(--t) var(--ease);
-}
-.preview-course-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-glow);
-  border-color: var(--border-brand);
-}
-.preview-icon-box {
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  font-size: 20px;
-  flex-shrink: 0;
-}
-.preview-info {
-  flex: 1;
-  min-width: 0;
-}
-.preview-title-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 4px;
-}
-.preview-title {
-  font-family: var(--font-display);
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.preview-tag {
-  font-size: 10px;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 9999px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-.preview-sub {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-.preview-action-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
-  background: var(--bg-surface-1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--brand-indigo);
-  font-size: 13px;
-  transition: background var(--t);
-}
-.preview-course-card:hover .preview-action-btn {
-  background: #ede9fe;
-}
-
-/* Floating Badges */
-.floating-badge-top {
-  position: absolute;
-  top: -20px;
-  right: -16px;
-  background: #ffffff;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 14px 18px;
-  box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.08);
-  z-index: 5;
-}
-.floating-stat-num {
-  font-family: var(--font-display);
-  font-size: 1.45rem;
   font-weight: 800;
   color: var(--text-primary);
-  line-height: 1;
-  margin-bottom: 3px;
-}
-.floating-stat-lbl {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-}
-
-.floating-badge-bottom {
-  position: absolute;
-  bottom: -16px;
-  left: -16px;
-  background: linear-gradient(135deg, #7c3aed, #4f46e5);
-  color: #ffffff;
-  border-radius: 16px;
-  padding: 12px 18px;
-  box-shadow: 0 10px 25px -4px rgba(99, 102, 241, 0.35);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  z-index: 5;
-}
-.floating-cert-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
+  font-size: 14px;
+  margin-left: 4px;
 }
 
 /* ================================================================
-   2. TRUSTED LOGOS STRIP & SKILLS TICKER
+   2. TRUSTED-BY STRIP & SKILLS TICKER
    ================================================================ */
 .hero-trusted-strip {
   padding: 36px 0;
-  background: #ede9fe;
-  border-top: 1px solid #ddd6fe;
-  border-bottom: 1px solid #ddd6fe;
+  background: #fff7ed;
+  border-top: 1px solid #fed7aa;
+  border-bottom: 1px solid #fed7aa;
 }
 .hero-trusted-inner {
   display: flex;
@@ -464,8 +283,8 @@ body.page-home .navbar.scrolled {
 }
 .hero-trusted-label {
   font-size: 0.82rem;
-  font-weight: 700;
-  color: var(--text-muted);
+  font-weight: 800;
+  color: #c2410c;
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
@@ -484,15 +303,15 @@ body.page-home .navbar.scrolled {
   transition: all var(--t);
 }
 .hero-trusted-logos span:hover {
-  color: var(--brand-indigo);
+  color: var(--brand-kesari);
   transform: scale(1.05);
 }
 
 .skills-ticker-wrap {
-  background: #e2e8f0;
+  background: #ffedd5;
   padding: 16px 0;
   overflow: hidden;
-  border-bottom: 1px solid #cbd5e1;
+  border-bottom: 1px solid #fed7aa;
 }
 .skills-ticker-track {
   display: flex;
@@ -505,14 +324,14 @@ body.page-home .navbar.scrolled {
   animation-play-state: paused;
 }
 .skills-ticker-track span {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text-secondary);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #7c2d12;
   white-space: nowrap;
 }
 .skills-ticker-track span.dot {
-  color: var(--accent-rose);
-  font-size: 0.65rem;
+  color: var(--brand-kesari);
+  font-size: 0.7rem;
 }
 @keyframes tickerScroll {
   from { transform: translateX(0); }
@@ -520,12 +339,12 @@ body.page-home .navbar.scrolled {
 }
 
 /* ================================================================
-   3. STATS BAR (4 Columns)
+   3. STATS BAR (4 Columns Kesari Sunset Gradient)
    ================================================================ */
 .s-stats-bar {
   padding: 68px 0;
-  background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
-  border-bottom: 1px solid #7dd3fc;
+  background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+  border-bottom: 1px solid #fed7aa;
 }
 .stats-grid-4 {
   display: grid;
@@ -535,21 +354,21 @@ body.page-home .navbar.scrolled {
 }
 .stat-box-num {
   font-family: var(--font-display);
-  font-size: clamp(2.2rem, 3.8vw, 3.2rem);
-  font-weight: 800;
+  font-size: clamp(2.3rem, 4vw, 3.4rem);
+  font-weight: 900;
   line-height: 1.05;
   margin-bottom: 6px;
   letter-spacing: -0.03em;
 }
 .stat-box-label {
-  font-size: 0.95rem;
-  font-weight: 700;
+  font-size: 0.98rem;
+  font-weight: 800;
   color: var(--text-primary);
   margin-bottom: 2px;
 }
 .stat-box-sub {
-  font-size: 0.8rem;
-  color: var(--text-muted);
+  font-size: 0.82rem;
+  color: var(--text-secondary);
 }
 
 /* ================================================================
@@ -557,8 +376,8 @@ body.page-home .navbar.scrolled {
    ================================================================ */
 .s-process {
   padding: 100px 0;
-  background: #f3e8ff;
-  border-bottom: 1px solid #e9d5ff;
+  background: #fff8f0;
+  border-bottom: 1px solid #fed7aa;
 }
 .section-header-center {
   text-align: center;
@@ -568,15 +387,15 @@ body.page-home .navbar.scrolled {
 .section-tag-pill {
   display: inline-block;
   font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--brand-indigo);
+  font-weight: 800;
+  color: var(--brand-kesari-deep);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  background: #f5f3ff;
-  padding: 5px 14px;
+  background: #fff7ed;
+  padding: 5px 16px;
   border-radius: 9999px;
   margin-bottom: 14px;
-  border: 1px solid #ede9fe;
+  border: 1px solid #fed7aa;
 }
 .section-title-large {
   font-family: var(--font-display);
@@ -594,10 +413,10 @@ body.page-home .navbar.scrolled {
 }
 .process-card {
   background: #ffffff;
-  border: 1px solid var(--border);
+  border: 1.5px solid #fed7aa;
   border-radius: 20px;
   padding: 32px 24px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.06);
   transition: all var(--t) var(--ease);
   text-align: center;
   display: flex;
@@ -607,14 +426,14 @@ body.page-home .navbar.scrolled {
 .process-card:hover {
   transform: translateY(-6px);
   box-shadow: var(--shadow-glow);
-  border-color: var(--border-brand);
+  border-color: var(--brand-kesari);
 }
 .process-num-badge {
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
-  background: #f5f3ff;
-  color: var(--brand-indigo);
+  background: linear-gradient(135deg, #ff7a00, #ea580c);
+  color: #ffffff;
   font-family: var(--font-display);
   font-weight: 800;
   font-size: 1rem;
@@ -622,8 +441,7 @@ body.page-home .navbar.scrolled {
   align-items: center;
   justify-content: center;
   margin-bottom: 16px;
-  border: 2px solid #ffffff;
-  box-shadow: 0 0 0 2px #ede9fe;
+  box-shadow: 0 4px 12px rgba(255, 122, 0, 0.3);
 }
 .process-icon {
   font-size: 2rem;
@@ -647,9 +465,9 @@ body.page-home .navbar.scrolled {
    ================================================================ */
 .s-tracks {
   padding: 100px 0;
-  background: #ccfbf1;
-  border-top: 1px solid #99f6e4;
-  border-bottom: 1px solid #99f6e4;
+  background: #fefce8;
+  border-top: 1px solid #fef08a;
+  border-bottom: 1px solid #fef08a;
 }
 .tracks-grid {
   display: grid;
@@ -659,7 +477,7 @@ body.page-home .navbar.scrolled {
 .track-card {
   position: relative;
   background: #ffffff;
-  border: 1px solid var(--border);
+  border: 1.5px solid #fef08a;
   border-radius: 20px;
   padding: 32px 26px;
   text-decoration: none;
@@ -674,14 +492,14 @@ body.page-home .navbar.scrolled {
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #7c3aed, #6366f1);
+  background: linear-gradient(90deg, #ff7a00, #f59e0b);
   opacity: 0;
   transition: opacity var(--t);
 }
 .track-card:hover {
   transform: translateY(-6px);
   box-shadow: var(--shadow-glow);
-  border-color: var(--border-brand);
+  border-color: var(--brand-kesari);
 }
 .track-card:hover::before {
   opacity: 1;
@@ -716,9 +534,9 @@ body.page-home .navbar.scrolled {
 .track-arrow {
   margin-top: auto;
   align-self: flex-start;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--brand-indigo);
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--brand-kesari);
   transition: transform var(--t);
 }
 .track-card:hover .track-arrow {
@@ -730,8 +548,8 @@ body.page-home .navbar.scrolled {
    ================================================================ */
 .s-courses-catalog {
   padding: 100px 0;
-  background: #e2e8f0;
-  border-bottom: 1px solid #cbd5e1;
+  background: #fff7ed;
+  border-bottom: 1px solid #fed7aa;
 }
 .catalog-header-row {
   display: flex;
@@ -764,8 +582,8 @@ body.page-home .navbar.scrolled {
   border-radius: 20px;
   overflow: hidden;
   background: #ffffff;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
+  border: 1.5px solid #fed7aa;
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.05);
   transition: all var(--t) var(--ease);
 }
 .modern-course-card-link {
@@ -775,7 +593,7 @@ body.page-home .navbar.scrolled {
 }
 .modern-course-card-link:hover .modern-course-card {
   transform: translateY(-6px);
-  border-color: var(--border-brand);
+  border-color: var(--brand-kesari);
   box-shadow: var(--shadow-glow);
 }
 .modern-course-thumb {
@@ -786,6 +604,11 @@ body.page-home .navbar.scrolled {
   background-repeat: no-repeat !important;
   background-color: var(--bg-surface-2);
   overflow: hidden;
+}
+.modern-course-thumb.has-course-image {
+  background-image: var(--course-image) !important;
+  background-size: cover !important;
+  background-position: center !important;
 }
 .modern-course-thumb::after {
   content: '';
@@ -806,7 +629,7 @@ body.page-home .navbar.scrolled {
   background: rgba(255, 255, 255, 0.95);
   color: var(--text-primary);
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   padding: 4px 12px;
@@ -829,11 +652,11 @@ body.page-home .navbar.scrolled {
 .modern-meta-item {
   padding: 4px 10px;
   border-radius: 9999px;
-  background: var(--bg-surface-1);
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  color: #9a3412;
   font-size: 0.74rem;
-  font-weight: 600;
+  font-weight: 700;
 }
 .modern-course-title {
   font-family: var(--font-display);
@@ -848,7 +671,7 @@ body.page-home .navbar.scrolled {
   transition: color var(--t);
 }
 .modern-course-card-link:hover .modern-course-title {
-  color: var(--brand-indigo);
+  color: var(--brand-kesari);
 }
 .modern-course-desc {
   color: var(--text-secondary);
@@ -866,19 +689,19 @@ body.page-home .navbar.scrolled {
   justify-content: space-between;
   gap: 12px;
   padding-top: 14px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid #fed7aa;
   margin-top: auto;
 }
 .modern-pill-live {
   font-size: 0.74rem;
-  font-weight: 700;
-  color: var(--brand-violet);
+  font-weight: 800;
+  color: var(--brand-kesari-deep);
   text-transform: uppercase;
 }
 .modern-course-arrow {
-  color: var(--brand-indigo);
-  font-size: 0.86rem;
-  font-weight: 700;
+  color: var(--brand-kesari);
+  font-size: 0.88rem;
+  font-weight: 800;
   transition: transform var(--t);
 }
 .modern-course-card-link:hover .modern-course-arrow {
@@ -892,7 +715,7 @@ body.page-home .navbar.scrolled {
   height: 42px;
   border-radius: 50%;
   background: #ffffff;
-  border: 1px solid var(--border);
+  border: 1.5px solid #fed7aa;
   color: var(--text-primary);
   font-size: 1.4rem;
   display: flex;
@@ -903,9 +726,9 @@ body.page-home .navbar.scrolled {
   transition: all var(--t);
 }
 .catalog-nav-btn:hover {
-  background: #f5f3ff;
-  color: var(--brand-indigo);
-  border-color: var(--border-brand);
+  background: #fff7ed;
+  color: var(--brand-kesari);
+  border-color: var(--brand-kesari);
 }
 .catalog-nav-prev { right: 54px; }
 .catalog-nav-next { right: 0; }
@@ -915,9 +738,9 @@ body.page-home .navbar.scrolled {
    ================================================================ */
 .s-why-us {
   padding: 100px 0;
-  background: #fef3c7;
-  border-top: 1px solid #fde68a;
-  border-bottom: 1px solid #fde68a;
+  background: #ffedd5;
+  border-top: 1px solid #fed7aa;
+  border-bottom: 1px solid #fed7aa;
 }
 .bento-grid-3 {
   display: grid;
@@ -926,7 +749,7 @@ body.page-home .navbar.scrolled {
 }
 .bento-card {
   background: #ffffff;
-  border: 1px solid var(--border);
+  border: 1.5px solid #fed7aa;
   border-radius: 20px;
   padding: 36px 30px;
   box-shadow: var(--shadow-sm);
@@ -937,24 +760,25 @@ body.page-home .navbar.scrolled {
 .bento-card:hover {
   transform: translateY(-6px);
   box-shadow: var(--shadow-glow);
-  border-color: var(--border-brand);
+  border-color: var(--brand-kesari);
 }
 .bento-card-featured {
-  background: linear-gradient(180deg, #ffffff 0%, #f5f3ff 100%);
-  border: 1.5px solid rgba(99, 102, 241, 0.35);
-  box-shadow: 0 12px 36px -4px rgba(99, 102, 241, 0.12);
+  background: linear-gradient(180deg, #ffffff 0%, #fff7ed 100%);
+  border: 2px solid var(--brand-kesari);
+  box-shadow: 0 12px 36px -4px rgba(255, 122, 0, 0.16);
 }
 .bento-icon-box {
   width: 52px;
   height: 52px;
   border-radius: 14px;
-  background: #f5f3ff;
-  color: var(--brand-violet);
+  background: #fff7ed;
+  color: var(--brand-kesari);
   font-size: 1.6rem;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
+  border: 1px solid #fed7aa;
 }
 .bento-card-title {
   font-family: var(--font-display);
@@ -974,12 +798,12 @@ body.page-home .navbar.scrolled {
   display: inline-block;
   align-self: flex-start;
   font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--brand-indigo);
-  background: #ffffff;
+  font-weight: 800;
+  color: #c2410c;
+  background: #fff7ed;
   padding: 6px 14px;
   border-radius: 9999px;
-  border: 1px solid rgba(99, 102, 241, 0.2);
+  border: 1px solid #fed7aa;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -989,8 +813,8 @@ body.page-home .navbar.scrolled {
    ================================================================ */
 .s-features-pillars {
   padding: 100px 0;
-  background: #ede9fe;
-  border-bottom: 1px solid #ddd6fe;
+  background: #fff8f0;
+  border-bottom: 1px solid #fed7aa;
 }
 .pillars-grid-3 {
   display: grid;
@@ -999,7 +823,7 @@ body.page-home .navbar.scrolled {
 }
 .pillar-card {
   background: #ffffff;
-  border: 1px solid var(--border);
+  border: 1.5px solid #fed7aa;
   border-radius: 20px;
   padding: 32px 26px;
   box-shadow: var(--shadow-sm);
@@ -1010,7 +834,7 @@ body.page-home .navbar.scrolled {
 .pillar-card:hover {
   transform: translateY(-5px);
   box-shadow: var(--shadow-glow);
-  border-color: var(--border-brand);
+  border-color: var(--brand-kesari);
 }
 .pillar-icon-box {
   width: 48px;
@@ -1021,8 +845,9 @@ body.page-home .navbar.scrolled {
   justify-content: center;
   font-size: 1.5rem;
   margin-bottom: 18px;
-  background: #f5f3ff;
-  color: var(--brand-indigo);
+  background: #fff7ed;
+  color: var(--brand-kesari);
+  border: 1px solid #fed7aa;
 }
 .pillar-title {
   font-family: var(--font-display);
@@ -1040,26 +865,26 @@ body.page-home .navbar.scrolled {
 }
 .pillar-link {
   text-decoration: none;
-  font-size: 0.84rem;
-  font-weight: 700;
-  color: var(--brand-indigo);
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: var(--brand-kesari);
   transition: transform var(--t);
   align-self: flex-start;
 }
 .pillar-link:hover {
   transform: translateX(3px);
-  color: var(--brand-violet);
+  color: var(--brand-kesari-deep);
 }
 
 /* ================================================================
    9. ONE PLATFORM SOLUTION (Interactive Tab Switcher)
    ================================================================ */
 .s-oneplatform {
-  background: #e0f2fe;
+  background: #fff7ed;
   padding: 90px 0;
   text-align: center;
-  border-top: 1px solid #bae6fd;
-  border-bottom: 1px solid #bae6fd;
+  border-top: 1px solid #fed7aa;
+  border-bottom: 1px solid #fed7aa;
 }
 .sop-inner {
   max-width: 720px;
@@ -1088,7 +913,7 @@ body.page-home .navbar.scrolled {
 }
 .sop-tab {
   background: #ffffff;
-  border: 1px solid var(--border);
+  border: 1.5px solid #fed7aa;
   border-radius: 9999px;
   padding: 10px 26px;
   font-size: 0.92rem;
@@ -1099,18 +924,18 @@ body.page-home .navbar.scrolled {
   transition: all var(--t);
 }
 .sop-tab:hover {
-  border-color: var(--border-brand);
-  color: var(--brand-indigo);
+  border-color: var(--brand-kesari);
+  color: var(--brand-kesari);
 }
 .sop-tab.active {
-  background: linear-gradient(135deg, #7c3aed, #6366f1);
+  background: linear-gradient(135deg, #ff7a00, #ea580c);
   border-color: transparent;
   color: #ffffff;
-  box-shadow: 0 6px 20px -2px rgba(99, 102, 241, 0.35);
+  box-shadow: 0 6px 20px -2px rgba(255, 122, 0, 0.35);
 }
 .sop-tab-content {
   background: #ffffff;
-  border: 1px solid var(--border);
+  border: 1.5px solid #fed7aa;
   border-radius: 20px;
   padding: 26px 36px;
   font-size: 1.02rem;
@@ -1126,8 +951,8 @@ body.page-home .navbar.scrolled {
    ================================================================ */
 .s-trusted-certs {
   padding: 90px 0;
-  background: #f1f5f9;
-  border-bottom: 1px solid #cbd5e1;
+  background: #ffffff;
+  border-bottom: 1px solid #fed7aa;
 }
 .certs-badges-grid {
   display: flex;
@@ -1136,8 +961,8 @@ body.page-home .navbar.scrolled {
   flex-wrap: wrap;
 }
 .cert-badge-box {
-  background: #ffffff;
-  border: 1px solid var(--border);
+  background: #fff7ed;
+  border: 1.5px solid #fed7aa;
   border-radius: 20px;
   padding: 28px 22px;
   text-align: center;
@@ -1148,7 +973,7 @@ body.page-home .navbar.scrolled {
 .cert-badge-box:hover {
   transform: translateY(-5px);
   box-shadow: var(--shadow-glow);
-  border-color: var(--border-brand);
+  border-color: var(--brand-kesari);
 }
 .cert-badge-icon {
   font-size: 2.2rem;
@@ -1172,7 +997,7 @@ body.page-home .navbar.scrolled {
    ================================================================ */
 .s-partners-marquee {
   padding: 80px 0;
-  background: #ffedd5;
+  background: #fdf4e7;
   border-top: 1px solid #fed7aa;
   border-bottom: 1px solid #fed7aa;
 }
@@ -1192,7 +1017,7 @@ body.page-home .navbar.scrolled {
 }
 .partner-logo-card {
   background: #ffffff;
-  border: 1px solid var(--border);
+  border: 1.5px solid #fed7aa;
   border-radius: 12px;
   padding: 16px 28px;
   font-family: var(--font-display);
@@ -1203,8 +1028,8 @@ body.page-home .navbar.scrolled {
   transition: all var(--t);
 }
 .partner-logo-card:hover {
-  border-color: var(--brand-indigo);
-  color: var(--brand-indigo);
+  border-color: var(--brand-kesari);
+  color: var(--brand-kesari);
   transform: translateY(-3px);
   box-shadow: var(--shadow-sm);
 }
@@ -1218,8 +1043,8 @@ body.page-home .navbar.scrolled {
    ================================================================ */
 .s-faq-accordion {
   padding: 100px 0;
-  background: #e0e7ff;
-  border-bottom: 1px solid #c7d2fe;
+  background: #fff7ed;
+  border-bottom: 1px solid #fed7aa;
 }
 .faq-container-list {
   max-width: 840px;
@@ -1230,15 +1055,15 @@ body.page-home .navbar.scrolled {
 }
 .faq-accordion-item {
   background: #ffffff;
-  border: 1px solid var(--border);
+  border: 1.5px solid #fed7aa;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: var(--shadow-xs);
   transition: border-color var(--t), box-shadow var(--t);
 }
 .faq-accordion-item.open {
-  border-color: rgba(99, 102, 241, 0.35);
-  box-shadow: var(--shadow-sm);
+  border-color: var(--brand-kesari);
+  box-shadow: 0 4px 20px rgba(255, 122, 0, 0.12);
 }
 .faq-q-btn {
   width: 100%;
@@ -1258,8 +1083,8 @@ body.page-home .navbar.scrolled {
 }
 .faq-indicator {
   font-size: 1.4rem;
-  color: var(--brand-indigo);
-  font-weight: 600;
+  color: var(--brand-kesari);
+  font-weight: 700;
   transition: transform var(--t);
 }
 .faq-accordion-item.open .faq-indicator {
@@ -1285,9 +1110,9 @@ body.page-home .navbar.scrolled {
    13. NEWSLETTER & CTA SECTION
    ================================================================ */
 .s-newsletter-band {
-  background: linear-gradient(135deg, #ede9fe 0%, #e0f2fe 100%);
-  border-top: 1px solid #c7d2fe;
-  border-bottom: 1px solid #c7d2fe;
+  background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+  border-top: 1px solid #fed7aa;
+  border-bottom: 1px solid #fed7aa;
   padding: 68px 0;
 }
 .nl-inner-row {
@@ -1309,7 +1134,7 @@ body.page-home .navbar.scrolled {
 }
 .nl-input-field {
   background: #ffffff;
-  border: 1.5px solid var(--border);
+  border: 1.5px solid #fed7aa;
   border-right: none;
   padding: 13px 20px;
   font-size: 0.95rem;
@@ -1320,16 +1145,16 @@ body.page-home .navbar.scrolled {
   font-family: var(--font-body);
 }
 .nl-input-field:focus {
-  border-color: var(--brand-indigo);
+  border-color: var(--brand-kesari);
 }
 .nl-submit-btn {
-  background: linear-gradient(135deg, #7c3aed, #6366f1);
+  background: linear-gradient(135deg, #ff7a00, #ea580c);
   color: #ffffff;
   font-weight: 700;
   font-size: 0.85rem;
   letter-spacing: 0.05em;
   font-family: var(--font-body);
-  border: 1.5px solid var(--brand-indigo);
+  border: 1.5px solid var(--brand-kesari);
   padding: 13px 28px;
   border-radius: 0 9999px 9999px 0;
   cursor: pointer;
@@ -1337,7 +1162,7 @@ body.page-home .navbar.scrolled {
   white-space: nowrap;
 }
 .nl-submit-btn:hover {
-  background: linear-gradient(135deg, #6d28d9, #4f46e5);
+  background: linear-gradient(135deg, #ea580c, #c2410c);
 }
 
 .cta-banner-large {
@@ -1345,7 +1170,7 @@ body.page-home .navbar.scrolled {
   overflow: hidden;
   padding: 110px 0;
   text-align: center;
-  background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 50%, #3b82f6 100%);
+  background: linear-gradient(135deg, #ff7a00 0%, #ea580c 50%, #c2410c 100%);
   color: #ffffff;
 }
 .cta-banner-content {
@@ -1356,12 +1181,12 @@ body.page-home .navbar.scrolled {
 }
 .cta-tag-white {
   display: inline-block;
-  background: rgba(255, 255, 255, 0.16);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.35);
   color: #ffffff;
   font-size: 0.8rem;
-  font-weight: 700;
-  padding: 5px 14px;
+  font-weight: 800;
+  padding: 5px 16px;
   border-radius: 9999px;
   margin-bottom: 16px;
   text-transform: uppercase;
@@ -1377,7 +1202,7 @@ body.page-home .navbar.scrolled {
   line-height: 1.15;
 }
 .cta-sub-light {
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.95);
   font-size: 1.18rem;
   line-height: 1.65;
   margin-bottom: 38px;
@@ -1390,7 +1215,7 @@ body.page-home .navbar.scrolled {
 }
 .btn-cta-white {
   background: #ffffff !important;
-  color: var(--brand-violet) !important;
+  color: #c2410c !important;
   font-weight: 800;
   font-size: 1rem;
   padding: 15px 36px;
@@ -1402,12 +1227,12 @@ body.page-home .navbar.scrolled {
 .btn-cta-white:hover {
   transform: translateY(-2px);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
-  background: #f8fafc !important;
+  background: #fff7ed !important;
 }
 .btn-cta-outline {
   background: transparent !important;
   color: #ffffff !important;
-  border: 1.5px solid rgba(255, 255, 255, 0.4) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.5) !important;
   font-weight: 700;
   font-size: 1rem;
   padding: 15px 32px;
@@ -1422,11 +1247,11 @@ body.page-home .navbar.scrolled {
 }
 
 /* ================================================================
-   14. FOOTER (Clean White / Slate Theme)
+   14. FOOTER (Clean Light Sand / Slate Theme)
    ================================================================ */
 .footer {
-  background: #f1f5f9;
-  border-top: 1px solid #cbd5e1;
+  background: #fdfaf7;
+  border-top: 1px solid #fed7aa;
   color: var(--text-primary);
   padding: 80px 0 0;
 }
@@ -1445,8 +1270,8 @@ body.page-home .navbar.scrolled {
   margin-bottom: 22px;
 }
 .footer-contact-card {
-  background: #f5f3ff;
-  border: 1px solid #ede9fe;
+  background: #fff7ed;
+  border: 1.5px solid #fed7aa;
   border-radius: 16px;
   padding: 16px 20px;
 }
@@ -1454,7 +1279,7 @@ body.page-home .navbar.scrolled {
   font-family: var(--font-display);
   font-size: 0.86rem;
   font-weight: 800;
-  color: var(--brand-violet);
+  color: #c2410c;
   margin-bottom: 8px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -1486,10 +1311,10 @@ body.page-home .navbar.scrolled {
   transition: color var(--t);
 }
 .footer-col a:hover {
-  color: var(--brand-indigo);
+  color: var(--brand-kesari);
 }
 .footer-bottom {
-  border-top: 1px solid var(--border);
+  border-top: 1px solid #fed7aa;
   padding: 24px;
   text-align: center;
   font-size: 0.85rem;
@@ -1502,11 +1327,6 @@ body.page-home .navbar.scrolled {
    15. RESPONSIVE MEDIA QUERIES
    ================================================================ */
 @media (max-width: 1024px) {
-  .hero-container { grid-template-columns: 1fr; gap: 50px; text-align: center; }
-  .hero-main-sub { margin: 0 auto 36px; }
-  .hero-cta-group { justify-content: center; }
-  .hero-social-proof { justify-content: center; }
-  .hero-preview-stack { max-width: 500px; margin: 0 auto; }
   .stats-grid-4 { grid-template-columns: repeat(2, 1fr); gap: 32px; }
   .process-grid-4 { grid-template-columns: repeat(2, 1fr); }
   .tracks-grid, .bento-grid-3, .pillars-grid-3 { grid-template-columns: repeat(2, 1fr); }
@@ -1526,10 +1346,4 @@ body.page-home .navbar.scrolled {
   .nl-input-field { border-radius: 9999px; border-right: 1.5px solid var(--border); width: 100%; margin-bottom: 10px; min-width: auto; }
   .nl-submit-btn { border-radius: 9999px; width: 100%; }
   .footer-container { grid-template-columns: 1fr; gap: 32px; }
-}
-
-.modern-course-thumb.has-course-image {
-  background-image: var(--course-image) !important;
-  background-size: cover !important;
-  background-position: center !important;
 }
