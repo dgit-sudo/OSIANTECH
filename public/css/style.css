@@ -2215,3 +2215,75 @@ h1,h2,h3,h4,h5,h6 {
     position: static;
   }
 }
+
+/* ================================================================
+   404 ERROR PAGE (White & Samyak Kesari Theme)
+   ================================================================ */
+.hero-404 {
+  margin-top: 68px;
+  min-height: calc(100vh - 280px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 20px 80px;
+  background: radial-gradient(circle at 50% 35%, #fff7ed 0%, #ffffff 75%);
+  position: relative;
+  overflow: hidden;
+}
+.hero-404 .hero-content {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+.error-code {
+  font-family: var(--font-display);
+  font-size: clamp(6.5rem, 16vw, 10rem);
+  font-weight: 950;
+  line-height: 0.95;
+  letter-spacing: -0.06em;
+  background: linear-gradient(135deg, #ff7a00 0%, #ea580c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 12px;
+  filter: drop-shadow(0 12px 30px rgba(255, 122, 0, 0.25));
+  animation: errorFloat 3.5s ease-in-out infinite;
+}
+@keyframes errorFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.hero-404 .hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 2.75rem) !important;
+  font-weight: 900;
+  color: #0f172a;
+  margin: 0 0 12px;
+  letter-spacing: -0.035em;
+  line-height: 1.2;
+}
+.hero-404 .hero-subtitle {
+  font-size: 1.1rem;
+  color: #64748b;
+  margin: 0 0 32px;
+  max-width: 480px;
+  line-height: 1.6;
+  font-weight: 500;
+}
+.hero-404 .btn-lg {
+  padding: 14px 38px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  border-radius: 9999px;
+  box-shadow: 0 10px 25px rgba(255, 122, 0, 0.35);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, filter 0.2s ease;
+}
+.hero-404 .btn-lg:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(255, 122, 0, 0.45);
+}
