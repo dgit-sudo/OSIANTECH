@@ -13,10 +13,7 @@
   <div class="hero-container">
     <!-- Left Column -->
     <div class="hero-content-col" data-reveal="fade-up">
-      <div class="hero-badge-live">
-        <span class="hero-badge-pulse"></span>
-        <span>500+ Students Enrolled &bull; Live 1-on-1 Mentorship</span>
-      </div>
+      
 
       <h1 class="hero-main-title">
         Learn tech skills<br />
@@ -60,7 +57,7 @@
             <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span>
             <span class="proof-rating-num">4.9</span>
           </div>
-          <div class="proof-sub">from 500+ verified student reviews</div>
+          
         </div>
       </div>
     </div>
@@ -115,13 +112,13 @@
       </div>
 
       <!-- Floating Placement Badge -->
-      <div class="floating-badge-top animate-float" style="animation-duration: 5s;">
+      <div class="floating-badge-top" style="animation-duration: 5s;">
         <div class="floating-stat-num gradient-text">95%</div>
         <div class="floating-stat-lbl">Job Placement Rate</div>
       </div>
 
       <!-- Floating Certificate Badge -->
-      <div class="floating-badge-bottom animate-float" style="animation-duration: 7s; animation-delay: -3s;">
+      <div class="floating-badge-bottom" style="animation-duration: 7s; animation-delay: -3s;">
         <div class="floating-cert-icon">🏆</div>
         <div>
           <div style="font-size: 0.82rem; font-weight: 700;">ISO &amp; NASSCOM</div>
@@ -290,7 +287,7 @@
           <div class="catalog-slide">
             <a href="/courses/<%= course.id %>" class="modern-course-card-link" data-course-card data-course-title="<%= course.title %>">
               <article class="modern-course-card">
-                <div class="modern-course-thumb course-img-<%= (course.id % 9) + 1 %> <%= course.image ? 'has-course-image' : '' %>"<% if (course.image) { %> style="background-image: url('<%= course.image %>');"<% } %>>
+                <div class="modern-course-thumb course-img-<%= (course.id % 9) + 1 %> <%= course.image ? 'has-course-image' : '' %>"<% if (course.image) { %> style="--course-image: url('<%= course.image %>'); background-image: url('<%= course.image %>');"<% } %>>
                   <div class="modern-course-overlay">
                     <span class="modern-category-tag"><%= course.category || 'Professional' %></span>
                   </div>
@@ -494,8 +491,8 @@
     </div>
     <div class="faq-container-list" data-reveal="fade-up" data-reveal-delay="1">
 
-      <div class="faq-accordion-item open" data-faq-item>
-        <button class="faq-q-btn" data-faq-question aria-expanded="true">
+      <div class="faq-accordion-item" data-faq-item>
+        <button class="faq-q-btn" data-faq-question aria-expanded="false">
           Can beginners or non-IT students join Osian Academy?
           <span class="faq-indicator">+</span>
         </button>

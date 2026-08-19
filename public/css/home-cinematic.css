@@ -268,7 +268,8 @@ body.page-home .navbar.scrolled {
 .hero-social-proof {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 16px;
+  margin-top: 14px;
   padding-top: 10px;
 }
 .avatar-stack {
@@ -395,13 +396,14 @@ body.page-home .navbar.scrolled {
 /* Floating Badges */
 .floating-badge-top {
   position: absolute;
-  top: -24px;
-  right: -20px;
+  top: -20px;
+  right: -16px;
   background: #ffffff;
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 14px 18px;
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.08);
+  z-index: 5;
 }
 .floating-stat-num {
   font-family: var(--font-display);
@@ -419,16 +421,17 @@ body.page-home .navbar.scrolled {
 
 .floating-badge-bottom {
   position: absolute;
-  bottom: -20px;
-  left: -20px;
+  bottom: -16px;
+  left: -16px;
   background: linear-gradient(135deg, #7c3aed, #4f46e5);
   color: #ffffff;
   border-radius: 16px;
   padding: 12px 18px;
-  box-shadow: var(--shadow-brand);
+  box-shadow: 0 10px 25px -4px rgba(99, 102, 241, 0.35);
   display: flex;
   align-items: center;
   gap: 10px;
+  z-index: 5;
 }
 .floating-cert-icon {
   width: 32px;
@@ -776,9 +779,11 @@ body.page-home .navbar.scrolled {
 .modern-course-thumb {
   position: relative;
   aspect-ratio: 16 / 9;
-  background-size: cover;
-  background-position: center;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
   background-color: var(--bg-surface-2);
+  overflow: hidden;
 }
 .modern-course-thumb::after {
   content: '';
@@ -1254,10 +1259,19 @@ body.page-home .navbar.scrolled {
   transform: rotate(45deg);
 }
 .faq-a-body {
+  display: none;
   padding: 0 26px 22px;
   font-size: 0.94rem;
   color: var(--text-secondary);
   line-height: 1.68;
+}
+.faq-accordion-item.open .faq-a-body {
+  display: block;
+  animation: faqFadeIn 0.25s var(--ease);
+}
+@keyframes faqFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ================================================================
@@ -1505,4 +1519,10 @@ body.page-home .navbar.scrolled {
   .nl-input-field { border-radius: 9999px; border-right: 1.5px solid var(--border); width: 100%; margin-bottom: 10px; min-width: auto; }
   .nl-submit-btn { border-radius: 9999px; width: 100%; }
   .footer-container { grid-template-columns: 1fr; gap: 32px; }
+}
+
+.modern-course-thumb.has-course-image {
+  background-image: var(--course-image) !important;
+  background-size: cover !important;
+  background-position: center !important;
 }
