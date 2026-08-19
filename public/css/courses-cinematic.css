@@ -246,13 +246,13 @@ body.page-courses {
    3. STICKY TOOLBAR & SEARCH BAR
    ================================================================ */
 .page-courses .courses-toolbar {
-  background: #fffaf5;
-  border-bottom: 1px solid #fed7aa;
-  padding: 20px 0;
+  background: #ffffff;
+  border-bottom: 1.5px solid #fed7aa;
+  padding: 14px 0;
   position: sticky;
   top: 68px;
   z-index: 20;
-  backdrop-filter: blur(16px);
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.05);
 }
 .page-courses .courses-toolbar-inner {
   display: flex;
@@ -262,7 +262,8 @@ body.page-courses {
 }
 .page-courses .courses-search-row {
   display: flex;
-  flex: 0 0 340px;
+  flex: 0 0 280px;
+  max-width: 280px;
 }
 .page-courses .courses-search-field {
   position: relative;
@@ -272,26 +273,25 @@ body.page-courses {
 }
 .page-courses .courses-search-icon {
   position: absolute;
-  left: 18px;
+  left: 14px;
   top: 50%;
   transform: translateY(-50%);
   color: #ff7a00;
-  font-size: 16px;
   pointer-events: none;
 }
 .page-courses .courses-search-input {
   width: 100%;
-  padding: 12px 20px 12px 46px;
-  border-radius: 999px;
+  padding: 9px 16px 9px 38px;
+  border-radius: 9999px;
   border: 1.5px solid #fed7aa;
   background: #ffffff !important;
   color: #0f172a !important;
-  font-size: .95rem;
+  font-size: .88rem;
   font-weight: 600;
   font-family: var(--font-body);
   outline: none;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  transition: border-color .3s, box-shadow .3s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: border-color .25s, box-shadow .25s;
 }
 .page-courses .courses-search-input:focus {
   border-color: #ff7a00 !important;
@@ -315,17 +315,17 @@ body.page-courses {
   display: none;
 }
 .page-courses .cat-pill {
-  padding: 9px 20px;
-  border-radius: 999px;
+  padding: 8px 18px;
+  border-radius: 9999px;
   background: #ffffff;
   border: 1.5px solid #fed7aa;
   color: var(--text-secondary);
-  font-size: .88rem;
+  font-size: .84rem;
   font-weight: 700;
   font-family: var(--font-body);
   white-space: nowrap;
   text-decoration: none;
-  transition: all .3s var(--ease);
+  transition: all .25s var(--ease);
   display: inline-flex;
   align-items: center;
   gap: 6px;

@@ -74,49 +74,34 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; catShortMap[c.name] =
   </div>
 </div>
 
-<!-- ===== TOOLBAR (sticky search) ===== -->
+<!-- ===== TOOLBAR (Sticky Search & Categories) ===== -->
 <section class="courses-toolbar" data-courses-toolbar>
   <div class="container">
     <div class="courses-toolbar-inner">
       <form class="courses-search-row" action="/courses" method="GET" data-courses-search-form>
         <div class="courses-search-field">
-          <svg class="courses-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input id="course-search" class="courses-search-input" type="search" name="q" value="<%= safeSearchQuery %>" placeholder="Search courses, topics or tools…" data-courses-search-input autocomplete="off" />
+          <svg class="courses-search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input id="course-search" class="courses-search-input" type="search" name="q" value="<%= safeSearchQuery %>" placeholder="Search courses, topics or tools..." data-courses-search-input autocomplete="off" />
         </div>
       </form>
+
+      <div class="filter-bar-wrap">
+        <div class="courses-filter-bar" role="tablist" aria-label="Course categories">
+          <a href="/courses" class="cat-pill <%= safeActiveCategory === 'All' && !safeSearchQuery ? 'active' : '' %>">All Courses</a>
+          <% catMeta.forEach(function(cat) { %>
+          <a href="/courses?category=<%= encodeURIComponent(cat.name) %>" class="cat-pill <%= safeActiveCategory === cat.name ? 'active' : '' %>">
+            <span><%= cat.short %></span>
+          </a>
+          <% }); %>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <% if (!isFiltered) { %>
 
-<!-- ===== FEATURED CAREER TRACKS ===== -->
-<section class="courses-tracks-section section">
-  <div class="container">
-    <div class="courses-section-head" data-reveal="fade-up">
-      <p class="section-label">Featured Career Tracks</p>
-      <h2 class="courses-section-title">Six tracks. Endless careers.</h2>
-      <p class="courses-section-sub">Choose the learning path that fits your goal — from software engineering and data analytics to creative design, networking and finance.</p>
-    </div>
-    <div class="courses-tracks-grid" data-reveal="fade-up" data-reveal-delay="1" data-reveal-stagger>
-      <% catMeta.forEach(function(cat, idx) { %>
-      <% const trackCount = allShownCourses.filter(function(c){ return c.category === cat.name; }).length; %>
-      <a href="/courses?category=<%= encodeURIComponent(cat.name) %>" class="track-card <%= cat.accent %>" data-tilt data-tilt-strength="5">
-        <div class="track-card-top">
-          <div class="track-icon"><%= cat.icon %></div>
-          <span class="track-num"><%= String(idx + 1).padStart(2, '0') %></span>
-        </div>
-        <h3 class="track-name"><%= cat.name %></h3>
-        <p class="track-desc"><%= cat.desc %></p>
-        <div class="track-foot">
-          <% if (trackCount) { %><span class="track-count"><%= trackCount %> course<%= trackCount === 1 ? '' : 's' %></span><% } else { %><span class="track-count"><%= cat.tag %></span><% } %>
-          <span class="track-link">Browse track →</span>
-        </div>
-      </a>
-      <% }); %>
-    </div>
-  </div>
-</section>
+
 
 <!-- ===== PER-CATEGORY COURSE BLOCKS ===== -->
 <% catMeta.forEach(function(cat, catIdx) { %>
