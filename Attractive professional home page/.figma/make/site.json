@@ -1,0 +1,10 @@
+{
+  "description": "Delivers a visually stunning, animated homepage designed to engage visitors with smooth transitions and a clean, professional aesthetic ideal for modern businesses.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

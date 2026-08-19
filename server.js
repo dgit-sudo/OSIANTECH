@@ -54,7 +54,6 @@ const coursesRouter = require('./routes/courses');
 const authRouter = require('./routes/auth');
 const dashboardRouter = require('./routes/dashboard');
 const profileRouter = require('./routes/profile');
-const adminRouter = require('./routes/admin');
 const supportRouter = require('./routes/support');
 const chatRouter = require('./routes/chat');
 
@@ -63,7 +62,6 @@ app.use('/courses', coursesRouter);
 app.use('/auth', authRouter);
 app.use('/dashboard', dashboardRouter);
 app.use('/api/profile', profileRouter);
-app.use('/admin', adminRouter);
 app.use('/api/support', supportRouter);
 app.use('/chat', chatRouter);
 
