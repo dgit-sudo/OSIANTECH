@@ -129,7 +129,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Oracle Admin I
 - Duration: 1 month
-- Fee: INR 43,750
+- Fee: INR 44,000
 - Prerequisites: SQL knowledge required
 - Certification: Osian Academy (industry-recognized)
 - Tools: VS Code, Git/GitHub, MySQL/PostgreSQL, Node.js/Python, Postman, Docker basics, Linux CLI, AWS/GCP
@@ -146,7 +146,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### SQL
 - Duration: 35–38 days
-- Fee: INR 10,625
+- Fee: INR 10,500
 - Prerequisites: None
 - Certification: Osian NSDC Certificate
 - Tools: VS Code, Git/GitHub, MySQL, PostgreSQL, Node.js, Python, Postman, Docker, Linux CLI, AWS, GCP
@@ -155,7 +155,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Net MVC
 - Duration: 1 month
-- Fee: INR 22,125
+- Fee: INR 22,000
 - Prerequisites: Basic C Programming
 - Certification: Osian NSDC
 - Tools: VS Code, Git/GitHub, MySQL/PostgreSQL, Node.js/Python, Postman, Docker basics, Linux CLI, AWS/GCP
@@ -171,14 +171,14 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Adobe Flash
 - Duration: 1.5 months
-- Fee: INR 10,625
+- Fee: INR 10,500
 - Prerequisites: None
 - Certification: Osian Academy
 - Career roles: Software Developer (₹4–12 LPA), Backend Engineer (₹6–18 LPA), Full-Stack Developer (₹5–20 LPA)
 
 ### Advanced Java (J2EE)
 - Duration: 1.5 months
-- Fee: INR 13,375
+- Fee: INR 13,500
 - Prerequisites: Core Java required
 - Certification: Osian NSDC
 - Tools: VS Code, Git/GitHub, MySQL/PostgreSQL, Node.js/Python, Postman, Docker basics, Linux CLI, AWS/GCP
@@ -186,7 +186,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Advanced Python - Django Framework
 - Duration: 2 months
-- Fee: INR 21,875
+- Fee: INR 22,000
 - Prerequisites: Basic Python knowledge
 - Certification: Osian Academy Certificate
 - Tools: VS Code, Git/GitHub, MySQL/PostgreSQL, Python, Postman, Docker basics, Linux CLI, AWS/GCP
@@ -194,7 +194,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Angular JS
 - Duration: 1.5 months
-- Fee: INR 18,750
+- Fee: INR 19,000
 - Prerequisites: JavaScript + jQuery
 - Certification: Osian NSDC
 - Tools: VS Code, Git/GitHub, MySQL/PostgreSQL, Node.js/Python, Postman, Docker, Linux CLI, AWS/GCP
@@ -202,7 +202,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Ansys
 - Duration: 1 month
-- Fee: INR 43,750
+- Fee: INR 44,000
 - Prerequisites: None
 - Certification: Osian Academy Certificate
 - Career roles: Software Developer (₹4–12 LPA), Backend Engineer (₹6–18 LPA), Full-Stack Developer (₹5–20 LPA), DevOps Engineer (₹8–22 LPA), Database Admin (₹5–14 LPA), QA Engineer (₹3–10 LPA)
@@ -213,7 +213,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### 2D & 3D Animation
 - Duration: 3 months
-- Fee: INR 33,125
+- Fee: INR 33,000
 - Prerequisites: None
 - Certification: Osian Adobe Certification
 - Tools: Adobe Photoshop, Illustrator, After Effects, Figma, CorelDRAW, 3ds Max, Blender, Premiere Pro, AutoCAD, Canva Pro
@@ -222,7 +222,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### 3ds Max for Interior & Architectural Design
 - Duration: 1.5 months
-- Fee: INR 13,125
+- Fee: INR 13,000
 - Prerequisites: AutoCAD knowledge required
 - Certification: Osian NSDC
 - Tools: 3ds Max, Blender, AutoCAD, Adobe Photoshop, Illustrator, After Effects, Premiere Pro, Figma, CorelDRAW, Canva Pro
@@ -230,7 +230,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### 3Ds Max with V-Ray Combo
 - Duration: 2.5 months
-- Fee: INR 22,125
+- Fee: INR 22,000
 - Prerequisites: AutoCAD required
 - Certification: Osian NSDC
 - Tools: 3ds Max, V-Ray, Adobe Photoshop, Illustrator, After Effects, Premiere Pro, Figma, CorelDRAW, AutoCAD, Canva Pro
@@ -238,7 +238,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Adobe After Effects - Visual Effects
 - Duration: 2 months
-- Fee: INR 31,250
+- Fee: INR 31,500
 - Prerequisites: Illustrator proficiency required
 - Certification: Osian Adobe
 - Tools: Adobe Photoshop, Illustrator, After Effects, Figma, CorelDRAW, 3ds Max, Blender, Premiere Pro, AutoCAD, Canva Pro
@@ -254,7 +254,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Adobe InDesign - Advanced
 - Duration: 1 month
-- Fee: INR 5,625
+- Fee: INR 5,500
 - Prerequisites: None
 - Certification: Osian Certified
 - Tools: Adobe Photoshop, Illustrator, After Effects, Figma, CorelDRAW, 3ds Max, Blender, Premiere Pro, AutoCAD, Canva Pro
@@ -262,7 +262,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Adobe Premiere Pro - Video Editing
 - Duration: 2 months
-- Fee: INR 31,250
+- Fee: INR 31,500
 - Prerequisites: Photoshop
 - Certification: Osian NSDC Adobe
 - Tools: Adobe Photoshop, Illustrator, After Effects, Premiere Pro, Figma, CorelDRAW, 3ds Max, Blender, AutoCAD, Canva Pro
@@ -306,7 +306,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### A+ - Hardware Diploma
 - Duration: 2–3 months
-- Fee: INR 14,375
+- Fee: INR 14,500
 - Prerequisites: None
 - Certification: Osian NSDC (aligned with CompTIA A+, Network+, and Cisco CCNA pathways)
 - Tools: Cisco Packet Tracer, Windows Server, Linux (Ubuntu), Wireshark, AutoCAD/SolidWorks, Arduino/Raspberry Pi, VMware/VirtualBox, TCP/IP protocols
@@ -331,7 +331,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Advanced Robotics for Seniors and Engineers
 - Duration: 1.5 months
-- Fee: INR 22,125
+- Fee: INR 22,000
 - Prerequisites: None
 - Certification: Osian Certified
 - Tools: Cisco Packet Tracer, Windows Server, Linux, Wireshark, AutoCAD/SolidWorks, Arduino/Raspberry Pi, VMware/VirtualBox, TCP/IP
@@ -359,7 +359,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### ACC (Awareness in Computer Concepts) - NIELIT
 - Duration: 1 month
-- Fee: INR 3,125
+- Fee: INR 3,000
 - Prerequisites: None; basic commerce awareness is beneficial
 - Certification: NIELIT + Osian Academy Certificate
 - Tools: Tally Prime, ERP9, SAP FICO, MS Excel (Advanced), QuickBooks, Busy Accounting, PowerPoint, Word, ZOHO Books, Google Sheets
@@ -406,7 +406,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Advanced Excel
 - Duration: 1 month
-- Fee: INR 3,750
+- Fee: INR 4,000
 - Prerequisites: Basic Excel proficiency
 - Certification: Osian NSDC
 - Tools: Tally Prime, ERP9, SAP FICO, MS Excel (Advanced), QuickBooks, Busy Accounting, PowerPoint, Word, ZOHO Books, Google Sheets
@@ -457,7 +457,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Affiliate Marketing
 - Duration: 1.5 months
-- Fee: INR 21,875
+- Fee: INR 22,000
 - Prerequisites: Basic computer familiarity
 - Certification: Osian Certified
 - Tools: Python (Pandas, NumPy, Sklearn), Power BI/Tableau, Google Analytics 4, Google Ads/Meta Ads, Jupyter Notebook, SQL, TensorFlow basics, Semrush/Ahrefs
@@ -465,7 +465,7 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### AI - Artificial Intelligence
 - Duration: 1.5 months
-- Fee: INR 22,125
+- Fee: INR 22,000
 - Prerequisites: Python Basics
 - Certification: Osian NSDC
 - Tools: Python (Pandas, NumPy, Sklearn), Power BI, Tableau, Google Analytics 4, Google Ads, Meta Ads, Jupyter Notebook, SQL, TensorFlow basics, Semrush/Ahrefs
@@ -493,14 +493,14 @@ Advanced course completers earn 40% higher starting salaries on average versus f
 
 ### Abacus L1
 - Duration: 1 month
-- Fee: INR 4,375
+- Fee: INR 4,500
 - Prerequisites: Age 6–16; age-appropriate curiosity and parent support
 - Certification: Osian Course Completion Certificate
 - Tools: Abacus, Scratch (MIT), Python basics, MS Paint, basic design tools, robot kits, electronics kits
 
 ### Abacus L2
 - Duration: 1 month
-- Fee: INR 4,375
+- Fee: INR 4,500
 - Prerequisites: Age 6–16; no prior knowledge needed
 - Certification: Osian Course Completion Certificate
 - Tools: Abacus, Scratch (MIT), Python basics, MS Paint, robot kits, simple electronics kits
