@@ -1,7 +1,7 @@
 /* =========================================================
    OSIAN ACADEMY — HOME CINEMATIC INTERACTIONS
-   Vanilla JS: scroll reveals, kinetic hero type, tilt cards,
-   magnetic buttons. Loaded only on the home page.
+   Vanilla JS: scroll reveals, kinetic hero typewriter,
+   tilt cards, magnetic buttons. Loaded only on the home page.
    ========================================================= */
 (() => {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -113,7 +113,7 @@
     });
   }
 
-  /* ---- One-Platform tab crossfade (progressive enhancement) ---- */
+  /* ---- One-Platform tab crossfade ---- */
   const tabButtons = document.querySelectorAll('.sop-tab');
   if (tabButtons.length) {
     tabButtons.forEach((btn) => {
@@ -129,49 +129,6 @@
 
   /* ---- Kinetic Hero Typewriter Effect ---- */
   const typewriterEl = document.querySelector('[data-typewriter]');
-  if (typewriterEl && !prefersReducedMotion) {
-    const phrases = [
-      'get you hired.',
-      'build your career.',
-      'scale your income.',
-      'future-proof your skills.'
-    ];
-    let phraseIndex = 0;
-    let charIndex = phrases[0].length;
-    let isDeleting = false;
-    let typingSpeed = 75;
-
-    const type = () => {
-      const currentPhrase = phrases[phraseIndex];
-
-      if (isDeleting) {
-        charIndex--;
-        typewriterEl.textContent = currentPhrase.substring(0, charIndex);
-        typingSpeed = 35;
-      } else {
-        charIndex++;
-        typewriterEl.textContent = currentPhrase.substring(0, charIndex);
-        typingSpeed = 70;
-      }
-
-      if (!isDeleting && charIndex === currentPhrase.length) {
-        typingSpeed = 2200; // Pause on completed phrase
-        isDeleting = true;
-      } else if (isDeleting && charIndex === 0) {
-        isDeleting = false;
-        phraseIndex = (phraseIndex + 1) % phrases.length;
-        typingSpeed = 400; // Pause before typing next phrase
-      }
-
-      setTimeout(type, typingSpeed);
-    };
-
-    setTimeout(type, 2200);
-  }
-
-
-  /* ---- Kinetic Hero Typewriter Effect ---- */
-  const typewriterEl = document.querySelector('[data-typewriter]');
   if (typewriterEl) {
     const phrases = [
       'get you hired.',
@@ -180,8 +137,8 @@
       'future-proof your skills.'
     ];
     let phraseIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
+    let charIndex = phrases[0].length;
+    let isDeleting = true; // start by deleting the initial phrase after pause
 
     const tick = () => {
       const currentPhrase = phrases[phraseIndex];
@@ -197,7 +154,7 @@
       let delta = isDeleting ? 38 : 75;
 
       if (!isDeleting && charIndex === currentPhrase.length) {
-        delta = 1800; // Hold full phrase for 1.8s
+        delta = 1800; // Hold full phrase
         isDeleting = true;
       } else if (isDeleting && charIndex === 0) {
         isDeleting = false;
@@ -208,8 +165,7 @@
       setTimeout(tick, delta);
     };
 
-    // Start typing immediately after 250ms
-    setTimeout(tick, 250);
+    // First deletion starts after 1.5s
+    setTimeout(tick, 1500);
   }
-
 })();
