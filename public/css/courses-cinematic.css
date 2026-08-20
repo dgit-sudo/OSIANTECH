@@ -730,19 +730,14 @@ body.page-courses {
 }
 .page-courses .modern-course-thumb {
   position: relative;
-  height: 170px;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  min-height: 190px;
   background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
   background-size: cover !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
   overflow: hidden;
-}
-.page-courses .modern-course-thumb::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.4) 100%);
-  pointer-events: none;
 }
 .page-courses .modern-course-overlay {
   position: absolute;
