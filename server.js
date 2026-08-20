@@ -48,6 +48,35 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Firebase Auth Custom Domain Reverse Proxy (allows https://osian.tech/__/auth/handler)
+app.use('/__/auth', (req, res) => {
+  const targetUrl = `https://osiantech-7f0d7.firebaseapp.com/__/auth${req.url}`;
+  fetch(targetUrl, {
+    method: req.method,
+    headers: {
+      'accept': req.headers['accept'] || '*/*',
+      'user-agent': req.headers['user-agent'] || '',
+      'host': 'osiantech-7f0d7.firebaseapp.com',
+    },
+  })
+    .then(async (response) => {
+      res.status(response.status);
+      response.headers.forEach((value, key) => {
+        const lowerKey = key.toLowerCase();
+        if (lowerKey !== 'content-encoding' && lowerKey !== 'content-length' && lowerKey !== 'transfer-encoding') {
+          res.setHeader(key, value);
+        }
+      });
+      const buffer = await response.arrayBuffer();
+      res.send(Buffer.from(buffer));
+    })
+    .catch((err) => {
+      console.error('[Firebase Auth Proxy Error]', err.message);
+      res.status(502).send('Auth proxy error');
+    });
+});
+
+
 // Routes
 const indexRouter = require('./routes/index');
 const coursesRouter = require('./routes/courses');

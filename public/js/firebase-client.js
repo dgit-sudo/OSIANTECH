@@ -2,9 +2,13 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.5/fireba
 import { getAnalytics, isSupported as analyticsSupported } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-analytics.js';
 import { getAuth, GoogleAuthProvider } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
 
+const host = typeof window !== 'undefined' ? window.location.host : '';
+const isCustomDomain = host.includes('osian.tech');
+const authDomain = isCustomDomain ? host : 'osiantech-7f0d7.firebaseapp.com';
+
 const firebaseConfig = {
   apiKey: 'AIzaSyBVxfvT0CIFmKqstoLbHIHXwrT93cZKmpg',
-  authDomain: 'osiantech-7f0d7.firebaseapp.com',
+  authDomain: authDomain,
   projectId: 'osiantech-7f0d7',
   storageBucket: 'osiantech-7f0d7.firebasestorage.app',
   messagingSenderId: '27492248130',
