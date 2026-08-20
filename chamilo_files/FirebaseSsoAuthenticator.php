@@ -9,9 +9,7 @@ namespace Chamilo\CoreBundle\Security\Authenticator;
 use Chamilo\CoreBundle\Entity\User;
 use Chamilo\CoreBundle\Entity\UserAuthSource;
 use Chamilo\CoreBundle\Helpers\AccessUrlHelper;
-use Chamilo\CoreBundle\Helpers\CourseHelper;
 use Chamilo\CoreBundle\Repository\Node\UserRepository;
-use Chamilo\CoreBundle\Repository\Node\CourseRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +20,7 @@ use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
+use Symfony\Component\Uid\Uuid;
 
 class FirebaseSsoAuthenticator extends AbstractAuthenticator
 {
@@ -35,8 +34,6 @@ class FirebaseSsoAuthenticator extends AbstractAuthenticator
         private readonly UserRepository $userRepository,
         private readonly AccessUrlHelper $accessUrlHelper,
         private readonly EntityManagerInterface $entityManager,
-        private readonly CourseHelper $courseHelper,
-        private readonly CourseRepository $courseRepository,
     ) {}
 
     public function supports(Request $request): ?bool
@@ -112,34 +109,74 @@ class FirebaseSsoAuthenticator extends AbstractAuthenticator
             $conn = $this->entityManager->getConnection();
             $userId = (int) $user->getId();
 
+            $defaultTools = [
+                ["course_homepage", 9, 1],
+                ["document", 13, 2],
+                ["learnpath", 21, 3],
+                ["quiz", 15, 4],
+                ["announcement", 2, 5],
+                ["student_publication", 4, 6],
+                ["forum", 16, 7],
+                ["link", 22, 8],
+                ["course_description", 8, 9],
+                ["user", 17, 10],
+                ["gradebook", 19, 11],
+                ["attendance", 5, 12],
+            ];
+
             foreach ($data["courses"] as $c) {
                 $code  = trim((string) ($c["courseCode"] ?? ("OSIAN_" . $c["courseId"])));
                 $title = trim((string) ($c["courseTitle"] ?? ("Course " . $c["courseId"])));
+                $slug  = strtolower(trim((string) preg_replace('/[^A-Za-z0-9-]+/', '-', $title), '-')) ?: ('course-' . $code);
 
-                // 1. Find course in Chamilo or create natively via CourseHelper
-                $course = $this->courseRepository->findOneByCode($code);
+                // 1. Find or create course in Chamilo
+                $courseRow = $conn->fetchAssociative("SELECT id, resource_node_id FROM course WHERE code = ? LIMIT 1", [$code]);
+                $courseId = null;
 
-                if (!$course) {
+                if ($courseRow && !empty($courseRow["id"])) {
+                    $courseId = (int) $courseRow["id"];
+                } else {
+                    // Create ResourceNode with valid UUIDv4
+                    $binaryUuid = Uuid::v4()->toBinary();
+                    $conn->executeStatement(
+                        "INSERT INTO resource_node (resource_type_id, creator_id, title, slug, level, created_at, updated_at, public, uuid)
+                         VALUES (31, 1, ?, ?, 1, NOW(), NOW(), 1, ?)",
+                        [$title, $slug, $binaryUuid]
+                    );
+                    $nodeId = (int) $conn->lastInsertId();
+                    $path = $slug . '-' . $nodeId . '/';
+                    $conn->executeStatement("UPDATE resource_node SET path = ? WHERE id = ?", [$path, $nodeId]);
+
+                    // Create course with resource_node_id
+                    $conn->executeStatement(
+                        "INSERT INTO course (resource_node_id, code, title, visual_code, directory, course_language, visibility, video_url, sticky, creation_date, subscribe, unsubscribe, popularity)
+                         VALUES (?, ?, ?, ?, ?, 'english', 3, '', 0, NOW(), 1, 0, 0)",
+                        [$nodeId, $code, $title, $code, $code]
+                    );
+                    $courseId = (int) $conn->lastInsertId();
+                }
+
+                if ($courseId > 0 && $userId > 0) {
+                    // 2. Link course to Access URL (Portal 1)
                     try {
-                        $course = $this->courseHelper->createCourse([
-                            "title" => $title,
-                            "wanted_code" => $code,
-                            "exemplary_content" => true,
-                            "visibility" => 3,
-                            "course_language" => "english",
-                        ]);
-                    } catch (\Throwable $ce) {
-                        error_log("[Chamilo CourseHelper Notice] " . $ce->getMessage());
+                        $conn->executeStatement(
+                            "INSERT INTO access_url_rel_course (access_url_id, c_id) VALUES (1, ?) ON DUPLICATE KEY UPDATE c_id = ?",
+                            [$courseId, $courseId]
+                        );
+                    } catch (\Throwable $_e) {}
+
+                    // 3. Seed standard tools in c_tool for course workspace
+                    foreach ($defaultTools as $dt) {
+                        [$tTitle, $tId, $pos] = $dt;
+                        try {
+                            $conn->executeStatement(
+                                "INSERT INTO c_tool (c_id, tool_id, title, position) VALUES (?, ?, ?, ?)",
+                                [$courseId, $tId, $tTitle, $pos]
+                            );
+                        } catch (\Throwable $_e) {}
                     }
-                }
 
-                if (!$course) {
-                    $course = $this->courseRepository->findOneByCode($code);
-                }
-
-                if ($course && $course->getId() > 0 && $userId > 0) {
-                    $courseId = (int) $course->getId();
-                    // Enroll student in course_rel_user with c_id and status 5 (student)
+                    // 4. Enroll user in course_rel_user with c_id and status 5 (student)
                     $conn->executeStatement(
                         "INSERT INTO course_rel_user (c_id, user_id, relation_type, status, progress)
                          VALUES (?, ?, 0, 5, 0)
