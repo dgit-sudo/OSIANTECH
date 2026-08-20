@@ -1,4 +1,4 @@
-﻿const express = require('express');
+const express = require('express');
 const { Pool } = require('pg');
 const { verifyFirebaseToken } = require('../lib/firebase-auth');
 const apiCache = require('../lib/api-cache');
@@ -587,9 +587,6 @@ router.post('/:uid/purchases', async (req, res) => {
   }
 });
 
-module.exports = router;
-
-
 // LMS Sync Endpoint for Chamilo to query user course enrollments
 router.get('/:uid/lms-courses', async (req, res) => {
   const { uid } = req.params;
@@ -602,6 +599,5 @@ router.get('/:uid/lms-courses', async (req, res) => {
   }
   return res.json({ uid, email, courses, count: courses.length });
 });
-const courses = await getUserLmsCourses(uid);
-  return res.json({ uid, courses, count: courses.length });
-});
+
+module.exports = router;
