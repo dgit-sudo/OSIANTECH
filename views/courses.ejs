@@ -11,9 +11,9 @@ const catMeta = [
   { name: 'Programming & Software', short: 'Programming', icon: '💻', accent: 'ct-1', tag: 'Build & Ship', desc: 'Master languages, frameworks and software engineering tools used by industry-ready developers.' },
   { name: 'Data, AI & Digital Marketing', short: 'Data & AI', icon: '📊', accent: 'ct-2', tag: 'Analyse & Grow', desc: 'Turn data into decisions and launch digital campaigns that deliver measurable results.' },
   { name: 'Design & Animation', short: 'Design', icon: '🎨', accent: 'ct-3', tag: 'Create & Craft', desc: 'Build brand identities, motion graphics, UI/UX experiences and visual stories that stand out.' },
-  { name: 'Networking, Hardware & Engineering', short: 'Networking', icon: '🔌', accent: 'ct-4', tag: 'Secure & Scale', desc: 'Learn the systems, security and infrastructure that power modern enterprise IT.' },
+  { name: 'Networking, Hardware & Engineering', short: 'Networking', icon: '⚙️', accent: 'ct-4', tag: 'Secure & Scale', desc: 'Learn the systems, security and infrastructure that power modern enterprise IT.' },
   { name: 'Accounting, Finance & Office Skills', short: 'Finance', icon: '💼', accent: 'ct-5', tag: 'Manage & Report', desc: 'Gain practical finance, accounting and office automation skills for corporate careers.' },
-  { name: 'Kids Programs', short: 'Kids', icon: '⭐', accent: 'ct-6', tag: 'Explore & Play', desc: 'Spark early STEM learning with fun, practical coding, robotics and creative computing.' },
+  { name: 'Kids Programs', short: 'Kids', icon: '🚀', accent: 'ct-6', tag: 'Explore & Play', desc: 'Spark early STEM learning with fun, practical coding, robotics and creative computing.' },
 ];
 const catIconMap = {};
 const catShortMap = {};
@@ -85,8 +85,6 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; catShortMap[c.name] =
 
 <% if (!isFiltered) { %>
 
-
-
 <!-- ===== PER-CATEGORY COURSE BLOCKS ===== -->
 <% catMeta.forEach(function(cat, catIdx) { %>
 <%
@@ -99,41 +97,42 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; catShortMap[c.name] =
     <div class="courses-cat-header" data-reveal="fade-up">
       <div class="courses-cat-icon-wrap <%= cat.accent %>"><span class="courses-cat-icon"><%= cat.icon %></span></div>
       <div class="courses-cat-info">
-        <p class="section-label"><%= cat.tag %> · <%= catCoursesAll.length %> course<%= catCoursesAll.length === 1 ? '' : 's' %></p>
+        <p class="section-label"><%= cat.tag %> &bull; <%= catCoursesAll.length %> course<%= catCoursesAll.length === 1 ? '' : 's' %></p>
         <h2 class="courses-cat-title"><%= cat.name %></h2>
         <p class="courses-cat-sub"><%= cat.desc %></p>
       </div>
-      <a href="/courses?category=<%= encodeURIComponent(cat.name) %>" class="btn btn-ghost courses-cat-view-all" data-magnetic>View all →</a>
+      <a href="/courses?category=<%= encodeURIComponent(cat.name) %>" class="btn btn-ghost courses-cat-view-all" data-magnetic>View all &rarr;</a>
     </div>
     <div class="courses-grid" data-courses-grid data-reveal="fade-up" data-reveal-delay="1" data-reveal-stagger>
       <% catCourses.forEach(function(course) { %>
-      <a href="/courses/<%= course.id %>" class="course-card-link" data-course-card data-course-title="<%= course.title %>">
-        <article class="course-card" data-tilt data-tilt-strength="4">
-          <div class="course-img course-img-<%= (course.id % 9) + 1 %> <%= course.image ? 'has-course-image' : '' %>"<% if (course.image) { %> style="--course-image: url('<%= course.image %>');"<% } %>>
-            <div class="course-img-overlay">
-              <div class="course-category-tag"><%= course.category || cat.name %></div>
-              <% if (!course.image) { %><span class="course-img-cat-icon"><%= cat.icon %></span><% } %>
+      <div class="catalog-slide">
+        <a href="/courses/<%= course.id %>" class="modern-course-card-link" data-course-card data-course-title="<%= course.title %>">
+          <article class="modern-course-card">
+            <div class="modern-course-thumb course-img-<%= (course.id % 9) + 1 %> <%= course.image ? 'has-course-image' : '' %>"<% if (course.image) { %> style="--course-image: url('<%= course.image %>'); background-image: url('<%= course.image %>');"<% } %>>
+              <div class="modern-course-overlay">
+                <span class="modern-category-tag"><%= course.category || cat.name %></span>
+              </div>
             </div>
-          </div>
-          <div class="course-body">
-            <div class="course-meta">
-              <span class="meta-item"><%= course.level || 'Professional' %></span>
-              <span class="meta-item"><%= course.duration || 'Flexible pace' %></span>
+            <div class="modern-course-body">
+              <div class="modern-course-meta">
+                <span class="modern-meta-item"><%= course.level || 'All Levels' %></span>
+                <span class="modern-meta-item"><%= course.duration || 'Flexible' %></span>
+              </div>
+              <h3 class="modern-course-title"><%= course.title %></h3>
+              <p class="modern-course-desc"><%= course.cardLine || course.description %></p>
+              <div class="modern-course-footer">
+                <span class="modern-pill-live">Live 1-on-1</span>
+                <span class="modern-course-arrow">View Curriculum &rarr;</span>
+              </div>
             </div>
-            <h3 class="course-title"><%= course.title %></h3>
-            <p class="course-description"><%= course.cardLine || course.description %></p>
-            <div class="course-footer">
-              <span class="course-meta-pill">Live 1-on-1</span>
-              <span class="course-arrow">View Details →</span>
-            </div>
-          </div>
-        </article>
-      </a>
+          </article>
+        </a>
+      </div>
       <% }); %>
     </div>
     <% if (catCoursesAll.length > catCourses.length) { %>
     <div class="courses-cat-footer" data-reveal="fade-up">
-      <a href="/courses?category=<%= encodeURIComponent(cat.name) %>" class="btn btn-ghost" data-magnetic>Browse all <%= catCoursesAll.length %> <%= cat.name %> courses →</a>
+      <a href="/courses?category=<%= encodeURIComponent(cat.name) %>" class="btn btn-ghost" data-magnetic>Browse all <%= catCoursesAll.length %> <%= cat.name %> courses &rarr;</a>
     </div>
     <% } %>
   </div>
@@ -167,34 +166,35 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; catShortMap[c.name] =
         <h2 class="courses-section-title"><% if (safeSearchQuery) { %>Results for "<%= safeSearchQuery %>"<% } else { %><%= safeActiveCategory %><% } %></h2>
         <p class="courses-results-sub">Showing <strong><%= typeof shownCourses !== 'undefined' ? shownCourses : allShownCourses.length %></strong> of <strong><%= totalCourseCount %></strong> courses<% if (safeActiveCategory !== 'All') { %> in <em><%= safeActiveCategory %></em><% } %></p>
       </div>
-      <a href="/courses" class="btn btn-ghost" data-magnetic>Clear filters ×</a>
+      <a href="/courses" class="btn btn-ghost" data-magnetic>Clear filters &times;</a>
     </div>
 
     <% if (allShownCourses.length) { %>
     <div class="courses-grid" data-courses-grid data-reveal="fade-up" data-reveal-delay="1" data-reveal-stagger>
       <% allShownCourses.forEach(function(course) { %>
-      <a href="/courses/<%= course.id %>" class="course-card-link" data-course-card data-course-title="<%= course.title %>">
-        <article class="course-card" data-tilt data-tilt-strength="4">
-          <div class="course-img course-img-<%= (course.id % 9) + 1 %> <%= course.image ? 'has-course-image' : '' %>"<% if (course.image) { %> style="--course-image: url('<%= course.image %>');"<% } %>>
-            <div class="course-img-overlay">
-              <div class="course-category-tag"><%= course.category || 'General' %></div>
-              <% if (!course.image && catIconMap[course.category]) { %><span class="course-img-cat-icon"><%= catIconMap[course.category] %></span><% } %>
+      <div class="catalog-slide">
+        <a href="/courses/<%= course.id %>" class="modern-course-card-link" data-course-card data-course-title="<%= course.title %>">
+          <article class="modern-course-card">
+            <div class="modern-course-thumb course-img-<%= (course.id % 9) + 1 %> <%= course.image ? 'has-course-image' : '' %>"<% if (course.image) { %> style="--course-image: url('<%= course.image %>'); background-image: url('<%= course.image %>');"<% } %>>
+              <div class="modern-course-overlay">
+                <span class="modern-category-tag"><%= course.category || 'General' %></span>
+              </div>
             </div>
-          </div>
-          <div class="course-body">
-            <div class="course-meta">
-              <span class="meta-item"><%= course.level || 'Professional' %></span>
-              <span class="meta-item"><%= course.duration || 'Flexible pace' %></span>
+            <div class="modern-course-body">
+              <div class="modern-course-meta">
+                <span class="modern-meta-item"><%= course.level || 'All Levels' %></span>
+                <span class="modern-meta-item"><%= course.duration || 'Flexible' %></span>
+              </div>
+              <h3 class="modern-course-title"><%= course.title %></h3>
+              <p class="modern-course-desc"><%= course.cardLine || course.description %></p>
+              <div class="modern-course-footer">
+                <span class="modern-pill-live">Live 1-on-1</span>
+                <span class="modern-course-arrow">View Curriculum &rarr;</span>
+              </div>
             </div>
-            <h3 class="course-title"><%= course.title %></h3>
-            <p class="course-description"><%= course.cardLine || course.description %></p>
-            <div class="course-footer">
-              <span class="course-meta-pill">Live 1-on-1</span>
-              <span class="course-arrow">View Details →</span>
-            </div>
-          </div>
-        </article>
-      </a>
+          </article>
+        </a>
+      </div>
       <% }); %>
     </div>
     <div class="course-empty" data-courses-empty style="display:none;">
@@ -204,7 +204,7 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; catShortMap[c.name] =
     <% } else { %>
     <div class="course-empty">
       <h3>No courses found</h3>
-      <p><a href="/courses">Clear filters and view all courses →</a></p>
+      <p><a href="/courses">Clear filters and view all courses &rarr;</a></p>
     </div>
     <% } %>
   </div>
@@ -212,6 +212,14 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; catShortMap[c.name] =
 
 <% } %>
 
-<script src="/js/courses-cinematic.js?v=<%= assetVersion %>"></script>
+<!-- Course Detail Modal Structure -->
+<div id="course-modal" class="course-modal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal-backdrop"></div>
+  <div class="modal-card">
+    <button class="modal-close" aria-label="Close modal">&times;</button>
+    <div class="modal-content" id="modal-content"></div>
+  </div>
+</div>
 
+<script type="module" src="/js/courses-cinematic.js?v=<%= assetVersion %>"></script>
 <%- include('partials/footer') %>
