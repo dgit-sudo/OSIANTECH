@@ -331,12 +331,16 @@ router.put('/:uid', async (req, res) => {
     return res.status(400).json({ error: 'Invalid uid.' });
   }
 
+  let tokenEmail = '';
   const authHeader = req.headers.authorization || '';
   if (authHeader.startsWith('Bearer ')) {
     const verification = await verifyFirebaseToken(authHeader.slice(7));
     if (verification.valid === false && verification.userDeleted) {
       await deleteUserFromSupabase(uid);
       return res.status(401).json({ error: 'Account has been deleted.' });
+    }
+    if (verification.email) {
+      tokenEmail = String(verification.email).trim().toLowerCase();
     }
   }
 
@@ -349,7 +353,7 @@ router.put('/:uid', async (req, res) => {
     gender: String(body.gender || '').trim(),
     city: String(body.city || '').trim(),
     education: String(body.education || '').trim(),
-    email: String(body.email || '').trim(),
+    email: String(body.email || tokenEmail || '').trim().toLowerCase(),
     completedProfile: Boolean(body.completedProfile),
   };
 
@@ -367,7 +371,24 @@ router.put('/:uid', async (req, res) => {
   try {
     await ensureProfileTable();
     await ensureUsersTable();
+
+    // If user previously had a profile with the same email under a deleted/recreated UID, re-link or clean
+    if (nextProfile.email) {
+      try {
+        await pool.query(
+          `delete from ${profileTable} where lower(email) = lower($1) and uid != $2`,
+          [nextProfile.email, uid]
+        );
+        await pool.query(
+          `delete from ${usersTable} where lower(email) = lower($1) and uid != $2`,
+          [nextProfile.email, uid]
+        );
+      } catch (_e) {}
+    }
+
     const now = new Date().toISOString();
+    const finalEmail = nextProfile.email || tokenEmail || (uid + '@learner.osian.tech');
+
     const profileQuery = `
       insert into ${profileTable} (
         uid, name, age, nationality, phone_number, gender, city, education, email, completed_profile, created_at, updated_at
@@ -380,7 +401,7 @@ router.put('/:uid', async (req, res) => {
         gender = excluded.gender,
         city = excluded.city,
         education = excluded.education,
-        email = excluded.email,
+        email = coalesce(excluded.email, ${profileTable}.email),
         completed_profile = excluded.completed_profile,
         updated_at = excluded.updated_at
       returning uid, name, age, nationality, phone_number, gender, city, education, email, completed_profile, created_at, updated_at
@@ -394,7 +415,7 @@ router.put('/:uid', async (req, res) => {
       nextProfile.gender || null,
       nextProfile.city,
       nextProfile.education,
-      nextProfile.email || null,
+      finalEmail,
       true,
       now,
       now,
@@ -414,22 +435,22 @@ router.put('/:uid', async (req, res) => {
     `;
     const userValues = [
       uid,
-      profileRow.email || nextProfile.email || null,
+      finalEmail,
       profileRow.name || null,
-      'password',
+      'google.com',
       true,
       now,
       now,
     ];
     await pool.query(userQuery, userValues);
 
-    apiCache.invalidate(`profile:${uid}`);
-    apiCache.invalidate(`dashboard:${uid}`);
-    syncCourseToLms({ uid, email: (req.user && req.user.email) || '', courseId, courseTitle }).catch(e => console.error(e));
+    apiCache.delete(`profile:${uid}`);
+    apiCache.delete(`dashboard:${uid}`);
+
     return res.json({ profile: mapProfileRow(profileRow) });
   } catch (error) {
     console.error('[profile] PUT /:uid failed:', error);
-    return res.status(500).json({ error: 'Failed to save profile.' });
+    return res.status(500).json({ error: error.message || 'Failed to save profile.' });
   }
 });
 

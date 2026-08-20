@@ -914,7 +914,7 @@ function extractProfilePayload(formEl, user) {
     gender: String(formData.get('gender') || '').trim(),
     city: String(formData.get('city') || '').trim(),
     education: String(formData.get('education') || '').trim(),
-    email: user.email || '',
+    email: user?.email || '',
     completedProfile: true,
   };
 }
