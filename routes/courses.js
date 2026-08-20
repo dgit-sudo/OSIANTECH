@@ -3,6 +3,7 @@ const crypto = require('crypto');
 const { Pool } = require('pg');
 const Razorpay = require('razorpay');
 const { enrichCourse } = require('../lib/courseEnrichment');
+const { syncCourseToLms } = require('../lib/lmsSync');
 
 const router = express.Router();
 
@@ -691,7 +692,16 @@ router.post('/:id/checkout/verify-payment', async (req, res) => {
       [verification.uid, course.id, course.title],
     );
     purchaseRecorded = result.rows.length > 0;
-    if (purchaseRecorded) apiCache.invalidate(`dashboard:${verification.uid}`);
+    if (purchaseRecorded) {
+      apiCache.invalidate(`dashboard:${verification.uid}`);
+      // Direct sync to Chamilo / Moodle LMS
+      syncCourseToLms({
+        uid: verification.uid,
+        email: verification.email || '',
+        courseId: course.id,
+        courseTitle: course.title,
+      }).catch(err => console.error('[LMS Sync Error]', err));
+    }
   }
 
   return res.json({

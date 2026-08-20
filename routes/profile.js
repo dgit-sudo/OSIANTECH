@@ -2,6 +2,7 @@
 const { Pool } = require('pg');
 const { verifyFirebaseToken } = require('../lib/firebase-auth');
 const apiCache = require('../lib/api-cache');
+const { syncCourseToLms, getUserLmsCourses } = require('../lib/lmsSync');
 
 const router = express.Router();
 const connectionString = process.env.SUPABASE_DB_URL || process.env.DATABASE_URL || '';
@@ -424,6 +425,7 @@ router.put('/:uid', async (req, res) => {
 
     apiCache.invalidate(`profile:${uid}`);
     apiCache.invalidate(`dashboard:${uid}`);
+    syncCourseToLms({ uid, email: (req.user && req.user.email) || '', courseId, courseTitle }).catch(e => console.error(e));
     return res.json({ profile: mapProfileRow(profileRow) });
   } catch (error) {
     console.error('[profile] PUT /:uid failed:', error);
@@ -587,3 +589,11 @@ router.post('/:uid/purchases', async (req, res) => {
 
 module.exports = router;
 
+
+// LMS Sync Endpoint for Chamilo to query user course enrollments
+router.get('/:uid/lms-courses', async (req, res) => {
+  const { uid } = req.params;
+  if (!uid) return res.status(400).json({ error: 'Missing uid' });
+  const courses = await getUserLmsCourses(uid);
+  return res.json({ uid, courses, count: courses.length });
+});
