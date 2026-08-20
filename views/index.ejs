@@ -216,11 +216,7 @@
           <div class="catalog-slide">
             <a href="/courses/<%= course.id %>" class="modern-course-card-link" data-course-card data-course-title="<%= course.title %>">
               <article class="modern-course-card">
-                <div class="modern-course-thumb course-img-<%= (course.id % 9) + 1 %> <%= course.image ? 'has-course-image' : '' %>"<% if (course.image) { %> style="--course-image: url('<%= course.image %>'); background-image: url('<%= course.image %>');"<% } %>>
-                  <div class="modern-course-overlay">
-                    <span class="modern-category-tag"><%= course.category || 'Professional' %></span>
-                  </div>
-                </div>
+                <div class="modern-course-thumb course-img-<%= (course.id % 9) + 1 %> <%= course.image ? 'has-course-image' : '' %>"<% if (course.image) { %> style="--course-image: url('<%= course.image %>'); background-image: url('<%= course.image %>');"<% } %>></div>
                 <div class="modern-course-body">
                   <div class="modern-course-meta">
                     <span class="modern-meta-item"><%= course.level || 'All Levels' %></span>
