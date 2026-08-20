@@ -68,8 +68,8 @@ class FirebaseSsoAuthenticator extends AbstractAuthenticator
                         $user = $this->provisionUser($email, $name);
                     }
 
-                    // Auto-sync purchased courses from osian.tech
-                    $this->syncUserPurchasedCourses($user, $uid);
+                    // Synchronize all purchased courses from Osian Tech into Chamilo LMS
+                    $this->syncUserPurchasedCourses($user, $uid, $email);
 
                     return $user;
                 }
@@ -80,12 +80,8 @@ class FirebaseSsoAuthenticator extends AbstractAuthenticator
         return $passport;
     }
 
-    private function syncUserPurchasedCourses(User $user, string $uid): void
+    private function syncUserPurchasedCourses(User $user, string $uid, string $email): void
     {
-        if (empty($uid)) {
-            return;
-        }
-
         try {
             $ctx = stream_context_create([
                 "http" => [
@@ -98,7 +94,8 @@ class FirebaseSsoAuthenticator extends AbstractAuthenticator
                 ]
             ]);
 
-            $raw = @file_get_contents("https://osian.tech/api/profile/" . urlencode($uid) . "/lms-courses", false, $ctx);
+            $url = "https://osian.tech/api/profile/" . urlencode($uid) . "/lms-courses?email=" . urlencode($email);
+            $raw = @file_get_contents($url, false, $ctx);
             if (false === $raw) {
                 return;
             }
@@ -109,40 +106,49 @@ class FirebaseSsoAuthenticator extends AbstractAuthenticator
             }
 
             $conn = $this->entityManager->getConnection();
-            $userId = $user->getId();
+            $userId = (int) $user->getId();
 
             foreach ($data["courses"] as $c) {
                 $code  = trim((string) ($c["courseCode"] ?? ("OSIAN_" . $c["courseId"])));
                 $title = trim((string) ($c["courseTitle"] ?? ("Course " . $c["courseId"])));
 
-                // 1. Ensure course exists in Chamilo
+                // 1. Find or create course in Chamilo
                 $courseRow = $conn->fetchAssociative("SELECT id FROM course WHERE code = ? LIMIT 1", [$code]);
                 $courseId = null;
 
                 if ($courseRow && !empty($courseRow["id"])) {
                     $courseId = (int) $courseRow["id"];
                 } else {
-                    // Create course if missing
                     $conn->executeStatement(
-                        "INSERT INTO course (code, title, visual_code, directory, visibility, show_score, created_at, updated_at)
-                         VALUES (?, ?, ?, ?, 3, 1, NOW(), NOW())",
+                        "INSERT INTO course (code, title, visual_code, directory, course_language, visibility, video_url, sticky, creation_date, subscribe, unsubscribe, popularity)
+                         VALUES (?, ?, ?, ?, 'english', 3, '', 0, NOW(), 1, 0, 0)",
                         [$code, $title, $code, $code]
                     );
                     $courseId = (int) $conn->lastInsertId();
                 }
 
                 if ($courseId > 0 && $userId > 0) {
-                    // 2. Ensure user is enrolled in course as student (status = 5)
+                    // 2. Link course to Access URL (Portal 1)
+                    try {
+                        $conn->executeStatement(
+                            "INSERT INTO access_url_rel_course (access_url_id, c_id) VALUES (1, ?) ON DUPLICATE KEY UPDATE c_id = ?",
+                            [$courseId, $courseId]
+                        );
+                    } catch (\Throwable $_e) {
+                        // ignore table variance
+                    }
+
+                    // 3. Enroll user in course_rel_user with c_id and status 5 (student)
                     $conn->executeStatement(
-                        "INSERT INTO course_rel_user (course_id, user_id, status, relation_type, legal_agreement, user_course_cat)
-                         VALUES (?, ?, 5, 0, 0, 0)
+                        "INSERT INTO course_rel_user (c_id, user_id, relation_type, status, progress)
+                         VALUES (?, ?, 0, 5, 0)
                          ON DUPLICATE KEY UPDATE status = 5",
                         [$courseId, $userId]
                     );
                 }
             }
         } catch (\Throwable $e) {
-            error_log("[Chamilo SSO Course Sync Warning] " . $e->getMessage());
+            error_log("[Chamilo SSO Course Sync] " . $e->getMessage());
         }
     }
 
