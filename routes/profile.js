@@ -593,7 +593,15 @@ module.exports = router;
 // LMS Sync Endpoint for Chamilo to query user course enrollments
 router.get('/:uid/lms-courses', async (req, res) => {
   const { uid } = req.params;
-  if (!uid) return res.status(400).json({ error: 'Missing uid' });
-  const courses = await getUserLmsCourses(uid);
+  const email = String(req.query.email || '').trim();
+  const searchKey = uid || email;
+  if (!searchKey) return res.status(400).json({ error: 'Missing uid or email' });
+  let courses = await getUserLmsCourses(searchKey);
+  if (!courses.length && email) {
+    courses = await getUserLmsCourses(email);
+  }
+  return res.json({ uid, email, courses, count: courses.length });
+});
+const courses = await getUserLmsCourses(uid);
   return res.json({ uid, courses, count: courses.length });
 });
