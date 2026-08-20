@@ -21,44 +21,8 @@
     requestAnimationFrame(() => requestAnimationFrame(() => headline.classList.add('is-visible')));
   }
 
-  /* ---- Generic reveal-on-scroll engine ---- */
-  const revealEls = document.querySelectorAll('[data-reveal]');
-  if (revealEls.length) {
-    if (prefersReducedMotion) {
-      revealEls.forEach((el) => el.classList.add('is-visible'));
-    } else {
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          const delay = Number(entry.target.getAttribute('data-reveal-delay') || 0);
-          entry.target.style.setProperty('--reveal-delay', delay);
-          entry.target.classList.add('is-visible');
-          io.unobserve(entry.target);
-        });
-      }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
-      revealEls.forEach((el) => io.observe(el));
-    }
-  }
-
-  /* ---- Stagger reveal for grids ---- */
-  const staggerGroups = document.querySelectorAll('[data-reveal-stagger]');
-  if (staggerGroups.length) {
-    staggerGroups.forEach((group) => {
-      Array.from(group.children).forEach((child, i) => child.style.setProperty('--i', Math.min(i % 9, 8)));
-    });
-    if (prefersReducedMotion) {
-      staggerGroups.forEach((g) => g.classList.add('is-visible'));
-    } else {
-      const io2 = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add('is-visible');
-          io2.unobserve(entry.target);
-        });
-      }, { threshold: 0.01, rootMargin: '0px 0px 100px 0px' });
-      staggerGroups.forEach((g) => io2.observe(g));
-    }
-  }
+  /* Reveal observer bypassed for instant loading */
+  document.querySelectorAll('[data-reveal], [data-reveal-stagger]').forEach(el => el.classList.add('is-visible'));
 
   /* ---- Animated stat counters ---- */
   const animateCounter = (el, target, suffix) => {

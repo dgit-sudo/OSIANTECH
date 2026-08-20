@@ -35,14 +35,14 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; catShortMap[c.name] =
       <span class="hero-line hero-line-accent">career-led course library</span>
     </h1>
 
-    <p class="ch-sub" data-reveal="fade-up" data-reveal-delay="1">
+    <p class="ch-sub">
       Live 1-on-1 courses across programming, design, networking, finance, data and kids
       learning. Every programme is built around real projects, recognised certification, and
       100% placement support.
     </p>
 
     <!-- Compact Embedded Search Bar -->
-    <form class="hero-search-form" action="/courses" method="GET" data-courses-search-form data-reveal="fade-up" data-reveal-delay="2">
+    <form class="hero-search-form" action="/courses" method="GET" data-courses-search-form>
       <div class="hero-search-field">
         <svg class="hero-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff7a00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         <input id="course-search" class="courses-search-input" type="search" name="q" value="<%= safeSearchQuery %>" placeholder="Search courses, topics or tools (e.g. Python, React, UI/UX)..." data-courses-search-input autocomplete="off" />
@@ -50,7 +50,7 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; catShortMap[c.name] =
       </div>
     </form>
 
-    <div class="ch-stats" data-reveal="fade-up" data-reveal-delay="3" data-reveal-stagger>
+    <div class="ch-stats">
       <div class="ch-stat-pill">
         <span class="ch-stat-num stat-value"><%= totalCourseCount %>+</span>
         <span class="ch-stat-lbl">Courses</span>
@@ -94,7 +94,7 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; catShortMap[c.name] =
 %>
 <section class="courses-category-section section<%= catIdx % 2 !== 0 ? ' section-alt' : '' %>">
   <div class="container">
-    <div class="courses-cat-header" data-reveal="fade-up">
+    <div class="courses-cat-header">
       <div class="courses-cat-icon-wrap <%= cat.accent %>"><span class="courses-cat-icon"><%= cat.icon %></span></div>
       <div class="courses-cat-info">
         <p class="section-label"><%= cat.tag %> &bull; <%= catCoursesAll.length %> course<%= catCoursesAll.length === 1 ? '' : 's' %></p>
@@ -103,7 +103,7 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; catShortMap[c.name] =
       </div>
       <a href="/courses?category=<%= encodeURIComponent(cat.name) %>" class="btn btn-ghost courses-cat-view-all" data-magnetic>View all &rarr;</a>
     </div>
-    <div class="courses-grid" data-courses-grid data-reveal="fade-up" data-reveal-delay="1" data-reveal-stagger>
+    <div class="courses-grid" data-courses-grid>
       <% catCourses.forEach(function(course) { %>
       <a href="/courses/<%= course.id %>" class="modern-course-card-link" data-course-card data-course-title="<%= course.title %>" data-course-keywords="<%= [course.title, course.category, course.subject, course.cardLine, (course.toolsUsed || []).join(' '), (course.careerRoles || []).map(r => r.title).join(' ')].join(' ').replace(/"/g, '&quot;') %>">
         <article class="modern-course-card">
@@ -125,7 +125,7 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; catShortMap[c.name] =
       <% }); %>
     </div>
     <% if (catCoursesAll.length > catCourses.length) { %>
-    <div class="courses-cat-footer" data-reveal="fade-up">
+    <div class="courses-cat-footer">
       <a href="/courses?category=<%= encodeURIComponent(cat.name) %>" class="btn btn-ghost" data-magnetic>Browse all <%= catCoursesAll.length %> <%= cat.name %> courses &rarr;</a>
     </div>
     <% } %>
@@ -136,7 +136,7 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; catShortMap[c.name] =
 <!-- ===== CTA ===== -->
 <section class="courses-cta">
   <div class="container">
-    <div class="courses-cta-inner" data-reveal="fade-up">
+    <div class="courses-cta-inner">
       <p class="section-label courses-cta-label">Not sure where to start?</p>
       <h2 class="courses-cta-title">Talk to a mentor and find your track</h2>
       <p class="courses-cta-sub">Create a free account and our team will help you pick the right programme for your goals — then match you with a dedicated 1-on-1 instructor.</p>
@@ -154,7 +154,7 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; catShortMap[c.name] =
 <!-- ===== FILTERED RESULTS ===== -->
 <section class="courses-results-section section">
   <div class="container">
-    <div class="courses-results-header" data-reveal="fade-up">
+    <div class="courses-results-header">
       <div class="courses-results-meta">
         <p class="section-label">Filtered Results</p>
         <h2 class="courses-section-title"><% if (safeSearchQuery) { %>Results for "<%= safeSearchQuery %>"<% } else { %><%= safeActiveCategory %><% } %></h2>
@@ -164,7 +164,7 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; catShortMap[c.name] =
     </div>
 
     <% if (allShownCourses.length) { %>
-    <div class="courses-grid" data-courses-grid data-reveal="fade-up" data-reveal-delay="1" data-reveal-stagger>
+    <div class="courses-grid" data-courses-grid>
       <% allShownCourses.forEach(function(course) { %>
       <a href="/courses/<%= course.id %>" class="modern-course-card-link" data-course-card data-course-title="<%= course.title %>" data-course-keywords="<%= [course.title, course.category, course.subject, course.cardLine, (course.toolsUsed || []).join(' '), (course.careerRoles || []).map(r => r.title).join(' ')].join(' ').replace(/"/g, '&quot;') %>">
         <article class="modern-course-card">
