@@ -991,19 +991,10 @@ async function goToLms() {
 
   try {
     const token = await user.getIdToken();
-
-      const form = document.createElement('form');
-      form.method = 'POST';
-      form.action = LMS_SSO_URL;
-      const tokenInput = document.createElement('input');
-      tokenInput.type = 'hidden';
-      tokenInput.name = 'token';
-      tokenInput.value = token;
-      form.appendChild(tokenInput);
-      document.body.appendChild(form);
-      form.submit();
-      return;
-    } catch (_error) {
+    const targetUrl = new URL(LMS_SSO_URL);
+    targetUrl.searchParams.set('token', token);
+    window.location.href = targetUrl.toString();
+  } catch (_error) {
     if (lmsBtn) lmsBtn.disabled = false;
     setFeedback(lmsFeedbackEl, 'Could not open the LMS. Please try again.', 'error');
   }
