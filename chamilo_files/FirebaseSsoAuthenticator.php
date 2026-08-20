@@ -20,6 +20,7 @@ use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
+use Symfony\Component\Uid\Uuid;
 
 class FirebaseSsoAuthenticator extends AbstractAuthenticator
 {
@@ -122,11 +123,12 @@ class FirebaseSsoAuthenticator extends AbstractAuthenticator
                     $courseId = (int) $courseRow["id"];
                     $nodeId = !empty($courseRow["resource_node_id"]) ? (int) $courseRow["resource_node_id"] : null;
                 } else {
-                    // Create ResourceNode first
+                    // Create ResourceNode with valid UUIDv4
+                    $binaryUuid = Uuid::v4()->toBinary();
                     $conn->executeStatement(
                         "INSERT INTO resource_node (resource_type_id, creator_id, title, slug, level, created_at, updated_at, public, uuid)
-                         VALUES (31, 1, ?, ?, 1, NOW(), NOW(), 1, UNHEX(REPLACE(UUID(), '-', '')))",
-                        [$title, $slug]
+                         VALUES (31, 1, ?, ?, 1, NOW(), NOW(), 1, ?)",
+                        [$title, $slug, $binaryUuid]
                     );
                     $nodeId = (int) $conn->lastInsertId();
                     $path = $slug . '-' . $nodeId . '/';
@@ -141,12 +143,13 @@ class FirebaseSsoAuthenticator extends AbstractAuthenticator
                     $courseId = (int) $conn->lastInsertId();
                 }
 
-                // Ensure resource_node is linked if it was missing
+                // Ensure resource_node is linked and has valid UUIDv4 if missing
                 if ($courseId > 0 && empty($nodeId)) {
+                    $binaryUuid = Uuid::v4()->toBinary();
                     $conn->executeStatement(
                         "INSERT INTO resource_node (resource_type_id, creator_id, title, slug, level, created_at, updated_at, public, uuid)
-                         VALUES (31, 1, ?, ?, 1, NOW(), NOW(), 1, UNHEX(REPLACE(UUID(), '-', '')))",
-                        [$title, $slug]
+                         VALUES (31, 1, ?, ?, 1, NOW(), NOW(), 1, ?)",
+                        [$title, $slug, $binaryUuid]
                     );
                     $nodeId = (int) $conn->lastInsertId();
                     $path = $slug . '-' . $nodeId . '/';
