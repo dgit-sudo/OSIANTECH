@@ -111,20 +111,47 @@ class FirebaseSsoAuthenticator extends AbstractAuthenticator
             foreach ($data["courses"] as $c) {
                 $code  = trim((string) ($c["courseCode"] ?? ("OSIAN_" . $c["courseId"])));
                 $title = trim((string) ($c["courseTitle"] ?? ("Course " . $c["courseId"])));
+                $slug  = strtolower(trim((string) preg_replace('/[^A-Za-z0-9-]+/', '-', $title), '-')) ?: ('course-' . $code);
 
                 // 1. Find or create course in Chamilo
-                $courseRow = $conn->fetchAssociative("SELECT id FROM course WHERE code = ? LIMIT 1", [$code]);
+                $courseRow = $conn->fetchAssociative("SELECT id, resource_node_id FROM course WHERE code = ? LIMIT 1", [$code]);
                 $courseId = null;
+                $nodeId = null;
 
                 if ($courseRow && !empty($courseRow["id"])) {
                     $courseId = (int) $courseRow["id"];
+                    $nodeId = !empty($courseRow["resource_node_id"]) ? (int) $courseRow["resource_node_id"] : null;
                 } else {
+                    // Create ResourceNode first
                     $conn->executeStatement(
-                        "INSERT INTO course (code, title, visual_code, directory, course_language, visibility, video_url, sticky, creation_date, subscribe, unsubscribe, popularity)
-                         VALUES (?, ?, ?, ?, 'english', 3, '', 0, NOW(), 1, 0, 0)",
-                        [$code, $title, $code, $code]
+                        "INSERT INTO resource_node (resource_type_id, creator_id, title, slug, level, created_at, updated_at, public, uuid)
+                         VALUES (31, 1, ?, ?, 1, NOW(), NOW(), 1, UNHEX(REPLACE(UUID(), '-', '')))",
+                        [$title, $slug]
+                    );
+                    $nodeId = (int) $conn->lastInsertId();
+                    $path = $slug . '-' . $nodeId . '/';
+                    $conn->executeStatement("UPDATE resource_node SET path = ? WHERE id = ?", [$path, $nodeId]);
+
+                    // Create course with resource_node_id
+                    $conn->executeStatement(
+                        "INSERT INTO course (resource_node_id, code, title, visual_code, directory, course_language, visibility, video_url, sticky, creation_date, subscribe, unsubscribe, popularity)
+                         VALUES (?, ?, ?, ?, ?, 'english', 3, '', 0, NOW(), 1, 0, 0)",
+                        [$nodeId, $code, $title, $code, $code]
                     );
                     $courseId = (int) $conn->lastInsertId();
+                }
+
+                // Ensure resource_node is linked if it was missing
+                if ($courseId > 0 && empty($nodeId)) {
+                    $conn->executeStatement(
+                        "INSERT INTO resource_node (resource_type_id, creator_id, title, slug, level, created_at, updated_at, public, uuid)
+                         VALUES (31, 1, ?, ?, 1, NOW(), NOW(), 1, UNHEX(REPLACE(UUID(), '-', '')))",
+                        [$title, $slug]
+                    );
+                    $nodeId = (int) $conn->lastInsertId();
+                    $path = $slug . '-' . $nodeId . '/';
+                    $conn->executeStatement("UPDATE resource_node SET path = ? WHERE id = ?", [$path, $nodeId]);
+                    $conn->executeStatement("UPDATE course SET resource_node_id = ? WHERE id = ?", [$nodeId, $courseId]);
                 }
 
                 if ($courseId > 0 && $userId > 0) {
