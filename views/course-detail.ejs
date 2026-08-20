@@ -11,7 +11,7 @@ const toolsUsed = Array.isArray(course.toolsUsed) ? course.toolsUsed : [];
 const careerRoles = Array.isArray(course.careerRoles) ? course.careerRoles : [];
 const audience = Array.isArray(course.audience) ? course.audience : [];
 const faqs = Array.isArray(course.faqs) ? course.faqs : [];
-const feeValue = Number(course.displayFee || course.nonMetroFee || course.metroFee || 0);
+const feeValue = Number(course.displayFee || (course.price ? parseInt(String(course.price).replace(/[^0-9]/g, ''), 10) : 0));
 %>
 
 <!-- ===== HERO ===== -->
@@ -169,7 +169,7 @@ const feeValue = Number(course.displayFee || course.nonMetroFee || course.metroF
         <div class="cd-price-row">
           <span class="cd-price-label">Course fee</span>
           <strong class="cd-price" id="course-fee-display" data-fee="<%= feeValue %>">INR <%= feeValue.toLocaleString('en-IN') %></strong>
-          <span class="cd-price-note">Live one-on-one price for non-metro students</span>
+          <span class="cd-price-note">Live 1-on-1 private training with dedicated mentor</span>
         </div>
         <div class="cd-card-actions">
           <a href="/checkout/<%= course.id %>" class="btn btn-primary btn-block">Buy now</a>

@@ -69,8 +69,7 @@ function generateFallbackAnswer(userMessage, contextChunks = []) {
   const matchedCourse = catalog.find(c => query.includes(c.title.toLowerCase()) || (c.subject && query.includes(c.subject.toLowerCase())));
   if (matchedCourse) {
     const feeStr = matchedCourse.price || (matchedCourse.nonMetroFee ? `₹${matchedCourse.nonMetroFee.toLocaleString('en-IN')}` : 'Contact for pricing');
-    const metroFeeStr = matchedCourse.metroFee ? ` (Metro: ₹${matchedCourse.metroFee.toLocaleString('en-IN')})` : '';
-    return `Here are the details for **${matchedCourse.title}**:\n\n` +
+return `Here are the details for **${matchedCourse.title}**:\n\n` +
       `- **Category**: ${matchedCourse.category || 'Professional'}\n` +
       `- **Duration**: ${matchedCourse.duration || 'Flexible'}\n` +
       `- **Fee**: ${feeStr}\n` +

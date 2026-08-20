@@ -151,50 +151,16 @@ function formatInrAmount(amount) {
 }
 
 function getFeeFromCourse(course) {
-  const nonMetroFee = Number.parseInt(String(course.nonMetroFee || ''), 10);
-  const metroFee = Number.parseInt(String(course.metroFee || ''), 10);
-  const fallbackFee = Number.parseInt(String(course.price || '').replace(/[^0-9]/g, ''), 10);
-
-  const displayFee = Number.isFinite(nonMetroFee) && nonMetroFee > 0
-    ? nonMetroFee
-    : Number.isFinite(metroFee) && metroFee > 0
-      ? metroFee
-      : fallbackFee;
-
+  const parsedFee = Number.parseInt(String(course.price || course.nonMetroFee || '').replace(/[^0-9]/g, ''), 10);
   return {
-    selectedFee: displayFee,
+    selectedFee: Number.isFinite(parsedFee) && parsedFee > 0 ? parsedFee : 0,
   };
 }
 
-function getLocationAwareFee(course, { locationDenied = false } = {}) {
-  const metroFee = Number.parseInt(String(course.metroFee || ''), 10);
-  const nonMetroFee = Number.parseInt(String(course.nonMetroFee || ''), 10);
-  const fallbackFee = getFeeFromCourse(course).selectedFee;
-
-  if (locationDenied && Number.isFinite(metroFee) && metroFee > 0) {
-    return {
-      selectedFee: metroFee,
-      basis: 'metro-by-location-denied',
-    };
-  }
-
-  if (Number.isFinite(nonMetroFee) && nonMetroFee > 0) {
-    return {
-      selectedFee: nonMetroFee,
-      basis: 'non-metro-default',
-    };
-  }
-
-  if (Number.isFinite(metroFee) && metroFee > 0) {
-    return {
-      selectedFee: metroFee,
-      basis: 'metro-fallback',
-    };
-  }
-
+function getLocationAwareFee(course) {
   return {
-    selectedFee: fallbackFee,
-    basis: 'price-fallback',
+    selectedFee: getFeeFromCourse(course).selectedFee,
+    basis: 'standard-fee',
   };
 }
 
