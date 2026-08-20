@@ -105,7 +105,7 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; catShortMap[c.name] =
     </div>
     <div class="courses-grid" data-courses-grid data-reveal="fade-up" data-reveal-delay="1" data-reveal-stagger>
       <% catCourses.forEach(function(course) { %>
-      <a href="/courses/<%= course.id %>" class="modern-course-card-link" data-course-card data-course-title="<%= course.title %>">
+      <a href="/courses/<%= course.id %>" class="modern-course-card-link" data-course-card data-course-title="<%= course.title %>" data-course-keywords="<%= [course.title, course.category, course.subject, course.cardLine, (course.toolsUsed || []).join(' '), (course.careerRoles || []).map(r => r.title).join(' ')].join(' ').replace(/"/g, '&quot;') %>">
         <article class="modern-course-card">
           <div class="modern-course-thumb course-img-<%= (course.id % 9) + 1 %> <%= course.image ? 'has-course-image' : '' %>"<% if (course.image) { %> style="--course-image: url('<%= course.image %>'); background-image: url('<%= course.image %>');"<% } %>></div>
           <div class="modern-course-body">
@@ -166,7 +166,7 @@ catMeta.forEach(function(c) { catIconMap[c.name] = c.icon; catShortMap[c.name] =
     <% if (allShownCourses.length) { %>
     <div class="courses-grid" data-courses-grid data-reveal="fade-up" data-reveal-delay="1" data-reveal-stagger>
       <% allShownCourses.forEach(function(course) { %>
-      <a href="/courses/<%= course.id %>" class="modern-course-card-link" data-course-card data-course-title="<%= course.title %>">
+      <a href="/courses/<%= course.id %>" class="modern-course-card-link" data-course-card data-course-title="<%= course.title %>" data-course-keywords="<%= [course.title, course.category, course.subject, course.cardLine, (course.toolsUsed || []).join(' '), (course.careerRoles || []).map(r => r.title).join(' ')].join(' ').replace(/"/g, '&quot;') %>">
         <article class="modern-course-card">
           <div class="modern-course-thumb course-img-<%= (course.id % 9) + 1 %> <%= course.image ? 'has-course-image' : '' %>"<% if (course.image) { %> style="--course-image: url('<%= course.image %>'); background-image: url('<%= course.image %>');"<% } %>></div>
           <div class="modern-course-body">

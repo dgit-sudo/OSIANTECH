@@ -380,20 +380,94 @@ const allCourses = rawCourses.map((course) => ({
   image: getGeneratedCourseImage(course.id),
 }));
 
+
+const SEARCH_SYNONYMS = {
+  'cybersecurity': ['cyber', 'security', 'hacking', 'network', 'ethical'],
+  'cyber': ['cybersecurity', 'security', 'hacking'],
+  'security': ['cybersecurity', 'cyber', 'network'],
+  'ai': ['artificial intelligence', 'machine learning', 'data science', 'deep learning'],
+  'ml': ['machine learning', 'artificial intelligence', 'data science'],
+  'fullstack': ['full stack', 'web development', 'mern', 'mean', 'frontend', 'backend'],
+  'full-stack': ['full stack', 'web development'],
+  'frontend': ['front end', 'html', 'css', 'javascript', 'react', 'web design'],
+  'backend': ['back end', 'nodejs', 'node', 'python', 'django', 'java', 'sql', 'database'],
+  'ui': ['ui/ux', 'user interface', 'figma', 'design'],
+  'ux': ['ui/ux', 'user experience', 'figma', 'design'],
+  'uiux': ['ui/ux', 'ui', 'ux', 'user interface', 'figma', 'design'],
+  'devops': ['cloud', 'aws', 'docker', 'kubernetes', 'linux', 'ci/cd'],
+  'cloud': ['aws', 'azure', 'gcp', 'devops', 'salesforce'],
+  'coding': ['programming', 'software', 'python', 'java', 'c++'],
+  'finance': ['accounting', 'tally', 'gst', 'taxation', 'excel'],
+  'accounting': ['finance', 'tally', 'gst', 'bookkeeping'],
+  'marketing': ['digital marketing', 'seo', 'social media', 'google ads'],
+  'animation': ['3d', '2d', 'vfx', 'motion graphics', 'maya', 'blender'],
+  'graphics': ['graphic design', 'photoshop', 'illustrator', 'coreldraw', 'design'],
+};
+
 function normalizeForSearch(text = '') {
-  return String(text)
+  return String(text || '')
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
 }
 
+function searchCourses(query, courseList = []) {
+  const q = normalizeForSearch(query);
+  if (!q) return courseList;
+  const tokens = q.split(' ').filter(Boolean);
+
+  const expandedTokens = new Set(tokens);
+  tokens.forEach(t => {
+    if (SEARCH_SYNONYMS[t]) {
+      SEARCH_SYNONYMS[t].forEach(syn => {
+        normalizeForSearch(syn).split(' ').forEach(st => expandedTokens.add(st));
+      });
+    }
+  });
+  const queryKeywords = [...expandedTokens];
+
+  return courseList
+    .map((c) => {
+      const title = normalizeForSearch(c.title);
+      const subject = normalizeForSearch(c.subject);
+      const category = normalizeForSearch(c.category);
+      const tools = normalizeForSearch((c.toolsUsed || []).join(' '));
+      const roles = normalizeForSearch((c.careerRoles || []).map(r => r.title).join(' '));
+      const outcomes = normalizeForSearch((c.outcomes || []).join(' '));
+      const desc = normalizeForSearch((c.cardLine || '') + ' ' + (c.description || ''));
+      const haystack = [title, subject, category, tools, roles, outcomes, desc].join(' ');
+
+      const originalTokensMatch = tokens.every(t => haystack.includes(t));
+      const hasAnyTokenMatch = queryKeywords.some(t => haystack.includes(t));
+
+      if (!originalTokensMatch && !hasAnyTokenMatch) return null;
+
+      let score = 0;
+      if (title === q) score += 100;
+      else if (title.startsWith(q)) score += 80;
+      else if (tokens.every(t => title.includes(t))) score += 60;
+      else if (tokens.some(t => title.includes(t))) score += 40;
+
+      if (tokens.every(t => subject.includes(t))) score += 35;
+      if (tokens.every(t => category.includes(t))) score += 30;
+      if (tokens.every(t => tools.includes(t))) score += 25;
+      if (tokens.every(t => roles.includes(t))) score += 20;
+
+      queryKeywords.forEach(syn => {
+        if (haystack.includes(syn)) score += 5;
+      });
+
+      return { course: c, score };
+    })
+    .filter(Boolean)
+    .sort((a, b) => b.score - a.score)
+    .map(x => x.course);
+}
 
 router.get('/', (req, res) => {
   const reqCategory = String(req.query.category || '').trim();
   const searchQuery = String(req.query.q || '').trim();
-  const normalizedSearch = normalizeForSearch(searchQuery);
-  const searchTokens = normalizedSearch ? normalizedSearch.split(' ') : [];
 
   let courses = allCourses;
 
@@ -405,16 +479,13 @@ router.get('/', (req, res) => {
     });
   }
 
-  if (searchTokens.length) {
-    courses = courses.filter((course) => {
-      const haystack = normalizeForSearch(course.title);
-      return searchTokens.every((token) => haystack.includes(token));
-    });
+  if (searchQuery) {
+    courses = searchCourses(searchQuery, courses);
   }
 
   const categories = [...new Set(allCourses.map(c => c.category))];
   res.render('courses', {
-    title: reqCategory && reqCategory !== 'All' ? `${reqCategory} Courses - Osian Academy` : 'Courses - Osian Academy',
+    title: searchQuery ? `Search results for "${searchQuery}" - Osian Academy` : (reqCategory && reqCategory !== 'All' ? `${reqCategory} Courses - Osian Academy` : 'Courses - Osian Academy'),
     page: 'courses',
     courses,
     categories,
@@ -424,6 +495,7 @@ router.get('/', (req, res) => {
     shownCourses: courses.length,
   });
 });
+
 
 router.get('/:id/checkout', (req, res) => {
   const course = allCourses.find(c => c.id === parseInt(req.params.id, 10));

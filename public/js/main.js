@@ -281,11 +281,33 @@ document.querySelectorAll('[data-faq-question]').forEach(btn => {
 (() => {
   const form = document.querySelector('[data-courses-search-form]');
   const input = document.querySelector('[data-courses-search-input]');
-  const grid = document.querySelector('[data-courses-grid]');
   const cards = Array.from(document.querySelectorAll('[data-course-card]'));
   const empty = document.querySelector('[data-courses-empty]');
 
-  if (!form || !input || !grid || !cards.length) return;
+  if (!input || !cards.length) return;
+
+  const CLIENT_SYNONYMS = {
+    'cybersecurity': ['cyber', 'security', 'hacking', 'network', 'ethical'],
+    'cyber': ['cybersecurity', 'security', 'hacking'],
+    'security': ['cybersecurity', 'cyber', 'network'],
+    'ai': ['artificial intelligence', 'machine learning', 'data science'],
+    'ml': ['machine learning', 'artificial intelligence', 'data science'],
+    'fullstack': ['full stack', 'web development', 'mern', 'mean'],
+    'full-stack': ['full stack', 'web development'],
+    'frontend': ['front end', 'html', 'css', 'javascript', 'react', 'web design'],
+    'backend': ['back end', 'nodejs', 'node', 'python', 'django', 'java', 'sql', 'database'],
+    'ui': ['ui/ux', 'user interface', 'figma', 'design'],
+    'ux': ['ui/ux', 'user experience', 'figma', 'design'],
+    'uiux': ['ui/ux', 'ui', 'ux', 'user interface', 'figma', 'design'],
+    'devops': ['cloud', 'aws', 'docker', 'kubernetes', 'linux'],
+    'cloud': ['aws', 'azure', 'gcp', 'devops', 'salesforce'],
+    'coding': ['programming', 'software', 'python', 'java', 'c++'],
+    'finance': ['accounting', 'tally', 'gst', 'taxation', 'excel'],
+    'accounting': ['finance', 'tally', 'gst', 'bookkeeping'],
+    'marketing': ['digital marketing', 'seo', 'social media', 'google ads'],
+    'animation': ['3d', '2d', 'vfx', 'motion graphics', 'maya', 'blender'],
+    'graphics': ['graphic design', 'photoshop', 'illustrator', 'design'],
+  };
 
   const normalize = (value = '') => String(value)
     .toLowerCase()
@@ -295,12 +317,29 @@ document.querySelectorAll('[data-faq-question]').forEach(btn => {
 
   const filterCards = () => {
     const query = normalize(input.value);
-    const tokens = query ? query.split(' ') : [];
+    const tokens = query ? query.split(' ').filter(Boolean) : [];
+
+    const expanded = new Set(tokens);
+    tokens.forEach((t) => {
+      if (CLIENT_SYNONYMS[t]) {
+        CLIENT_SYNONYMS[t].forEach((s) => {
+          normalize(s).split(' ').forEach((st) => expanded.add(st));
+        });
+      }
+    });
+    const queryKeywords = [...expanded];
+
     let visible = 0;
 
     cards.forEach((card) => {
-      const haystack = normalize(card.getAttribute('data-course-title') || '');
-      const match = !tokens.length || tokens.every((token) => haystack.includes(token));
+      const keywords = normalize(card.getAttribute('data-course-keywords') || '');
+      const title = normalize(card.getAttribute('data-course-title') || '');
+      const haystack = keywords ? (keywords + ' ' + title) : title;
+
+      const originalMatch = !tokens.length || tokens.every((token) => haystack.includes(token));
+      const synonymMatch = queryKeywords.length && queryKeywords.some((token) => haystack.includes(token));
+      const match = originalMatch || synonymMatch;
+
       card.style.display = match ? '' : 'none';
       if (match) visible += 1;
     });
@@ -309,10 +348,14 @@ document.querySelectorAll('[data-faq-question]').forEach(btn => {
   };
 
   input.addEventListener('input', filterCards);
-  form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    filterCards();
-  });
+  if (form) {
+    form.addEventListener('submit', (event) => {
+      // If client-side search filtered the cards on page, prevent hard reload
+      filterCards();
+    });
+  }
 
-  filterCards();
+  if (input.value) {
+    filterCards();
+  }
 })();
