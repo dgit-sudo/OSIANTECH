@@ -20,7 +20,6 @@ use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
-use Symfony\Component\Uid\Uuid;
 
 class FirebaseSsoAuthenticator extends AbstractAuthenticator
 {
@@ -109,72 +108,20 @@ class FirebaseSsoAuthenticator extends AbstractAuthenticator
             $conn = $this->entityManager->getConnection();
             $userId = (int) $user->getId();
 
-            $defaultTools = [
-                ["agenda", 1, 0],
-                ["announcement", 2, 1],
-                ["student_publication", 4, 2],
-                ["attendance", 5, 3],
-                ["blog", 6, 4],
-                ["chat", 7, 5],
-                ["course_description", 8, 6],
-                ["course_homepage", 9, 7],
-                ["course_progress", 10, 8],
-                ["course_tool", 11, 9],
-                ["document", 13, 10],
-                ["dropbox", 14, 11],
-                ["quiz", 15, 12],
-                ["forum", 16, 13],
-                ["glossary", 18, 14],
-                ["gradebook", 19, 15],
-                ["group", 20, 16],
-                ["learnpath", 21, 17],
-                ["link", 22, 18],
-                ["course_maintenance", 23, 19],
-                ["member", 24, 20],
-                ["notebook", 26, 21],
-                ["portfolio", 28, 22],
-                ["course_setting", 30, 23],
-                ["survey", 32, 24],
-                ["tracking", 35, 25],
-                ["wiki", 39, 26],
-            ];
-
             foreach ($data["courses"] as $c) {
                 $code  = trim((string) ($c["courseCode"] ?? ("OSIAN_" . $c["courseId"])));
                 $title = trim((string) ($c["courseTitle"] ?? ("Course " . $c["courseId"])));
-                $slug  = strtolower(trim((string) preg_replace('/[^A-Za-z0-9-]+/', '-', $title), '-')) ?: ('course-' . $code);
+                $rawCode = str_replace("_", "", $code);
 
-                // 1. Find or create course in Chamilo
-                $courseRow = $conn->fetchAssociative("SELECT id, resource_node_id FROM course WHERE code = ? LIMIT 1", [$code]);
-                $courseId = null;
-                $nodeId = null;
+                // Find existing course in Chamilo by code, rawCode, or title
+                $courseRow = $conn->fetchAssociative(
+                    "SELECT id FROM course WHERE code = ? OR code = ? OR visual_code = ? OR title = ? LIMIT 1",
+                    [$code, $rawCode, $code, $title]
+                );
 
                 if ($courseRow && !empty($courseRow["id"])) {
                     $courseId = (int) $courseRow["id"];
-                    $nodeId = !empty($courseRow["resource_node_id"]) ? (int) $courseRow["resource_node_id"] : null;
-                } else {
-                    // Create ResourceNode with valid UUIDv4
-                    $binaryUuid = Uuid::v4()->toBinary();
-                    $conn->executeStatement(
-                        "INSERT INTO resource_node (resource_type_id, creator_id, title, slug, level, created_at, updated_at, public, uuid)
-                         VALUES (31, 1, ?, ?, 1, NOW(), NOW(), 1, ?)",
-                        [$title, $slug, $binaryUuid]
-                    );
-                    $nodeId = (int) $conn->lastInsertId();
-                    $path = $slug . '-' . $nodeId . '/';
-                    $conn->executeStatement("UPDATE resource_node SET path = ? WHERE id = ?", [$path, $nodeId]);
-
-                    // Create course with resource_node_id
-                    $conn->executeStatement(
-                        "INSERT INTO course (resource_node_id, code, title, visual_code, directory, course_language, visibility, video_url, sticky, creation_date, subscribe, unsubscribe, popularity)
-                         VALUES (?, ?, ?, ?, ?, 'english', 3, '', 0, NOW(), 1, 0, 0)",
-                        [$nodeId, $code, $title, $code, $code]
-                    );
-                    $courseId = (int) $conn->lastInsertId();
-                }
-
-                if ($courseId > 0 && $nodeId > 0 && $userId > 0) {
-                    // 2. Link course to Access URL (Portal 1)
+                    // Ensure course is linked to Access URL 1 (Portal)
                     try {
                         $conn->executeStatement(
                             "INSERT INTO access_url_rel_course (access_url_id, c_id) VALUES (1, ?) ON DUPLICATE KEY UPDATE c_id = ?",
@@ -182,35 +129,7 @@ class FirebaseSsoAuthenticator extends AbstractAuthenticator
                         );
                     } catch (\Throwable $_e) {}
 
-                    // 3. Seed standard tools in c_tool with child ResourceNodes
-                    foreach ($defaultTools as $dt) {
-                        [$tTitle, $tId, $pos] = $dt;
-                        $toolRow = $conn->fetchAssociative("SELECT iid, resource_node_id FROM c_tool WHERE c_id = ? AND tool_id = ? LIMIT 1", [$courseId, $tId]);
-
-                        $tNodeId = !empty($toolRow["resource_node_id"]) ? (int) $toolRow["resource_node_id"] : null;
-                        if (empty($tNodeId)) {
-                            $tUuid = Uuid::v4()->toBinary();
-                            $conn->executeStatement(
-                                "INSERT INTO resource_node (resource_type_id, creator_id, parent_id, title, slug, level, created_at, updated_at, public, uuid)
-                                 VALUES (?, 1, ?, ?, ?, 2, NOW(), NOW(), 1, ?)",
-                                [$tId, $nodeId, $tTitle, $tTitle, $tUuid]
-                            );
-                            $tNodeId = (int) $conn->lastInsertId();
-                            $tPath = 'course-' . $courseId . '/' . $tTitle . '-' . $tNodeId . '/';
-                            $conn->executeStatement("UPDATE resource_node SET path = ? WHERE id = ?", [$tPath, $tNodeId]);
-                        }
-
-                        if ($toolRow) {
-                            $conn->executeStatement("UPDATE c_tool SET resource_node_id = ? WHERE iid = ?", [$tNodeId, $toolRow["iid"]]);
-                        } else {
-                            $conn->executeStatement(
-                                "INSERT INTO c_tool (resource_node_id, c_id, tool_id, title, position) VALUES (?, ?, ?, ?, ?)",
-                                [$tNodeId, $courseId, $tId, $tTitle, $pos]
-                            );
-                        }
-                    }
-
-                    // 4. Enroll user in course_rel_user with c_id and status 5 (student)
+                    // Enroll student into the course
                     $conn->executeStatement(
                         "INSERT INTO course_rel_user (c_id, user_id, relation_type, status, progress)
                          VALUES (?, ?, 0, 5, 0)
