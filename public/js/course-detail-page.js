@@ -1,90 +1,4 @@
-import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
-import { auth } from './firebase-client.js';
 
-function formatInr(amount) {
-  const value = Number.parseInt(String(amount || ''), 10);
-  if (!Number.isFinite(value) || value <= 0) return 'INR -';
-  return `INR ${value.toLocaleString('en-IN')}`;
-}
-
-function markAsPurchased(button) {
-  if (!button) return;
-  button.href = '#';
-  button.setAttribute('aria-disabled', 'true');
-  button.classList.add('disabled');
-  button.textContent = 'Already Enrolled';
-  button.addEventListener('click', (event) => event.preventDefault());
-}
-
-function hasLocalPurchase(user, courseId) {
-  try {
-    const raw = window.localStorage.getItem(`osian_purchases_${user.uid}`);
-    const parsed = JSON.parse(raw || '[]');
-    if (!Array.isArray(parsed)) return false;
-    return parsed.some((item) => Number(item.courseId) === Number(courseId));
-  } catch {
-    return false;
-  }
-}
-
-async function checkPurchaseStatus(user, button, courseId) {
-  if (hasLocalPurchase(user, courseId)) {
-    markAsPurchased(button);
-    return;
-  }
-
-  const idToken = await user.getIdToken();
-  const response = await fetch(
-    `/api/profile/${encodeURIComponent(user.uid)}/purchased/${encodeURIComponent(courseId)}`,
-    {
-      headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${idToken}`,
-      },
-    },
-  );
-
-  if (!response.ok) return;
-  const data = await response.json();
-  if (data.purchased) {
-    markAsPurchased(button);
-  }
-}
-
-(function initCourseDetailPage() {
-  const toggleButton = document.querySelector('[data-enroll-toggle]');
-  const actions = document.querySelector('[data-enroll-actions]');
-  const buyNowBtn = document.querySelector('[data-buy-now-btn]');
-  const courseId = String(buyNowBtn?.getAttribute('data-course-id') || '').trim();
-  const feeDisplay = document.getElementById('course-fee-display');
-
-  if (feeDisplay) {
-    const fee = Number.parseInt(String(feeDisplay.getAttribute('data-fee') || ''), 10);
-    feeDisplay.textContent = formatInr(fee);
-    if (buyNowBtn) {
-      buyNowBtn.href = `/checkout/${encodeURIComponent(courseId)}`;
-    }
-  }
-
-  if (toggleButton && actions) {
-    toggleButton.addEventListener('click', () => {
-      const isHidden = actions.hidden;
-      actions.hidden = !isHidden;
-      toggleButton.textContent = isHidden ? 'Hide Enroll Options' : 'Enroll';
-    });
-  }
-
-  if (!buyNowBtn || !courseId) return;
-
-  onAuthStateChanged(auth, async (user) => {
-    if (!user) return;
-    try {
-      await checkPurchaseStatus(user, buyNowBtn, courseId);
-    } catch {
-      // Keep the button enabled if status lookup fails.
-    }
-  });
-})();
 
 import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
 import { auth } from './firebase-client.js';
@@ -100,15 +14,75 @@ import { auth } from './firebase-client.js';
 
     if (adminBox) adminBox.style.display = 'block';
 
-    let currentUser = null;
-    onAuthStateChanged(auth, (user) => {
-      currentUser = user;
+    const pathParts = window.location.pathname.split('/').filter(Boolean);
+    const courseId = pathParts[1] || '1';
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        // User NOT signed in - Admin bypass is locked until signin
+        if (adminBtn) {
+          adminBtn.textContent = '🔒 Sign In Required for Admin Bypass';
+          adminBtn.style.background = '#64748b';
+          adminBtn.style.borderColor = '#64748b';
+        }
+        if (adminStatus) {
+          adminStatus.style.color = '#dc2626';
+          adminStatus.textContent = 'You must be signed in to an account to use admin bypass.';
+        }
+        return;
+      }
+
+      // User is signed in - Check if already purchased
+      if (adminBtn) {
+        adminBtn.textContent = 'Checking enrollment status...';
+        adminBtn.disabled = true;
+      }
+
+      try {
+        const idToken = await user.getIdToken();
+        const checkRes = await fetch('/api/profile/' + encodeURIComponent(user.uid) + '/purchased/' + encodeURIComponent(courseId), {
+          headers: { 'Authorization': 'Bearer ' + idToken }
+        });
+        const checkData = checkRes.ok ? await checkRes.json() : {};
+
+        if (checkData.purchased) {
+          if (adminBtn) {
+            adminBtn.textContent = '✅ Already Enrolled (No Duplicate Purchase)';
+            adminBtn.disabled = true;
+            adminBtn.style.background = '#16a34a';
+            adminBtn.style.borderColor = '#16a34a';
+          }
+          if (adminStatus) {
+            adminStatus.style.color = '#16a34a';
+            adminStatus.textContent = 'You already own this course on student account (' + (user.email || user.uid) + ').';
+          }
+          return;
+        }
+
+        // Ready for admin bypass
+        if (adminBtn) {
+          adminBtn.textContent = '⚡ Enroll for Free (Admin Bypass)';
+          adminBtn.disabled = false;
+          adminBtn.style.background = '#ea580c';
+          adminBtn.style.borderColor = '#ea580c';
+        }
+        if (adminStatus) {
+          adminStatus.style.color = '#ea580c';
+          adminStatus.textContent = 'Signed in as: ' + (user.email || user.uid);
+        }
+      } catch (_e) {
+        if (adminBtn) {
+          adminBtn.textContent = '⚡ Enroll for Free (Admin Bypass)';
+          adminBtn.disabled = false;
+        }
+      }
     });
 
     if (adminBtn) {
       adminBtn.addEventListener('click', async () => {
-        if (!currentUser) {
-          alert('Please sign in first so we know which student account to enroll!');
+        const user = auth.currentUser;
+        if (!user) {
+          alert('Admin bypass requires being signed in to your account. Redirecting to sign in...');
           window.location.href = '/auth?mode=signin&redirect=' + encodeURIComponent(window.location.href);
           return;
         }
@@ -121,9 +95,7 @@ import { auth } from './firebase-client.js';
         }
 
         try {
-          const pathParts = window.location.pathname.split('/').filter(Boolean);
-          const courseId = pathParts[1] || '1';
-          const idToken = await currentUser.getIdToken();
+          const idToken = await user.getIdToken();
 
           const res = await fetch('/courses/' + courseId + '/checkout/admin-bypass', {
             method: 'POST',
@@ -143,7 +115,7 @@ import { auth } from './firebase-client.js';
             }
             alert(data.error || 'Admin checkout failed.');
             adminBtn.disabled = false;
-            adminBtn.textContent = 'Enroll for Free (Admin Bypass)';
+            adminBtn.textContent = '⚡ Enroll for Free (Admin Bypass)';
             return;
           }
 
@@ -159,7 +131,7 @@ import { auth } from './firebase-client.js';
             adminStatus.textContent = err.message;
           }
           adminBtn.disabled = false;
-          adminBtn.textContent = 'Enroll for Free (Admin Bypass)';
+          adminBtn.textContent = '⚡ Enroll for Free (Admin Bypass)';
         }
       });
     }

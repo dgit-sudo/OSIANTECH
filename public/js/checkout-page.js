@@ -341,8 +341,7 @@ if (payBtn) {
   });
 }
 
-
-// Admin Bypass Handler on Checkout Page
+// Admin Bypass Handler on Checkout Page (Strictly Auth Enforced)
 (() => {
   const params = new URLSearchParams(window.location.search);
   const adminKey = params.get('admin');
@@ -353,14 +352,36 @@ if (payBtn) {
 
     if (adminPanel) adminPanel.style.display = 'block';
 
+    const courseId = getCourseIdFromPath();
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        if (adminBtn) {
+          adminBtn.textContent = '🔒 Sign In Required for Admin Bypass';
+          adminBtn.style.background = '#64748b';
+          adminBtn.style.borderColor = '#64748b';
+        }
+        setFeedback('Admin bypass is locked: Please sign in to your account first.', 'error');
+        return;
+      }
+
+      if (adminBtn) {
+        adminBtn.textContent = '⚡ Free Admin Test Checkout';
+        adminBtn.style.background = '#ea580c';
+        adminBtn.style.borderColor = '#ea580c';
+      }
+      setFeedback('Admin mode active for: ' + (user.email || user.uid), 'info');
+    });
+
     if (adminBtn) {
       adminBtn.addEventListener('click', async () => {
-        if (!currentUser) {
-          setFeedback('Please sign in first so we know which student account to enroll.', 'error');
+        const user = auth.currentUser;
+        if (!user) {
+          alert('Admin bypass requires being signed in to your account. Redirecting to sign in...');
+          window.location.href = '/auth?mode=signin&redirect=' + encodeURIComponent(window.location.href);
           return;
         }
 
-        const courseId = getCourseIdFromPath();
         if (!courseId) {
           setFeedback('Course not specified.', 'error');
           return;
@@ -371,7 +392,7 @@ if (payBtn) {
         setFeedback('Enrolling free admin test course and syncing to Chamilo...', 'info');
 
         try {
-          const idToken = await currentUser.getIdToken();
+          const idToken = await user.getIdToken();
           const res = await fetch('/courses/' + courseId + '/checkout/admin-bypass', {
             method: 'POST',
             headers: {
@@ -386,13 +407,13 @@ if (payBtn) {
           if (!res.ok) {
             setFeedback(data.error || 'Admin checkout failed.', 'error');
             adminBtn.disabled = false;
-            adminBtn.textContent = 'Free Admin Test Checkout';
+            adminBtn.textContent = '⚡ Free Admin Test Checkout';
             return;
           }
 
-          saveLocalPurchase(currentUser.uid, {
+          saveLocalPurchase(user.uid, {
             courseId: Number(courseId),
-            courseTitle: '<%= course.title %>' || 'Course ' + courseId,
+            courseTitle: 'Course ' + courseId,
             purchaseDate: new Date().toISOString(),
           });
 
@@ -402,7 +423,7 @@ if (payBtn) {
         } catch (err) {
           setFeedback(err.message, 'error');
           adminBtn.disabled = false;
-          adminBtn.textContent = 'Free Admin Test Checkout';
+          adminBtn.textContent = '⚡ Free Admin Test Checkout';
         }
       });
     }
