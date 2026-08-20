@@ -8,20 +8,8 @@
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const canHover = window.matchMedia('(hover: hover)').matches;
 
-  /* ---- Split hero headline into words for stagger reveal ---- */
-  const headline = document.querySelector('[data-hero-headline]');
-  if (headline) {
-    headline.querySelectorAll('.hero-line').forEach((line) => {
-      const text = line.textContent.trim();
-      line.innerHTML = text
-        .split(' ')
-        .map((word, i) => `<span class="word" style="transition-delay:${i * 60}ms">${word}</span>`)
-        .join(' ');
-    });
-    requestAnimationFrame(() => requestAnimationFrame(() => headline.classList.add('is-visible')));
-  }
-
-  /* Reveal observer bypassed for instant loading */
+  /* Headline loads immediately without delay */
+/* Reveal observer bypassed for instant loading */
   document.querySelectorAll('[data-reveal], [data-reveal-stagger]').forEach(el => el.classList.add('is-visible'));
 
   /* ---- Animated stat counters ---- */

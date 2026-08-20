@@ -110,39 +110,47 @@ body.page-courses {
   align-items: center;
 }
 
+.page-courses .courses-hero-cinematic {
+  position: relative;
+  overflow: hidden;
+  margin-top: 68px;
+  padding: 48px 0 44px;
+  background: #fffaf5;
+  border-bottom: 1px solid #fed7aa;
+  color: var(--text-primary);
+}
+.page-courses .ch-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .page-courses .ch-headline {
   font-family: var(--font-display);
   font-weight: 900;
-  line-height: 1.08;
-  font-size: clamp(2.6rem, 5.5vw, 4.4rem);
+  line-height: 1.15;
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
   letter-spacing: -0.035em;
-  margin: 0 0 22px;
+  margin: 0 0 14px;
+  padding: 0;
   color: #0f172a;
-}
-.page-courses .hero-line {
-  display: block;
-  overflow: hidden;
-  padding-bottom: 4px;
-}
-.page-courses .hero-line .word {
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(115%) rotate(3deg);
-  transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);
-}
-.page-courses .ch-headline.is-visible .word {
-  opacity: 1;
-  transform: none;
+  text-align: center;
+  opacity: 1 !important;
+  transform: none !important;
 }
 .page-courses .hero-line-accent {
-  background: linear-gradient(135deg, #ff7a00 0%, #ff5500 40%, #e65100 100%);
-  background-size: 200% auto;
+  background: linear-gradient(135deg, #ff7a00 0%, #ea580c 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   font-weight: 900;
+  display: inline;
 }
-
 .page-courses .ch-sub {
   font-size: 1.15rem;
   line-height: 1.7;
