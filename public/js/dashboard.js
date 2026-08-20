@@ -839,23 +839,34 @@ function renderPurchases(purchases) {
     const item = document.createElement('div');
     item.className = 'dashboard-course-item';
 
-    const titleWrap = document.createElement('div');
-    const title = document.createElement('span');
+    const header = document.createElement('div');
+    header.className = 'dashboard-course-item-header';
+
+    const icon = document.createElement('div');
+    icon.className = 'dashboard-course-icon';
+    icon.textContent = '🎓';
+
+    const status = document.createElement('span');
+    status.className = 'dashboard-course-status-pill';
+    status.textContent = 'Enrolled';
+
+    header.append(icon, status);
+
+    const body = document.createElement('div');
+    body.className = 'dashboard-course-body';
+
+    const title = document.createElement('h3');
     title.className = 'dashboard-course-title';
     title.textContent = purchase.courseTitle || `Course #${purchase.courseId}`;
 
-    const sub = document.createElement('span');
-    sub.className = 'dashboard-course-cat';
+    const sub = document.createElement('p');
+    sub.className = 'dashboard-course-date';
     const date = purchase.purchaseDate ? new Date(purchase.purchaseDate) : null;
     sub.textContent = date && !Number.isNaN(date.getTime())
-      ? `Purchased on ${date.toLocaleDateString()}`
-      : 'Purchased';
+      ? `Purchased on ${date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`
+      : 'Active Enrollment';
 
-    titleWrap.append(title, sub);
-
-    const status = document.createElement('span');
-    status.className = 'dashboard-course-arrow';
-    status.textContent = 'Enrolled';
+    body.append(title, sub);
 
     const actions = document.createElement('div');
     actions.className = 'dashboard-course-actions';
@@ -863,11 +874,19 @@ function renderPurchases(purchases) {
     const open = document.createElement('a');
     open.className = 'dashboard-course-action-btn';
     open.href = `/courses/${encodeURIComponent(purchase.courseId)}`;
-    open.textContent = 'Open';
+    open.textContent = 'Curriculum';
 
-    actions.append(open);
+    const launchLms = document.createElement('button');
+    launchLms.type = 'button';
+    launchLms.className = 'dashboard-btn-lms';
+    launchLms.innerHTML = 'Go to LMS &rarr;';
+    launchLms.addEventListener('click', () => {
+      goToLms().catch((err) => console.error(err));
+    });
 
-    item.append(titleWrap, status, actions);
+    actions.append(open, launchLms);
+
+    item.append(header, body, actions);
     fragment.appendChild(item);
   });
 
