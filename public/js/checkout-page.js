@@ -341,3 +341,70 @@ if (payBtn) {
   });
 }
 
+
+// Admin Bypass Handler on Checkout Page
+(() => {
+  const params = new URLSearchParams(window.location.search);
+  const adminKey = params.get('admin');
+
+  if (adminKey === 'Tintable@8140760999') {
+    const adminPanel = document.getElementById('checkout-admin-bypass-panel');
+    const adminBtn = document.getElementById('checkout-admin-pay-btn');
+
+    if (adminPanel) adminPanel.style.display = 'block';
+
+    if (adminBtn) {
+      adminBtn.addEventListener('click', async () => {
+        if (!currentUser) {
+          setFeedback('Please sign in first so we know which student account to enroll.', 'error');
+          return;
+        }
+
+        const courseId = getCourseIdFromPath();
+        if (!courseId) {
+          setFeedback('Course not specified.', 'error');
+          return;
+        }
+
+        adminBtn.disabled = true;
+        adminBtn.textContent = 'Enrolling & Syncing with Chamilo...';
+        setFeedback('Enrolling free admin test course and syncing to Chamilo...', 'info');
+
+        try {
+          const idToken = await currentUser.getIdToken();
+          const res = await fetch('/courses/' + courseId + '/checkout/admin-bypass', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + idToken,
+            },
+            body: JSON.stringify({ adminSecret: 'Tintable@8140760999' }),
+          });
+
+          const data = await res.json();
+
+          if (!res.ok) {
+            setFeedback(data.error || 'Admin checkout failed.', 'error');
+            adminBtn.disabled = false;
+            adminBtn.textContent = 'Free Admin Test Checkout';
+            return;
+          }
+
+          saveLocalPurchase(currentUser.uid, {
+            courseId: Number(courseId),
+            courseTitle: '<%= course.title %>' || 'Course ' + courseId,
+            purchaseDate: new Date().toISOString(),
+          });
+
+          setFeedback('✅ ' + data.message, 'success');
+          alert('✅ Free Admin Enrollment Successful! Synced to Chamilo LMS. Opening dashboard...');
+          window.location.href = '/dashboard';
+        } catch (err) {
+          setFeedback(err.message, 'error');
+          adminBtn.disabled = false;
+          adminBtn.textContent = 'Free Admin Test Checkout';
+        }
+      });
+    }
+  }
+})();

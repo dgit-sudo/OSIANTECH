@@ -171,9 +171,15 @@ const feeValue = Number(course.displayFee || (course.price ? parseInt(String(cou
           <strong class="cd-price" id="course-fee-display" data-fee="<%= feeValue %>">INR <%= feeValue.toLocaleString('en-IN') %></strong>
           <span class="cd-price-note">Live 1-on-1 private training with dedicated mentor</span>
         </div>
+        
         <div class="cd-card-actions">
           <a href="/checkout/<%= course.id %>" class="btn btn-primary btn-block">Buy now</a>
           <a href="https://wa.me/919624284999" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-block">Ask an advisor</a>
+          <div id="admin-bypass-container" style="display:none; margin-top: 14px; padding: 14px; background: #fff7ed; border: 2px dashed #ff7a00; border-radius: 12px; text-align: center;">
+            <span style="display:block; font-weight:800; color:#ea580c; font-size:0.9rem; margin-bottom:8px;">⚡ Admin Test Mode</span>
+            <button type="button" id="admin-free-checkout-btn" class="btn btn-primary btn-block" style="background:#ea580c; border-color:#ea580c;">Enroll for Free (Admin Bypass)</button>
+            <div id="admin-bypass-status" style="font-size:0.85rem; margin-top:8px; font-weight:700;"></div>
+          </div>
         </div>
         <ul class="cd-card-specs">
           <li><span>Duration</span><strong><%= course.duration || 'Flexible' %></strong></li>

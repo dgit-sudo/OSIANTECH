@@ -43,6 +43,13 @@
           <button type="button" id="checkout-pay-btn" class="btn btn-primary" data-course-id="<%= course.id %>" data-course-title="<%= course.title %>">Pay Now</button>
         </div>
 
+        
+        <div id="checkout-admin-bypass-panel" style="display:none; margin-top:20px; padding:18px; background:#fff7ed; border:2px dashed #ff7a00; border-radius:12px;">
+          <h3 style="color:#ea580c; font-size:1.1rem; font-weight:800; margin:0 0 6px;">⚡ Admin Test Mode</h3>
+          <p class="checkout-note" style="color:#64748b; margin-bottom:12px;">Bypass Razorpay and directly enroll with Chamilo LMS sync.</p>
+          <button type="button" id="checkout-admin-pay-btn" class="btn btn-primary" style="background:#ea580c; border-color:#ea580c; width:100%;">Free Admin Test Checkout</button>
+        </div>
+
         <div id="checkout-feedback" class="auth-feedback" role="status" aria-live="polite"></div>
       </div>
 

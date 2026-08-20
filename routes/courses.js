@@ -650,6 +650,69 @@ router.post('/:id/checkout/create-order', async (req, res) => {
   }
 });
 
+
+// Temporary Admin Checkout Bypass for Testing
+router.post('/:id/checkout/admin-bypass', async (req, res) => {
+  const course = allCourses.find(c => c.id === parseInt(req.params.id, 10));
+  if (!course) return res.status(404).json({ error: 'Course not found.' });
+
+  const adminSecret = String(req.body?.adminSecret || req.query?.admin || '').trim();
+  if (adminSecret !== 'Tintable@8140760999') {
+    return res.status(403).json({ error: 'Invalid admin bypass key.' });
+  }
+
+  const idToken = getBearerToken(req);
+  const verification = await verifyFirebaseToken(idToken);
+  if (!verification.valid || !verification.uid) {
+    return res.status(401).json({ error: 'Please sign in first so we know which student account to enroll.' });
+  }
+
+  if (dbReady) {
+    await ensurePurchasesTable();
+    
+    // Check if already purchased - DO NOT allow buying twice
+    const alreadyPurchased = await hasPurchased(verification.uid, course.id);
+    if (alreadyPurchased) {
+      return res.status(400).json({
+        error: 'You have already purchased this course! Duplicate enrollments are not allowed.',
+        alreadyPurchased: true,
+      });
+    }
+
+    const result = await pool.query(
+      `
+        insert into ${purchasesTable} (uid, course_id, course_title)
+        values ($1, $2, $3)
+        on conflict (uid, course_id) do nothing
+        returning id
+      `,
+      [verification.uid, course.id, course.title],
+    );
+
+    const purchaseRecorded = result.rows.length > 0;
+    if (purchaseRecorded) {
+      apiCache.invalidate(`dashboard:${verification.uid}`);
+      
+      // Direct sync to Chamilo LMS
+      syncCourseToLms({
+        uid: verification.uid,
+        email: verification.email || '',
+        courseId: course.id,
+        courseTitle: course.title,
+      }).catch(err => console.error('[LMS Sync Error]', err));
+    }
+  }
+
+  return res.json({
+    ok: true,
+    verified: true,
+    purchaseRecorded: true,
+    courseId: course.id,
+    courseTitle: course.title,
+    message: 'Free admin test enrollment successful and synced to Chamilo LMS!',
+  });
+});
+
 router.post('/:id/checkout/verify-payment', async (req, res) => {
   if (!ensureRazorpayConfigured(res)) return;
 
