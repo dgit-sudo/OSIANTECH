@@ -424,28 +424,35 @@ function normalizeForSearch(text = '') {
 
 
 router.get('/', (req, res) => {
-  const { category } = req.query;
+  const reqCategory = String(req.query.category || '').trim();
   const searchQuery = String(req.query.q || '').trim();
   const normalizedSearch = normalizeForSearch(searchQuery);
   const searchTokens = normalizedSearch ? normalizedSearch.split(' ') : [];
 
-  let courses = category ? allCourses.filter(c => c.category === category) : allCourses;
+  let courses = allCourses;
+
+  if (reqCategory && reqCategory.toLowerCase() !== 'all') {
+    const normReq = reqCategory.toLowerCase().replace(/&amp;/g, '&').replace(/[^a-z0-9]+/g, ' ').trim();
+    courses = allCourses.filter((c) => {
+      const cNorm = String(c.category || '').toLowerCase().replace(/&amp;/g, '&').replace(/[^a-z0-9]+/g, ' ').trim();
+      return cNorm === normReq || cNorm.includes(normReq) || normReq.includes(cNorm);
+    });
+  }
 
   if (searchTokens.length) {
     courses = courses.filter((course) => {
       const haystack = normalizeForSearch(course.title);
-
       return searchTokens.every((token) => haystack.includes(token));
     });
   }
 
   const categories = [...new Set(allCourses.map(c => c.category))];
   res.render('courses', {
-    title: 'Courses – Osian Academy',
+    title: reqCategory && reqCategory !== 'All' ? `${reqCategory} Courses - Osian Academy` : 'Courses - Osian Academy',
     page: 'courses',
     courses,
     categories,
-    activeCategory: category || 'All',
+    activeCategory: reqCategory || 'All',
     searchQuery,
     totalCourses: allCourses.length,
     shownCourses: courses.length,

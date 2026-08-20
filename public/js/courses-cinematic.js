@@ -44,7 +44,7 @@
   const staggerGroups = document.querySelectorAll('[data-reveal-stagger]');
   if (staggerGroups.length) {
     staggerGroups.forEach((group) => {
-      Array.from(group.children).forEach((child, i) => child.style.setProperty('--i', i));
+      Array.from(group.children).forEach((child, i) => child.style.setProperty('--i', Math.min(i % 9, 8)));
     });
     if (prefersReducedMotion) {
       staggerGroups.forEach((g) => g.classList.add('is-visible'));
@@ -55,7 +55,7 @@
           entry.target.classList.add('is-visible');
           io2.unobserve(entry.target);
         });
-      }, { threshold: 0.08, rootMargin: '0px 0px -50px 0px' });
+      }, { threshold: 0.01, rootMargin: '0px 0px 100px 0px' });
       staggerGroups.forEach((g) => io2.observe(g));
     }
   }
