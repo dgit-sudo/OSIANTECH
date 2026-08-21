@@ -358,12 +358,12 @@ foreach ($modules as $idx => $mod) {
     ");
     $stmtRl->execute([$nodeId, $order]);
     
-    // Create c_document (no c_id column)
+    // Create c_document (fields: resource_node_id, title, filetype, readonly, template)
     $stmtDoc = $pdo->prepare("
-        INSERT INTO c_document (resource_node_id, path, title, filetype)
-        VALUES (?, ?, ?, 'file')
+        INSERT INTO c_document (resource_node_id, title, filetype, readonly, template)
+        VALUES (?, ?, 'file', 0, 0)
     ");
-    $stmtDoc->execute([$nodeId, '/' . $filename, $title]);
+    $stmtDoc->execute([$nodeId, $title]);
     $docIid = $pdo->lastInsertId();
     
     // Create c_lp_item (path = $docIid)
