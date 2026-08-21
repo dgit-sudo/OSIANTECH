@@ -69,8 +69,8 @@ $stmtInsertDesc->execute([$descNodeId, $descContent]);
 echo "✅ Set exactly ONE clean Course Description for Course 6 (Node #$descNodeId)!\n";
 
 echo "\n=== 2. REMOVING STANDALONE DOCUMENTS FROM DOCUMENTS TOOL ===\n";
-// Delete all old standalone c_document rows for Course 6
-$pdo->exec("DELETE FROM c_document WHERE c_id = 6");
+// Delete all old standalone c_document rows for Course 6 nodes
+$pdo->exec("DELETE FROM c_document WHERE resource_node_id IN (SELECT id FROM resource_node WHERE parent_id = 144)");
 // Also set visibility = 0 for any document links of course 6 so documents tool is empty
 $pdo->exec("
     UPDATE resource_link rl
@@ -353,20 +353,20 @@ foreach ($modules as $idx => $mod) {
     ");
     $stmtRl->execute([$nodeId]);
     
-    // Create c_document
+    // Create c_document (no c_id column)
     $stmtDoc = $pdo->prepare("
-        INSERT INTO c_document (resource_node_id, c_id, path, title, filetype)
-        VALUES (?, 6, ?, ?, 'file')
+        INSERT INTO c_document (resource_node_id, path, title, filetype)
+        VALUES (?, ?, ?, 'file')
     ");
     $stmtDoc->execute([$nodeId, '/' . $filename, $title]);
     $docIid = $pdo->lastInsertId();
     
-    // Create c_lp_item
+    // Create c_lp_item (path = $docIid)
     $stmtLpItem = $pdo->prepare("
         INSERT INTO c_lp_item (lp_id, item_type, ref, title, path, display_order, parent_item_id, previous_item_id, next_item_id, max_score)
         VALUES (?, 'document', ?, ?, ?, ?, 0, ?, 0, 100)
     ");
-    $stmtLpItem->execute([$lpId, $nodeId, $title, $docIid, $order, $prevItemId]);
+    $stmtLpItem->execute([$lpId, $nodeId, $title, (string)$docIid, $order, $prevItemId]);
     $newItemId = $pdo->lastInsertId();
     
     if ($prevItemId > 0) {
