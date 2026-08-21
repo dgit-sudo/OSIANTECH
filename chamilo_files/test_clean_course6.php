@@ -368,8 +368,21 @@ foreach ($modules as $idx => $mod) {
     
     // Create c_lp_item (path = $docIid)
     $stmtLpItem = $pdo->prepare("
-        INSERT INTO c_lp_item (lp_id, item_type, ref, title, description, path, min_score, max_score, mastery_score, parent_item_id, previous_item_id, next_item_id, display_order, prerequisite, audio, max_time_allowed)
-        VALUES (?, 'document', ?, ?, '', ?, 0, 100, 0, 0, ?, 0, ?, '', '', 0)
+        INSERT INTO c_lp_item (
+            lp_id, item_type, ref, title, description, path,
+            min_score, max_score, mastery_score, parent_item_id,
+            previous_item_id, next_item_id, display_order, prerequisite,
+            parameters, launch_data, max_time_allowed, terms, search_did,
+            audio, prerequisite_min_score, prerequisite_max_score, lvl,
+            duration, export_allowed
+        ) VALUES (
+            ?, 'document', ?, ?, '', ?,
+            0, 100, 0, 0,
+            ?, 0, ?, '',
+            '', '', '', '', 0,
+            '', 0, 0, 0,
+            0, 0
+        )
     ");
     $stmtLpItem->execute([$lpId, $nodeId, $title, (string)$docIid, $prevItemId, $order]);
     $newItemId = $pdo->lastInsertId();
