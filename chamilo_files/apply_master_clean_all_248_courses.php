@@ -44,37 +44,33 @@ $pdo->exec("
 ");
 echo "✅ Hidden all standalone files from Documents tools.\n";
 
+// Load catalog mapped by normalized title
+$coursesJson = json_decode(file_get_contents('/var/www/html/chamilo/courses_data.json'), true) ?: [];
+$catByTitle = [];
+foreach ($coursesJson as $catItem) {
+    $catByTitle[strtolower(trim($catItem['title'] ?? ''))] = $catItem;
+}
+
 // Load all courses from database
 $stmtCourses = $pdo->query("SELECT id, code, title, resource_node_id FROM course ORDER BY id ASC");
 $dbCourses = $stmtCourses->fetchAll(PDO::FETCH_ASSOC);
-$byTitle = [];
-foreach ($dbCourses as $dbc) {
-    $byTitle[strtolower(trim($dbc['title']))] = $dbc;
-}
-
-$coursesJson = json_decode(file_get_contents('/var/www/html/chamilo/courses_data.json'), true);
-if (!$coursesJson) {
-    echo "courses_data.json not found on disk, running with DB courses...\n";
-}
-
-$coursesList = $coursesJson ?: array_values($dbCourses);
 
 $processed = 0;
+$seenCourseIds = [];
 
-foreach ($coursesList as $cData) {
-    $cTitle = trim($cData['title'] ?? '');
-    $cCategory = $cData['category'] ?? 'Technology & Professional Skills';
-    $cDesc = $cData['description'] ?? 'Master industry-standard skills and practical workflows in this comprehensive certification curriculum.';
-    
-    $k = strtolower($cTitle);
-    $courseDb = $byTitle[$k] ?? null;
-    if (!$courseDb) {
+foreach ($dbCourses as $courseDb) {
+    $courseId = (int)$courseDb['id'];
+    if (isset($seenCourseIds[$courseId])) {
         continue;
     }
+    $seenCourseIds[$courseId] = true;
     
-    $courseId = (int)$courseDb['id'];
+    $courseTitle = trim($courseDb['title']);
     $rootNodeId = (int)$courseDb['resource_node_id'];
-    $courseTitle = $courseDb['title'];
+    
+    $catItem = $catByTitle[strtolower($courseTitle)] ?? [];
+    $cCategory = $catItem['category'] ?? 'Technology & Professional Skills';
+    $cDesc = $catItem['description'] ?? 'Master industry-standard skills, practical workflows, and production techniques in this comprehensive certification curriculum.';
     
     // 1. Find or create Course Description node
     $stmtNode = $pdo->prepare("SELECT id FROM resource_node WHERE parent_id = ? AND (title = 'Course Overview' OR title = 'course_description' OR resource_type_id = 13) LIMIT 1");
@@ -134,7 +130,11 @@ foreach ($coursesList as $cData) {
 </div>
 HTML;
     
-    $stmtInsertDesc = $pdo->prepare("INSERT INTO c_course_description (resource_node_id, title, content, description_type, progress) VALUES (?, 'Course Overview & Objectives', ?, 1, 0)");
+    $stmtInsertDesc = $pdo->prepare("
+        INSERT INTO c_course_description (resource_node_id, title, content, description_type, progress)
+        VALUES (?, 'Course Overview & Objectives', ?, 1, 0)
+        ON DUPLICATE KEY UPDATE content = VALUES(content), title = VALUES(title)
+    ");
     $stmtInsertDesc->execute([$descNodeId, $cleanDescHtml]);
     
     // 2. Find or create Learning Path node
@@ -350,8 +350,8 @@ HTML;
     }
     
     $processed++;
-    if ($processed % 25 === 0 || $processed === count($coursesList)) {
-        echo "  ✨ Processed $processed / " . count($coursesList) . " courses...\n";
+    if ($processed % 25 === 0 || $processed === count($dbCourses)) {
+        echo "  ✨ Processed $processed / " . count($dbCourses) . " courses...\n";
     }
 }
 
