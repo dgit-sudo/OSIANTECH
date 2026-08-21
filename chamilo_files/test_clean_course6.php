@@ -335,8 +335,8 @@ foreach ($modules as $idx => $mod) {
     
     // Create ResourceNode for this chapter document (resource_type_id = 17)
     $stmtNode = $pdo->prepare("
-        INSERT INTO resource_node (creator_id, resource_type_id, title, slug, parent_id, created_at, updated_at)
-        VALUES (1, 17, ?, ?, 144, NOW(), NOW())
+        INSERT INTO resource_node (creator_id, resource_type_id, title, slug, public, parent_id, created_at, updated_at)
+        VALUES (1, 17, ?, ?, 0, 144, NOW(), NOW())
     ");
     $stmtNode->execute([$title, $slug]);
     $nodeId = $pdo->lastInsertId();
