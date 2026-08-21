@@ -351,12 +351,12 @@ foreach ($modules as $idx => $mod) {
     ");
     $stmtRf->execute([$nodeId, $filename, $title . '.html', strlen($content)]);
     
-    // Create ResourceLink (visibility = 0 so it does NOT appear in Documents tool!)
+    // Create ResourceLink (visibility = 0, display_order = $order so it does NOT appear in Documents tool!)
     $stmtRl = $pdo->prepare("
-        INSERT INTO resource_link (resource_node_id, visibility, resource_type_group, c_id, created_at, updated_at)
-        VALUES (?, 0, 0, 6, NOW(), NOW())
+        INSERT INTO resource_link (resource_node_id, visibility, display_order, resource_type_group, c_id, created_at, updated_at)
+        VALUES (?, 0, ?, 0, 6, NOW(), NOW())
     ");
-    $stmtRl->execute([$nodeId]);
+    $stmtRl->execute([$nodeId, $order]);
     
     // Create c_document (no c_id column)
     $stmtDoc = $pdo->prepare("
