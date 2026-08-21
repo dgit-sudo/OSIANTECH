@@ -9,7 +9,7 @@ $lp = $lpRepo->find(249);
 
 echo "LP found: " . ($lp ? $lp->getTitle() : "NULL") . "\n";
 
-$oLP = new learnpath('ORCLADMIN1', 249, 1);
+$oLP = new learnpath($lp, 1);
 echo "TOC:\n";
 print_r($oLP->get_toc());
 
