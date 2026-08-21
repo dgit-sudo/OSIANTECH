@@ -168,7 +168,25 @@ HTML;
     $lpId = $stmtLp->fetchColumn();
     
     if (!$lpId) {
-        $stmtInsertLp = $pdo->prepare("INSERT INTO c_lp (resource_node_id, lp_type, title, description, path, content_maker, author, use_max_score) VALUES (?, 2, ?, ?, '', 'Chamilo 2.0 Native LMS', 'OSIAN Tech Academy', 100)");
+        $stmtInsertLp = $pdo->prepare("
+            INSERT INTO c_lp (
+                resource_node_id, lp_type, title, description, path,
+                force_commit, default_view_mod, default_encoding, content_maker,
+                content_local, content_license, prevent_reinit, js_lib, debug,
+                theme, author, prerequisite, hide_toc_frame, seriousgame_mode,
+                use_max_score, autolaunch, max_attempts, subscribe_users,
+                created_on, modified_on, accumulate_scorm_time, accumulate_work_time,
+                next_lp_id, subscribe_user_by_date, auto_forward_video
+            ) VALUES (
+                ?, 2, ?, ?, '',
+                0, 'embedded', 'UTF-8', 'Chamilo 2.0 Native LMS',
+                'local', '', 1, '', 0,
+                '', 'OSIAN Tech Academy', 0, 0, 0,
+                1, 0, 0, 0,
+                NOW(), NOW(), 1, 0,
+                0, 0, 0
+            )
+        ");
         $stmtInsertLp->execute([$lpNodeId, $cTitle . ' — Complete Learning Path', $cDesc]);
         $lpId = $pdo->lastInsertId();
     } else {
