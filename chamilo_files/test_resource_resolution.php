@@ -1,5 +1,8 @@
 <?php
 require_once '/var/www/html/chamilo/vendor/autoload.php';
+if (file_exists('/var/www/html/chamilo/src/Kernel.php')) {
+    require_once '/var/www/html/chamilo/src/Kernel.php';
+}
 
 use Symfony\Component\Dotenv\Dotenv;
 
@@ -29,41 +32,47 @@ try {
     echo "✅ Updated all resource_file records: access_url_id = NULL\n";
 
     // 2. Check ResourceFile entity in Symfony
-    $kernel = new \App\Kernel('prod', false);
-    $kernel->boot();
-    $container = $kernel->getContainer();
+    $kernelClass = class_exists('\App\Kernel') ? '\App\Kernel' : (class_exists('\Chamilo\Kernel') ? '\Chamilo\Kernel' : null);
+    
+    if ($kernelClass) {
+        $kernel = new $kernelClass('prod', false);
+        $kernel->boot();
+        $container = $kernel->getContainer();
 
-    $em = $container->get('doctrine.orm.entity_manager');
-    $resFileHelper = $container->get(\Chamilo\CoreBundle\Helpers\ResourceFileHelper::class);
-    $nodeRepo = $container->get(\Chamilo\CoreBundle\Repository\ResourceNodeRepository::class);
+        $em = $container->get('doctrine.orm.entity_manager');
+        $resFileHelper = $container->get(\Chamilo\CoreBundle\Helpers\ResourceFileHelper::class);
+        $nodeRepo = $container->get(\Chamilo\CoreBundle\Repository\ResourceNodeRepository::class);
 
-    $node = $em->getRepository(\Chamilo\CoreBundle\Entity\ResourceNode::class)->find(7341);
-    if (!$node) {
-        $node = $em->getRepository(\Chamilo\CoreBundle\Entity\ResourceNode::class)->findOneBy(['resourceType' => 13]);
-    }
+        $node = $em->getRepository(\Chamilo\CoreBundle\Entity\ResourceNode::class)->find(7341);
+        if (!$node) {
+            $node = $em->getRepository(\Chamilo\CoreBundle\Entity\ResourceNode::class)->findOneBy(['resourceType' => 13]);
+        }
 
-    if ($node) {
-        echo "Found ResourceNode #{$node->getId()} ('{$node->getTitle()}')\n";
-        echo "hasResourceFile: " . ($node->hasResourceFile() ? 'YES' : 'NO') . "\n";
-        echo "ResourceFiles count: " . $node->getResourceFiles()->count() . "\n";
+        if ($node) {
+            echo "Found ResourceNode #{$node->getId()} ('{$node->getTitle()}')\n";
+            echo "hasResourceFile: " . ($node->hasResourceFile() ? 'YES' : 'NO') . "\n";
+            echo "ResourceFiles count: " . $node->getResourceFiles()->count() . "\n";
 
-        $resFile = $resFileHelper->resolveResourceFileByAccessUrl($node);
-        if ($resFile) {
-            echo "✅ resolveResourceFileByAccessUrl SUCCESS! Found ResourceFile #{$resFile->getId()} (Title: '{$resFile->getTitle()}', OriginalName: '{$resFile->getOriginalName()}')\n";
-            try {
-                $fileName = $nodeRepo->getFilename($resFile);
-                echo "Resolved Flysystem FileName: '$fileName'\n";
-                $content = $nodeRepo->getResourceNodeFileContent($node, $resFile);
-                echo "✅ File Content Length: " . strlen($content) . " bytes\n";
-                echo "Preview: " . substr(strip_tags($content), 0, 100) . "...\n";
-            } catch (\Throwable $e) {
-                echo "❌ File read error: " . $e->getMessage() . "\n";
+            $resFile = $resFileHelper->resolveResourceFileByAccessUrl($node);
+            if ($resFile) {
+                echo "✅ resolveResourceFileByAccessUrl SUCCESS! Found ResourceFile #{$resFile->getId()} (Title: '{$resFile->getTitle()}', OriginalName: '{$resFile->getOriginalName()}')\n";
+                try {
+                    $fileName = $nodeRepo->getFilename($resFile);
+                    echo "Resolved Flysystem FileName: '$fileName'\n";
+                    $content = $nodeRepo->getResourceNodeFileContent($node, $resFile);
+                    echo "✅ File Content Length: " . strlen($content) . " bytes\n";
+                    echo "Preview: " . substr(strip_tags($content), 0, 100) . "...\n";
+                } catch (\Throwable $e) {
+                    echo "❌ File read error: " . $e->getMessage() . "\n";
+                }
+            } else {
+                echo "❌ resolveResourceFileByAccessUrl returned NULL\n";
             }
-        } else {
-            echo "❌ resolveResourceFileByAccessUrl returned NULL\n";
         }
     } else {
-        echo "No document node found.\n";
+        echo "Kernel class not found directly, checking DB state:\n";
+        $stmt = $pdo->query("SELECT id, resource_node_id, title, original_name, access_url_id FROM resource_file LIMIT 5");
+        print_r($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
 } catch (Exception $e) {
