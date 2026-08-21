@@ -1,0 +1,58 @@
+<?php
+require_once '/var/www/html/chamilo/vendor/autoload.php';
+
+use Symfony\Component\Dotenv\Dotenv;
+
+$dotenv = new Dotenv();
+if (file_exists('/var/www/html/chamilo/.env')) {
+    $dotenv->load('/var/www/html/chamilo/.env');
+}
+if (file_exists('/var/www/html/chamilo/.env.local')) {
+    $dotenv->load('/var/www/html/chamilo/.env.local');
+}
+
+$dbUrl = $_ENV['DATABASE_URL'] ?? getenv('DATABASE_URL') ?? '';
+$parts = parse_url($dbUrl);
+$host = $parts['host'] ?? '127.0.0.1';
+$port = $parts['port'] ?? 3306;
+$user = $parts['user'] ?? 'root';
+$pass = $parts['pass'] ?? '';
+$db   = ltrim($parts['path'] ?? '', '/');
+
+try {
+    $pdo = new PDO("mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4", $user, $pass, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+    ]);
+
+    echo "=== SCHEMA FOR c_document ===\n";
+    $stmt = $pdo->query("DESCRIBE c_document");
+    while ($r = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        echo "  " . str_pad($r['Field'], 25) . " " . $r['Type'] . "\n";
+    }
+
+    echo "\n=== EXISTING DOCUMENTS IN DB ===\n";
+    $stmt = $pdo->query("
+        SELECT cd.*, rn.title as node_title, rn.path as node_path, rn.uuid 
+        FROM c_document cd 
+        JOIN resource_node rn ON rn.id = cd.resource_node_id 
+        LIMIT 5
+    ");
+    while ($r = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        print_r($r);
+    }
+
+    echo "\n=== CHECKING DOCUMENT DIRECTORIES ON DISK ===\n";
+    $paths = [
+        '/var/www/html/chamilo/app/courses',
+        '/var/www/html/chamilo/public/courses',
+        '/var/www/html/chamilo/var/courses',
+        '/var/www/html/chamilo/var/upload',
+        '/var/www/html/chamilo/public/upload'
+    ];
+    foreach ($paths as $p) {
+        echo "$p: " . (is_dir($p) ? "EXISTS (dir)" : "NOT FOUND") . "\n";
+    }
+
+} catch (Exception $e) {
+    echo "❌ Error: " . $e->getMessage() . "\n";
+}
