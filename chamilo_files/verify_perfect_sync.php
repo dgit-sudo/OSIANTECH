@@ -5,14 +5,31 @@ require_once '/var/www/html/chamilo/public/main/inc/global.inc.php';
 require_once '/var/www/html/chamilo/public/main/lp/learnpath.class.php';
 require_once '/var/www/html/chamilo/public/main/lp/learnpathItem.class.php';
 
+use Symfony\Component\Dotenv\Dotenv;
 use Chamilo\CoreBundle\Framework\Container;
+
+$dotenv = new Dotenv();
+if (file_exists('/var/www/html/chamilo/.env')) {
+    $dotenv->load('/var/www/html/chamilo/.env');
+}
+if (file_exists('/var/www/html/chamilo/.env.local')) {
+    $dotenv->load('/var/www/html/chamilo/.env.local');
+}
+
+$dbUrl = $_ENV['DATABASE_URL'] ?? getenv('DATABASE_URL') ?? '';
+$parts = parse_url($dbUrl);
+$host = $parts['host'] ?? '127.0.0.1';
+$port = $parts['port'] ?? 3306;
+$user = $parts['user'] ?? 'root';
+$pass = $parts['pass'] ?? '';
+$db   = ltrim($parts['path'] ?? '', '/');
+
+$pdo = new PDO("mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4", $user, $pass, [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+]);
 
 $em = \Database::getManager();
 $lpRepo = Container::getLpRepository();
-
-$pdo = new PDO("mysql:host=127.0.0.1;port=3306;dbname=chamilo;charset=utf8mb4", 'root', '', [
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-]);
 
 echo "=== DEFINITIVE VERIFICATION SUMMARY ===\n";
 
