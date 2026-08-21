@@ -321,7 +321,7 @@ HTML;
         
         $bulletHtml = '';
         foreach ($mod['points'] as $pt) {
-            $bulletHtml .= "<li style="margin-bottom: 10px; color: #334155; font-size: 15px; line-height: 1.7;">$pt</li>";
+            $bulletHtml .= '<li style="margin-bottom: 10px; color: #334155; font-size: 15px; line-height: 1.7;">' . $pt . '</li>';
         }
         
         $modHtml = <<<HTML
