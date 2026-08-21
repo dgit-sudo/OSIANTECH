@@ -1,4 +1,5 @@
 <?php
+@session_start();
 require_once '/var/www/html/chamilo/vendor/autoload.php';
 require_once '/var/www/html/chamilo/public/main/inc/global.inc.php';
 require_once '/var/www/html/chamilo/public/main/lp/learnpath.class.php';
@@ -38,7 +39,7 @@ $courseTitle = $c['title'];
 // Delete all old LPs for course 6
 $pdo->exec("SET FOREIGN_KEY_CHECKS = 0");
 
-$oldLps = $pdo->query("SELECT iid FROM c_lp WHERE resource_node_id IN (SELECT id FROM resource_node WHERE parent_id = $rootNodeId) OR iid IN (SELECT lp_id FROM c_lp_item WHERE lp_id IN (1, 249))")->fetchAll(PDO::FETCH_COLUMN);
+$oldLps = $pdo->query("SELECT iid FROM c_lp WHERE resource_node_id IN (SELECT id FROM resource_node WHERE parent_id = $rootNodeId)")->fetchAll(PDO::FETCH_COLUMN);
 if (!empty($oldLps)) {
     $lpIdsStr = implode(',', $oldLps);
     $pdo->exec("DELETE FROM c_lp_item_view WHERE lp_item_id IN (SELECT iid FROM c_lp_item WHERE lp_id IN ($lpIdsStr))");
@@ -230,7 +231,10 @@ HTML;
 
 echo "Created 5 modules! First module item id: $firstModuleItemId\n";
 
-// Test learnpath object
+// Test Doctrine entity reload & learnpath
+$em = Database::getManager();
+$em->clear();
+
 $courseInfo = api_get_course_info_by_id($courseId);
 $lpRepo = Container::getLpRepository();
 $lpEntity = $lpRepo->find($lpId);
