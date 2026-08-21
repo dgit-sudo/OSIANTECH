@@ -47,10 +47,9 @@ echo "✅ Hidden all standalone files from Documents tools.\n";
 // Load all courses from database
 $stmtCourses = $pdo->query("SELECT id, code, title, resource_node_id FROM course ORDER BY id ASC");
 $dbCourses = $stmtCourses->fetchAll(PDO::FETCH_ASSOC);
-$dbCourseMap = [];
+$byTitle = [];
 foreach ($dbCourses as $dbc) {
-    $dbCourseMap[$dbc['id']] = $dbc;
-    $dbCourseMap[strtoupper(trim($dbc['code']))] = $dbc;
+    $byTitle[strtolower(trim($dbc['title']))] = $dbc;
 }
 
 $coursesJson = json_decode(file_get_contents('/var/www/html/chamilo/courses_data.json'), true);
@@ -63,19 +62,19 @@ $coursesList = $coursesJson ?: array_values($dbCourses);
 $processed = 0;
 
 foreach ($coursesList as $cData) {
-    $cId = isset($cData['id']) ? (int)$cData['id'] : 0;
-    $cTitle = $cData['title'] ?? 'Course';
-    $cCode = strtoupper(trim($cData['code'] ?? ''));
+    $cTitle = trim($cData['title'] ?? '');
     $cCategory = $cData['category'] ?? 'Technology & Professional Skills';
     $cDesc = $cData['description'] ?? 'Master industry-standard skills and practical workflows in this comprehensive certification curriculum.';
     
-    $courseDb = $dbCourseMap[$cId] ?? $dbCourseMap[$cCode] ?? null;
+    $k = strtolower($cTitle);
+    $courseDb = $byTitle[$k] ?? null;
     if (!$courseDb) {
         continue;
     }
     
     $courseId = (int)$courseDb['id'];
     $rootNodeId = (int)$courseDb['resource_node_id'];
+    $courseTitle = $courseDb['title'];
     
     // 1. Find or create Course Description node
     $stmtNode = $pdo->prepare("SELECT id FROM resource_node WHERE parent_id = ? AND (title = 'Course Overview' OR title = 'course_description' OR resource_type_id = 13) LIMIT 1");
@@ -102,7 +101,7 @@ foreach ($coursesList as $cData) {
     }
     
     // Insert single clean description
-    $escTitle = htmlspecialchars($cTitle, ENT_QUOTES, 'UTF-8');
+    $escTitle = htmlspecialchars($courseTitle, ENT_QUOTES, 'UTF-8');
     $escDesc = htmlspecialchars($cDesc, ENT_QUOTES, 'UTF-8');
     $escCat = htmlspecialchars($cCategory, ENT_QUOTES, 'UTF-8');
     
@@ -147,7 +146,7 @@ HTML;
         $lpUuid = Uuid::v4()->toBinary();
         $lpSlug = 'c' . $courseId . '-learnpath';
         $stmtCreateLpNode = $pdo->prepare("INSERT INTO resource_node (uuid, creator_id, resource_type_id, title, slug, public, parent_id, created_at, updated_at) VALUES (?, 1, 39, ?, ?, 0, ?, NOW(), NOW())");
-        $stmtCreateLpNode->execute([$lpUuid, $cTitle . ' — Complete Learning Path', $lpSlug, $rootNodeId]);
+        $stmtCreateLpNode->execute([$lpUuid, $courseTitle . ' — Complete Learning Path', $lpSlug, $rootNodeId]);
         $lpNodeId = $pdo->lastInsertId();
     } else {
         $pdo->prepare("UPDATE resource_node SET resource_type_id = 39 WHERE id = ?")->execute([$lpNodeId]);
@@ -187,10 +186,10 @@ HTML;
                 0, 0, 0
             )
         ");
-        $stmtInsertLp->execute([$lpNodeId, $cTitle . ' — Complete Learning Path', $cDesc]);
+        $stmtInsertLp->execute([$lpNodeId, $courseTitle . ' — Complete Learning Path', $cDesc]);
         $lpId = $pdo->lastInsertId();
     } else {
-        $pdo->prepare("UPDATE c_lp SET resource_node_id = ?, title = ?, description = ? WHERE iid = ?")->execute([$lpNodeId, $cTitle . ' — Complete Learning Path', $cDesc, $lpId]);
+        $pdo->prepare("UPDATE c_lp SET resource_node_id = ?, title = ?, description = ? WHERE iid = ?")->execute([$lpNodeId, $courseTitle . ' — Complete Learning Path', $cDesc, $lpId]);
     }
     
     // 3. Create 5 sequential organized modules with dedicated Flysystem HTML documents
@@ -199,7 +198,7 @@ HTML;
             'num' => 1,
             'tag' => 'Fundamentals & Architecture',
             'badgeColor' => '#0284c7',
-            'summary' => "Gain a complete foundational understanding of $cTitle, core architecture, key principles, and essential workflows."
+            'summary' => "Gain a complete foundational understanding of $courseTitle, core architecture, key principles, and essential workflows."
         ],
         [
             'num' => 2,
