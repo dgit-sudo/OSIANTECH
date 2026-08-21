@@ -444,8 +444,8 @@ router.put('/:uid', async (req, res) => {
     ];
     await pool.query(userQuery, userValues);
 
-    apiCache.delete(`profile:${uid}`);
-    apiCache.delete(`dashboard:${uid}`);
+    apiCache.invalidate(`profile:${uid}`);
+    apiCache.invalidate(`dashboard:${uid}`);
 
     return res.json({ profile: mapProfileRow(profileRow) });
   } catch (error) {
