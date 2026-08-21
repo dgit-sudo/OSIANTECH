@@ -787,7 +787,10 @@ async function saveProfile(user, payload) {
   }
 
   if (!response.ok) {
-    throw new Error('Profile save failed.');
+    const errData = await response.json().catch(() => ({}));
+    const err = new Error(errData.error || 'Profile save failed.');
+    err.status = response.status;
+    throw err;
   }
 
   const data = await response.json();
@@ -1053,14 +1056,32 @@ if (profileForm) {
 
     try {
       setFeedback(gateFeedbackEl, 'Saving profile...', 'info');
+      if (saveProfileBtn) saveProfileBtn.disabled = true;
       const savedProfile = await saveProfile(user, payload);
-      if (nameEl) nameEl.textContent = savedProfile?.name || payload.name;
-      applyProfileToForm(settingsForm, savedProfile || payload);
-      setFeedback(gateFeedbackEl, 'Profile completed. Dashboard unlocked.', 'success');
+
+      // Immediately update client cache with completed profile
+      const finalProfile = savedProfile || { ...payload, completedProfile: true };
+      const updatedData = {
+        profile: finalProfile,
+        purchases: Array.isArray(purchasesCache) ? purchasesCache : []
+      };
+      setDashboardCache(user.uid, updatedData);
+
+      if (nameEl) nameEl.textContent = finalProfile.name || payload.name;
+      applyProfileToForm(profileForm, finalProfile);
+      applyProfileToForm(settingsForm, finalProfile);
+
+      setFeedback(gateFeedbackEl, 'Profile completed! Unlocking dashboard...', 'success');
       setFeedback(settingsFeedbackEl, '');
-      showDashboard('settings');
-    } catch (_error) {
-      setFeedback(gateFeedbackEl, 'Could not save profile. Please try again.', 'error');
+
+      setTimeout(() => {
+        showDashboard('overview');
+        if (saveProfileBtn) saveProfileBtn.disabled = false;
+      }, 300);
+    } catch (error) {
+      if (saveProfileBtn) saveProfileBtn.disabled = false;
+      console.error('[Dashboard] Save profile failed:', error);
+      setFeedback(gateFeedbackEl, error.message || 'Could not save profile. Please try again.', 'error');
     }
   });
 }
