@@ -41316,7 +41316,7 @@ JSON;
             ]);
             $lpId = (int) $pdo->lastInsertId();
 
-            // Seed Modules as LP Items
+            // Seed Modules as LP Items with NULL parent/root foreign keys
             $syllabus = $c['syllabus'] ?? [];
             if (empty($syllabus)) {
                 $syllabus = [
@@ -41338,7 +41338,7 @@ JSON;
                         ref, description, path, min_score, max_score,
                         mastery_score, display_order, launch_data, lvl, export_allowed
                     ) VALUES (
-                        ?, 0, 0, ?, 'module',
+                        ?, NULL, NULL, ?, 'module',
                         '', ?, '', 0, 100,
                         80, ?, '', 1, 1
                     )
