@@ -7,10 +7,9 @@ $courseInfo = api_get_course_info_by_id(6);
 $lpRepo = \Chamilo\CoreBundle\Framework\Container::getLpRepository();
 $lp = $lpRepo->find(249);
 
-echo "LP found: " . ($lp ? $lp->getTitle() : "NULL") . "\n";
-
 $oLP = new learnpath($lp, $courseInfo, 1);
-echo "TOC:\n";
+echo "LP found: " . ($lp ? $lp->getTitle() : "NULL") . "\n";
+echo "TOC count: " . count($oLP->get_toc()) . "\n";
 print_r($oLP->get_toc());
 
 echo "\nLink for item 1:\n";
