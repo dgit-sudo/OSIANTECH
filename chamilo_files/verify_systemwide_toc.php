@@ -19,8 +19,9 @@ foreach ($sampleCourseIds as $cid) {
         continue;
     }
     
+    $courseEntity = api_get_course_entity($cid);
     $courseTitle = $courseInfo['title'];
-    $lps = $lpRepo->findAllByCourse($cid);
+    $lps = $lpRepo->findAllByCourse($courseEntity);
     
     echo "--------------------------------------------------------\n";
     echo "Course $cid: $courseTitle\n";
