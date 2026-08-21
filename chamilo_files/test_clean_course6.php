@@ -82,7 +82,7 @@ echo "✅ Cleared and hidden standalone documents from Documents tool!\n";
 
 echo "\n=== 3. REBUILDING LEARNING PATH MODULES WITH RICH INTERACTIVE CONTENT ===\n";
 // Get LP for Course 6
-$stmtLp = $pdo->prepare("SELECT iid FROM c_lp WHERE resource_node_id IN (SELECT id FROM resource_node WHERE parent_id = 144) OR c_id = 6 LIMIT 1");
+$stmtLp = $pdo->prepare("SELECT iid FROM c_lp WHERE resource_node_id IN (SELECT id FROM resource_node WHERE parent_id = 144) LIMIT 1");
 $stmtLp->execute();
 $lpId = $stmtLp->fetchColumn();
 
