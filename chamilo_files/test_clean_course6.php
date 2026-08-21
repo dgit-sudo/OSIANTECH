@@ -310,7 +310,7 @@ HTML
     ]
 ];
 
-$prevItemId = 0;
+$prevItemId = null;
 $itemIds = [];
 
 foreach ($modules as $idx => $mod) {
@@ -377,8 +377,8 @@ foreach ($modules as $idx => $mod) {
             duration, export_allowed
         ) VALUES (
             ?, 'document', ?, ?, '', ?,
-            0, 100, 0, 0,
-            ?, 0, ?, '',
+            0, 100, 0, NULL,
+            ?, NULL, ?, '',
             '', '', '', '', 0,
             '', 0, 0, 0,
             0, 0
@@ -387,7 +387,7 @@ foreach ($modules as $idx => $mod) {
     $stmtLpItem->execute([$lpId, $nodeId, $title, (string)$docIid, $prevItemId, $order]);
     $newItemId = $pdo->lastInsertId();
     
-    if ($prevItemId > 0) {
+    if ($prevItemId !== null) {
         $pdo->exec("UPDATE c_lp_item SET next_item_id = $newItemId WHERE iid = $prevItemId");
     }
     
