@@ -25,21 +25,12 @@ $pdo = new PDO("mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4", $user, 
 
 echo "=== 1. CLEANING COURSE DESCRIPTIONS FOR COURSE 6 ===\n";
 // Find course description node
-$stmt = $pdo->prepare("SELECT id FROM resource_node WHERE parent_id = 144 AND title = 'Course Overview'");
+$stmt = $pdo->prepare("SELECT id FROM resource_node WHERE parent_id = 144 AND (title = 'Course Overview' OR title = 'course_description' OR resource_type_id = 13) LIMIT 1");
 $stmt->execute();
 $descNodeId = $stmt->fetchColumn();
 
-if (!$descNodeId) {
-    $stmt = $pdo->prepare("SELECT id FROM resource_node WHERE parent_id = 144 AND title = 'course_description'");
-    $stmt->execute();
-    $descNodeId = $stmt->fetchColumn();
-}
-
-// Delete duplicate/old descriptions
-$pdo->exec("DELETE FROM c_course_description WHERE resource_node_id NOT IN (SELECT id FROM resource_node WHERE parent_id = 144 AND (title = 'Course Overview' OR title = 'course_description')) AND c_id = 6");
-
-// Make sure exactly 1 description exists
-$pdo->exec("DELETE FROM c_course_description WHERE resource_node_id IN (SELECT id FROM resource_node WHERE parent_id = 144)");
+// Delete all existing descriptions for course 6 nodes
+$pdo->exec("DELETE FROM c_course_description WHERE resource_node_id IN (SELECT id FROM resource_node WHERE parent_id = 144 OR id = 144)");
 
 $descContent = <<<HTML
 <div class="course-description-wrapper" style="font-family: 'Inter', sans-serif; line-height: 1.7; color: #1e293b;">
@@ -75,17 +66,19 @@ $stmtInsertDesc = $pdo->prepare("
     VALUES (?, 'Course Overview & Objectives', ?, 1, 0)
 ");
 $stmtInsertDesc->execute([$descNodeId, $descContent]);
-echo "✅ Set exactly ONE clean Course Description for Course 6!\n";
+echo "✅ Set exactly ONE clean Course Description for Course 6 (Node #$descNodeId)!\n";
 
 echo "\n=== 2. REMOVING STANDALONE DOCUMENTS FROM DOCUMENTS TOOL ===\n";
-// Set visibility = 0 for any document links of course 6 so documents tool is empty
+// Delete all old standalone c_document rows for Course 6
+$pdo->exec("DELETE FROM c_document WHERE c_id = 6");
+// Also set visibility = 0 for any document links of course 6 so documents tool is empty
 $pdo->exec("
     UPDATE resource_link rl
     JOIN resource_node rn ON rn.id = rl.resource_node_id
     SET rl.visibility = 0
     WHERE rl.c_id = 6 AND rn.resource_type_id = 17
 ");
-echo "✅ Hidden all standalone documents from Documents tool!\n";
+echo "✅ Cleared and hidden standalone documents from Documents tool!\n";
 
 echo "\n=== 3. REBUILDING LEARNING PATH MODULES WITH RICH INTERACTIVE CONTENT ===\n";
 // Get LP for Course 6
@@ -325,7 +318,7 @@ foreach ($modules as $idx => $mod) {
     $content = $mod['content'];
     
     // Hash for Vich file
-    $hash = md5('c6_mod_' . $order . '_' . $title);
+    $hash = md5('c6_clean_mod_' . $order . '_' . $title);
     $filename = $hash . '.html';
     $c1 = substr($hash, 0, 1);
     $c2 = substr($hash, 1, 1);
@@ -338,7 +331,7 @@ foreach ($modules as $idx => $mod) {
     file_put_contents("$dir/$filename", $content);
     chmod("$dir/$filename", 0666);
     
-    // Create ResourceNode for this chapter document
+    // Create ResourceNode for this chapter document (resource_type_id = 17)
     $stmtNode = $pdo->prepare("
         INSERT INTO resource_node (creator_id, resource_type_id, title, parent_id, created_at, updated_at)
         VALUES (1, 17, ?, 144, NOW(), NOW())
