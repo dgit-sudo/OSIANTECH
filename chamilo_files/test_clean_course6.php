@@ -2,6 +2,7 @@
 require_once '/var/www/html/chamilo/vendor/autoload.php';
 
 use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\Uid\Uuid;
 
 $dotenv = new Dotenv();
 if (file_exists('/var/www/html/chamilo/.env')) {
@@ -333,21 +334,14 @@ foreach ($modules as $idx => $mod) {
     
     $slug = 'c6-mod-' . $order . '-' . strtolower(preg_replace('/[^a-zA-Z0-9]+/', '-', $title));
     
-    $uuid = sprintf(
-        '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-        mt_rand(0, 0xffff), mt_rand(0, 0xffff),
-        mt_rand(0, 0xffff),
-        mt_rand(0, 0x0fff) | 0x4000,
-        mt_rand(0, 0x3fff) | 0x8000,
-        mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
-    );
+    $binaryUuid = Uuid::v4()->toBinary();
     
     // Create ResourceNode for this chapter document (resource_type_id = 17)
     $stmtNode = $pdo->prepare("
         INSERT INTO resource_node (uuid, creator_id, resource_type_id, title, slug, public, parent_id, created_at, updated_at)
         VALUES (?, 1, 17, ?, ?, 0, 144, NOW(), NOW())
     ");
-    $stmtNode->execute([$uuid, $title, $slug]);
+    $stmtNode->execute([$binaryUuid, $title, $slug]);
     $nodeId = $pdo->lastInsertId();
     
     // Create ResourceFile (access_url_id = NULL)
