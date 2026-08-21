@@ -19,25 +19,10 @@ $user = $parts['user'] ?? 'root';
 $pass = $parts['pass'] ?? '';
 $db   = ltrim($parts['path'] ?? '', '/');
 
-try {
-    $pdo = new PDO("mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4", $user, $pass, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-    ]);
+$pdo = new PDO("mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4", $user, $pass, [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+]);
 
-    $tables = ['c_lp', 'c_lp_item', 'c_course_description', 'c_tool_intro', 'c_document'];
-    foreach ($tables as $t) {
-        echo "=== SCHEMA FOR $t ===\n";
-        try {
-            $stmt = $pdo->query("DESCRIBE $t");
-            while ($r = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                echo "  " . str_pad($r['Field'], 25) . " " . $r['Type'] . " (Null: " . $r['Null'] . ")\n";
-            }
-        } catch (Exception $e) {
-            echo "  Table $t does not exist or error: " . $e->getMessage() . "\n";
-        }
-        echo "\n";
-    }
-
-} catch (Exception $e) {
-    echo "❌ Error: " . $e->getMessage() . "\n";
-}
+echo "=== c_lp columns ===\n";
+$stmt = $pdo->query("DESCRIBE c_lp");
+print_r($stmt->fetchAll(PDO::FETCH_ASSOC));
