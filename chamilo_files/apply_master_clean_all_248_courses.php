@@ -26,18 +26,23 @@ $pdo = new PDO("mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4", $user, 
 
 echo "=== CHAMILO 2.0 MASTER CLEAN PROVISIONER (248 COURSES) ===\n";
 
-// 1. Wipe all old/duplicate course descriptions
+// Disable FK checks to safely truncate
+$pdo->exec("SET FOREIGN_KEY_CHECKS = 0");
 $pdo->exec("TRUNCATE TABLE c_course_description");
-echo "✅ Cleared all duplicate course descriptions.\n";
-
-// 2. Wipe all old LP items and LP item views
 $pdo->exec("TRUNCATE TABLE c_lp_item_view");
 $pdo->exec("TRUNCATE TABLE c_lp_item");
-echo "✅ Cleared all old/disorganized learning path items.\n";
-
-// 3. Clear all old documents
 $pdo->exec("TRUNCATE TABLE c_document");
-echo "✅ Cleared old documents table.\n";
+$pdo->exec("SET FOREIGN_KEY_CHECKS = 1");
+echo "✅ Cleared all duplicate descriptions, LP items, and documents.\n";
+
+// Also set visibility = 0 for any old standalone document links across all courses
+$pdo->exec("
+    UPDATE resource_link rl
+    JOIN resource_node rn ON rn.id = rl.resource_node_id
+    SET rl.visibility = 0
+    WHERE rn.resource_type_id = 17
+");
+echo "✅ Hidden all standalone files from Documents tools.\n";
 
 // Load all courses from database
 $stmtCourses = $pdo->query("SELECT id, code, title, resource_node_id FROM course ORDER BY id ASC");
