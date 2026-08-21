@@ -4,6 +4,16 @@ if (file_exists('/var/www/html/chamilo/src/Kernel.php')) {
     require_once '/var/www/html/chamilo/src/Kernel.php';
 }
 
+use Symfony\Component\Dotenv\Dotenv;
+
+$dotenv = new Dotenv();
+if (file_exists('/var/www/html/chamilo/.env')) {
+    $dotenv->load('/var/www/html/chamilo/.env');
+}
+if (file_exists('/var/www/html/chamilo/.env.local')) {
+    $dotenv->load('/var/www/html/chamilo/.env.local');
+}
+
 $kernelClass = class_exists('\App\Kernel') ? '\App\Kernel' : (class_exists('\Chamilo\Kernel') ? '\Chamilo\Kernel' : null);
 $kernel = new $kernelClass('prod', false);
 $kernel->boot();
@@ -19,8 +29,7 @@ if ($course) {
     echo "=== 1. TESTING CCourseDescriptionRepository::findAllInCourse ===\n";
     $cdRepo = $container->get(\Chamilo\CourseBundle\Repository\CCourseDescriptionRepository::class);
     $qbCd = $cdRepo->getResourcesByCourse($course);
-    echo "DQL: " . $qbCd->getDQL() . "\n";
-    echo "SQL: " . $qbCd->getQuery()->getSQL() . "\n";
+    echo "DQL: " . $qbCd->getDQL() . "\n\n";
     $cdResults = $qbCd->getQuery()->getResult();
     echo "Found " . count($cdResults) . " Course Descriptions\n";
     foreach ($cdResults as $cd) {
@@ -30,8 +39,7 @@ if ($course) {
     echo "\n=== 2. TESTING CLpRepository::findAllByCourse ===\n";
     $lpRepo = $container->get(\Chamilo\CourseBundle\Repository\CLpRepository::class);
     $qbLp = $lpRepo->findAllByCourse($course);
-    echo "DQL: " . $qbLp->getDQL() . "\n";
-    echo "SQL: " . $qbLp->getQuery()->getSQL() . "\n";
+    echo "DQL: " . $qbLp->getDQL() . "\n\n";
     $lpResults = $qbLp->getQuery()->getResult();
     echo "Found " . count($lpResults) . " Learning Paths\n";
     foreach ($lpResults as $lp) {
