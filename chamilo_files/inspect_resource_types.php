@@ -24,5 +24,5 @@ $pdo = new PDO("mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4", $user, 
 ]);
 
 echo "=== RESOURCE TYPES ===\n";
-$types = $pdo->query("SELECT id, title, code FROM resource_type ORDER BY id ASC")->fetchAll(PDO::FETCH_ASSOC);
+$types = $pdo->query("SELECT * FROM resource_type ORDER BY id ASC")->fetchAll(PDO::FETCH_ASSOC);
 print_r($types);
