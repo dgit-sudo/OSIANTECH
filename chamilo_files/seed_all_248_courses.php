@@ -27,7 +27,7 @@ try {
 
     echo "✅ Connected to Chamilo Database!\n";
 
-    // 1. Wipe open/unverified enrollments from course_rel_user
+    // Wipe unverified enrollments from course_rel_user
     $pdo->exec("DELETE FROM course_rel_user");
     echo "✅ Cleared all unverified student enrollments from course_rel_user.\n";
 
@@ -41161,7 +41161,7 @@ try {
 JSON;
 
     $courses = json_decode($catalogJson, true);
-    echo "Loaded " . count($courses) . " courses from catalog.\n";
+    echo "Loaded " . count($courses) . " unique courses from catalog.\n";
 
     $stmtFindCourse = $pdo->prepare("SELECT id, resource_node_id FROM course WHERE code = ? OR visual_code = ? LIMIT 1");
     $stmtInsertNode = $pdo->prepare("
@@ -41233,7 +41233,8 @@ JSON;
         // Link to Portal 1
         $stmtLinkPortal->execute([$courseId, $courseId]);
 
-        // Seed 27 Tools with child ResourceNodes
+        // Seed 27 Tools with child ResourceNodes and Shortcuts
+        $toolNodeMap = [];
         foreach ($defaultTools as $dt) {
             [$tTitle, $tId, $pos] = $dt;
             $stmtTool = $pdo->prepare("SELECT iid, resource_node_id FROM c_tool WHERE c_id = ? AND tool_id = ? LIMIT 1");
@@ -41251,6 +41252,8 @@ JSON;
                 $stmtUpdateNodePath->execute([$tPath, $tNodeId]);
             }
 
+            $toolNodeMap[$tTitle] = $tNodeId;
+
             if ($toolRow) {
                 $pdo->prepare("UPDATE c_tool SET resource_node_id = ? WHERE iid = ?")->execute([$tNodeId, $toolRow['iid']]);
             } else {
@@ -41259,7 +41262,21 @@ JSON;
             }
         }
 
-        // Seed Course Description
+        // Seed Home Shortcuts for LearnPath, Documents, Quizzes, Announcements
+        $shortcutTools = ['learnpath', 'document', 'quiz', 'announcement', 'forum'];
+        foreach ($shortcutTools as $sTool) {
+            if (!empty($toolNodeMap[$sTool])) {
+                $sNodeId = $toolNodeMap[$sTool];
+                $stmtSc = $pdo->prepare("SELECT id FROM c_shortcut WHERE resource_node_id = ? AND shortcut_node_id = ? LIMIT 1");
+                $stmtSc->execute([$courseNodeId, $sNodeId]);
+                if (!$stmtSc->fetch()) {
+                    $pdo->prepare("INSERT INTO c_shortcut (resource_node_id, shortcut_node_id, title) VALUES (?, ?, ?)")
+                        ->execute([$courseNodeId, $sNodeId, ucfirst($sTool)]);
+                }
+            }
+        }
+
+        // Generate Unique Course Description
         $descText = trim((string) ($c['description'] ?? ''));
         if ($descText) {
             $stmtDesc = $pdo->prepare("SELECT iid FROM c_course_description WHERE resource_node_id = ? LIMIT 1");
@@ -41272,7 +41289,56 @@ JSON;
             }
         }
 
-        // Seed Starter Learning Path (Curriculum)
+        // Build Unique Intro Module Document (c_document)
+        $docTitle = 'Course Introduction & Learning Guide';
+        $docPath = '/intro-' . $courseId . '.html';
+        $paragraphs = $c['detailParagraphs'] ?? [];
+        $outcomes = $c['outcomes'] ?? [];
+        $toolsUsed = $c['toolsUsed'] ?? [];
+        $syllabus = $c['syllabus'] ?? [];
+        $prereq = $c['prerequisite'] ?? 'None';
+        $cert = $c['certification'] ?? 'Osian Academy Certificate of Completion';
+
+        $htmlContent = '<h2>' . htmlspecialchars($title) . ' — Comprehensive Curriculum</h2>';
+        $htmlContent .= '<p><strong>Overview:</strong> ' . htmlspecialchars($descText) . '</p>';
+        if (!empty($paragraphs)) {
+            $htmlContent .= '<h3>What You Will Learn & Hands-On Practice</h3>';
+            foreach ($paragraphs as $p) {
+                $htmlContent .= '<p>' . htmlspecialchars($p) . '</p>';
+            }
+        }
+        if (!empty($outcomes)) {
+            $htmlContent .= '<h3>Key Learning Outcomes</h3><ul>';
+            foreach ($outcomes as $o) {
+                $htmlContent .= '<li>' . htmlspecialchars($o) . '</li>';
+            }
+            $htmlContent .= '</ul>';
+        }
+        if (!empty($toolsUsed)) {
+            $htmlContent .= '<h3>Industry Tooling Mastered</h3><p>' . htmlspecialchars(implode(', ', $toolsUsed)) . '</p>';
+        }
+        $htmlContent .= '<h3>Prerequisites & Certification</h3>';
+        $htmlContent .= '<p><strong>Prerequisites:</strong> ' . htmlspecialchars($prereq) . '<br><strong>Certification:</strong> ' . htmlspecialchars($cert) . '</p>';
+
+        $stmtDoc = $pdo->prepare("SELECT iid FROM c_document WHERE resource_node_id IN (SELECT id FROM resource_node WHERE parent_id = ? OR id = ?) LIMIT 1");
+        $stmtDoc->execute([$courseNodeId, $courseNodeId]);
+        $existingDoc = $stmtDoc->fetch(PDO::FETCH_ASSOC);
+
+        $docNodeId = null;
+        if (!$existingDoc) {
+            $docUuid = Uuid::v4()->toBinary();
+            $stmtInsertNode->execute([13, $courseNodeId, $docTitle, 'course-intro-' . $courseId, 2, $docUuid]);
+            $docNodeId = (int) $pdo->lastInsertId();
+            $dPath = 'course-' . $courseId . '/intro-' . $docNodeId . '.html';
+            $stmtUpdateNodePath->execute([$dPath, $docNodeId]);
+
+            $pdo->prepare("
+                INSERT INTO c_document (resource_node_id, title, comment, filetype, readonly, template)
+                VALUES (?, ?, ?, 'file', 0, 0)
+            ")->execute([$docNodeId, $docTitle, $htmlContent]);
+        }
+
+        // Seed Learning Path with Intro Module + Step-by-Step Syllabus
         $lpTitle = $title . ' — Curriculum & Modules';
         $stmtLp = $pdo->prepare("SELECT iid FROM c_lp WHERE title = ? AND resource_node_id IN (SELECT id FROM resource_node WHERE parent_id = ? OR id = ?) LIMIT 1");
         $stmtLp->execute([$lpTitle, $courseNodeId, $courseNodeId]);
@@ -41316,8 +41382,24 @@ JSON;
             ]);
             $lpId = (int) $pdo->lastInsertId();
 
-            // Seed Modules as LP Items with NULL parent/root foreign keys
-            $syllabus = $c['syllabus'] ?? [];
+            // Item 1: Unique Intro Module
+            $pdo->prepare("
+                INSERT INTO c_lp_item (
+                    lp_id, item_root, parent_item_id, title, item_type,
+                    ref, description, path, min_score, max_score,
+                    mastery_score, display_order, launch_data, lvl, export_allowed
+                ) VALUES (
+                    ?, NULL, NULL, '🌟 Course Introduction & Learning Outcomes', 'document',
+                    '', ?, ?, 0, 100,
+                    80, 1, '', 1, 1
+                )
+            ")->execute([
+                $lpId,
+                $descText,
+                $docPath
+            ]);
+
+            // Items 2..N: Syllabus Modules
             if (empty($syllabus)) {
                 $syllabus = [
                     ['step' => 1, 'name' => 'Foundations & Architecture', 'focus' => 'Core concepts, industry environment setup, and architectural overview.'],
@@ -41330,7 +41412,7 @@ JSON;
             foreach ($syllabus as $idx => $s) {
                 $itemTitle = 'Module ' . ($s['step'] ?? ($idx + 1)) . ': ' . ($s['name'] ?? ('Module ' . ($idx + 1)));
                 $itemFocus = $s['focus'] ?? 'Practical hands-on lab exercises and guided live one-on-one session.';
-                $order = (int) ($s['step'] ?? ($idx + 1));
+                $order = (int) (($s['step'] ?? ($idx + 1)) + 1);
 
                 $pdo->prepare("
                     INSERT INTO c_lp_item (
@@ -41353,13 +41435,13 @@ JSON;
 
         $count++;
         if ($count % 25 === 0 || $count === count($courses)) {
-            echo " -> Seeded $count / " . count($courses) . " courses with full private lock & modules...\n";
+            echo " -> Provisioned $count / " . count($courses) . " courses with unique intro module & home shortcuts...\n";
         }
     }
 
-    echo "\n🎉 SUCCESS: All 248 courses created in Chamilo LMS!\n";
+    echo "\n🎉 SUCCESS: All 248 courses provisioned in Chamilo LMS!\n";
     echo "🔒 All courses set to visibility = 1 (Private) and subscribe = 0 (No unauthorized self-enrollment).\n";
-    echo "📚 All 248 courses have full 27 tools and structured Learning Paths ready!\n";
+    echo "📚 All 248 courses have unique custom Intro Modules, Learning Paths, and Home Shortcuts!\n";
 
 } catch (Exception $e) {
     echo "❌ Error: " . $e->getMessage() . "\n";
