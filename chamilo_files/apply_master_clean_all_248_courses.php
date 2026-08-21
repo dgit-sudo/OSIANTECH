@@ -163,13 +163,13 @@ HTML;
     }
     
     // Find or create c_lp record
-    $stmtLp = $pdo->prepare("SELECT iid FROM c_lp WHERE resource_node_id = ? OR c_id = ? LIMIT 1");
-    $stmtLp->execute([$lpNodeId, $courseId]);
+    $stmtLp = $pdo->prepare("SELECT iid FROM c_lp WHERE resource_node_id = ? LIMIT 1");
+    $stmtLp->execute([$lpNodeId]);
     $lpId = $stmtLp->fetchColumn();
     
     if (!$lpId) {
-        $stmtInsertLp = $pdo->prepare("INSERT INTO c_lp (resource_node_id, c_id, lp_type, name, description, path, content_maker, author, use_max_score) VALUES (?, ?, 2, ?, ?, '', 'Chamilo 2.0 Native LMS', 'OSIAN Tech Academy', 100)");
-        $stmtInsertLp->execute([$lpNodeId, $courseId, $cTitle . ' — Complete Learning Path', $cDesc]);
+        $stmtInsertLp = $pdo->prepare("INSERT INTO c_lp (resource_node_id, lp_type, name, description, path, content_maker, author, use_max_score) VALUES (?, 2, ?, ?, '', 'Chamilo 2.0 Native LMS', 'OSIAN Tech Academy', 100)");
+        $stmtInsertLp->execute([$lpNodeId, $cTitle . ' — Complete Learning Path', $cDesc]);
         $lpId = $pdo->lastInsertId();
     } else {
         $pdo->prepare("UPDATE c_lp SET resource_node_id = ?, name = ?, description = ? WHERE iid = ?")->execute([$lpNodeId, $cTitle . ' — Complete Learning Path', $cDesc, $lpId]);
