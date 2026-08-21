@@ -168,11 +168,11 @@ HTML;
     $lpId = $stmtLp->fetchColumn();
     
     if (!$lpId) {
-        $stmtInsertLp = $pdo->prepare("INSERT INTO c_lp (resource_node_id, lp_type, name, description, path, content_maker, author, use_max_score) VALUES (?, 2, ?, ?, '', 'Chamilo 2.0 Native LMS', 'OSIAN Tech Academy', 100)");
+        $stmtInsertLp = $pdo->prepare("INSERT INTO c_lp (resource_node_id, lp_type, title, description, path, content_maker, author, use_max_score) VALUES (?, 2, ?, ?, '', 'Chamilo 2.0 Native LMS', 'OSIAN Tech Academy', 100)");
         $stmtInsertLp->execute([$lpNodeId, $cTitle . ' — Complete Learning Path', $cDesc]);
         $lpId = $pdo->lastInsertId();
     } else {
-        $pdo->prepare("UPDATE c_lp SET resource_node_id = ?, name = ?, description = ? WHERE iid = ?")->execute([$lpNodeId, $cTitle . ' — Complete Learning Path', $cDesc, $lpId]);
+        $pdo->prepare("UPDATE c_lp SET resource_node_id = ?, title = ?, description = ? WHERE iid = ?")->execute([$lpNodeId, $cTitle . ' — Complete Learning Path', $cDesc, $lpId]);
     }
     
     // 3. Create 5 sequential organized modules with dedicated Flysystem HTML documents
