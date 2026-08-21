@@ -24,7 +24,7 @@ $pdo = new PDO("mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4", $user, 
 ]);
 
 echo "=== RESOURCE TYPES TABLE ===\n";
-print_r($pdo->query("SELECT id, title, code FROM resource_type")->fetchAll(PDO::FETCH_ASSOC));
+print_r($pdo->query("SELECT * FROM resource_type")->fetchAll(PDO::FETCH_ASSOC));
 
 echo "\n=== ROOT NODES (parent_id IS NULL) ===\n";
-print_r($pdo->query("SELECT id, title, resource_type_id FROM resource_node WHERE parent_id IS NULL")->fetchAll(PDO::FETCH_ASSOC));
+print_r($pdo->query("SELECT id, title, resource_type_id, parent_id FROM resource_node WHERE parent_id IS NULL")->fetchAll(PDO::FETCH_ASSOC));
