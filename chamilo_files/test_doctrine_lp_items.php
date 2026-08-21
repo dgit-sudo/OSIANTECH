@@ -1,23 +1,10 @@
 <?php
-require_once '/var/www/html/chamilo/vendor/autoload.php';
+require_once '/var/www/html/chamilo/public/main/inc/global.inc.php';
 
-use Symfony\Component\Dotenv\Dotenv;
 use Doctrine\Common\Collections\Criteria;
+use Chamilo\CoreBundle\Framework\Container;
 
-$dotenv = new Dotenv();
-if (file_exists('/var/www/html/chamilo/.env')) {
-    $dotenv->load('/var/www/html/chamilo/.env');
-}
-if (file_exists('/var/www/html/chamilo/.env.local')) {
-    $dotenv->load('/var/www/html/chamilo/.env.local');
-}
-
-$kernel = new \App\Kernel('prod', false);
-$kernel->boot();
-$container = $kernel->getContainer();
-$em = $container->get('doctrine.orm.entity_manager');
-
-$lpRepo = $em->getRepository(\Chamilo\CourseBundle\Entity\CLp::class);
+$lpRepo = Container::getLpRepository();
 $lp = $lpRepo->find(249);
 
 echo "LP: " . ($lp ? $lp->getTitle() : "NULL") . "\n";
