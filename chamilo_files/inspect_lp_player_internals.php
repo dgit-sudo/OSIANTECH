@@ -25,21 +25,17 @@ try {
     ]);
 
     echo "=== 1. ALL LP ITEMS FOR LP 1 (COURSE 6) ===\n";
-    $stmt = $pdo->query("SELECT * FROM c_lp_item WHERE lp_id = 1 ORDER BY id ASC");
+    $stmt = $pdo->query("SELECT iid, lp_id, item_type, title, path, ref, display_order, previous_item_id, next_item_id, parent_item_id FROM c_lp_item WHERE lp_id = 1 ORDER BY iid ASC");
     print_r($stmt->fetchAll(PDO::FETCH_ASSOC));
 
     echo "\n=== 2. ALL COURSE DESCRIPTIONS FOR COURSE 6 ===\n";
     $stmtCd = $pdo->query("
-        SELECT cd.*, rn.parent_id 
+        SELECT cd.iid, cd.resource_node_id, cd.title, cd.description_type, rn.parent_id 
         FROM c_course_description cd
         JOIN resource_node rn ON rn.id = cd.resource_node_id
         WHERE rn.parent_id = 144
     ");
     print_r($stmtCd->fetchAll(PDO::FETCH_ASSOC));
-
-    echo "\n=== 3. CHECK C_LP_ITEM SCHEMA ===\n";
-    $stmtSchema = $pdo->query("DESCRIBE c_lp_item");
-    print_r($stmtSchema->fetchAll(PDO::FETCH_ASSOC));
 
 } catch (Exception $e) {
     echo "DB Error: " . $e->getMessage() . "\n";
