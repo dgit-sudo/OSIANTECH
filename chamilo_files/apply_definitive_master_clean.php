@@ -24,7 +24,7 @@ $pdo = new PDO("mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4", $user, 
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
 ]);
 
-echo "=== CHAMILO 2.0 DEFINITIVE MASTER CLEAN & PROVISIONER (248 COURSES) ===\n";
+echo "=== CHAMILO 2.0 DEFINITIVE MASTER CLEAN & REBUILD (248 COURSES) ===\n";
 
 // 1. Deep clean all descriptions, LPs, items, documents, and their resource nodes
 $pdo->exec("SET FOREIGN_KEY_CHECKS = 0");
@@ -37,13 +37,13 @@ $pdo->exec("TRUNCATE TABLE c_lp_category");
 $pdo->exec("TRUNCATE TABLE c_lp");
 $pdo->exec("TRUNCATE TABLE c_document");
 
-// Delete all old resource nodes and links of type 13 (desc), 17 (doc), 39 (lp)
+// Delete all old child resource nodes of types 13 (desc), 17 (doc), 39 (lp)
 $pdo->exec("DELETE FROM resource_file WHERE resource_node_id IN (SELECT id FROM resource_node WHERE resource_type_id IN (13, 17, 39))");
 $pdo->exec("DELETE FROM resource_link WHERE resource_node_id IN (SELECT id FROM resource_node WHERE resource_type_id IN (13, 17, 39))");
 $pdo->exec("DELETE FROM resource_node WHERE resource_type_id IN (13, 17, 39)");
 
 $pdo->exec("SET FOREIGN_KEY_CHECKS = 1");
-echo "✅ Completely cleaned old descriptions, LPs, items, and standalone documents.\n";
+echo "✅ Completely wiped all old duplicate descriptions, LPs, items, and documents.\n";
 
 // Load catalog mapped by normalized title
 $coursesJson = json_decode(file_get_contents('/var/www/html/chamilo/courses_data.json'), true) ?: [];
@@ -68,23 +68,41 @@ foreach ($dbCourses as $courseDb) {
     
     $courseTitle = trim($courseDb['title']);
     $courseCode = $courseDb['code'];
-    $rootNodeId = (int)$courseDb['resource_node_id'];
     
     $catItem = $catByTitle[strtolower($courseTitle)] ?? [];
     $cCategory = $catItem['category'] ?? 'Technology & Professional Skills';
     $cDesc = $catItem['description'] ?? 'Master industry-standard skills, practical workflows, and production techniques in this comprehensive certification curriculum.';
     
+    // Ensure course root node (type 31) exists
+    $rootNodeId = (int)$courseDb['resource_node_id'];
+    $rootExists = $rootNodeId > 0 ? $pdo->query("SELECT id FROM resource_node WHERE id = $rootNodeId")->fetchColumn() : false;
+    
+    if (!$rootExists) {
+        $courseUuid = Uuid::v4()->toBinary();
+        $courseSlug = 'course-' . $courseId . '-' . strtolower(preg_replace('/[^a-zA-Z0-9]+/', '-', $courseTitle)) . '-' . substr(md5(uniqid()), 0, 4);
+        $stmtCreateCourseNode = $pdo->prepare("INSERT INTO resource_node (uuid, creator_id, resource_type_id, title, slug, public, parent_id, created_at, updated_at) VALUES (?, 1, 31, ?, ?, 0, NULL, NOW(), NOW())");
+        $stmtCreateCourseNode->execute([$courseUuid, $courseTitle, $courseSlug]);
+        $rootNodeId = (int)$pdo->lastInsertId();
+        $pdo->prepare("UPDATE course SET resource_node_id = ? WHERE id = ?")->execute([$rootNodeId, $courseId]);
+    }
+    
+    // Ensure course root resource link exists
+    $checkCourseLink = $pdo->query("SELECT id FROM resource_link WHERE resource_node_id = $rootNodeId AND c_id = $courseId")->fetchColumn();
+    if (!$checkCourseLink) {
+        $pdo->prepare("INSERT INTO resource_link (resource_node_id, visibility, display_order, resource_type_group, c_id, created_at, updated_at) VALUES (?, 2, 1, 0, ?, NOW(), NOW())")->execute([$rootNodeId, $courseId]);
+    }
+    
     // ----------------------------------------------------
     // 1. Single Clean Course Description (resource_type_id = 13)
     // ----------------------------------------------------
     $descUuid = Uuid::v4()->toBinary();
-    $descSlug = 'c' . $courseId . '-course-overview-' . substr(md5(uniqid()), 0, 6);
-    $stmtCreateNode = $pdo->prepare("INSERT INTO resource_node (uuid, creator_id, resource_type_id, title, slug, public, parent_id, created_at, updated_at) VALUES (?, 1, 13, 'Course Overview', ?, 0, ?, NOW(), NOW())");
-    $stmtCreateNode->execute([$descUuid, $descSlug, $rootNodeId]);
-    $descNodeId = $pdo->lastInsertId();
+    $descSlug = 'c' . $courseId . '-overview-' . substr(md5(uniqid()), 0, 6);
+    $stmtDescNode = $pdo->prepare("INSERT INTO resource_node (uuid, creator_id, resource_type_id, title, slug, public, parent_id, created_at, updated_at) VALUES (?, 1, 13, 'Course Overview', ?, 0, ?, NOW(), NOW())");
+    $stmtDescNode->execute([$descUuid, $descSlug, $rootNodeId]);
+    $descNodeId = (int)$pdo->lastInsertId();
     
-    $stmtCreateDescLink = $pdo->prepare("INSERT INTO resource_link (resource_node_id, visibility, display_order, resource_type_group, c_id, created_at, updated_at) VALUES (?, 2, 1, 0, ?, NOW(), NOW())");
-    $stmtCreateDescLink->execute([$descNodeId, $courseId]);
+    $stmtDescLink = $pdo->prepare("INSERT INTO resource_link (resource_node_id, visibility, display_order, resource_type_group, c_id, created_at, updated_at) VALUES (?, 2, 1, 0, ?, NOW(), NOW())");
+    $stmtDescLink->execute([$descNodeId, $courseId]);
     
     $escTitle = htmlspecialchars($courseTitle, ENT_QUOTES, 'UTF-8');
     $escDesc = htmlspecialchars($cDesc, ENT_QUOTES, 'UTF-8');
@@ -126,10 +144,10 @@ HTML;
     // 2. Exactly 1 Clean Learning Path (resource_type_id = 39)
     // ----------------------------------------------------
     $lpUuid = Uuid::v4()->toBinary();
-    $lpSlug = 'c' . $courseId . '-learnpath-' . substr(md5(uniqid()), 0, 6);
+    $lpSlug = 'c' . $courseId . '-lp-' . substr(md5(uniqid()), 0, 6);
     $stmtCreateLpNode = $pdo->prepare("INSERT INTO resource_node (uuid, creator_id, resource_type_id, title, slug, public, parent_id, created_at, updated_at) VALUES (?, 1, 39, ?, ?, 0, ?, NOW(), NOW())");
     $stmtCreateLpNode->execute([$lpUuid, $courseTitle . ' — Complete Learning Path', $lpSlug, $rootNodeId]);
-    $lpNodeId = $pdo->lastInsertId();
+    $lpNodeId = (int)$pdo->lastInsertId();
     
     $stmtCreateLpLink = $pdo->prepare("INSERT INTO resource_link (resource_node_id, visibility, display_order, resource_type_group, c_id, created_at, updated_at) VALUES (?, 2, 1, 0, ?, NOW(), NOW())");
     $stmtCreateLpLink->execute([$lpNodeId, $courseId]);
@@ -154,7 +172,7 @@ HTML;
         )
     ");
     $stmtInsertLp->execute([$lpNodeId, $courseTitle . ' — Complete Learning Path', $cDesc]);
-    $lpId = $pdo->lastInsertId();
+    $lpId = (int)$pdo->lastInsertId();
     
     // ----------------------------------------------------
     // 3. Root c_lp_item (Required by Chamilo 2.0 for LP TOC)
@@ -177,7 +195,7 @@ HTML;
         )
     ");
     $stmtRootItem->execute([$lpId]);
-    $rootItemId = $pdo->lastInsertId();
+    $rootItemId = (int)$pdo->lastInsertId();
     
     // ----------------------------------------------------
     // 4. Create 5 Sequential Modules with Rich HTML Documents
@@ -297,7 +315,7 @@ HTML;
         // Create ResourceNode as child of $lpNodeId (Keeps Documents tool clean!)
         $stmtNode = $pdo->prepare("INSERT INTO resource_node (uuid, creator_id, resource_type_id, title, slug, public, parent_id, created_at, updated_at) VALUES (?, 1, 17, ?, ?, 0, ?, NOW(), NOW())");
         $stmtNode->execute([$binaryUuid, $modTitle, $slug, $lpNodeId]);
-        $nodeId = $pdo->lastInsertId();
+        $nodeId = (int)$pdo->lastInsertId();
         
         // Create ResourceFile
         $stmtRf = $pdo->prepare("INSERT INTO resource_file (resource_node_id, title, original_name, mime_type, size, created_at, updated_at, access_url_id) VALUES (?, ?, ?, 'text/html', ?, NOW(), NOW(), NULL)");
@@ -310,7 +328,7 @@ HTML;
         // Create c_document
         $stmtDoc = $pdo->prepare("INSERT INTO c_document (resource_node_id, title, filetype, readonly, template) VALUES (?, ?, 'file', 0, 0)");
         $stmtDoc->execute([$nodeId, $modTitle]);
-        $docIid = $pdo->lastInsertId();
+        $docIid = (int)$pdo->lastInsertId();
         
         // Create c_lp_item (parent_item_id = $rootItemId)
         $stmtLpItem = $pdo->prepare("
@@ -331,7 +349,7 @@ HTML;
             )
         ");
         $stmtLpItem->execute([$lpId, $nodeId, $modTitle, (string)$docIid, $rootItemId, $prevItemId, $order]);
-        $newItemId = $pdo->lastInsertId();
+        $newItemId = (int)$pdo->lastInsertId();
         
         if ($prevItemId !== null) {
             $pdo->exec("UPDATE c_lp_item SET next_item_id = $newItemId WHERE iid = $prevItemId");
