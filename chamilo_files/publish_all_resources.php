@@ -34,9 +34,9 @@ try {
 
     $stmtInsertLink = $pdo->prepare("
         INSERT INTO resource_link (
-            resource_node_id, c_id, visibility, display_order, created_at, updated_at
+            resource_node_id, c_id, visibility, display_order, resource_type_group, created_at, updated_at
         ) VALUES (
-            ?, ?, 2, ?, NOW(), NOW()
+            ?, ?, 2, ?, 0, NOW(), NOW()
         )
         ON DUPLICATE KEY UPDATE visibility = 2, updated_at = NOW()
     ");
