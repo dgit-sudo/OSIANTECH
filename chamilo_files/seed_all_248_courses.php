@@ -2,6 +2,7 @@
 require_once '/var/www/html/chamilo/vendor/autoload.php';
 
 use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\Uid\Uid;
 use Symfony\Component\Uid\Uuid;
 
 $dotenv = new Dotenv();
@@ -41233,7 +41234,7 @@ JSON;
         // Link to Portal 1
         $stmtLinkPortal->execute([$courseId, $courseId]);
 
-        // Seed 27 Tools with child ResourceNodes and Shortcuts
+        // Seed 27 Tools with child ResourceNodes
         $toolNodeMap = [];
         foreach ($defaultTools as $dt) {
             [$tTitle, $tId, $pos] = $dt;
@@ -41262,30 +41263,46 @@ JSON;
             }
         }
 
-        // Seed Home Shortcuts for LearnPath, Documents, Quizzes, Announcements
+        // Seed Home Shortcuts with unique child ResourceNode for each shortcut
         $shortcutTools = ['learnpath', 'document', 'quiz', 'announcement', 'forum'];
         foreach ($shortcutTools as $sTool) {
             if (!empty($toolNodeMap[$sTool])) {
-                $sNodeId = $toolNodeMap[$sTool];
-                $stmtSc = $pdo->prepare("SELECT id FROM c_shortcut WHERE resource_node_id = ? AND shortcut_node_id = ? LIMIT 1");
-                $stmtSc->execute([$courseNodeId, $sNodeId]);
+                $targetToolNodeId = $toolNodeMap[$sTool];
+                $scTitle = ucfirst($sTool);
+
+                $stmtSc = $pdo->prepare("SELECT id FROM c_shortcut WHERE shortcut_node_id = ? LIMIT 1");
+                $stmtSc->execute([$targetToolNodeId]);
                 if (!$stmtSc->fetch()) {
+                    $scUuid = Uuid::v4()->toBinary();
+                    $scSlug = 'sc-' . $sTool . '-' . $courseId . '-' . substr(md5(uniqid('', true)), 0, 4);
+                    $stmtInsertNode->execute([30, $courseNodeId, $scTitle, $scSlug, 2, $scUuid]);
+                    $scNodeId = (int) $pdo->lastInsertId();
+                    $scPath = 'course-' . $courseId . '/' . $scSlug . '-' . $scNodeId . '/';
+                    $stmtUpdateNodePath->execute([$scPath, $scNodeId]);
+
                     $pdo->prepare("INSERT INTO c_shortcut (resource_node_id, shortcut_node_id, title) VALUES (?, ?, ?)")
-                        ->execute([$courseNodeId, $sNodeId, ucfirst($sTool)]);
+                        ->execute([$scNodeId, $targetToolNodeId, $scTitle]);
                 }
             }
         }
 
-        // Generate Unique Course Description
+        // Generate Unique Course Description with its own child ResourceNode
         $descText = trim((string) ($c['description'] ?? ''));
         if ($descText) {
-            $stmtDesc = $pdo->prepare("SELECT iid FROM c_course_description WHERE resource_node_id = ? LIMIT 1");
+            $stmtDesc = $pdo->prepare("SELECT iid FROM c_course_description WHERE resource_node_id IN (SELECT id FROM resource_node WHERE parent_id = ?) LIMIT 1");
             $stmtDesc->execute([$courseNodeId]);
             if (!$stmtDesc->fetch()) {
+                $cdUuid = Uuid::v4()->toBinary();
+                $cdSlug = 'desc-' . $courseId . '-' . substr(md5(uniqid('', true)), 0, 4);
+                $stmtInsertNode->execute([8, $courseNodeId, 'Course Overview', $cdSlug, 2, $cdUuid]);
+                $cdNodeId = (int) $pdo->lastInsertId();
+                $cdPath = 'course-' . $courseId . '/' . $cdSlug . '-' . $cdNodeId . '/';
+                $stmtUpdateNodePath->execute([$cdPath, $cdNodeId]);
+
                 $pdo->prepare("
                     INSERT INTO c_course_description (resource_node_id, title, content, description_type, progress)
                     VALUES (?, 'Course Overview', ?, 1, 100)
-                ")->execute([$courseNodeId, $descText]);
+                ")->execute([$cdNodeId, $descText]);
             }
         }
 
@@ -41320,14 +41337,13 @@ JSON;
         $htmlContent .= '<h3>Prerequisites & Certification</h3>';
         $htmlContent .= '<p><strong>Prerequisites:</strong> ' . htmlspecialchars($prereq) . '<br><strong>Certification:</strong> ' . htmlspecialchars($cert) . '</p>';
 
-        $stmtDoc = $pdo->prepare("SELECT iid FROM c_document WHERE resource_node_id IN (SELECT id FROM resource_node WHERE parent_id = ? OR id = ?) LIMIT 1");
-        $stmtDoc->execute([$courseNodeId, $courseNodeId]);
+        $stmtDoc = $pdo->prepare("SELECT iid FROM c_document WHERE resource_node_id IN (SELECT id FROM resource_node WHERE parent_id = ?) LIMIT 1");
+        $stmtDoc->execute([$courseNodeId]);
         $existingDoc = $stmtDoc->fetch(PDO::FETCH_ASSOC);
 
-        $docNodeId = null;
         if (!$existingDoc) {
             $docUuid = Uuid::v4()->toBinary();
-            $stmtInsertNode->execute([13, $courseNodeId, $docTitle, 'course-intro-' . $courseId, 2, $docUuid]);
+            $stmtInsertNode->execute([13, $courseNodeId, $docTitle, 'intro-' . $courseId, 2, $docUuid]);
             $docNodeId = (int) $pdo->lastInsertId();
             $dPath = 'course-' . $courseId . '/intro-' . $docNodeId . '.html';
             $stmtUpdateNodePath->execute([$dPath, $docNodeId]);
@@ -41340,8 +41356,8 @@ JSON;
 
         // Seed Learning Path with Intro Module + Step-by-Step Syllabus
         $lpTitle = $title . ' — Curriculum & Modules';
-        $stmtLp = $pdo->prepare("SELECT iid FROM c_lp WHERE title = ? AND resource_node_id IN (SELECT id FROM resource_node WHERE parent_id = ? OR id = ?) LIMIT 1");
-        $stmtLp->execute([$lpTitle, $courseNodeId, $courseNodeId]);
+        $stmtLp = $pdo->prepare("SELECT iid FROM c_lp WHERE title = ? AND resource_node_id IN (SELECT id FROM resource_node WHERE parent_id = ?) LIMIT 1");
+        $stmtLp->execute([$lpTitle, $courseNodeId]);
         $existingLp = $stmtLp->fetch(PDO::FETCH_ASSOC);
 
         if (!$existingLp) {
