@@ -24,23 +24,21 @@ try {
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
     ]);
 
-    echo "=== 1. COURSE DESCRIPTION FOR CID=6 ===\n";
-    $stmt = $pdo->query("SELECT * FROM c_course_description WHERE c_id = 6");
+    echo "=== 1. DESCRIBE c_course_description ===\n";
+    $stmt = $pdo->query("DESCRIBE c_course_description");
     print_r($stmt->fetchAll(PDO::FETCH_ASSOC));
 
-    echo "\n=== 2. LEARNING PATH FOR CID=6 ===\n";
-    $stmtLp = $pdo->query("SELECT * FROM c_lp WHERE c_id = 6");
+    echo "\n=== 2. DESCRIBE c_lp ===\n";
+    $stmtLp = $pdo->query("DESCRIBE c_lp");
     print_r($stmtLp->fetchAll(PDO::FETCH_ASSOC));
 
-    echo "\n=== 3. RESOURCE LINKS FOR CID=6 ===\n";
-    $stmtRl = $pdo->query("
-        SELECT rl.id, rl.resource_node_id, rl.c_id, rl.visibility, rl.resource_type_group, rn.title, rt.title as type_title
-        FROM resource_link rl
-        JOIN resource_node rn ON rn.id = rl.resource_node_id
-        LEFT JOIN resource_type rt ON rt.id = rn.resource_type_id
-        WHERE rl.c_id = 6
-    ");
-    print_r($stmtRl->fetchAll(PDO::FETCH_ASSOC));
+    echo "\n=== 3. ALL ROWS IN c_course_description ===\n";
+    $stmtRows = $pdo->query("SELECT * FROM c_course_description LIMIT 5");
+    print_r($stmtRows->fetchAll(PDO::FETCH_ASSOC));
+
+    echo "\n=== 4. ALL ROWS IN c_lp ===\n";
+    $stmtLpRows = $pdo->query("SELECT * FROM c_lp LIMIT 5");
+    print_r($stmtLpRows->fetchAll(PDO::FETCH_ASSOC));
 
 } catch (Exception $e) {
     echo "DB Error: " . $e->getMessage() . "\n";
