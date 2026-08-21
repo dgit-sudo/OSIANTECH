@@ -106,7 +106,7 @@ $modules = [
         h1 { color: #0f172a; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; }
         h2 { color: #1e293b; margin-top: 28px; }
         .card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 20px 0; }
-        .code { background: #0f172a; color: #38bdf8; padding: 16px; border-radius: 8px; font-family: monospace; overflow-x: auto; }
+        .code { background: #0f172a; color: #38bdf8; padding: 16px; border-radius: 8px; font-family: monospace; overflow-x: auto; white-space: pre-wrap; }
         .badge { display: inline-block; background: #0ea5e9; color: #fff; padding: 4px 10px; border-radius: 9999px; font-size: 12px; font-weight: 600; }
     </style>
 </head>
@@ -152,7 +152,7 @@ HTML
         h1 { color: #0f172a; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; }
         h2 { color: #1e293b; margin-top: 28px; }
         .card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 20px 0; }
-        .code { background: #0f172a; color: #38bdf8; padding: 16px; border-radius: 8px; font-family: monospace; overflow-x: auto; }
+        .code { background: #0f172a; color: #38bdf8; padding: 16px; border-radius: 8px; font-family: monospace; overflow-x: auto; white-space: pre-wrap; }
         .badge { display: inline-block; background: #8b5cf6; color: #fff; padding: 4px 10px; border-radius: 9999px; font-size: 12px; font-weight: 600; }
     </style>
 </head>
@@ -194,7 +194,7 @@ HTML
         h1 { color: #0f172a; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; }
         h2 { color: #1e293b; margin-top: 28px; }
         .card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 20px 0; }
-        .code { background: #0f172a; color: #38bdf8; padding: 16px; border-radius: 8px; font-family: monospace; overflow-x: auto; }
+        .code { background: #0f172a; color: #38bdf8; padding: 16px; border-radius: 8px; font-family: monospace; overflow-x: auto; white-space: pre-wrap; }
         .badge { display: inline-block; background: #10b981; color: #fff; padding: 4px 10px; border-radius: 9999px; font-size: 12px; font-weight: 600; }
     </style>
 </head>
@@ -238,7 +238,7 @@ HTML
         h1 { color: #0f172a; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; }
         h2 { color: #1e293b; margin-top: 28px; }
         .card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 20px 0; }
-        .code { background: #0f172a; color: #38bdf8; padding: 16px; border-radius: 8px; font-family: monospace; overflow-x: auto; }
+        .code { background: #0f172a; color: #38bdf8; padding: 16px; border-radius: 8px; font-family: monospace; overflow-x: auto; white-space: pre-wrap; }
         .badge { display: inline-block; background: #f59e0b; color: #fff; padding: 4px 10px; border-radius: 9999px; font-size: 12px; font-weight: 600; }
     </style>
 </head>
@@ -281,7 +281,7 @@ HTML
         h1 { color: #0f172a; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; }
         h2 { color: #1e293b; margin-top: 28px; }
         .card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 20px 0; }
-        .code { background: #0f172a; color: #38bdf8; padding: 16px; border-radius: 8px; font-family: monospace; overflow-x: auto; }
+        .code { background: #0f172a; color: #38bdf8; padding: 16px; border-radius: 8px; font-family: monospace; overflow-x: auto; white-space: pre-wrap; }
         .badge { display: inline-block; background: #ec4899; color: #fff; padding: 4px 10px; border-radius: 9999px; font-size: 12px; font-weight: 600; }
     </style>
 </head>
@@ -331,12 +331,14 @@ foreach ($modules as $idx => $mod) {
     file_put_contents("$dir/$filename", $content);
     chmod("$dir/$filename", 0666);
     
+    $slug = 'c6-mod-' . $order . '-' . strtolower(preg_replace('/[^a-zA-Z0-9]+/', '-', $title));
+    
     // Create ResourceNode for this chapter document (resource_type_id = 17)
     $stmtNode = $pdo->prepare("
-        INSERT INTO resource_node (creator_id, resource_type_id, title, parent_id, created_at, updated_at)
-        VALUES (1, 17, ?, 144, NOW(), NOW())
+        INSERT INTO resource_node (creator_id, resource_type_id, title, slug, parent_id, created_at, updated_at)
+        VALUES (1, 17, ?, ?, 144, NOW(), NOW())
     ");
-    $stmtNode->execute([$title]);
+    $stmtNode->execute([$title, $slug]);
     $nodeId = $pdo->lastInsertId();
     
     // Create ResourceFile (access_url_id = NULL)
